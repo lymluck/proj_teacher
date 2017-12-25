@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="app_top_color">#ffffff</color> <!-- 主页头部背景色 -->
+    <color name="app_line_color">#ffe5e5e5</color> <!-- 分割线颜色 -->
+    <color name="app_top_title_color">#ff333333</color> <!--app头部中间标题字体颜色 -->
+    <color name="app_main_color">#078CF1</color>     <!-- 主色调颜色 -->
+</resources>

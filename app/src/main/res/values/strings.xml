@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">counselor-t</string>
+    <string name="msg_name">消息</string>
+    <string name="msg_unread">消息(%1$s)</string>
+    <string name="not_null">%1$s不能为空！</string>
+</resources>
