@@ -26,4 +26,6 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:+'
     compile 'io.reactivex.rxjava2:rxandroid:+'
     compile 'io.reactivex.rxjava2:rxjava:+'
+    compile 'com.alibaba:fastjson:1.1.67.android'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:+'
 }

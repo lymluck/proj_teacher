@@ -17,4 +17,16 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:background">@color/app_line_color</item>
     </style>
+    <!-- app全局通栏按钮样式 -->
+    <style name="app_onebtn">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/app_btnh</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">@dimen/app_btn_paddingtb</item>
+        <item name="android:paddingBottom">@dimen/app_btn_paddingtb</item>
+        <item name="android:background">@drawable/bg_main_btn_radius</item>
+        <item name="android:textColor">@drawable/btn_text_selected_color</item>
+        <item name="android:layout_marginTop">@dimen/app_btn_margintop</item>
+        <item name="android:textSize">@dimen/app_textsize</item>
+    </style>
 </resources>

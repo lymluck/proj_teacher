@@ -33,7 +33,7 @@
                 android:layout_height="match_parent"
                 android:clickable="true"
                 android:gravity="center_vertical"
-                android:paddingLeft="@dimen/app_top_right_btn_marginleftright"
+                android:paddingRight="@dimen/app_top_right_btn_marginleftright"
                 android:textColor="@color/app_main_color"
                 android:textSize="@dimen/app_textsize"
                 android:visibility="gone" />
@@ -90,7 +90,6 @@
                 android:visibility="gone" />
 
         </LinearLayout>
-
     </RelativeLayout>
 
     <View

@@ -3,4 +3,8 @@
     <string name="msg_name">消息</string>
     <string name="msg_unread">消息(%1$s)</string>
     <string name="not_null">%1$s不能为空！</string>
+    <string name="get_security_code">获取验证码</string>
+    <string name="get_code_again">重新发送(%1$s)</string>
+    <string name="send_again">重新发送</string>
+    <string name="enter_phone">请输入正确的手机号码</string>
 </resources>
