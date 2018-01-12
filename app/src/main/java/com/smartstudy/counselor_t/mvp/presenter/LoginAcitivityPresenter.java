@@ -61,6 +61,7 @@ public class LoginAcitivityPresenter extends BasePresenterImpl<LoginActivityCont
                 JSONObject data = JSON.parseObject(result);
                 if (data != null) {
                     SPCacheUtils.put("ticket", data.getString("ticket"));
+                    SPCacheUtils.put("imToken", data.getString("imToken"));
                     view.phoneCodeLoginSuccess(false);
                 }
             }
