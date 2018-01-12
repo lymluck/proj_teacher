@@ -39,5 +39,4 @@ public class ResponseInfo {
     public boolean isSuccess() {
         return TextUtils.equals(code, "0");
     }
-
 }

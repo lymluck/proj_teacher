@@ -28,8 +28,8 @@ public class HttpUrlUtils {
     public static final String URL_SEARCH = "/search";  //首页搜索
     public static final String URL_MATCHSHCOOL_OPTIONS = "/match_school/options";  //获取智能选校属性常量列表
     public static final String URL_RATE_OPTIONS = "/admission_rate/options";  //获取录取率测试属性常量列表
-    public static final String URL_PHONE_CODE = "user/captcha";  //获取验证码
-    public static final String URL_CODE_LOGIN = "user/register";  //验证码登录
+    public static final String URL_PHONE_CODE = "counsellor/captcha";  //获取验证码
+    public static final String URL_CODE_LOGIN = "counsellor/login";  //验证码登录
     public static final String URL_FEEDBACK = "/feedback";  //意见反馈
     public static final String URL_MYSCHOOL = "/match_school/list";  //我的选校
     public static final String URL_MYSCHOOL_EDIT = "/match_school";  //我的选校修改
@@ -100,14 +100,14 @@ public class HttpUrlUtils {
 
     /*********获取api接口url***********/
     public static String getBaseUrl() {
-        String SERVER = "https://api.smartstudy.com/school/";
+        String SERVER = "http://server.tdc.smartstudy.com:3000";
         String api = (String) SPCacheUtils.get(ConstantUtils.API_SERVER, "");
         switch (api) {
             case "master":
                 SERVER = "https://api.smartstudy.com/school/";
                 break;
             case "test":
-                SERVER = "http://api.beikaodi.com/"; //test
+                SERVER = "http://server.tdc.smartstudy.com:3000"; //test
                 break;
             case "dev":
                 SERVER = "http://linkang.smartstudy.com:3000/"; //dev
