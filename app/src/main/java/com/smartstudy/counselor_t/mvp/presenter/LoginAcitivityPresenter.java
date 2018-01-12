@@ -57,31 +57,26 @@ public class LoginAcitivityPresenter extends BasePresenterImpl<LoginActivityCont
             public void onNext(String result) {
                 JSONObject data = JSON.parseObject(result);
                 if (data != null) {
-                    boolean created = data.getBoolean("created");
-                    String ss_user = data.getString("ssUser");
-                    JSONObject user_data = data.getJSONObject("user");
-                    JSONObject person_data = user_data.getJSONObject("info");
+                    String id = data.getString("id");
+                    String phone = data.getString("phone");
+                    String name = data.getString("name");
+                    String avatar = data.getString("avatar");
+                    String orgId = data.getString("orgId");
+                    String title = data.getString("title");
+                    String imToken = data.getString("imToken");
+                    String imUserId = data.getString("imUserId");
                     String ticket = data.getString("ticket");
-                    String user_account = user_data.getString("phone");
-                    String user_id = user_data.getString("id");
-                    int xxd_unread = user_data.getIntValue("notificationUnreadCount");
-                    if (person_data.getJSONObject("targetSection") != null) {
-                        if (person_data.getJSONObject("targetSection").getJSONObject("targetCountry") != null) {
-                            SPCacheUtils.put("target_countryInfo", person_data.getJSONObject("targetSection").getJSONObject("targetCountry").toString());
-                        }
-                        if (person_data.getJSONObject("targetSection").getJSONObject("targetDegree") != null) {
-                            SPCacheUtils.put("project_name", person_data.getJSONObject("targetSection").getJSONObject("targetDegree").getString("name"));
-                        }
-                    }
-                    SPCacheUtils.put("user_name", user_data.getString("name"));
-                    SPCacheUtils.put("user_pic", user_data.getString("avatar"));
-                    SPCacheUtils.put("user_account", user_account);
-                    SPCacheUtils.put("ss_user", ss_user);
+
+                    SPCacheUtils.put("id", id);
+                    SPCacheUtils.put("phone", phone);
+                    SPCacheUtils.put("name", name);
+                    SPCacheUtils.put("avatar", avatar);
                     SPCacheUtils.put("ticket", ticket);
-                    SPCacheUtils.put("user", user_data.getString("info"));
-                    SPCacheUtils.put("xxd_unread", xxd_unread);
-                    SPCacheUtils.put("user_id", user_id);
-                    view.phoneCodeLoginSuccess(created, user_id);
+                    SPCacheUtils.put("orgId", orgId);
+                    SPCacheUtils.put("title", title);
+                    SPCacheUtils.put("imToken", imToken);
+                    SPCacheUtils.put("imUserId", imUserId);
+                    view.getPhoneCodeSuccess();
                 }
             }
 

@@ -6,8 +6,7 @@ import com.smartstudy.counselor_t.util.HttpUrlUtils;
 import java.util.Map;
 
 import io.reactivex.Observable;
-import retrofit2.http.Field;
-import retrofit2.http.FieldMap;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
@@ -35,4 +34,14 @@ public interface ApiService {
      */
     @POST(HttpUrlUtils.URL_CODE_LOGIN)
     Observable<ResponseInfo> phoneCodeLogin(@QueryMap Map<String, String> params);
+
+
+    /**
+     * 获取学生信息
+     *
+     * @param
+     * @return
+     */
+    @GET(HttpUrlUtils.URL_STUDENT_INFO)
+    Observable<ResponseInfo> getStudentInfo(@Query("ids") String id);
 }

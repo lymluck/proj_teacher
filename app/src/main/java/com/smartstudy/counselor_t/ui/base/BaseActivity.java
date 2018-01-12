@@ -32,6 +32,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     protected TextView topdefaultCentertitle;
     protected TextView topdefaultRighttext;
     private View mView;
+    private View topLine;
 
     protected P presenter;
 
@@ -80,6 +81,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         topdefaultLefttext = findViewById(R.id.topdefault_lefttext);
         topdefaultCentertitle = findViewById(R.id.topdefault_centertitle);
         topdefaultRighttext = findViewById(R.id.topdefault_righttext);
+        topLine=findViewById(R.id.top_line);
     }
 
     public void initEvent() {
@@ -144,5 +146,9 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
     public void setTitle(String title) {
         topdefaultCentertitle.setText(title);
+    }
+
+    public void setTopLineVisibility(int visible){
+        topLine.setVisibility(visible);
     }
 }
