@@ -14,7 +14,6 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
@@ -307,7 +306,7 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
     }
 
     @Override
-    public void phoneCodeLoginSuccess(boolean created, String user_Id) {
+    public void phoneCodeLoginSuccess(boolean created) {
         isNewUser = created;
         KeyBoardUtils.closeKeybord(etc_yzm, this);
         if (created) {
@@ -372,7 +371,8 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
             } else {
                 animator = ObjectAnimator.ofFloat(list.get(i), "translationX", 0F, n * (i + 1)).setDuration(1000);
             }
-            animator.setInterpolator(new BounceInterpolator());//设置插值器
+            //设置插值器
+            animator.setInterpolator(new BounceInterpolator());
             animator.start();
         }
         ObjectAnimator.ofFloat(img_logo, "rotation", 0F, 360F).setDuration(300).start();

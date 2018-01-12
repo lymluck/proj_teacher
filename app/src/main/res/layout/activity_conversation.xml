@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+
+
+    <RelativeLayout
+        android:id="@+id/rlyt_top"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_top_height"
+        android:background="@color/app_top_color">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:gravity="left|center_vertical"
+                android:minWidth="@dimen/app_top_leftright_btnimagewh">
+
+                <ImageView
+                    android:id="@+id/topdefault_leftbutton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="5dp"
+                    android:clickable="true"
+                    android:paddingLeft="@dimen/app_top_right_btn_marginleft"
+                    android:paddingRight="@dimen/app_top_right_btn_marginleftright"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_go_back" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llyt_top_center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/app_top_leftright_btnimagewh"
+                android:layout_marginRight="@dimen/app_top_leftright_btnimagewh"
+                android:paddingTop="3dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/topdefault_centertitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:maxLines="1"
+                    android:maxWidth="220dp"
+                    android:textColor="@color/topcentertext"
+                    android:textSize="@dimen/app_text_size1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:text="杭州智课教育有限公司"
+                    android:textColor="@color/app_text_color"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:gravity="right|center_vertical"
+                android:minWidth="@dimen/app_top_leftright_btnimagewh">
+
+
+                <ImageView
+                    android:id="@+id/topdefault_rightbutton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:clickable="true"
+                    android:paddingLeft="@dimen/app_top_right_btn_marginleftright"
+                    android:paddingRight="@dimen/app_top_right_btn_marginright"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/teacher_info"
+                    android:transitionName="btn_tr" />
+
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/top_line"
+            style="@style/horizontal_line"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <fragment
+        android:id="@+id/conversation"
+        android:name="io.rong.imkit.fragment.ConversationFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

@@ -55,8 +55,12 @@ public class LoginAcitivityPresenter extends BasePresenterImpl<LoginActivityCont
 
             @Override
             public void onNext(String result) {
+                Log.d("login======", result);
                 JSONObject data = JSON.parseObject(result);
                 if (data != null) {
+                    SPCacheUtils.put("ticket", data.getString("ticket"));
+                    SPCacheUtils.put("imToken", data.getString("imToken"));
+                    view.phoneCodeLoginSuccess(false);
                     String id = data.getString("id");
                     String phone = data.getString("phone");
                     String name = data.getString("name");
