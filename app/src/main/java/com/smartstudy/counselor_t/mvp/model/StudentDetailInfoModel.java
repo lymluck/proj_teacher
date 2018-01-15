@@ -15,9 +15,9 @@ import java.util.Map;
  * @email yeqingyu@innobuddy.com
  */
 public class StudentDetailInfoModel extends BaseMode {
-    public void getStudentInfo(String id, ObserverListener listener) {
+    public void getStudentDetailInfo(String id, ObserverListener listener) {
         Map<String, String> params = new HashMap<>();
         params.put("id", id);
-        apiSubscribe(ApiManager.getApiService().getStudentInfo(params), listener);
+        apiSubscribe(ApiManager.getApiService().getStudentDetailInfo(params), listener);
     }
 }

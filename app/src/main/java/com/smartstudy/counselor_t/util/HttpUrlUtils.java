@@ -31,6 +31,7 @@ public class HttpUrlUtils {
     public static final String URL_PHONE_CODE = "user/captcha";  //获取验证码
     public static final String URL_CODE_LOGIN = "counsellor/login";  //验证码登录
     public static final String URL_STUDENT_INFO = "counsellor/student/bulk";  //学生信息查询
+    public static final String URL_STUDENT_DETAIL_INFO = "counsellor/student/profile";  //学生信息查询
 
     public static final String URL_FEEDBACK = "/feedback";  //意见反馈
     public static final String URL_MYSCHOOL = "/match_school/list";  //我的选校
