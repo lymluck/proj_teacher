@@ -5,10 +5,10 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
 import com.smartstudy.counselor_t.mvp.contract.LoginActivityContract;
 import com.smartstudy.counselor_t.mvp.model.LoginModel;
+import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
 
 import io.reactivex.disposables.Disposable;
@@ -57,11 +57,27 @@ public class LoginAcitivityPresenter extends BasePresenterImpl<LoginActivityCont
 
             @Override
             public void onNext(String result) {
-                Log.d("login======", result);
                 JSONObject data = JSON.parseObject(result);
                 if (data != null) {
-                    SPCacheUtils.put("ticket", data.getString("ticket"));
-                    SPCacheUtils.put("imToken", data.getString("imToken"));
+                    String id = data.getString("id");
+                    String phone = data.getString("phone");
+                    String name = data.getString("name");
+                    String avatar = data.getString("avatar");
+                    String orgId = data.getString("orgId");
+                    String title = data.getString("title");
+                    String imToken = data.getString("imToken");
+                    String imUserId = data.getString("imUserId");
+                    String ticket = data.getString("ticket");
+
+                    SPCacheUtils.put("id", id);
+                    SPCacheUtils.put("phone", phone);
+                    SPCacheUtils.put("name", name);
+                    SPCacheUtils.put("avatar", avatar);
+                    SPCacheUtils.put("ticket", ticket);
+                    SPCacheUtils.put("orgId", orgId);
+                    SPCacheUtils.put("title", title);
+                    SPCacheUtils.put("imToken", imToken);
+                    SPCacheUtils.put("imUserId", imUserId);
                     view.phoneCodeLoginSuccess(false);
                 }
             }

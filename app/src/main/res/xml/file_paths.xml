@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+
+    <external-path
+        name="counselor_t/file"
+        path="Android/data/com.smartstudy.counselor_t/" />
+
+    <external-path
+        name="counselor_t/camera_photos"
+        path="." />
+
+    <root-path
+        name="counselor_t/root"
+        path="." />
+</paths>

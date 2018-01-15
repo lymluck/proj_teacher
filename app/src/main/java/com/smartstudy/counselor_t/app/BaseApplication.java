@@ -6,7 +6,12 @@ import android.app.Application;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.smartstudy.counselor_t.ui.provider.MyConversationListProvider;
+import com.smartstudy.counselor_t.ui.provider.MyTextMessageItemProvider;
+
 import java.util.List;
+
+import io.rong.imkit.RongIM;
 
 
 /**
@@ -39,6 +44,10 @@ public class BaseApplication extends Application {
         if (getProcessName(this).equals(getPackageName())) {
             appContext = this;
         }
+        RongIM.init(this);
+        RongIM.getInstance().registerConversationTemplate(new MyConversationListProvider());
+        RongIM.registerMessageTemplate(new MyTextMessageItemProvider());
+
     }
 
     public boolean isBackground() {
