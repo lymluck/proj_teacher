@@ -1,0 +1,15 @@
+# Created by .ignore support plugin (hsz.mobi)
+### AppEngine template
+# Google App Engine generated folder
+appengine-generated/
+
+/.gradle/
+/.idea/
+/build/
+/gradle/
+/gradlew
+/gradlew.bat
+/IMLib/build/
+/IMLib/IMLib.iml
+/app/build/
+/app/app.iml
