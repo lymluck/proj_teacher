@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.smartstudy.counselor_t.R;
+import com.smartstudy.counselor_t.entity.StudentInfo;
 import com.smartstudy.counselor_t.mvp.base.BasePresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 
@@ -32,8 +33,8 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void initEvent() {
-        this.findViewById(R.id.topdefault_rightbutton).setOnClickListener(this);
-        this.findViewById(R.id.topdefault_leftbutton).setOnClickListener(this);
+        this.findViewById(R.id.topdefault_rightbutton2).setOnClickListener(this);
+        this.findViewById(R.id.topdefault_leftbutton2).setOnClickListener(this);
     }
 
     @Override
@@ -51,14 +52,14 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
 
     protected void doClick(View v) {
         switch (v.getId()) {
-            case R.id.topdefault_rightbutton:
-//                Intent intent=new Intent();
-//                intent.putExtra("ids",targeId);
-//                intent.setClass(this,ChatDetilActivity.class);
-//                startActivity(intent);
+            case R.id.topdefault_rightbutton2:
+                Intent intent=new Intent();
+                intent.putExtra("ids",targeId);
+                intent.setClass(this,StudentInfoActivity.class);
+                startActivity(intent);
                 break;
 
-            case R.id.topdefault_leftbutton:
+            case R.id.topdefault_leftbutton2:
                 finish();
                 break;
             default:
