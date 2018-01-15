@@ -14,7 +14,7 @@ import com.smartstudy.counselor_t.entity.StudentInfo;
 public interface MainActivityContract {
     interface View extends BaseView {
 
-        void getStudentInfoSuccess(StudentInfo studentInfo);
+        void getStudentInfoSuccess(String mUserId,StudentInfo studentInfo);
 
     }
 

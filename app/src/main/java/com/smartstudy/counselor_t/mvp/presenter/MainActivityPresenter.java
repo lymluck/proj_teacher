@@ -45,10 +45,11 @@ public class MainActivityPresenter extends BasePresenterImpl<MainActivityContrac
 
             @Override
             public void onNext(String s) {
-                Log.w("kim","----->"+s);
-                JSONObject object=JSON.parseObject(s);
+                JSONObject object = JSON.parseObject(s);
                 StudentInfo studentInfo = JSON.parseObject(object.getString(userId), StudentInfo.class);
-                view.getStudentInfoSuccess(studentInfo);
+                if (studentInfo != null) {
+                    view.getStudentInfoSuccess(userId, studentInfo);
+                }
             }
 
             @Override

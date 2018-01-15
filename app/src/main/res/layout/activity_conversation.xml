@@ -10,7 +10,7 @@
 
 
     <RelativeLayout
-        android:id="@+id/rlyt_top"
+        android:id="@+id/rlyt_top2"
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_top_height"
         android:background="@color/app_top_color">
@@ -28,7 +28,7 @@
                 android:minWidth="@dimen/app_top_leftright_btnimagewh">
 
                 <ImageView
-                    android:id="@+id/topdefault_leftbutton"
+                    android:id="@+id/topdefault_leftbutton2"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginRight="5dp"
@@ -40,7 +40,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/llyt_top_center"
+                android:id="@+id/llyt_top_center2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
@@ -50,13 +50,13 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/topdefault_centertitle"
+                    android:id="@+id/topdefault_centertitle2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:maxLines="1"
                     android:maxWidth="220dp"
-                    android:textColor="@color/topcentertext"
+                    android:textColor="#ff333333"
                     android:textSize="@dimen/app_text_size1" />
 
                 <TextView
@@ -87,7 +87,6 @@
                     android:paddingLeft="@dimen/app_top_right_btn_marginleftright"
                     android:paddingRight="@dimen/app_top_right_btn_marginright"
                     android:scaleType="centerInside"
-                    android:src="@drawable/teacher_info"
                     android:transitionName="btn_tr" />
 
 

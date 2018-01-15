@@ -21,20 +21,9 @@ import java.util.Map;
 public class MainModel extends BaseMode {
 
     public void getStudentInfo(String id, ObserverListener listener) {
-//        Map<String, String> params = new HashMap<>();
-//        try {
-//            params.put("id", URLEncoder.encode(id, "utf-8"));
-//            Log.w("kim","----->"+URLEncoder.encode(id, "utf-8"));
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        }
-
-        try {
-            apiSubscribe(ApiManager.getApiService().getStudentInfo(URLEncoder.encode(id, "utf-8")), listener);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        Map<String, String> params = new HashMap<>();
+        params.put("ids", id);
+        apiSubscribe(ApiManager.getApiService().getStudentInfo(params), listener);
     }
-
-
 }
+

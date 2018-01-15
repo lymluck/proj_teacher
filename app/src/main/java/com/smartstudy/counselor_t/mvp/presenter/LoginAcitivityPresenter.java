@@ -1,6 +1,8 @@
 package com.smartstudy.counselor_t.mvp.presenter;
 
 
+import android.util.Log;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
@@ -55,12 +57,8 @@ public class LoginAcitivityPresenter extends BasePresenterImpl<LoginActivityCont
 
             @Override
             public void onNext(String result) {
-                Log.d("login======", result);
                 JSONObject data = JSON.parseObject(result);
                 if (data != null) {
-                    SPCacheUtils.put("ticket", data.getString("ticket"));
-                    SPCacheUtils.put("imToken", data.getString("imToken"));
-                    view.phoneCodeLoginSuccess(false);
                     String id = data.getString("id");
                     String phone = data.getString("phone");
                     String name = data.getString("name");
@@ -80,7 +78,7 @@ public class LoginAcitivityPresenter extends BasePresenterImpl<LoginActivityCont
                     SPCacheUtils.put("title", title);
                     SPCacheUtils.put("imToken", imToken);
                     SPCacheUtils.put("imUserId", imUserId);
-                    view.getPhoneCodeSuccess();
+                    view.phoneCodeLoginSuccess(false);
                 }
             }
 

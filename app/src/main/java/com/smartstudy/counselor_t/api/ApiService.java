@@ -43,5 +43,5 @@ public interface ApiService {
      * @return
      */
     @GET(HttpUrlUtils.URL_STUDENT_INFO)
-    Observable<ResponseInfo> getStudentInfo(@Query("ids") String id);
+    Observable<ResponseInfo> getStudentInfo(@QueryMap Map<String, String> params);
 }

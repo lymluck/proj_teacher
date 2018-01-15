@@ -83,6 +83,22 @@
                 android:text="从业5年"
                 android:textColor="#949BA1"
                 android:textSize="11sp" />
+
+
+            <TextView
+                android:id="@+id/tv_tag3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bg_conversation_tag_border10"
+                android:paddingBottom="2dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="2dp"
+                android:layout_marginLeft="4dp"
+                android:text="从业5年"
+                android:textColor="#949BA1"
+                android:textSize="11sp" />
         </LinearLayout>
 
         <TextView

@@ -2,6 +2,7 @@ package com.smartstudy.counselor_t.ui.provider;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.view.LayoutInflater;
@@ -74,8 +75,10 @@ public class MyTextMessageItemProvider extends IContainerItemProvider.MessagePro
         MyTextMessageItemProvider.ViewHolder holder = (MyTextMessageItemProvider.ViewHolder)v.getTag();
         if(data.getMessageDirection() == Message.MessageDirection.SEND) {
             holder.message.setBackgroundResource(io.rong.imkit.R.drawable.rc_ic_bubble_right);
+            holder.message.setTextColor(Color.parseColor("#ffffff"));
         } else {
             holder.message.setBackgroundResource(io.rong.imkit.R.drawable.rc_ic_bubble_left);
+            holder.message.setTextColor(Color.parseColor("#26343F"));
         }
 
         final AutoLinkTextView textView = holder.message;

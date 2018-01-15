@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.smartstudy.counselor_t.R;
+import com.smartstudy.counselor_t.entity.MyUserInfo;
 import com.smartstudy.counselor_t.mvp.contract.MainActivityContract;
 import com.smartstudy.counselor_t.entity.StudentInfo;
 import com.smartstudy.counselor_t.mvp.presenter.MainActivityPresenter;
@@ -40,9 +41,15 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
             @Override
             public UserInfo getUserInfo(String userId) {
 
-                Log.w("kim", "------" + userId);
-                presenter.getStudentInfo(userId);
-                return null;//根据 userId 去你的用户系统里查询对应的用户信息返回给融云 SDK。
+                if (userId.equals(SPCacheUtils.get("imUserId", ""))) {
+                    return new MyUserInfo(SPCacheUtils.get("imUserId", "").toString(),
+                            SPCacheUtils.get("name", "").toString(),
+                            Uri.parse(SPCacheUtils.get("avatar", "").toString()), "", "", "");
+                } else {
+                    presenter.getStudentInfo(userId);
+
+                }
+                return null;
             }
 
         }, true);
@@ -143,8 +150,11 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
 
 
     @Override
-    public void getStudentInfoSuccess(StudentInfo studentInfo) {
-
-        Log.w("kim",studentInfo.getName());
+    public void getStudentInfoSuccess(String id, StudentInfo studentInfo) {
+        if (studentInfo != null) {
+            RongIM.getInstance().refreshUserInfoCache(new MyUserInfo(id, studentInfo.getName(),
+                    Uri.parse(studentInfo.getAvatar()), studentInfo.getAdmissionTime(),
+                    studentInfo.getTargetCountry(), studentInfo.getTargetDegree()));
+        }
     }
 }

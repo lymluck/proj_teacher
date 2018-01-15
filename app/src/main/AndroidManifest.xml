@@ -63,22 +63,22 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <!--<activity-->
-        <!--android:name=".ui.activity.ConversationActivity"-->
-        <!--android:screenOrientation="portrait"-->
-        <!--android:windowSoftInputMode="stateHidden|adjustResize">-->
+        <activity
+        android:name=".ui.activity.ConversationActivity"
+        android:screenOrientation="portrait"
+        android:windowSoftInputMode="stateHidden|adjustResize">
 
-        <!--<intent-filter>-->
-        <!--<action android:name="android.intent.action.VIEW" />-->
+        <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
 
-        <!--<category android:name="android.intent.category.DEFAULT" />-->
+        <category android:name="android.intent.category.DEFAULT" />
 
-        <!--<data-->
-        <!--android:host="com.smartstudy.xxd"-->
-        <!--android:pathPrefix="/conversation/"-->
-        <!--android:scheme="rong" />-->
-        <!--</intent-filter>-->
-        <!--</activity>-->
+        <data
+        android:host="com.smartstudy.counselor_t"
+        android:pathPrefix="/conversation/"
+        android:scheme="rong" />
+        </intent-filter>
+        </activity>
 
     </application>
 
