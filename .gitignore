@@ -14,3 +14,6 @@ appengine-generated/
 /app/build/
 /app/app.iml
 /xxd-im.iml
+/local.properties
+/IMKit/IMKit.iml
+/IMKit/build/
