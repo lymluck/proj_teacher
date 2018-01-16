@@ -32,6 +32,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation rootProject.ext.dependencies.support
+    compile rootProject.ext.dependencies.glide
     compile project(':IMKit')
     compile project(':IMLib')
     compile 'com.squareup.retrofit2:retrofit:+'

@@ -349,11 +349,11 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
         ObjectAnimator animator = ObjectAnimator.ofFloat(img_logo, "rotation", 0F, 360F).setDuration(300);
         animator.setInterpolator(new BounceInterpolator());//设置插值器
         animator.start();//开始动画
-        int n = DensityUtils.dip2px(this, 45);
+        int n = DensityUtils.dip2px(45);
         ObjectAnimator objectAnimator;
         for (int i = 0; i < 3; i++) {
             if (i == 0) {
-                objectAnimator = ObjectAnimator.ofFloat(list.get(i), "translationX", DensityUtils.dip2px(this, 52), 0F).setDuration(1000);
+                objectAnimator = ObjectAnimator.ofFloat(list.get(i), "translationX", DensityUtils.dip2px(52), 0F).setDuration(1000);
             } else {
                 objectAnimator = ObjectAnimator.ofFloat(list.get(i), "translationX", n * (i + 1), 0F).setDuration(1000);
             }
@@ -363,11 +363,11 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
 
     private void startAnimator() {
         isSelected = true;
-        int n = DensityUtils.dip2px(this, 45);
+        int n = DensityUtils.dip2px(45);
         for (int i = 0; i < 3; i++) {
             ObjectAnimator animator;
             if (i == 0) {
-                animator = ObjectAnimator.ofFloat(list.get(i), "translationX", 0F, DensityUtils.dip2px(this, 52)).setDuration(1000);
+                animator = ObjectAnimator.ofFloat(list.get(i), "translationX", 0F, DensityUtils.dip2px( 52)).setDuration(1000);
             } else {
                 animator = ObjectAnimator.ofFloat(list.get(i), "translationX", 0F, n * (i + 1)).setDuration(1000);
             }

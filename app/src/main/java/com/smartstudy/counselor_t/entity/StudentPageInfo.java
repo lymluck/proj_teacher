@@ -86,6 +86,117 @@ public class StudentPageInfo {
 
 
     public class BackgroundSection {
+        private CurrentSchool currentSchool;
+
+
+        private Score score;
+
+        private ScoreLanguage scoreLanguage;
+
+
+        private ActivityInternship activityInternship;
+
+        private ActivityResearch activityResearch;
+
+        private ActivityCommunity activityCommunity;
+
+        private ActivityExchange activityExchange;
+
+        public ActivityExchange getActivityExchange() {
+            return activityExchange;
+        }
+
+        public void setActivityExchange(ActivityExchange activityExchange) {
+            this.activityExchange = activityExchange;
+        }
+
+        public ActivityCommunity getActivityCommunity() {
+            return activityCommunity;
+        }
+
+        public void setActivityCommunity(ActivityCommunity activityCommunity) {
+            this.activityCommunity = activityCommunity;
+        }
+
+        public ActivityResearch getActivityResearch() {
+            return activityResearch;
+        }
+
+        public void setActivityResearch(ActivityResearch activityResearch) {
+            this.activityResearch = activityResearch;
+        }
+
+        public ActivityInternship getActivityInternship() {
+            return activityInternship;
+        }
+
+        public void setActivityInternship(ActivityInternship activityInternship) {
+            this.activityInternship = activityInternship;
+        }
+
+        public ScoreLanguage getScoreLanguage() {
+            return scoreLanguage;
+        }
+
+        public void setScoreLanguage(ScoreLanguage scoreLanguage) {
+            this.scoreLanguage = scoreLanguage;
+        }
+
+        public Score getScore() {
+            return score;
+        }
+
+        public void setScore(Score score) {
+            this.score = score;
+        }
+
+        public CurrentSchool getCurrentSchool() {
+            return currentSchool;
+        }
+
+        public void setCurrentSchool(CurrentSchool currentSchool) {
+            this.currentSchool = currentSchool;
+        }
+
+        public class CurrentSchool extends CommonStudentInfo {
+
+            private String input;
+
+            public String getInput() {
+                return input;
+            }
+
+            public void setInput(String input) {
+                this.input = input;
+            }
+        }
+
+
+        public class Score extends CommonTarge{
+
+        }
+
+
+        public class ScoreLanguage extends CommonStudentInfo{
+
+        }
+
+
+        public class ActivityInternship extends CommonTarge{
+
+        }
+
+        public class ActivityResearch extends CommonTarge{
+
+        }
+
+        public class ActivityCommunity extends CommonTarge{
+
+        }
+
+        public class ActivityExchange extends  CommonTarge{
+
+        }
 
     }
 

@@ -1,7 +1,6 @@
 package com.smartstudy.counselor_t.util;
 
-
-import android.content.Context;
+import com.smartstudy.counselor_t.app.BaseApplication;
 
 /**
  * 常用单位转换的辅助类
@@ -19,8 +18,8 @@ public class DensityUtils {
      * @param pxValue （DisplayMetrics类中属性density）
      * @return
      */
-    public static int px2dip(Context context, float pxValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
+    public static int px2dip(float pxValue) {
+        final float scale = BaseApplication.appContext.getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
     }
 
@@ -30,8 +29,8 @@ public class DensityUtils {
      * @param dipValue （DisplayMetrics类中属性density）
      * @return
      */
-    public static int dip2px(Context context, float dipValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
+    public static int dip2px(float dipValue) {
+        final float scale = BaseApplication.appContext.getResources().getDisplayMetrics().density;
         return (int) (dipValue * scale + 0.5f);
     }
 
@@ -41,8 +40,8 @@ public class DensityUtils {
      * @param pxValue （DisplayMetrics类中属性scaledDensity）
      * @return
      */
-    public static int px2sp(Context context, float pxValue) {
-        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
+    public static int px2sp(float pxValue) {
+        final float fontScale = BaseApplication.appContext.getResources().getDisplayMetrics().scaledDensity;
         return (int) (pxValue / fontScale + 0.5f);
     }
 
@@ -52,8 +51,8 @@ public class DensityUtils {
      * @param spValue （DisplayMetrics类中属性scaledDensity）
      * @return
      */
-    public static int sp2px(Context context, float spValue) {
-        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
+    public static int sp2px(float spValue) {
+        final float fontScale = BaseApplication.appContext.getResources().getDisplayMetrics().scaledDensity;
         return (int) (spValue * fontScale + 0.5f);
     }
 

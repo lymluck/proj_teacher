@@ -49,13 +49,13 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
         targeId = getIntent().getData().getQueryParameter("targetId");
     }
 
-
-    protected void doClick(View v) {
+    @Override
+    public void onClick(View v) {
         switch (v.getId()) {
             case R.id.topdefault_rightbutton2:
-                Intent intent=new Intent();
-                intent.putExtra("ids",targeId);
-                intent.setClass(this,StudentInfoActivity.class);
+                Intent intent = new Intent();
+                intent.putExtra("ids", targeId);
+                intent.setClass(this, StudentInfoActivity.class);
                 startActivity(intent);
                 break;
 
@@ -66,6 +66,6 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
                 break;
 
         }
-    }
 
+    }
 }

@@ -9,50 +9,16 @@ import java.util.List;
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */
-public class CommonTarge {
-    private String title;
-    private String id;
-    private String name;
-    private int index;
-    private List<Options> optionsList;
+public class CommonTarge extends CommonStudentInfo {
 
-    public String getTitle() {
-        return title;
+    private List<Options> options;
+
+
+    public List<Options> getOptions() {
+        return options;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getIndex() {
-        return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
-    }
-
-    public List<Options> getOptionsList() {
-        return optionsList;
-    }
-
-    public void setOptionsList(List<Options> optionsList) {
-        this.optionsList = optionsList;
+    public void setOptions(List<Options> options) {
+        this.options = options;
     }
 }

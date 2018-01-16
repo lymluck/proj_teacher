@@ -5,6 +5,7 @@ import android.util.Log;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.smartstudy.counselor_t.entity.StudentInfo;
+import com.smartstudy.counselor_t.entity.StudentPageInfo;
 import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
 import com.smartstudy.counselor_t.mvp.contract.MainActivityContract;
@@ -48,12 +49,11 @@ public class StudentInfoActivityPresenter extends BasePresenterImpl<StudentActiv
 
             @Override
             public void onNext(String s) {
-                Log.w("kim", "----->" + s);
                 JSONObject object = JSON.parseObject(s);
-//                StudentInfo studentInfo = JSON.parseObject(object.getString(userId), StudentInfo.class);
-//                if (studentInfo != null) {
-//                    view.getStudentInfoSuccess(userId, studentInfo);
-//                }
+                StudentPageInfo studentPageInfo = JSON.parseObject(s, StudentPageInfo.class);
+                if (studentPageInfo != null) {
+                    view.getStudentInfoDetailSuccess(studentPageInfo);
+                }
             }
 
             @Override
