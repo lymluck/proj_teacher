@@ -96,8 +96,8 @@ public class DisplayImageUtils {
     }
 
     public static void displayCircleImage(Context context, String url, ImageView view) {
-        Glide.with(context).load(url).centerCrop().diskCacheStrategy(DiskCacheStrategy.RESULT).placeholder(R.drawable.ic_circleimg_default)
-                .error(R.drawable.ic_circleimg_default).transform(new GlideCircleTransform(context))
+        Glide.with(context).load(url).centerCrop().diskCacheStrategy(DiskCacheStrategy.RESULT).placeholder(R.drawable.ic_photo_image)
+                .error(R.drawable.ic_photo_image).transform(new GlideCircleTransform(context))
                 .dontAnimate().into(view);
     }
 

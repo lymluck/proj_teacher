@@ -153,7 +153,7 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
     public void getStudentInfoSuccess(String id, StudentInfo studentInfo) {
         if (studentInfo != null) {
             RongIM.getInstance().refreshUserInfoCache(new MyUserInfo(id, studentInfo.getName(),
-                    Uri.parse(studentInfo.getAvatar()), studentInfo.getAdmissionTime(),
+                    Uri.parse(TextUtils.isEmpty(studentInfo.getAvatar()) ? "" : studentInfo.getAvatar()), studentInfo.getAdmissionTime(),
                     studentInfo.getTargetCountry(), studentInfo.getTargetDegree()));
         }
     }

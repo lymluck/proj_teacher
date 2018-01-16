@@ -58,6 +58,13 @@
             android:name=".ui.activity.StudentInfoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing|stateHidden" />
+
+
+        <activity
+            android:name=".ui.activity.FillPersonActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing|stateHidden" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.smartstudy.counselor_t.fileProvider"

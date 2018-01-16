@@ -55,8 +55,11 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
             case R.id.topdefault_rightbutton2:
                 Intent intent = new Intent();
                 intent.putExtra("ids", targeId);
-                intent.setClass(this, StudentInfoActivity.class);
+                intent.setClass(this, FillPersonActivity.class);
                 startActivity(intent);
+
+//                startActivity(new Intent(this, FillPersonActivity.class));
+
                 break;
 
             case R.id.topdefault_leftbutton2:
