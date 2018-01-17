@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.MyUserInfo;
+import com.smartstudy.counselor_t.util.SPCacheUtils;
 
 import io.rong.common.RLog;
 import io.rong.imkit.RongContext;
@@ -78,29 +79,26 @@ public class MyConversationListProvider implements IContainerItemProvider.Conver
             holder.tvTag3.setVisibility(View.GONE);
         } else {
             holder.title.setText(data.getUIConversationTitle());
-            UserInfo userInfo =  RongUserInfoManager.getInstance().getUserInfo(data.getConversationTargetId());
-            MyUserInfo myUserInfo=null;
-            if(userInfo instanceof MyUserInfo){
-                myUserInfo=(MyUserInfo)myUserInfo;
-            }
-            if (myUserInfo != null) {
-                if (TextUtils.isEmpty(myUserInfo.getAdmissionTime())) {
+            String myUserInfo = (String) SPCacheUtils.get("Rong" + data.getConversationTargetId(), "");
+            String[] detail = myUserInfo.split(":");
+            if (detail.length == 3) {
+                if (TextUtils.isEmpty(detail[0])) {
                     holder.tvTag1.setVisibility(View.GONE);
                 } else {
-                    holder.tvTag1.setText(myUserInfo.getAdmissionTime());
+                    holder.tvTag1.setText(detail[0]);
                 }
 
-                if (TextUtils.isEmpty(myUserInfo.getTargetCountry())) {
+                if (TextUtils.isEmpty(detail[1])) {
                     holder.tvTag2.setVisibility(View.GONE);
                 } else {
-                    holder.tvTag2.setText(myUserInfo.getTargetCountry());
+                    holder.tvTag2.setText(detail[1]);
                 }
 
 
-                if (TextUtils.isEmpty(myUserInfo.getTargetDegree())) {
+                if (TextUtils.isEmpty(detail[2])) {
                     holder.tvTag3.setVisibility(View.GONE);
                 } else {
-                    holder.tvTag3.setText(myUserInfo.getTargetDegree());
+                    holder.tvTag3.setText(detail[2]);
                 }
             }
             String time = RongDateUtils.getConversationListFormatDate(data.getUIConversationTime(), view.getContext());
@@ -230,4 +228,5 @@ public class MyConversationListProvider implements IContainerItemProvider.Conver
         protected ViewHolder() {
         }
     }
+
 }

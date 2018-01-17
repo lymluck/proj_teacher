@@ -1,13 +1,16 @@
 package com.smartstudy.counselor_t.ui.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.smartstudy.counselor_t.R;
+import com.smartstudy.counselor_t.entity.MyUserInfo;
 import com.smartstudy.counselor_t.mvp.base.BasePresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
+import com.smartstudy.counselor_t.util.SPCacheUtils;
 
 /**
  * @author yqy
