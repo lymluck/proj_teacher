@@ -20,21 +20,18 @@
 
     <application>
 
-        <!-- imlib config begin -->
-        <meta-data
-            android:name="RONG_CLOUD_APP_KEY"
-            android:value="25wehl3u29wqw" />
-
         <service
             android:name="io.rong.imlib.ipc.RongService"
             android:exported="true"
             android:process=":ipc" />
 
-        <service android:name="io.rong.imlib.ReConnectService"
-            android:exported="true"/>
+        <service
+            android:name="io.rong.imlib.ReConnectService"
+            android:exported="true" />
 
-        <receiver android:name="io.rong.imlib.ConnectChangeReceiver"
-            android:exported="true"/>
+        <receiver
+            android:name="io.rong.imlib.ConnectChangeReceiver"
+            android:exported="true" />
 
         <receiver
             android:name="io.rong.imlib.HeartbeatReceiver"
@@ -46,14 +43,12 @@
         <!--第三方相关,向第三方推送服务请求 token 的服务 -->
         <service
             android:name="io.rong.push.core.PushRegistrationService"
-            android:exported="false">
-        </service>
+            android:exported="false"></service>
 
         <!-- 处理 push 消息相关的服务 -->
         <service
             android:name="io.rong.push.core.MessageHandleService"
-            android:exported="true">
-        </service>
+            android:exported="true"></service>
 
         <!-- push服务 -->
         <service
@@ -84,7 +79,7 @@
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
             </intent-filter>
         </receiver>
-        
+
         <!--必选： SDK 核心功能-->
 
         <!-- end -->

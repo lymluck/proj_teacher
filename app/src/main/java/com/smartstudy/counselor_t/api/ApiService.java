@@ -54,6 +54,14 @@ public interface ApiService {
     @GET(HttpUrlUtils.URL_STUDENT_DETAIL_INFO)
     Observable<ResponseInfo> getStudentDetailInfo(@QueryMap Map<String, String> params);
 
+    /**
+     * 重新获取token
+     *
+     * @return
+     */
+    @POST(HttpUrlUtils.URL_REFRESH_TOKEN)
+    Observable<ResponseInfo> refreshToken();
+
 
     /**
      * 获取学生主页详情

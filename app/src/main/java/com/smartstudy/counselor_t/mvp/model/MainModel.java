@@ -1,13 +1,9 @@
 package com.smartstudy.counselor_t.mvp.model;
 
-import android.util.Log;
-
 import com.smartstudy.counselor_t.api.ApiManager;
 import com.smartstudy.counselor_t.listener.ObserverListener;
-import com.smartstudy.counselor_t.mvp.base.BaseMode;
+import com.smartstudy.counselor_t.mvp.base.BaseModel;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,7 +14,7 @@ import java.util.Map;
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */
-public class MainModel extends BaseMode {
+public class MainModel extends BaseModel {
 
     public void getStudentInfo(String id, ObserverListener listener) {
         Map<String, String> params = new HashMap<>();

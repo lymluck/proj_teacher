@@ -2,7 +2,7 @@ package com.smartstudy.counselor_t.mvp.model;
 
 import com.smartstudy.counselor_t.api.ApiManager;
 import com.smartstudy.counselor_t.listener.ObserverListener;
-import com.smartstudy.counselor_t.mvp.base.BaseMode;
+import com.smartstudy.counselor_t.mvp.base.BaseModel;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +14,7 @@ import java.util.Map;
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */
-public class StudentDetailInfoModel extends BaseMode {
+public class StudentDetailInfoModel extends BaseModel {
     public void getStudentDetailInfo(String id, ObserverListener listener) {
         Map<String, String> params = new HashMap<>();
         params.put("id", id);

@@ -84,10 +84,7 @@
         <activity
             android:name="io.rong.imkit.activity.CSLeaveMessageActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="portrait" /> <!-- imlib config begin -->
-        <meta-data
-            android:name="RONG_CLOUD_APP_KEY"
-            android:value="25wehl3u29ryw" />
+            android:screenOrientation="portrait" />
 
         <service
             android:name="io.rong.imlib.ipc.RongService"
@@ -107,12 +104,10 @@
         <!-- 第三方相关,向第三方推送服务请求 token 的服务 -->
         <service
             android:name="io.rong.push.core.PushRegistrationService"
-            android:exported="false" >
-        </service> <!-- 处理 push 消息相关的服务 -->
+            android:exported="false" /> <!-- 处理 push 消息相关的服务 -->
         <service
             android:name="io.rong.push.core.MessageHandleService"
-            android:exported="true" >
-        </service> <!-- push服务 -->
+            android:exported="true" /> <!-- push服务 -->
         <service
             android:name="io.rong.push.PushService"
             android:exported="true"
