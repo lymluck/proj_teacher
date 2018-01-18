@@ -16,7 +16,7 @@ import io.reactivex.schedulers.Schedulers;
  * 封装线程管理和订阅的过程
  * Created by louis on 18/1/2.
  */
-public class BaseMode {
+public class BaseModel {
 
     protected void apiSubscribe(Observable observable, final ObserverListener listener) {
         observable.subscribeOn(Schedulers.io())

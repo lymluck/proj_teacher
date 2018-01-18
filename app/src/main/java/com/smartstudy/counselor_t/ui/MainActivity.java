@@ -6,18 +6,18 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.MyUserInfo;
-import com.smartstudy.counselor_t.mvp.contract.MainActivityContract;
 import com.smartstudy.counselor_t.entity.StudentInfo;
+import com.smartstudy.counselor_t.mvp.contract.MainActivityContract;
 import com.smartstudy.counselor_t.mvp.presenter.MainActivityPresenter;
 import com.smartstudy.counselor_t.ui.activity.LoginActivity;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.ui.fragment.MyConversationListFragment;
 import com.smartstudy.counselor_t.util.ConstantUtils;
+import com.smartstudy.counselor_t.util.IMUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
 
 import io.rong.imkit.RongIM;
@@ -74,27 +74,19 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
     @Override
     protected void onResume() {
         super.onResume();
-        if (!RongIM.getInstance().getCurrentConnectionStatus().equals(RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED)) {
-            String imToken = SPCacheUtils.get("imToken", "").toString();
-            if (!TextUtils.isEmpty(imToken)) {
-                RongIM.connect(imToken, new RongIMClient.ConnectCallback() {
-
-                    @Override
-                    public void onSuccess(String s) {
-                        unReadMessage();
-                    }
-
-                    @Override
-                    public void onError(RongIMClient.ErrorCode errorCode) {
-                    }
-
-                    @Override
-                    public void onTokenIncorrect() {
-                    }
-                });
-            }
-        } else {
+        imConnect();
+        if (RongIM.getInstance().getCurrentConnectionStatus().equals(RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED)) {
             unReadMessage();
+        }
+    }
+
+    private void imConnect() {
+        if (RongIM.getInstance().getCurrentConnectionStatus().equals(RongIMClient.ConnectionStatusListener.ConnectionStatus.DISCONNECTED)) {
+            //登录融云IM
+            String cacheToken = (String) SPCacheUtils.get("imToken", "");
+            if (!TextUtils.isEmpty(cacheToken)) {
+                RongIM.connect(cacheToken, IMUtils.getConnectCallback());
+            }
         }
     }
 

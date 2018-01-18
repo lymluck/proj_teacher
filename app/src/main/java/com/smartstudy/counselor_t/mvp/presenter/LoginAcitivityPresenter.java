@@ -1,17 +1,23 @@
 package com.smartstudy.counselor_t.mvp.presenter;
 
 
+import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
 import com.smartstudy.counselor_t.mvp.contract.LoginActivityContract;
 import com.smartstudy.counselor_t.mvp.model.LoginModel;
-import com.smartstudy.counselor_t.listener.ObserverListener;
+import com.smartstudy.counselor_t.util.IMUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
 
 import io.reactivex.disposables.Disposable;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.UserInfo;
 
 
 /**
@@ -68,7 +74,7 @@ public class LoginAcitivityPresenter extends BasePresenterImpl<LoginActivityCont
                     String imToken = data.getString("imToken");
                     String imUserId = data.getString("imUserId");
                     String ticket = data.getString("ticket");
-                    int status=data.getInteger("status");
+                    int status = data.getInteger("status");
 
                     SPCacheUtils.put("id", id);
                     SPCacheUtils.put("phone", phone);
@@ -78,8 +84,9 @@ public class LoginAcitivityPresenter extends BasePresenterImpl<LoginActivityCont
                     SPCacheUtils.put("orgId", orgId);
                     SPCacheUtils.put("title", title);
                     SPCacheUtils.put("imToken", imToken);
-                    SPCacheUtils.put("imUserId", imUserId);
                     view.phoneCodeLoginSuccess(status);
+                    //登录融云
+                    loginRongIM(imToken, name, avatar);
                 }
             }
 
@@ -88,6 +95,31 @@ public class LoginAcitivityPresenter extends BasePresenterImpl<LoginActivityCont
                 view.showTip(msg);
             }
         });
+    }
+
+    private void loginRongIM(String imToken, final String userName, final String avatar) {
+        if (!TextUtils.isEmpty(imToken)) {
+            RongIM.connect(imToken, new RongIMClient.ConnectCallback() {
+
+                @Override
+                public void onSuccess(String userid) {
+                    //登录成功后保存imUserId
+                    SPCacheUtils.put("imUserId", userid);
+                    //更新用户信息
+                    RongIM.getInstance().refreshUserInfoCache(new UserInfo(userid, userName, Uri.parse(avatar)));
+                }
+
+                @Override
+                public void onError(RongIMClient.ErrorCode errorCode) {
+                    Log.d("RongIM===", errorCode.getMessage());
+                }
+
+                @Override
+                public void onTokenIncorrect() {
+                    IMUtils.reGetToken();
+                }
+            });
+        }
     }
 
     @Override

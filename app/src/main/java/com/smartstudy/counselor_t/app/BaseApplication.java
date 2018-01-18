@@ -43,11 +43,11 @@ public class BaseApplication extends Application {
         super.onCreate();
         if (getProcessName(this).equals(getPackageName())) {
             appContext = this;
+            //注册容云组件
+            RongIM.init(this,"25wehl3u29wqw");
+            RongIM.getInstance().registerConversationTemplate(new MyConversationListProvider());
+            RongIM.registerMessageTemplate(new MyTextMessageItemProvider());
         }
-        RongIM.init(this);
-        RongIM.getInstance().registerConversationTemplate(new MyConversationListProvider());
-        RongIM.registerMessageTemplate(new MyTextMessageItemProvider());
-
     }
 
     public boolean isBackground() {

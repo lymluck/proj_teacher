@@ -32,6 +32,7 @@ public class HttpUrlUtils {
     public static final String URL_CODE_LOGIN = "counsellor/login";  //验证码登录
     public static final String URL_STUDENT_INFO = "counsellor/student/bulk";  //学生信息查询
     public static final String URL_STUDENT_DETAIL_INFO = "counsellor/student/profile";  //学生信息查询
+    public static final String URL_REFRESH_TOKEN = "counsellor/im/refresh";  //获取教师token
 
     public static final String URL_FEEDBACK = "/feedback";  //意见反馈
     public static final String URL_MYSCHOOL = "/match_school/list";  //我的选校
@@ -104,7 +105,7 @@ public class HttpUrlUtils {
     /*********获取api接口url***********/
     public static String getBaseUrl() {
 //        String SERVER = "http://172.17.7.72:3000/";
-        String SERVER = "http://server.tdc.smartstudy.com:3000";
+        String SERVER = "http://blog.smartstudy.com:3000";
         String api = (String) SPCacheUtils.get(ConstantUtils.API_SERVER, "");
         switch (api) {
             case "master":
