@@ -7,7 +7,10 @@ import android.widget.ImageView;
 
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.MyUserInfo;
+import com.smartstudy.counselor_t.entity.StudentPageInfo;
 import com.smartstudy.counselor_t.mvp.base.BasePresenter;
+import com.smartstudy.counselor_t.mvp.contract.FillPersonContract;
+import com.smartstudy.counselor_t.mvp.contract.StudentActivityContract;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
@@ -19,7 +22,7 @@ import com.smartstudy.counselor_t.util.SPCacheUtils;
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */
-public class FillPersonActivity extends BaseActivity {
+public class FillPersonActivity extends BaseActivity<FillPersonContract.Presenter> implements FillPersonContract.View {
 
     private ImageView ivAvatar;
     private ImageView ivPhoto;
@@ -35,9 +38,10 @@ public class FillPersonActivity extends BaseActivity {
     }
 
     @Override
-    public BasePresenter initPresenter() {
+    public FillPersonContract.Presenter initPresenter() {
         return null;
     }
+
 
     @Override
     public void initView() {
@@ -46,5 +50,10 @@ public class FillPersonActivity extends BaseActivity {
         ivPhoto = findViewById(R.id.iv_photo);
         DisplayImageUtils.displayCircleImage(this, "77/fa/77fa2d9eb368d911e2ecb809212ea2d451fc.jpg", ivPhoto);
 //        DisplayImageUtils.displayCircleImage(this,"https://bkd-media.smartstudy.com/user/avatar/default/77/fa/77fa2d9eb368d911e2ecb809212ea2d451fc.jpg",ivAvatar);
+    }
+
+    @Override
+    public void getStudentInfoDetailSuccess(StudentPageInfo studentInfo) {
+
     }
 }
