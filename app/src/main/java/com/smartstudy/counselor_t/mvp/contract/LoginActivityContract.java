@@ -13,7 +13,7 @@ public interface LoginActivityContract {
 
         void getPhoneCodeSuccess();
 
-        void phoneCodeLoginSuccess(boolean created);
+        void phoneCodeLoginSuccess(int status);
     }
 
     interface Presenter extends BasePresenter {

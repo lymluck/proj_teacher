@@ -58,7 +58,6 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
     private List<View> list = null;
     private boolean isSelected = false;
     private boolean isDebug = AppUtils.isApkInDebug(this);
-    private boolean isNewUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -306,20 +305,17 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
     }
 
     @Override
-    public void phoneCodeLoginSuccess(boolean created) {
-        isNewUser = created;
+    public void phoneCodeLoginSuccess(int status) {
         KeyBoardUtils.closeKeybord(etc_yzm, this);
-        if (created) {
-            //跳转到个人信息完善页面
-//            Router.build("PerfectUserInfoActivity").requestCode(ParameterUtils.REQUEST_CODE_LOGIN).go(this);
-        } else {
+        if (status == 2) {
             if (getIntent().getBooleanExtra("toMain", false)) {
                 startActivity(new Intent(this, MainActivity.class));
-
             } else {
                 setResult(RESULT_OK);
             }
             finish();
+        } else {
+            startActivity(new Intent(this, FillPersonActivity.class));
         }
     }
 
@@ -367,7 +363,7 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
         for (int i = 0; i < 3; i++) {
             ObjectAnimator animator;
             if (i == 0) {
-                animator = ObjectAnimator.ofFloat(list.get(i), "translationX", 0F, DensityUtils.dip2px( 52)).setDuration(1000);
+                animator = ObjectAnimator.ofFloat(list.get(i), "translationX", 0F, DensityUtils.dip2px(52)).setDuration(1000);
             } else {
                 animator = ObjectAnimator.ofFloat(list.get(i), "translationX", 0F, n * (i + 1)).setDuration(1000);
             }
@@ -386,9 +382,9 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
         }
         switch (requestCode) {
             case ConstantUtils.REQUEST_CODE_LOGIN:
-                if (isNewUser) {
-                    startActivity(new Intent(this, MainActivity.class));
-                }
+//                if (statu) {
+                startActivity(new Intent(this, MainActivity.class));
+//            }
                 setResult(RESULT_OK);
                 finish();
                 break;

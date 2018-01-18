@@ -68,6 +68,7 @@ public class LoginAcitivityPresenter extends BasePresenterImpl<LoginActivityCont
                     String imToken = data.getString("imToken");
                     String imUserId = data.getString("imUserId");
                     String ticket = data.getString("ticket");
+                    int status=data.getInteger("status");
 
                     SPCacheUtils.put("id", id);
                     SPCacheUtils.put("phone", phone);
@@ -78,7 +79,7 @@ public class LoginAcitivityPresenter extends BasePresenterImpl<LoginActivityCont
                     SPCacheUtils.put("title", title);
                     SPCacheUtils.put("imToken", imToken);
                     SPCacheUtils.put("imUserId", imUserId);
-                    view.phoneCodeLoginSuccess(false);
+                    view.phoneCodeLoginSuccess(status);
                 }
             }
 
