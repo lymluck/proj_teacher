@@ -56,6 +56,7 @@ public class IMUtils {
                     @Override
                     public void onNext(ResponseInfo responseInfo) {
                         if (responseInfo.isSuccess()) {
+                            Log.d("======", responseInfo.getData());
                             reConn(JSON.parseObject(responseInfo.getData()).getString("imToken"));
                         }
                     }
@@ -66,7 +67,6 @@ public class IMUtils {
 
                     @Override
                     public void onComplete() {
-
                     }
                 });
     }

@@ -72,7 +72,6 @@ public class LoginAcitivityPresenter extends BasePresenterImpl<LoginActivityCont
                     String orgId = data.getString("orgId");
                     String title = data.getString("title");
                     String imToken = data.getString("imToken");
-                    String imUserId = data.getString("imUserId");
                     String ticket = data.getString("ticket");
                     int status = data.getInteger("status");
 
@@ -106,7 +105,7 @@ public class LoginAcitivityPresenter extends BasePresenterImpl<LoginActivityCont
                     //登录成功后保存imUserId
                     SPCacheUtils.put("imUserId", userid);
                     //更新用户信息
-                    RongIM.getInstance().refreshUserInfoCache(new UserInfo(userid, userName, Uri.parse(avatar)));
+                    RongIM.getInstance().refreshUserInfoCache(new UserInfo(userid, userName, TextUtils.isEmpty(avatar) ? null : Uri.parse(avatar)));
                 }
 
                 @Override
