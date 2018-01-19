@@ -106,7 +106,7 @@ public class LoginAcitivityPresenter extends BasePresenterImpl<LoginActivityCont
                     //登录成功后保存imUserId
                     SPCacheUtils.put("imUserId", userid);
                     //更新用户信息
-                    RongIM.getInstance().refreshUserInfoCache(new UserInfo(userid, userName, Uri.parse(avatar)));
+//                    RongIM.getInstance().refreshUserInfoCache(new UserInfo(userid, userName, Uri.parse(avatar)));
                 }
 
                 @Override

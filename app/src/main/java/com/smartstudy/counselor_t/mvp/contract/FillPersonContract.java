@@ -14,7 +14,7 @@ import com.smartstudy.counselor_t.mvp.base.BaseView;
 public interface FillPersonContract {
     interface View extends BaseView {
 
-        void getStudentInfoDetailSuccess(StudentPageInfo studentInfo);
+        void getStudentInfoDetailSuccess();
 
     }
 

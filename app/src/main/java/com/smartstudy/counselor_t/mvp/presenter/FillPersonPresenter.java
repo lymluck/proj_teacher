@@ -1,5 +1,7 @@
 package com.smartstudy.counselor_t.mvp.presenter;
 
+import android.util.Log;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.smartstudy.counselor_t.entity.StudentPageInfo;
@@ -43,11 +45,8 @@ public class FillPersonPresenter extends BasePresenterImpl<FillPersonContract.Vi
 
             @Override
             public void onNext(String s) {
-                JSONObject object = JSON.parseObject(s);
-                StudentPageInfo studentPageInfo = JSON.parseObject(s, StudentPageInfo.class);
-                if (studentPageInfo != null) {
-                    view.getStudentInfoDetailSuccess(studentPageInfo);
-                }
+               Log.w("kim","------>"+s);
+               view.getStudentInfoDetailSuccess();
             }
 
             @Override
