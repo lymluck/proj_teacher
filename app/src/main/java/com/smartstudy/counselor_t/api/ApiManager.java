@@ -84,7 +84,7 @@ public class ApiManager {
         params.put("X-xxd-uid", "00000000");
         String ticket = (String) SPCacheUtils.get("ticket", ConstantUtils.CACHE_NULL);
         if (!TextUtils.isEmpty(ticket) && !ConstantUtils.CACHE_NULL.equals(ticket)) {
-            params.put("X-xxd-ticket", ticket);
+            params.put("X-xxd-counsellor-ticket", ticket);
         }
         return params;
     }

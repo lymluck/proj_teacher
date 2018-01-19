@@ -5,7 +5,6 @@ import android.widget.Toast;
 
 import com.smartstudy.counselor_t.R;
 
-
 public class ToastUtils {
 
     private static Toast mToast;

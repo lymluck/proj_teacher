@@ -62,6 +62,10 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
 
     @Override
     public void initView() {
+        String ticket = (String) SPCacheUtils.get("ticket", ConstantUtils.CACHE_NULL);
+        if (!TextUtils.isEmpty(ticket) && ConstantUtils.CACHE_NULL.equals(ticket)) {
+            startActivity(new Intent(this, LoginActivity.class));
+        }
         setLeftImgVisible(View.GONE);
         setTitle(getString(R.string.msg_name));
 

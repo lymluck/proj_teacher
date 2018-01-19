@@ -88,6 +88,7 @@ public class MeConversationAdapter extends ConversationListAdapter {
                 if (tag.portraitPosition() == 1) {
                     holder.leftImageLayout.setVisibility(View.VISIBLE);
                     holder.leftImageLayout.setOnClickListener(new View.OnClickListener() {
+                        @Override
                         public void onClick(View v) {
                             if (MeConversationAdapter.this.mOnPortraitItemClick != null) {
                                 MeConversationAdapter.this.mOnPortraitItemClick.onPortraitItemClick(v, data);
@@ -147,6 +148,7 @@ public class MeConversationAdapter extends ConversationListAdapter {
                         }
                     });
                     holder.rightImageLayout.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
                         public boolean onLongClick(View v) {
                             if (MeConversationAdapter.this.mOnPortraitItemClick != null) {
                                 MeConversationAdapter.this.mOnPortraitItemClick.onPortraitItemLongClick(v, data);

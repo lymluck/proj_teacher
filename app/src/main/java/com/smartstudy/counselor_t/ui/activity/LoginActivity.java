@@ -315,7 +315,8 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
             }
             finish();
         } else {
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, FillPersonActivity.class));
+            finish();
         }
     }
 

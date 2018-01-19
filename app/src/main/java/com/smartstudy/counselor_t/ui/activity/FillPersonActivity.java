@@ -1,5 +1,6 @@
 package com.smartstudy.counselor_t.ui.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.MyUserInfo;
 import com.smartstudy.counselor_t.entity.StudentPageInfo;
@@ -19,9 +22,15 @@ import com.smartstudy.counselor_t.mvp.contract.FillPersonContract;
 import com.smartstudy.counselor_t.mvp.contract.StudentActivityContract;
 import com.smartstudy.counselor_t.mvp.presenter.FillPersonPresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
+import com.smartstudy.counselor_t.ui.widget.ClipImageLayout;
 import com.smartstudy.counselor_t.util.ConstantUtils;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
+import com.smartstudy.counselor_t.util.ParameterUtils;
+import com.smartstudy.counselor_t.util.SDCardUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
+import com.smartstudy.counselor_t.util.Utils;
+
+import java.io.File;
 
 /**
  * @author yqy
@@ -42,6 +51,10 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
     private EditText tv_email;
     private EditText tv_name;
 
+    private File photoFile;
+    private File photoSaveFile;// 保存文件夹
+    private String photoSaveName = null;// 图片名
+    private String selected_path = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,13 +73,19 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
     @Override
     public void initEvent() {
         btPostInfo.setOnClickListener(this);
+        ivAvatar.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bt_post_info:
-                presenter.postPersonInfo(getNickName(), "", getWorkTitle(), getGraduatedSchool(), getWorkExperience(), getEmail(), getRealName());
+                presenter.postPersonInfo(getNickName(), photoFile, getWorkTitle(), getGraduatedSchool(), getWorkExperience(), getEmail(), getRealName());
+                break;
+            case R.id.iv_avatar:
+                Intent intent = new Intent(FillPersonActivity.this, SelectMyPhotoActivity.class);
+                intent.putExtra("singlePic", true);
+                startActivityForResult(intent, ParameterUtils.REQUEST_CODE_CHANGEPHOTO);
                 break;
             default:
                 break;
@@ -91,6 +110,52 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
         tv_email = findViewById(R.id.tv_email);
         DisplayImageUtils.displayCircleImage(this, "77/fa/77fa2d9eb368d911e2ecb809212ea2d451fc.jpg", ivPhoto);
 //        DisplayImageUtils.displayCircleImage(this,"https://bkd-media.smartstudy.com/user/avatar/default/77/fa/77fa2d9eb368d911e2ecb809212ea2d451fc.jpg",ivAvatar);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        switch (requestCode) {
+            case ParameterUtils.REQUEST_CODE_CHANGEPHOTO:
+                if ("from_capture".equals(data.getStringExtra("flag_from"))) {
+                    photoSaveName = System.currentTimeMillis() + ".png";
+                    photoSaveFile = SDCardUtils.getFileDirPath("Xxd" + File.separator + "pictures");// 存放照片的文件夹
+                    Utils.startActionCapture(FillPersonActivity.this, new File(photoSaveFile.getAbsolutePath(), photoSaveName), ParameterUtils.REQUEST_CODE_CAMERA);
+                }
+                if ("from_album".equals(data.getStringExtra("flag_from"))) {
+                    selected_path = data.getStringExtra("path");
+                    Intent toClipImage = new Intent(FillPersonActivity.this, ClipPictureActivity.class);
+                    toClipImage.putExtra("path", selected_path);
+                    toClipImage.putExtra("clipType", ClipImageLayout.SQUARE);
+                    this.startActivityForResult(toClipImage, ParameterUtils.REQUEST_CODE_CLIP_OVER);
+                }
+                break;
+            case ParameterUtils.REQUEST_CODE_CAMERA:
+                String path_capture = photoSaveFile.getAbsolutePath() + "/" + photoSaveName;
+                Intent toClipImage = new Intent(getApplicationContext(), ClipPictureActivity.class);
+                toClipImage.putExtra("path", path_capture);
+                toClipImage.putExtra("clipType", ClipImageLayout.SQUARE);
+                startActivityForResult(toClipImage, ParameterUtils.REQUEST_CODE_CLIP_OVER);
+                break;
+            case ParameterUtils.REQUEST_CODE_CLIP_OVER:
+                final String temppath = data.getStringExtra("path");
+                DisplayImageUtils.downloadImageFile(getApplicationContext(), temppath, new SimpleTarget<File>() {
+
+                    @Override
+                    public void onResourceReady(File resource, GlideAnimation<? super File> glideAnimation) {
+                        photoFile=resource;
+                        DisplayImageUtils.displayPersonRes(FillPersonActivity.this,resource,ivAvatar);
+                    }
+                });
+                break;
+
+            default:
+                break;
+        }
     }
 
     @Override

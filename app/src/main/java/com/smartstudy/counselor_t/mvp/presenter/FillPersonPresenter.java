@@ -10,7 +10,10 @@ import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
 import com.smartstudy.counselor_t.mvp.contract.FillPersonContract;
 import com.smartstudy.counselor_t.mvp.model.FillPersonModel;
 
+import java.io.File;
+
 import io.reactivex.disposables.Disposable;
+import okhttp3.MultipartBody;
 
 /**
  * @author yqy
@@ -36,7 +39,7 @@ public class FillPersonPresenter extends BasePresenterImpl<FillPersonContract.Vi
     }
 
     @Override
-    public void postPersonInfo(String name, String avatar, String title, String school, String yearsOfWorking, String email, String realName) {
+    public void postPersonInfo(String name, File avatar, String title, String school, String yearsOfWorking, String email, String realName) {
         fillPersonModel.postPersonInfo(name, avatar, title, school, yearsOfWorking, email, realName, new ObserverListener<String>() {
             @Override
             public void onSubscribe(Disposable disposable) {

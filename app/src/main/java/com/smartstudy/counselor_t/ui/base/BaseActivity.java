@@ -2,6 +2,7 @@ package com.smartstudy.counselor_t.ui.base;
 
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -16,7 +17,12 @@ import android.widget.TextView;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.mvp.base.BasePresenter;
 import com.smartstudy.counselor_t.mvp.base.BaseView;
+import com.smartstudy.counselor_t.util.ParameterUtils;
 import com.smartstudy.counselor_t.util.ToastUtils;
+import com.smartstudy.permissions.AppSettingsDialog;
+import com.smartstudy.permissions.PermissionUtil;
+
+import java.util.List;
 
 /**
  * Created by louis on 2017/12/14.
@@ -31,6 +37,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     protected TextView topdefaultLefttext;
     protected TextView topdefaultCentertitle;
     protected TextView topdefaultRighttext;
+
     private View mView;
     private View topLine;
 
@@ -49,6 +56,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
             presenter.detach();//在presenter中解绑释放view
             presenter = null;
         }
+
         super.onDestroy();
     }
 
@@ -151,4 +159,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     public void setTopLineVisibility(int visible){
         topLine.setVisibility(visible);
     }
+
+
+
 }

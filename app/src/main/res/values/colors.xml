@@ -13,7 +13,8 @@
     <color name="app_text_color3">#c4c9cc</color> <!-- 正文3文本颜色 -->
     <color name="app_text_color4">#505050</color> <!-- 正文4文本颜色 -->
     <color name="app_text_color5">#F6611D</color> <!-- 正文7文本颜色 -->
-
+    <color name="app_text_title_color">#4c4c4c</color> <!-- 文字标题颜色 -->
+    <color name="item_click_tran80">#f0f0f0</color><!-- item点击后颜色改变透明度80% -->
     <color name="white">#ffffffff</color><!--100%的白色 -->
     <color name="white95">#f2ffffff</color><!--95%的白色 -->
     <color name="white87">#ffffff</color><!--87%的白色 -->
