@@ -7,7 +7,6 @@ import com.smartstudy.counselor_t.converter.FastJsonConverterFactory;
 import com.smartstudy.counselor_t.server.okhttpcache.HttpCommonInterceptor;
 import com.smartstudy.counselor_t.util.AppUtils;
 import com.smartstudy.counselor_t.util.ConstantUtils;
-import com.smartstudy.counselor_t.util.DeviceUtils;
 import com.smartstudy.counselor_t.util.HttpUrlUtils;
 import com.smartstudy.counselor_t.util.SDCardUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
@@ -50,7 +49,7 @@ public class ApiManager {
                 .build();
 
 
-        File cache_file = SDCardUtils.getFileDirPath( "Xxd_im" + File.separator + "cache");
+        File cache_file = SDCardUtils.getFileDirPath("Xxd_im" + File.separator + "cache");
         int cache_size = 150 * 1024 * 1024;
         Cache cache = new Cache(cache_file, cache_size);
         OkHttpClient.Builder ClientBuilder = new OkHttpClient.Builder();

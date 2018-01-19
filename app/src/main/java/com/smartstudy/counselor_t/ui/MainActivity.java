@@ -81,13 +81,19 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
     }
 
     private void imConnect() {
-        if (RongIM.getInstance().getCurrentConnectionStatus().equals(RongIMClient.ConnectionStatusListener.ConnectionStatus.DISCONNECTED)) {
-            //登录融云IM
-            String cacheToken = (String) SPCacheUtils.get("imToken", "");
-            if (!TextUtils.isEmpty(cacheToken)) {
-                RongIM.connect(cacheToken, IMUtils.getConnectCallback());
+        if (!RongIM.getInstance().getCurrentConnectionStatus().equals(RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED)) {
+            if (RongIM.getInstance().getCurrentConnectionStatus().equals(RongIMClient.ConnectionStatusListener.ConnectionStatus.DISCONNECTED)) {
+                //登录融云IM
+                String cacheToken = (String) SPCacheUtils.get("imToken", "");
+                if (!TextUtils.isEmpty(cacheToken)) {
+                    RongIM.connect(cacheToken, IMUtils.getConnectCallback());
+                }
+            }
+            if(RongIM.getInstance().getCurrentConnectionStatus().equals(RongIMClient.ConnectionStatusListener.ConnectionStatus.TOKEN_INCORRECT)){
+                IMUtils.reGetToken();
             }
         }
+
     }
 
 
