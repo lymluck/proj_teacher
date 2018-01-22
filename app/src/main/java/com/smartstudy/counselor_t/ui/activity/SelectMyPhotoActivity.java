@@ -111,6 +111,7 @@ public class SelectMyPhotoActivity extends BaseActivity implements ListImageDirP
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.activity_select_my_photo);
+        setHeadVisible(View.GONE);
     }
 
     @Override

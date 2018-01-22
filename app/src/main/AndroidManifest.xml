@@ -60,8 +60,7 @@
 
         <activity
             android:name=".ui.activity.FillPersonActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing|stateHidden" />
+            android:screenOrientation="portrait" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

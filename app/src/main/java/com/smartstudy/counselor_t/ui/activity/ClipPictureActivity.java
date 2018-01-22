@@ -34,6 +34,7 @@ public class ClipPictureActivity extends BaseActivity {
         requestWindowFeature(FEATURE_NO_TITLE);// 去掉标题栏
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clip_picture);
+        setHeadVisible(View.GONE);
     }
 
     @Override

@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.RequestManager;
 import com.smartstudy.counselor_t.R;
+import com.smartstudy.counselor_t.api.ApiManager;
 import com.smartstudy.counselor_t.base.config.BaseRequestConfig;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.mvp.contract.MyInfoContract;
@@ -131,7 +132,7 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
         SPCacheUtils.put("user_id", ParameterUtils.CACHE_NULL);
         SPCacheUtils.put("imUserId", "");
         SPCacheUtils.put("imToken", "");
-
+        ApiManager.setApiService(null);
         Utils.removeCookie(MyInfoActivity.this);
         Intent to_login = new Intent(MyInfoActivity.this, LoginActivity.class);
         to_login.putExtra("toMain", true);

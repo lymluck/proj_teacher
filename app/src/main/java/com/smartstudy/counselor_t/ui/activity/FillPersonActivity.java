@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -24,11 +25,13 @@ import com.smartstudy.counselor_t.mvp.presenter.FillPersonPresenter;
 import com.smartstudy.counselor_t.ui.MainActivity;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.ui.widget.ClipImageLayout;
+import com.smartstudy.counselor_t.util.CheckUtil;
 import com.smartstudy.counselor_t.util.ConstantUtils;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
 import com.smartstudy.counselor_t.util.ParameterUtils;
 import com.smartstudy.counselor_t.util.SDCardUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
+import com.smartstudy.counselor_t.util.ToastUtils;
 import com.smartstudy.counselor_t.util.Utils;
 
 import java.io.File;
@@ -83,6 +86,11 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bt_post_info:
+                if (!CheckUtil.checkEmail(getEmail())) {
+                    ToastUtils.shortToast(this, "邮箱不合法");
+                    return;
+                }
+
                 presenter.postPersonInfo(getNickName(), photoFile, getWorkTitle(), getGraduatedSchool(), getWorkExperience(), getEmail(), getRealName());
                 break;
             case R.id.iv_avatar:
@@ -222,4 +230,5 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
         btPostInfo.setText("正在审核中...");
         btPostInfo.setBackgroundResource(R.drawable.bg_submit_review_grey);
     }
+
 }
