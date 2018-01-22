@@ -3,17 +3,14 @@ package com.smartstudy.counselor_t.api;
 import com.smartstudy.counselor_t.entity.ResponseInfo;
 import com.smartstudy.counselor_t.util.HttpUrlUtils;
 
-import java.io.File;
 import java.util.Map;
 
 import io.reactivex.Observable;
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Multipart;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
@@ -31,7 +28,7 @@ public interface ApiService {
      * @return
      */
     @POST(HttpUrlUtils.URL_PHONE_CODE)
-    Observable<ResponseInfo> getPhoneCode(@Query("phone") String phone);
+    Observable<ResponseInfo> getPhoneCode(@HeaderMap Map<String, String> header, @Query("phone") String phone);
 
     /**
      * 验证码登录
@@ -40,7 +37,7 @@ public interface ApiService {
      * @return
      */
     @POST(HttpUrlUtils.URL_CODE_LOGIN)
-    Observable<ResponseInfo> phoneCodeLogin(@QueryMap Map<String, String> params);
+    Observable<ResponseInfo> phoneCodeLogin(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
 
     /**
@@ -50,7 +47,7 @@ public interface ApiService {
      * @return
      */
     @GET(HttpUrlUtils.URL_STUDENT_INFO)
-    Observable<ResponseInfo> getStudentInfo(@QueryMap Map<String, String> params);
+    Observable<ResponseInfo> getStudentInfo(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
     /**
      * 获取学生主页详情
@@ -59,7 +56,7 @@ public interface ApiService {
      * @return
      */
     @GET(HttpUrlUtils.URL_STUDENT_DETAIL_INFO)
-    Observable<ResponseInfo> getStudentDetailInfo(@QueryMap Map<String, String> params);
+    Observable<ResponseInfo> getStudentDetailInfo(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
     /**
      * 重新获取token
@@ -76,7 +73,7 @@ public interface ApiService {
      * @return
      */
     @POST()
-    Observable<ResponseInfo> postPersonInfo(@Url() String url, @Body RequestBody Body);
+    Observable<ResponseInfo> postPersonInfo(@HeaderMap Map<String, String> header, @Url() String url, @Body RequestBody Body);
 
     /**
      * 个人信息
@@ -85,11 +82,11 @@ public interface ApiService {
      */
 
     @GET(HttpUrlUtils.URL_COUNSELLOR_PROFILE)
-    Observable<ResponseInfo> getAuditResult();
+    Observable<ResponseInfo> getAuditResult(@HeaderMap Map<String, String> header);
 
 
     @GET(HttpUrlUtils.URL_COUNSELLOR_PROFILE)
-    Observable<ResponseInfo> getMyInfo();
+    Observable<ResponseInfo> getMyInfo(@HeaderMap Map<String, String> header);
 
 
     /**
@@ -97,5 +94,5 @@ public interface ApiService {
      */
 
     @POST(HttpUrlUtils.URL_USER_LOGOUT)
-    Observable<ResponseInfo> getLogOut();
+    Observable<ResponseInfo> getLogOut(@HeaderMap Map<String, String> header);
 }

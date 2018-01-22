@@ -14,13 +14,13 @@ import java.util.Map;
 public class LoginModel extends BaseModel {
 
     public void getPhoneCode(String phone, final ObserverListener listener) {
-        apiSubscribe(ApiManager.getApiService().getPhoneCode(phone), listener);
+        apiSubscribe(ApiManager.getApiService().getPhoneCode(getHeadersMap(), phone), listener);
     }
 
     public void phoneCodeLogin(String phone, String code, ObserverListener listener) {
         Map<String, String> params = new HashMap<>();
         params.put("phone", phone);
         params.put("captcha", code);
-        apiSubscribe(ApiManager.getApiService().phoneCodeLogin(params), listener);
+        apiSubscribe(ApiManager.getApiService().phoneCodeLogin(getHeadersMap(), params), listener);
     }
 }

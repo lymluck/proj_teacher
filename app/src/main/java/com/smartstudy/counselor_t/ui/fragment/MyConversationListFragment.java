@@ -26,5 +26,4 @@ public class MyConversationListFragment extends ConversationListFragment {
         return new MeConversationAdapter(getActivity());
     }
 
-
 }

@@ -13,10 +13,10 @@ import com.smartstudy.counselor_t.mvp.base.BaseModel;
  */
 public class MyInfoModel extends BaseModel {
     public void getAuditResult(ObserverListener listener) {
-        apiSubscribe(ApiManager.getApiService().getMyInfo(), listener);
+        apiSubscribe(ApiManager.getApiService().getMyInfo(getHeadersMap()), listener);
     }
 
     public void getLogOut(ObserverListener listener) {
-        apiSubscribe(ApiManager.getApiService().getLogOut(), listener);
+        apiSubscribe(ApiManager.getApiService().getLogOut(getHeadersMap()), listener);
     }
 }

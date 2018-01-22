@@ -10,20 +10,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.RequestManager;
 import com.smartstudy.counselor_t.R;
-import com.smartstudy.counselor_t.base.config.BaseRequestConfig;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.mvp.contract.MyInfoContract;
 import com.smartstudy.counselor_t.mvp.presenter.MyInfoActivityPresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
-import com.smartstudy.counselor_t.util.HttpUrlUtils;
 import com.smartstudy.counselor_t.util.ParameterUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
 import com.smartstudy.counselor_t.util.Utils;
-
-import java.util.Map;
 
 import io.rong.imkit.RongIM;
 
@@ -122,6 +117,7 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
 
     @Override
     public void getLogOutSuccess() {
+        RongIM.getInstance().logout();
         //友盟账号统计
         SPCacheUtils.put("user_name", ParameterUtils.CACHE_NULL);
         SPCacheUtils.put("user_pic", ParameterUtils.CACHE_NULL);

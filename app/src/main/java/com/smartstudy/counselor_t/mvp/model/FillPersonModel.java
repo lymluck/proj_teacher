@@ -1,15 +1,11 @@
 package com.smartstudy.counselor_t.mvp.model;
 
-import android.util.Log;
-
 import com.smartstudy.counselor_t.api.ApiManager;
 import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.mvp.base.BaseModel;
 import com.smartstudy.counselor_t.util.HttpUrlUtils;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -33,11 +29,11 @@ public class FillPersonModel extends BaseModel {
                 .addFormDataPart("realName", realName)
                 .addFormDataPart("avatar", file.getName(), RequestBody.create(MediaType.parse("image/*"), file))
                 .build();
-        apiSubscribe(ApiManager.getApiService().postPersonInfo(HttpUrlUtils.URL_COUNSELLOR_VERIFY, requestBody), listener);
+        apiSubscribe(ApiManager.getApiService().postPersonInfo(getHeadersMap(), HttpUrlUtils.URL_COUNSELLOR_VERIFY, requestBody), listener);
     }
 
 
     public void getAuditResult(ObserverListener listener) {
-        apiSubscribe(ApiManager.getApiService().getAuditResult(),listener);
+        apiSubscribe(ApiManager.getApiService().getAuditResult(getHeadersMap()), listener);
     }
 }
