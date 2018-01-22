@@ -33,6 +33,7 @@ public class HttpUrlUtils {
     public static final String URL_STUDENT_INFO = "counsellor/student/bulk";  //学生信息查询
     public static final String URL_STUDENT_DETAIL_INFO = "counsellor/student/profile";  //学生信息查询
     public static final String URL_COUNSELLOR_VERIFY = "counsellor/verify";  //教师信息提交审核
+    public static final String URL_COUNSELLOR_PROFILE="counsellor/profile";//获取老师个人信息
 
     public static final String URL_REFRESH_TOKEN = "counsellor/im/refresh";  //获取教师token
 

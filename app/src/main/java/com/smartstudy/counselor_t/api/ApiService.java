@@ -73,9 +73,29 @@ public interface ApiService {
     /**
      * 获取学生主页详情
      *
-     * @param params
      * @return
      */
     @POST()
     Observable<ResponseInfo> postPersonInfo(@Url() String url, @Body RequestBody Body);
+
+    /**
+     * 个人信息
+     *
+     * @return
+     */
+
+    @GET(HttpUrlUtils.URL_COUNSELLOR_PROFILE)
+    Observable<ResponseInfo> getAuditResult();
+
+
+    @GET(HttpUrlUtils.URL_COUNSELLOR_PROFILE)
+    Observable<ResponseInfo> getMyInfo();
+
+
+    /**
+     *
+     */
+
+    @POST(HttpUrlUtils.URL_USER_LOGOUT)
+    Observable<ResponseInfo> getLogOut();
 }

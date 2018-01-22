@@ -21,6 +21,7 @@ import com.smartstudy.counselor_t.mvp.base.BasePresenter;
 import com.smartstudy.counselor_t.mvp.contract.FillPersonContract;
 import com.smartstudy.counselor_t.mvp.contract.StudentActivityContract;
 import com.smartstudy.counselor_t.mvp.presenter.FillPersonPresenter;
+import com.smartstudy.counselor_t.ui.MainActivity;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.ui.widget.ClipImageLayout;
 import com.smartstudy.counselor_t.util.ConstantUtils;
@@ -51,10 +52,12 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
     private EditText tv_email;
     private EditText tv_name;
 
+    private String ticket;
     private File photoFile;
     private File photoSaveFile;// 保存文件夹
     private String photoSaveName = null;// 图片名
     private String selected_path = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,10 +95,10 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
         }
     }
 
+
     @Override
     public void initView() {
-        String ticket = (String) SPCacheUtils.get("ticket", ConstantUtils.CACHE_NULL);
-//        Log.w("kim","ticket---->"+ticket);
+        ticket = (String) SPCacheUtils.get("ticket", ConstantUtils.CACHE_NULL);
         if (!TextUtils.isEmpty(ticket) && ConstantUtils.CACHE_NULL.equals(ticket)) {
             startActivity(new Intent(this, LoginActivity.class));
         }
@@ -108,8 +111,7 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
         tv_graduated_school = findViewById(R.id.tv_graduated_school);
         tv_name = findViewById(R.id.tv_name);
         tv_email = findViewById(R.id.tv_email);
-        DisplayImageUtils.displayCircleImage(this, "77/fa/77fa2d9eb368d911e2ecb809212ea2d451fc.jpg", ivPhoto);
-//        DisplayImageUtils.displayCircleImage(this,"https://bkd-media.smartstudy.com/user/avatar/default/77/fa/77fa2d9eb368d911e2ecb809212ea2d451fc.jpg",ivAvatar);
+        DisplayImageUtils.displayCircleImage(this, "", ivPhoto);
     }
 
 
@@ -147,8 +149,8 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
 
                     @Override
                     public void onResourceReady(File resource, GlideAnimation<? super File> glideAnimation) {
-                        photoFile=resource;
-                        DisplayImageUtils.displayPersonRes(FillPersonActivity.this,resource,ivAvatar);
+                        photoFile = resource;
+                        DisplayImageUtils.displayPersonRes(FillPersonActivity.this, resource, ivAvatar);
                     }
                 });
                 break;
@@ -159,8 +161,34 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (!TextUtils.isEmpty(ticket) && !ConstantUtils.CACHE_NULL.equals(ticket)) {
+            presenter.getAuditResult();
+        }
+    }
+
+    @Override
     public void getStudentInfoDetailSuccess() {
         setBtEnBleClick();
+    }
+
+    @Override
+    public void getAuditResult(int staus) {
+        if (staus == 2) {
+            this.startActivity(new Intent(this, MainActivity.class));
+            finish();
+        } else if (staus == 1) {
+            btPostInfo.setClickable(false);
+            btPostInfo.setTextColor(Color.parseColor("#949BA1"));
+            btPostInfo.setText("正在审核中...");
+            btPostInfo.setBackgroundResource(R.drawable.bg_submit_review_grey);
+        } else {
+            btPostInfo.setClickable(true);
+            btPostInfo.setTextColor(Color.parseColor("#FFFFFF"));
+            btPostInfo.setText("提交审核");
+            btPostInfo.setBackgroundResource(R.drawable.bg_submit_review_blue);
+        }
     }
 
 
@@ -191,6 +219,7 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
     private void setBtEnBleClick() {
         btPostInfo.setClickable(false);
         btPostInfo.setTextColor(Color.parseColor("#949BA1"));
+        btPostInfo.setText("正在审核中...");
         btPostInfo.setBackgroundResource(R.drawable.bg_submit_review_grey);
     }
 }

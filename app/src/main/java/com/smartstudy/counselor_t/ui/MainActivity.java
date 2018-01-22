@@ -14,6 +14,7 @@ import com.smartstudy.counselor_t.entity.StudentInfo;
 import com.smartstudy.counselor_t.mvp.contract.MainActivityContract;
 import com.smartstudy.counselor_t.mvp.presenter.MainActivityPresenter;
 import com.smartstudy.counselor_t.ui.activity.LoginActivity;
+import com.smartstudy.counselor_t.ui.activity.MyInfoActivity;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.ui.fragment.MyConversationListFragment;
 import com.smartstudy.counselor_t.util.ConstantUtils;
@@ -68,8 +69,26 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
         }
         setLeftImgVisible(View.GONE);
         setTitle(getString(R.string.msg_name));
+        setRightImgVisible(View.VISIBLE);
+        setRightImg(R.drawable.ic_my_info);
+        topdefaultRightbutton.setOnClickListener(this);
 
     }
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.topdefault_rightbutton:
+                startActivity(new Intent(this, MyInfoActivity.class));
+                break;
+
+            default:
+                break;
+
+        }
+    }
+
 
     @Override
     protected void onResume() {
@@ -89,7 +108,7 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
                     RongIM.connect(cacheToken, IMUtils.getConnectCallback());
                 }
             }
-            if(RongIM.getInstance().getCurrentConnectionStatus().equals(RongIMClient.ConnectionStatusListener.ConnectionStatus.TOKEN_INCORRECT)){
+            if (RongIM.getInstance().getCurrentConnectionStatus().equals(RongIMClient.ConnectionStatusListener.ConnectionStatus.TOKEN_INCORRECT)) {
                 IMUtils.reGetToken();
             }
         }

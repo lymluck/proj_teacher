@@ -381,17 +381,17 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
         if (resultCode != RESULT_OK) {
             return;
         }
-        switch (requestCode) {
-            case ConstantUtils.REQUEST_CODE_LOGIN:
-//                if (statu) {
-                startActivity(new Intent(this, MainActivity.class));
-//            }
-                setResult(RESULT_OK);
-                finish();
-                break;
-            default:
-                break;
-        }
+//        switch (requestCode) {
+//            case ConstantUtils.REQUEST_CODE_LOGIN:
+////                if (statu) {
+//                startActivity(new Intent(this, MainActivity.class));
+////            }
+//                setResult(RESULT_OK);
+//                finish();
+//                break;
+//            default:
+//                break;
+//        }
     }
 
     @Override

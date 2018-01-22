@@ -35,4 +35,9 @@ public class FillPersonModel extends BaseModel {
                 .build();
         apiSubscribe(ApiManager.getApiService().postPersonInfo(HttpUrlUtils.URL_COUNSELLOR_VERIFY, requestBody), listener);
     }
+
+
+    public void getAuditResult(ObserverListener listener) {
+        apiSubscribe(ApiManager.getApiService().getAuditResult(),listener);
+    }
 }

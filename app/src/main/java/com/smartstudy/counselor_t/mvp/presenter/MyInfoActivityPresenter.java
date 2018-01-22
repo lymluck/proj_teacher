@@ -1,43 +1,41 @@
 package com.smartstudy.counselor_t.mvp.presenter;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
-import com.smartstudy.counselor_t.mvp.contract.FillPersonContract;
-import com.smartstudy.counselor_t.mvp.model.FillPersonModel;
-
-
-import java.io.File;
+import com.smartstudy.counselor_t.mvp.contract.MyInfoContract;
+import com.smartstudy.counselor_t.mvp.model.MyInfoModel;
 
 import io.reactivex.disposables.Disposable;
 
 /**
  * @author yqy
- * @date on 2018/1/18
+ * @date on 2018/1/22
  * @describe TODO
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */
-public class FillPersonPresenter extends BasePresenterImpl<FillPersonContract.View> implements FillPersonContract.Presenter {
+public class MyInfoActivityPresenter extends BasePresenterImpl<MyInfoContract.View> implements MyInfoContract.Presenter {
 
-    private FillPersonModel fillPersonModel;
+    private MyInfoModel myInfoModel;
 
-    public FillPersonPresenter(FillPersonContract.View view) {
+    public MyInfoActivityPresenter(MyInfoContract.View view) {
         super(view);
-        fillPersonModel = new FillPersonModel();
+        myInfoModel = new MyInfoModel();
     }
 
 
     @Override
     public void detach() {
         super.detach();
-        fillPersonModel = null;
+        myInfoModel = null;
     }
 
+
     @Override
-    public void postPersonInfo(String name, File avatar, String title, String school, String yearsOfWorking, String email, String realName) {
-        fillPersonModel.postPersonInfo(name, avatar, title, school, yearsOfWorking, email, realName, new ObserverListener<String>() {
+    public void getMyInfo() {
+        myInfoModel.getAuditResult(new ObserverListener<String>() {
             @Override
             public void onSubscribe(Disposable disposable) {
                 addDisposable(disposable);
@@ -45,7 +43,11 @@ public class FillPersonPresenter extends BasePresenterImpl<FillPersonContract.Vi
 
             @Override
             public void onNext(String s) {
-                view.getStudentInfoDetailSuccess();
+                TeacherInfo teacherInfo = JSON.parseObject(s, TeacherInfo.class);
+                if (teacherInfo != null) {
+                    view.getMyInfoSuccess(teacherInfo);
+                }
+
             }
 
             @Override
@@ -56,8 +58,8 @@ public class FillPersonPresenter extends BasePresenterImpl<FillPersonContract.Vi
     }
 
     @Override
-    public void getAuditResult() {
-        fillPersonModel.getAuditResult(new ObserverListener<String>() {
+    public void getLogOut() {
+        myInfoModel.getLogOut(new ObserverListener<String>() {
             @Override
             public void onSubscribe(Disposable disposable) {
                 addDisposable(disposable);
@@ -65,10 +67,7 @@ public class FillPersonPresenter extends BasePresenterImpl<FillPersonContract.Vi
 
             @Override
             public void onNext(String s) {
-                JSONObject data = JSON.parseObject(s);
-                if (data != null) {
-                    view.getAuditResult((Integer) data.get("status"));
-                }
+                view.getLogOutSuccess();
 
             }
 

@@ -23,6 +23,7 @@
 
             <ImageView
                 android:id="@+id/iv_photo"
+                android:src="@drawable/ic_photo_image"
                 android:layout_width="99dp"
                 android:layout_height="99dp" />
 
@@ -45,11 +46,11 @@
 
             <EditText
                 android:id="@+id/tv_nick_name"
-                android:singleLine="true"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@null"
                 android:gravity="center_vertical"
+                android:singleLine="true"
                 android:textColor="@color/app_text_color2"
                 android:textSize="16sp" />
 
@@ -80,9 +81,9 @@
                 android:id="@+id/tv_work_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:singleLine="true"
                 android:background="@null"
                 android:gravity="center_vertical"
+                android:singleLine="true"
                 android:textColor="@color/app_text_color2"
                 android:textSize="16sp" />
 
@@ -113,9 +114,9 @@
                 android:id="@+id/tv_work_experience"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:singleLine="true"
                 android:background="@null"
                 android:gravity="center_vertical"
+                android:singleLine="true"
                 android:textColor="@color/app_text_color2"
                 android:textSize="16sp" />
 
@@ -146,9 +147,9 @@
                 android:id="@+id/tv_graduated_school"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:singleLine="true"
                 android:background="@null"
                 android:gravity="center_vertical"
+                android:singleLine="true"
                 android:textColor="@color/app_text_color2"
                 android:textSize="16sp" />
 
@@ -179,9 +180,9 @@
                 android:id="@+id/tv_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:singleLine="true"
                 android:background="@null"
                 android:gravity="center_vertical"
+                android:singleLine="true"
                 android:textColor="@color/app_text_color2"
                 android:textSize="16sp" />
 
@@ -212,9 +213,9 @@
                 android:id="@+id/tv_email"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:singleLine="true"
                 android:background="@null"
                 android:gravity="center_vertical"
+                android:singleLine="true"
                 android:textColor="@color/app_text_color2"
                 android:textSize="16sp" />
 
@@ -242,12 +243,26 @@
             android:id="@+id/bt_post_info"
             android:layout_width="match_parent"
             android:layout_height="42dp"
-            android:textSize="16sp"
-            android:textColor="@color/white"
+            android:layout_marginBottom="30dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginBottom="30dp"
             android:background="@drawable/bg_submit_review_blue"
-            android:text="提交审核"/>
+            android:text="提交审核"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_login_out"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:layout_marginTop="-14dp"
+            android:text="注销"
+            android:textColor="#078CF1"
+            android:textSize="14sp"
+            android:visibility="gone" />
     </LinearLayout>
 </ScrollView>

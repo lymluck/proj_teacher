@@ -80,7 +80,7 @@ public class ApiManager {
         Map<String, String> params = new HashMap<>();
         params.put("User-Agent", AppUtils.getUserAgent(AppUtils.getAndroidUserAgent(BaseApplication.getInstance())) + " Store/"
                 + "xxd");
-        params.put("X-xxd-uid", "00000000");
+        params.put("X-xxd-counsellor-uid", "00000000");
         String ticket = (String) SPCacheUtils.get("ticket", ConstantUtils.CACHE_NULL);
         if (!TextUtils.isEmpty(ticket) && !ConstantUtils.CACHE_NULL.equals(ticket)) {
             params.put("X-xxd-counsellor-ticket", ticket);
