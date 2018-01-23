@@ -607,7 +607,7 @@ public class Utils {
         }
         Uri uri;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            uri = FileProvider.getUriForFile(context, "com.smartstudy.xxd.fileProvider", file);
+            uri = FileProvider.getUriForFile(context, "com.smartstudy.counselor_t.fileProvider", file);
         } else {
             uri = Uri.fromFile(file);
         }
