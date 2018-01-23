@@ -60,7 +60,7 @@ public class SelectMyPhotoActivity extends BaseActivity implements ListImageDirP
     private TextView topdefault_righttext;
     private RecyclerView mGirdView;
     private TextView mChooseDir;
-    private AppSettingsDialog permissionDialog;
+
     private TextView mImageCount;
     private RelativeLayout id_bottom_ly;
 
@@ -125,11 +125,6 @@ public class SelectMyPhotoActivity extends BaseActivity implements ListImageDirP
             mImgs = null;
         }
 
-
-        if (permissionDialog != null) {
-            permissionDialog.dialogDismiss();
-            permissionDialog = null;
-        }
         if (mDirImgs != null) {
             mDirImgs.clear();
             mDirImgs = null;
@@ -491,12 +486,8 @@ public class SelectMyPhotoActivity extends BaseActivity implements ListImageDirP
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        PermissionUtil.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
-
-    @Override
-    public void onPermissionsGranted(int requestCode, List<String> perms) {
+    public void onPermissionsGranted(int requestCode, List perms) {
+        super.onPermissionsGranted(requestCode, perms);
         switch (requestCode) {
             case ParameterUtils.REQUEST_CODE_CAMERA:
                 if (getIntent().getBooleanExtra("singlePic", true)) {
@@ -522,22 +513,14 @@ public class SelectMyPhotoActivity extends BaseActivity implements ListImageDirP
     }
 
     @Override
-    public void onPermissionsDenied(int requestCode, List<String> perms) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List perms) {
+        super.onPermissionsDenied(requestCode, perms);
         verifyPermission(perms, getString(R.string.permission_camera), Manifest.permission.CAMERA);
     }
-
-
-    public void verifyPermission(List<String> Denyperms, String tips, String... requestPerms) {
-        if (!PermissionUtil.hasPermissions(this, requestPerms)) {
-            if (PermissionUtil.somePermissionPermanentlyDenied(this, Denyperms)) {
-                if (permissionDialog == null) {
-                    permissionDialog = new AppSettingsDialog.Builder(this).build(tips);
-                }
-                permissionDialog.dialogDismiss();
-                permissionDialog.show();
-            }
-        }
-    }
-
-
 }

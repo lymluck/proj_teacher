@@ -5,16 +5,16 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.smartstudy.counselor_t.R;
+import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.mvp.contract.FillPersonContract;
 import com.smartstudy.counselor_t.mvp.presenter.FillPersonPresenter;
 import com.smartstudy.counselor_t.ui.MainActivity;
@@ -28,6 +28,7 @@ import com.smartstudy.counselor_t.util.SDCardUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
 import com.smartstudy.counselor_t.util.ToastUtils;
 import com.smartstudy.counselor_t.util.Utils;
+import com.smartstudy.permissions.PermissionUtil;
 
 import java.io.File;
 
@@ -85,7 +86,10 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
                     ToastUtils.shortToast(this, "邮箱不合法");
                     return;
                 }
-
+                if (!checkInput()) {
+                    ToastUtils.shortToast(this, "信息未填写完整");
+                    return;
+                }
                 presenter.postPersonInfo(getNickName(), photoFile, getWorkTitle(), getGraduatedSchool(), getWorkExperience(), getEmail(), getRealName());
                 break;
             case R.id.iv_avatar:
@@ -177,11 +181,11 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
     }
 
     @Override
-    public void getAuditResult(int staus) {
-        if (staus == 2) {
+    public void getAuditResult(TeacherInfo teacherInfo) {
+        if (teacherInfo.getStatus() == 2) {
             this.startActivity(new Intent(this, MainActivity.class));
             finish();
-        } else if (staus == 1) {
+        } else if (teacherInfo.getStatus() == 1) {
             btPostInfo.setClickable(false);
             btPostInfo.setTextColor(Color.parseColor("#949BA1"));
             btPostInfo.setText("正在审核中...");
@@ -192,6 +196,17 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
             btPostInfo.setText("提交审核");
             btPostInfo.setBackgroundResource(R.drawable.bg_submit_review_blue);
         }
+
+        DisplayImageUtils.displayCircleImage(this, "", ivPhoto);
+        if (!TextUtils.isEmpty(teacherInfo.getAvatar())) {
+            DisplayImageUtils.displayCircleImage(this, teacherInfo.getAvatar(), ivAvatar);
+        }
+        tv_nick_name.setText(teacherInfo.getName());
+        tv_work_name.setText(teacherInfo.getTitle());
+        tv_work_experience.setText(teacherInfo.getYearsOfWorking());
+        tv_graduated_school.setText(teacherInfo.getSchool());
+        tv_email.setText(teacherInfo.getEmail());
+        tv_name.setText(teacherInfo.getRealName());
     }
 
 
@@ -224,5 +239,15 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
         btPostInfo.setTextColor(Color.parseColor("#949BA1"));
         btPostInfo.setText("正在审核中...");
         btPostInfo.setBackgroundResource(R.drawable.bg_submit_review_grey);
+    }
+
+    private boolean checkInput() {
+        if (photoFile == null || TextUtils.isEmpty(getNickName()) || TextUtils.isEmpty(getWorkTitle()) ||
+                TextUtils.isEmpty(getWorkExperience()) || TextUtils.isEmpty(getWorkExperience()) ||
+                TextUtils.isEmpty(getGraduatedSchool()) || TextUtils.isEmpty(getRealName()) ||
+                TextUtils.isEmpty(getEmail())) {
+            return false;
+        }
+        return true;
     }
 }

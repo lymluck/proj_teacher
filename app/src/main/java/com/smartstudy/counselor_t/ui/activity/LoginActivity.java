@@ -14,6 +14,7 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
@@ -307,12 +308,13 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
     @Override
     public void phoneCodeLoginSuccess(int status) {
         KeyBoardUtils.closeKeybord(etc_yzm, this);
+        Log.w("kim", "login--");
         if (status == 2) {
-            if (getIntent().getBooleanExtra("toMain", false)) {
-                startActivity(new Intent(this, MainActivity.class));
-            } else {
-                setResult(RESULT_OK);
-            }
+//            if (getIntent().getBooleanExtra("toMain", false)) {
+            startActivity(new Intent(this, MainActivity.class));
+//            } else {
+//                setResult(RESULT_OK);
+//            }
             finish();
         } else {
             startActivity(new Intent(this, FillPersonActivity.class));

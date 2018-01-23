@@ -15,6 +15,15 @@ public class TeacherInfo {
     private String school;
     private String email;
     private String realName;
+    private int status;
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public String getName() {
         return name;

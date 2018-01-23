@@ -28,7 +28,7 @@ import java.util.List;
  * Created by louis on 2017/12/14.
  */
 
-public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements BaseView, View.OnClickListener {
+public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements BaseView, View.OnClickListener, PermissionUtil.PermissionCallbacks {
 
     private FrameLayout contentView;
     private RelativeLayout rlytTop;
@@ -37,6 +37,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     protected TextView topdefaultLefttext;
     protected TextView topdefaultCentertitle;
     protected TextView topdefaultRighttext;
+    private AppSettingsDialog permissionDialog;
 
     private View mView;
     private View topLine;
@@ -57,6 +58,10 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
             presenter = null;
         }
 
+        if (permissionDialog != null) {
+            permissionDialog.dialogDismiss();
+            permissionDialog = null;
+        }
         super.onDestroy();
     }
 
@@ -89,7 +94,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         topdefaultLefttext = findViewById(R.id.topdefault_lefttext);
         topdefaultCentertitle = findViewById(R.id.topdefault_centertitle);
         topdefaultRighttext = findViewById(R.id.topdefault_righttext);
-        topLine=findViewById(R.id.top_line);
+        topLine = findViewById(R.id.top_line);
     }
 
     public void initEvent() {
@@ -156,10 +161,37 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         topdefaultCentertitle.setText(title);
     }
 
-    public void setTopLineVisibility(int visible){
+    public void setTopLineVisibility(int visible) {
         topLine.setVisibility(visible);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionUtil.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> perms) {
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {
+        verifyPermission(perms, "", ParameterUtils.REQUEST_PERMISSIONS);
+    }
+
+    public void verifyPermission(List<String> Denyperms, String tips, String... requestPerms) {
+        if (!PermissionUtil.hasPermissions(this, requestPerms)) {
+            if (PermissionUtil.somePermissionPermanentlyDenied(this, Denyperms)) {
+                if (permissionDialog == null) {
+                    permissionDialog = new AppSettingsDialog.Builder(this).build(tips);
+                }
+                permissionDialog.dialogDismiss();
+                permissionDialog.show();
+            }
+        }
+    }
 
 
 }

@@ -11,6 +11,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
@@ -68,12 +69,21 @@ public interface ApiService {
 
 
     /**
-     * 获取学生主页详情
+     * 提交个人信息
      *
      * @return
      */
     @POST()
     Observable<ResponseInfo> postPersonInfo(@HeaderMap Map<String, String> header, @Url() String url, @Body RequestBody Body);
+
+
+    /**
+     * 修改个人信息
+     *
+     * @return
+     */
+    @PUT()
+    Observable<ResponseInfo> updatePersonInfo(@HeaderMap Map<String, String> header, @Url() String url, @Body RequestBody Body);
 
     /**
      * 个人信息

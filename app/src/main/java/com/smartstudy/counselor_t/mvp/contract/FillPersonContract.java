@@ -1,6 +1,7 @@
 package com.smartstudy.counselor_t.mvp.contract;
 
 import com.smartstudy.counselor_t.entity.StudentPageInfo;
+import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.mvp.base.BasePresenter;
 import com.smartstudy.counselor_t.mvp.base.BaseView;
 import com.smartstudy.counselor_t.ui.activity.FillPersonActivity;
@@ -19,7 +20,7 @@ public interface FillPersonContract {
 
         void getStudentInfoDetailSuccess();
 
-        void getAuditResult(int staus);
+        void getAuditResult(TeacherInfo teacherInfo);
 
     }
 
