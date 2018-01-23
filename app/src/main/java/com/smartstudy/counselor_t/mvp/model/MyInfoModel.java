@@ -1,5 +1,7 @@
 package com.smartstudy.counselor_t.mvp.model;
 
+import android.text.TextUtils;
+
 import com.smartstudy.counselor_t.api.ApiManager;
 import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.mvp.base.BaseModel;
@@ -28,28 +30,33 @@ public class MyInfoModel extends BaseModel {
     }
 
     public void updatePersonInfo(String name, File file, String title, String school, String yearsOfWorking, String email, String realName, ObserverListener listener) {
-        RequestBody requestBody;
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        if (!TextUtils.isEmpty(name)) {
+            builder.addFormDataPart("name", name);
+        }
         if (file != null) {
-            requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                    .addFormDataPart("name", name)
-                    .addFormDataPart("title", title)
-                    .addFormDataPart("school", school)
-                    .addFormDataPart("yearsOfWorking", yearsOfWorking)
-                    .addFormDataPart("email", email)
-                    .addFormDataPart("realName", realName)
-                    .addFormDataPart("avatar", file.getName(), RequestBody.create(MediaType.parse("image/*"), file))
-                    .build();
-        } else {
-            requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                    .addFormDataPart("name", name)
-                    .addFormDataPart("title", title)
-                    .addFormDataPart("school", school)
-                    .addFormDataPart("yearsOfWorking", yearsOfWorking)
-                    .addFormDataPart("email", email)
-                    .addFormDataPart("realName", realName)
-                    .build();
+            builder.addFormDataPart("avatar", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
         }
 
-        apiSubscribe(ApiManager.getApiService().updatePersonInfo(getHeadersMap(), HttpUrlUtils.URL_COUNSELLOR_PROFILE, requestBody), listener);
+        if (!TextUtils.isEmpty(title)) {
+            builder.addFormDataPart("title", title);
+        }
+
+        if (!TextUtils.isEmpty(school)) {
+            builder.addFormDataPart("school", school);
+        }
+
+        if (!TextUtils.isEmpty(email)) {
+            builder.addFormDataPart("email", email);
+        }
+
+        if (!TextUtils.isEmpty(realName)) {
+            builder.addFormDataPart("realName", realName);
+        }
+
+        if (!TextUtils.isEmpty(yearsOfWorking)) {
+            builder.addFormDataPart("yearsOfWorking", yearsOfWorking);
+        }
+        apiSubscribe(ApiManager.getApiService().updatePersonInfo(getHeadersMap(), HttpUrlUtils.URL_COUNSELLOR_PROFILE, builder.build()), listener);
     }
 }
