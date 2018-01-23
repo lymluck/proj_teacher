@@ -38,7 +38,6 @@ import com.smartstudy.counselor_t.util.ParameterUtils;
 import com.smartstudy.counselor_t.util.SDCardUtils;
 import com.smartstudy.counselor_t.util.ScreenUtils;
 import com.smartstudy.counselor_t.util.Utils;
-import com.smartstudy.permissions.AppSettingsDialog;
 import com.smartstudy.permissions.PermissionUtil;
 
 import java.io.File;
@@ -59,7 +58,6 @@ public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implement
     private TextView topdefault_righttext;
     private RecyclerView mGirdView;
     private TextView mChooseDir;
-    private AppSettingsDialog permissionDialog;
     private TextView mImageCount;
     private RelativeLayout id_bottom_ly;
 
@@ -94,7 +92,7 @@ public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implement
     /**
      * 扫描拿到所有的图片文件夹
      */
-    private List<ImageFloderInfo> mImageFloders = new ArrayList<ImageFloderInfo>();
+    private List<ImageFloderInfo> mImageFloders = new ArrayList<>();
 
     int totalCount;
 
@@ -122,12 +120,6 @@ public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implement
         if (mImgs != null) {
             mImgs.clear();
             mImgs = null;
-        }
-
-
-        if (permissionDialog != null) {
-            permissionDialog.dialogDismiss();
-            permissionDialog = null;
         }
         if (mDirImgs != null) {
             mDirImgs.clear();

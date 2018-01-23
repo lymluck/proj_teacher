@@ -4,6 +4,8 @@ import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.mvp.base.BasePresenter;
 import com.smartstudy.counselor_t.mvp.base.BaseView;
 
+import java.io.File;
+
 /**
  * @author yqy
  * @date on 2018/1/22
@@ -19,6 +21,8 @@ public interface MyInfoContract {
 
         void getLogOutSuccess();
 
+        void updateMyInfoSuccesee();
+
     }
 
     interface Presenter extends BasePresenter {
@@ -26,5 +30,10 @@ public interface MyInfoContract {
         void getMyInfo();
 
         void getLogOut();
+
+        void updateMyInfo(String name, File avatar, String title, String school, String yearsOfWorking,
+                          String email, String realName);
+
+
     }
 }

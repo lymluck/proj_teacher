@@ -2,6 +2,7 @@ package com.smartstudy.counselor_t.mvp.presenter;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
 import com.smartstudy.counselor_t.mvp.contract.FillPersonContract;
@@ -65,9 +66,9 @@ public class FillPersonPresenter extends BasePresenterImpl<FillPersonContract.Vi
 
             @Override
             public void onNext(String s) {
-                JSONObject data = JSON.parseObject(s);
-                if (data != null) {
-                    view.getAuditResult((Integer) data.get("status"));
+                TeacherInfo teacherInfo = JSON.parseObject(s, TeacherInfo.class);
+                if (teacherInfo != null) {
+                    view.getAuditResult(teacherInfo);
                 }
 
             }
