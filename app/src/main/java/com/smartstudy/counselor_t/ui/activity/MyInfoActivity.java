@@ -161,7 +161,7 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
                 break;
 
             case R.id.bt_post_info:
-//                presenter.updateMyInfo(getNickName(), photoFile, getWorkTitle(), getGraduatedSchool(), getWorkExperience(), getEmail(), getRealName());
+                presenter.updateMyInfo(getNickName(), photoFile, getWorkTitle(), getGraduatedSchool(), getWorkExperience(), getEmail(), getRealName());
                 break;
 
             case R.id.tv_login_out:
@@ -213,11 +213,11 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
         startActivity(to_login);
     }
 
-//    @Override
-//    public void updateMyInfoSuccesee() {
-//        ToastUtils.shortToast(this, "修改成功");
-//        finish();
-//    }
+    @Override
+    public void updateMyInfoSuccesee() {
+        ToastUtils.shortToast(this, "修改成功");
+        finish();
+    }
 
 
     private void setBtSave() {
