@@ -3,8 +3,15 @@ package com.smartstudy.counselor_t.mvp.base;
 
 import android.text.TextUtils;
 
+import com.smartstudy.counselor_t.app.BaseApplication;
 import com.smartstudy.counselor_t.entity.ResponseInfo;
 import com.smartstudy.counselor_t.listener.ObserverListener;
+import com.smartstudy.counselor_t.util.AppUtils;
+import com.smartstudy.counselor_t.util.ConstantUtils;
+import com.smartstudy.counselor_t.util.SPCacheUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -49,6 +56,18 @@ public class BaseModel {
 
                     }
                 });
+    }
+
+    protected Map<String, String> getHeadersMap() {
+        Map<String, String> params = new HashMap<>();
+        params.put("User-Agent", AppUtils.getUserAgent(AppUtils.getAndroidUserAgent(BaseApplication.getInstance())) + " Store/"
+                + "xxd");
+        params.put("X-xxd-counsellor-uid", "00000000");
+        String ticket = (String) SPCacheUtils.get("ticket", ConstantUtils.CACHE_NULL);
+        if (!TextUtils.isEmpty(ticket) && !ConstantUtils.CACHE_NULL.equals(ticket)) {
+            params.put("X-xxd-counsellor-ticket", ticket);
+        }
+        return params;
     }
 
 }

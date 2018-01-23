@@ -18,6 +18,6 @@ public class StudentDetailInfoModel extends BaseModel {
     public void getStudentDetailInfo(String id, ObserverListener listener) {
         Map<String, String> params = new HashMap<>();
         params.put("id", id);
-        apiSubscribe(ApiManager.getApiService().getStudentDetailInfo(params), listener);
+        apiSubscribe(ApiManager.getApiService().getStudentDetailInfo(getHeadersMap(),params), listener);
     }
 }

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,11 +15,7 @@ import android.widget.Toast;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.smartstudy.counselor_t.R;
-import com.smartstudy.counselor_t.entity.MyUserInfo;
-import com.smartstudy.counselor_t.entity.StudentPageInfo;
-import com.smartstudy.counselor_t.mvp.base.BasePresenter;
 import com.smartstudy.counselor_t.mvp.contract.FillPersonContract;
-import com.smartstudy.counselor_t.mvp.contract.StudentActivityContract;
 import com.smartstudy.counselor_t.mvp.presenter.FillPersonPresenter;
 import com.smartstudy.counselor_t.ui.MainActivity;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
@@ -230,5 +225,4 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
         btPostInfo.setText("正在审核中...");
         btPostInfo.setBackgroundResource(R.drawable.bg_submit_review_grey);
     }
-
 }

@@ -68,7 +68,6 @@ public class MyInfoActivityPresenter extends BasePresenterImpl<MyInfoContract.Vi
             @Override
             public void onNext(String s) {
                 view.getLogOutSuccess();
-
             }
 
             @Override
