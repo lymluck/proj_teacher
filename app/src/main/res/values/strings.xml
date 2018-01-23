@@ -10,6 +10,9 @@
     <string name="choose_pic">选择图片</string>
     <string name="sure">确定</string>
     <string name="permission_camera">相机</string>
+    <string name="permission_phone">电话</string>
+    <string name="permission_access_fine_location">位置信息</string>
+    <string name="permission_external">存储空间</string>
     <string name="no_external_storage">暂无外部存储</string>
     <string name="loading">正在加载...</string>
     <string name="scan_no_picture">没扫描到图片</string>

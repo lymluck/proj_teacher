@@ -24,7 +24,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.ImageFloderInfo;
 import com.smartstudy.counselor_t.handler.WeakHandler;
@@ -53,7 +52,7 @@ import java.util.List;
 /**
  * @author yqy
  */
-public class SelectMyPhotoActivity extends BaseActivity implements ListImageDirPopupWindow.OnImageDirSelected, PermissionUtil.PermissionCallbacks {
+public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implements ListImageDirPopupWindow.OnImageDirSelected {
 
     private TextView topdefault_centertitle;
     private RelativeLayout top_select_myphoto;
@@ -506,7 +505,8 @@ public class SelectMyPhotoActivity extends BaseActivity implements ListImageDirP
                     finish();
                 } else {
                     String photoSaveName = System.currentTimeMillis() + ".png";
-                    File photoSaveFile = SDCardUtils.getFileDirPath("Xxd" + File.separator + "pictures");// 存放照片的文件夹
+                    // 存放照片的文件夹
+                    File photoSaveFile = SDCardUtils.getFileDirPath("Xxd" + File.separator + "pictures");
                     Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     if (photoSaveFile != null) {
                         imageUri = Uri.fromFile(new File(photoSaveFile.getAbsolutePath(), photoSaveName));
@@ -525,19 +525,5 @@ public class SelectMyPhotoActivity extends BaseActivity implements ListImageDirP
     public void onPermissionsDenied(int requestCode, List<String> perms) {
         verifyPermission(perms, getString(R.string.permission_camera), Manifest.permission.CAMERA);
     }
-
-
-    public void verifyPermission(List<String> Denyperms, String tips, String... requestPerms) {
-        if (!PermissionUtil.hasPermissions(this, requestPerms)) {
-            if (PermissionUtil.somePermissionPermanentlyDenied(this, Denyperms)) {
-                if (permissionDialog == null) {
-                    permissionDialog = new AppSettingsDialog.Builder(this).build(tips);
-                }
-                permissionDialog.dialogDismiss();
-                permissionDialog.show();
-            }
-        }
-    }
-
 
 }

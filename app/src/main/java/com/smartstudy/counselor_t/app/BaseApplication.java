@@ -44,7 +44,7 @@ public class BaseApplication extends Application {
         if (getProcessName(this).equals(getPackageName())) {
             appContext = this;
             //注册容云组件
-            RongIM.init(this,"25wehl3u29wqw");
+            RongIM.init(this, "25wehl3u29wqw");
             RongIM.getInstance().registerConversationTemplate(new MyConversationListProvider());
             RongIM.registerMessageTemplate(new MyTextMessageItemProvider());
         }

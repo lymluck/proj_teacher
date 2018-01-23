@@ -1,6 +1,5 @@
 package com.smartstudy.counselor_t.mvp.contract;
 
-import com.smartstudy.counselor_t.entity.StudentPageInfo;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.mvp.base.BasePresenter;
 import com.smartstudy.counselor_t.mvp.base.BaseView;

@@ -28,7 +28,7 @@ import java.util.List;
  * Created by louis on 2017/12/14.
  */
 
-public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements BaseView, View.OnClickListener {
+public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements BaseView, View.OnClickListener, PermissionUtil.PermissionCallbacks {
 
     private FrameLayout contentView;
     private RelativeLayout rlytTop;
@@ -37,10 +37,11 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     protected TextView topdefaultLefttext;
     protected TextView topdefaultCentertitle;
     protected TextView topdefaultRighttext;
+    private AppSettingsDialog permissionDialog;
 
     private View mView;
     private View topLine;
-
+    protected boolean hasBasePer = false;
     protected P presenter;
 
     @Override
@@ -51,12 +52,33 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     }
 
     @Override
+    protected void onResume() {
+        requestPermissions(getString(R.string.permission_external) + "，" + getString(R.string.permission_phone)
+                + "，" + getString(R.string.permission_access_fine_location));
+        super.onResume();
+    }
+
+    public void requestPermissions(String permStr) {
+        if (!PermissionUtil.hasPermissions(this, ParameterUtils.REQUEST_PERMISSIONS)) {
+            hasBasePer = false;
+            //申请基本的权限
+            PermissionUtil.requestPermissions(this, permStr,
+                    ParameterUtils.REQUEST_CODE_PERMISSIONS, ParameterUtils.REQUEST_PERMISSIONS);
+        } else {
+            hasBasePer = true;
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         if (presenter != null) {
             presenter.detach();//在presenter中解绑释放view
             presenter = null;
         }
-
+        if (permissionDialog != null) {
+            permissionDialog.dialogDismiss();
+            permissionDialog = null;
+        }
         super.onDestroy();
     }
 
@@ -89,7 +111,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         topdefaultLefttext = findViewById(R.id.topdefault_lefttext);
         topdefaultCentertitle = findViewById(R.id.topdefault_centertitle);
         topdefaultRighttext = findViewById(R.id.topdefault_righttext);
-        topLine=findViewById(R.id.top_line);
+        topLine = findViewById(R.id.top_line);
     }
 
     public void initEvent() {
@@ -156,10 +178,35 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         topdefaultCentertitle.setText(title);
     }
 
-    public void setTopLineVisibility(int visible){
+    public void setTopLineVisibility(int visible) {
         topLine.setVisibility(visible);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionUtil.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
 
 
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> perms) {
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {
+        verifyPermission(perms, "", ParameterUtils.REQUEST_PERMISSIONS);
+    }
+
+    public void verifyPermission(List<String> Denyperms, String tips, String... requestPerms) {
+        if (!PermissionUtil.hasPermissions(this, requestPerms)) {
+            if (PermissionUtil.somePermissionPermanentlyDenied(this, Denyperms)) {
+                if (permissionDialog == null) {
+                    permissionDialog = new AppSettingsDialog.Builder(this).build(tips);
+                }
+                permissionDialog.dialogDismiss();
+                permissionDialog.show();
+            }
+        }
+    }
 }
