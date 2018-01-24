@@ -21,13 +21,11 @@ public interface FillPersonContract {
         void getStudentInfoDetailSuccess();
 
         void getAuditResult(TeacherInfo teacherInfo);
-
     }
 
     interface Presenter extends BasePresenter {
 
         void postPersonInfo(String name, File avatar, String title, String school, String yearsOfWorking, String email, String realName);
-
 
         void getAuditResult();
     }

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,10 +24,8 @@ import com.smartstudy.counselor_t.util.ConstantUtils;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
 import com.smartstudy.counselor_t.util.ParameterUtils;
 import com.smartstudy.counselor_t.util.SDCardUtils;
-import com.smartstudy.counselor_t.util.SPCacheUtils;
 import com.smartstudy.counselor_t.util.ToastUtils;
 import com.smartstudy.counselor_t.util.Utils;
-import com.smartstudy.permissions.PermissionUtil;
 
 import java.io.File;
 
@@ -105,10 +102,6 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
 
     @Override
     public void initView() {
-        ticket = (String) SPCacheUtils.get("ticket", ConstantUtils.CACHE_NULL);
-        if (!TextUtils.isEmpty(ticket) && ConstantUtils.CACHE_NULL.equals(ticket)) {
-            startActivity(new Intent(this, LoginActivity.class));
-        }
         ivAvatar = findViewById(R.id.iv_avatar);
         ivPhoto = findViewById(R.id.iv_photo);
         btPostInfo = findViewById(R.id.bt_post_info);

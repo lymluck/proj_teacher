@@ -28,13 +28,13 @@ public class HttpUrlUtils {
     public static final String URL_SEARCH = "/search";  //首页搜索
     public static final String URL_MATCHSHCOOL_OPTIONS = "/match_school/options";  //获取智能选校属性常量列表
     public static final String URL_RATE_OPTIONS = "/admission_rate/options";  //获取录取率测试属性常量列表
-    public static final String URL_PHONE_CODE = "user/captcha";  //获取验证码
+    public static final String URL_PHONE_CODE = "counsellor/captcha";  //获取验证码
     public static final String URL_CODE_LOGIN = "counsellor/login";  //验证码登录
     public static final String URL_STUDENT_INFO = "counsellor/student/bulk";  //学生信息查询
     public static final String URL_STUDENT_DETAIL_INFO = "counsellor/student/profile";  //学生信息查询
     public static final String URL_COUNSELLOR_VERIFY = "counsellor/verify";  //教师信息提交审核
 
-    public static final String URL_COUNSELLOR_PROFILE="counsellor/profile";//获取老师个人信息
+    public static final String URL_COUNSELLOR_PROFILE = "counsellor/profile";//获取老师个人信息
 
     public static final String URL_REFRESH_TOKEN = "counsellor/im/refresh";  //获取教师token
 

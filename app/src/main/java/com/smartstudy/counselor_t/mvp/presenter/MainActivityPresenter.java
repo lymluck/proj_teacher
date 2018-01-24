@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
 import com.smartstudy.counselor_t.mvp.contract.MainActivityContract;
@@ -50,6 +51,30 @@ public class MainActivityPresenter extends BasePresenterImpl<MainActivityContrac
                 if (studentInfo != null) {
                     view.getStudentInfoSuccess(userId, studentInfo);
                 }
+            }
+
+            @Override
+            public void onError(String msg) {
+                view.showTip(msg);
+            }
+        });
+    }
+
+    @Override
+    public void getAuditResult() {
+        mainModel.getAuditResult(new ObserverListener<String>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                addDisposable(disposable);
+            }
+
+            @Override
+            public void onNext(String s) {
+                TeacherInfo teacherInfo = JSON.parseObject(s, TeacherInfo.class);
+                if (teacherInfo != null) {
+                    view.getAuditResult(teacherInfo);
+                }
+
             }
 
             @Override
