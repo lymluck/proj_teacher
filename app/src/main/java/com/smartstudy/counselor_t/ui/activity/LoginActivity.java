@@ -308,18 +308,6 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
     @Override
     public void phoneCodeLoginSuccess(int status) {
         KeyBoardUtils.closeKeybord(etc_yzm, this);
-        Log.w("kim", "login--");
-        if (status == 2) {
-//            if (getIntent().getBooleanExtra("toMain", false)) {
-            startActivity(new Intent(this, MainActivity.class));
-//            } else {
-//                setResult(RESULT_OK);
-//            }
-            finish();
-        } else {
-            startActivity(new Intent(this, FillPersonActivity.class));
-            finish();
-        }
     }
 
     protected void startTimer() {
@@ -383,17 +371,6 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
         if (resultCode != RESULT_OK) {
             return;
         }
-//        switch (requestCode) {
-//            case ConstantUtils.REQUEST_CODE_LOGIN:
-////                if (statu) {
-//                startActivity(new Intent(this, MainActivity.class));
-////            }
-//                setResult(RESULT_OK);
-//                finish();
-//                break;
-//            default:
-//                break;
-//        }
     }
 
     @Override

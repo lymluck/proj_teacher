@@ -21,5 +21,9 @@ public class MainModel extends BaseModel {
         params.put("ids", id);
         apiSubscribe(ApiManager.getApiService().getStudentInfo(getHeadersMap(),params), listener);
     }
+
+    public void getAuditResult(ObserverListener listener) {
+        apiSubscribe(ApiManager.getApiService().getAuditResult(getHeadersMap()), listener);
+    }
 }
 

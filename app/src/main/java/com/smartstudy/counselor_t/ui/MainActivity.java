@@ -11,8 +11,10 @@ import android.view.View;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.MyUserInfo;
 import com.smartstudy.counselor_t.entity.StudentInfo;
+import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.mvp.contract.MainActivityContract;
 import com.smartstudy.counselor_t.mvp.presenter.MainActivityPresenter;
+import com.smartstudy.counselor_t.ui.activity.FillPersonActivity;
 import com.smartstudy.counselor_t.ui.activity.LoginActivity;
 import com.smartstudy.counselor_t.ui.activity.MyInfoActivity;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
@@ -54,6 +56,7 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
             }
 
         }, true);
+        presenter.getAuditResult();
     }
 
     @Override
@@ -174,6 +177,16 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
                     studentInfo.getTargetCountry(), studentInfo.getTargetDegree());
             RongIM.getInstance().refreshUserInfoCache(myUserInfo);
             SPCacheUtils.put("Rong" + id, studentInfo.getAdmissionTime() + "" + ":" + studentInfo.getTargetCountry() + "" + ":" + studentInfo.getTargetDegree() + "");
+        }
+    }
+
+    @Override
+    public void getAuditResult(TeacherInfo teacherInfo) {
+        if (teacherInfo != null) {
+            if (teacherInfo.getStatus() != 2) {
+                startActivity(new Intent(this, FillPersonActivity.class));
+                finish();
+            }
         }
     }
 }

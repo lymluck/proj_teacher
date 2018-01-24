@@ -26,7 +26,7 @@ public class TeacherInfo {
     }
 
     public String getName() {
-        return name;
+        return name == null ? "" : name;
     }
 
     public void setName(String name) {
@@ -42,7 +42,7 @@ public class TeacherInfo {
     }
 
     public String getTitle() {
-        return title;
+        return title == null ? "" : title;
     }
 
     public void setTitle(String title) {
@@ -50,7 +50,7 @@ public class TeacherInfo {
     }
 
     public String getYearsOfWorking() {
-        return yearsOfWorking;
+        return yearsOfWorking == null ? "" : yearsOfWorking;
     }
 
     public void setYearsOfWorking(String yearsOfWorking) {
@@ -58,7 +58,7 @@ public class TeacherInfo {
     }
 
     public String getSchool() {
-        return school;
+        return school == null ? "" : school;
     }
 
     public void setSchool(String school) {
@@ -66,7 +66,7 @@ public class TeacherInfo {
     }
 
     public String getEmail() {
-        return email;
+        return email == null ? "" : email;
     }
 
     public void setEmail(String email) {
@@ -74,7 +74,7 @@ public class TeacherInfo {
     }
 
     public String getRealName() {
-        return realName;
+        return realName == null ? "" : realName;
     }
 
     public void setRealName(String realName) {
