@@ -56,7 +56,7 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
             }
 
         }, true);
-        presenter.getAuditResult();
+
     }
 
     @Override
@@ -69,6 +69,9 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
         String ticket = (String) SPCacheUtils.get("ticket", ConstantUtils.CACHE_NULL);
         if (!TextUtils.isEmpty(ticket) && ConstantUtils.CACHE_NULL.equals(ticket)) {
             startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        }else{
+            presenter.getAuditResult();
         }
         setLeftImgVisible(View.GONE);
         setTitle(getString(R.string.msg_name));

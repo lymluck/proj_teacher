@@ -308,6 +308,13 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
     @Override
     public void phoneCodeLoginSuccess(int status) {
         KeyBoardUtils.closeKeybord(etc_yzm, this);
+        if (status == 2) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        } else {
+            startActivity(new Intent(this, FillPersonActivity.class));
+            finish();
+        }
     }
 
     protected void startTimer() {
