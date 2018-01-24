@@ -23,9 +23,9 @@
 
             <ImageView
                 android:id="@+id/iv_photo"
-                android:src="@drawable/ic_photo_image"
                 android:layout_width="99dp"
-                android:layout_height="99dp" />
+                android:layout_height="99dp"
+                android:src="@drawable/ic_photo_image" />
 
         </FrameLayout>
 
@@ -116,6 +116,7 @@
                 android:layout_height="match_parent"
                 android:background="@null"
                 android:gravity="center_vertical"
+                android:inputType="number"
                 android:singleLine="true"
                 android:textColor="@color/app_text_color2"
                 android:textSize="16sp" />
@@ -258,8 +259,8 @@
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:gravity="center"
             android:layout_marginTop="-14dp"
+            android:gravity="center"
             android:text="注销"
             android:textColor="#078CF1"
             android:textSize="14sp"

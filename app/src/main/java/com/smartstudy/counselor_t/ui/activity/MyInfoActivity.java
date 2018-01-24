@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +23,7 @@ import com.smartstudy.counselor_t.mvp.contract.MyInfoContract;
 import com.smartstudy.counselor_t.mvp.presenter.MyInfoActivityPresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.ui.widget.ClipImageLayout;
+import com.smartstudy.counselor_t.util.CheckUtil;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
 import com.smartstudy.counselor_t.util.ParameterUtils;
 import com.smartstudy.counselor_t.util.SDCardUtils;
@@ -56,6 +60,7 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
     private File photoSaveFile;// 保存文件夹
     private String photoSaveName = null;// 图片名
     private String selected_path = null;
+    private TeacherInfo teacherInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +74,7 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
         tv_login_out = findViewById(R.id.tv_login_out);
         tv_login_out.setVisibility(View.VISIBLE);
         btSave = findViewById(R.id.bt_post_info);
-        btSave.setClickable(false);
-        btSave.setTextColor(Color.parseColor("#949BA1"));
-        btSave.setText("保存");
-        btSave.setBackgroundResource(R.drawable.bg_submit_review_grey);
+        setBtNotSave();
         ivAvatar = findViewById(R.id.iv_avatar);
         ivPhoto = findViewById(R.id.iv_photo);
         tv_nick_name = findViewById(R.id.tv_nick_name);
@@ -92,53 +94,139 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
         topdefaultLeftbutton.setOnClickListener(this);
         tvLoginOut.setOnClickListener(this);
         btSave.setOnClickListener(this);
-        tv_nick_name.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        tv_nick_name.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
 
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                setBtSave();
-                return false;
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (checkIsSave()) {
+                    setBtSave();
+                } else {
+                    setBtNotSave();
+                }
             }
         });
-        tv_work_name.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        tv_nick_name.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
 
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                setBtSave();
-                return false;
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (checkIsSave()) {
+                    setBtSave();
+                } else {
+                    setBtNotSave();
+                }
             }
         });
-        tv_work_experience.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        tv_work_name.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
 
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                setBtSave();
-                return false;
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (checkIsSave()) {
+                    setBtSave();
+                } else {
+                    setBtNotSave();
+                }
             }
         });
-        tv_graduated_school.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        tv_work_experience.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
 
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                setBtSave();
-                return false;
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (checkIsSave()) {
+                    setBtSave();
+                } else {
+                    setBtNotSave();
+                }
+            }
+        });
+        tv_graduated_school.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (checkIsSave()) {
+                    setBtSave();
+                } else {
+                    setBtNotSave();
+                }
             }
         });
 
-        tv_name.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        tv_name.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
 
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                setBtSave();
-                return false;
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (checkIsSave()) {
+                    setBtSave();
+                } else {
+                    setBtNotSave();
+                }
             }
         });
-        tv_email.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        tv_email.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
 
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                setBtSave();
-                return false;
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (checkIsSave()) {
+                    setBtSave();
+                } else {
+                    setBtNotSave();
+                }
             }
         });
 
@@ -161,6 +249,14 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
                 break;
 
             case R.id.bt_post_info:
+                if (!CheckUtil.checkEmail(getEmail())) {
+                    ToastUtils.shortToast(this, "邮箱不合法");
+                    return;
+                }
+                if (!checkInput()) {
+                    ToastUtils.shortToast(this, "信息未填写完整");
+                    return;
+                }
                 presenter.updateMyInfo(getNickName(), photoFile, getWorkTitle(), getGraduatedSchool(), getWorkExperience(), getEmail(), getRealName());
                 break;
 
@@ -180,6 +276,7 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
     @Override
     public void getMyInfoSuccess(TeacherInfo teacherInfo) {
         if (teacherInfo != null) {
+            this.teacherInfo = teacherInfo;
             DisplayImageUtils.displayCircleImage(this, "", ivPhoto);
             if (!TextUtils.isEmpty(teacherInfo.getAvatar())) {
                 DisplayImageUtils.displayCircleImage(this, teacherInfo.getAvatar(), ivAvatar);
@@ -190,6 +287,8 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
             tv_graduated_school.setText(teacherInfo.getSchool());
             tv_email.setText(teacherInfo.getEmail());
             tv_name.setText(teacherInfo.getRealName());
+        } else {
+            setBtSave();
         }
     }
 
@@ -213,6 +312,7 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
         startActivity(to_login);
     }
 
+
     @Override
     public void updateMyInfoSuccesee() {
         ToastUtils.shortToast(this, "修改成功");
@@ -225,6 +325,13 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
         btSave.setTextColor(Color.parseColor("#FFFFFF"));
         btSave.setText("保存");
         btSave.setBackgroundResource(R.drawable.bg_submit_review_blue);
+    }
+
+    private void setBtNotSave() {
+        btSave.setClickable(false);
+        btSave.setTextColor(Color.parseColor("#949BA1"));
+        btSave.setText("保存");
+        btSave.setBackgroundResource(R.drawable.bg_submit_review_grey);
     }
 
 
@@ -298,5 +405,26 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
         return tv_email.getText().toString().trim();
     }
 
+    private boolean checkInput() {
+        if (TextUtils.isEmpty(getNickName()) || TextUtils.isEmpty(getWorkTitle()) ||
+                TextUtils.isEmpty(getWorkExperience()) || TextUtils.isEmpty(getWorkExperience()) ||
+                TextUtils.isEmpty(getGraduatedSchool()) || TextUtils.isEmpty(getRealName()) ||
+                TextUtils.isEmpty(getEmail())) {
+            return false;
+        }
+        return true;
+    }
 
+
+    private boolean checkIsSave() {
+        if (teacherInfo != null) {
+            if (teacherInfo.getName().equals(tv_nick_name.getText().toString()) && teacherInfo.getEmail().equals(tv_email.getText().toString())
+                    && teacherInfo.getRealName().equals(tv_name.getText().toString()) && teacherInfo.getSchool().equals(tv_graduated_school.getText().toString())
+                    && teacherInfo.getTitle().equals(tv_work_name.getText().toString()) && teacherInfo.getYearsOfWorking().equals(tv_work_experience.getText().toString())) {
+                return false;
+            }
+            return true;
+        }
+        return true;
+    }
 }

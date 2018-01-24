@@ -28,6 +28,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/tv_school"
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -57,6 +58,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/tv_score"
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -65,7 +67,7 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/tv_score"
+            android:id="@+id/tv_current_score"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -104,156 +106,219 @@
 
     </LinearLayout>
 
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="16dp"
-        android:background="#E4E5E6" />
-
     <LinearLayout
+        android:id="@+id/ll_gre"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="GRE/GMAT"
-            android:textColor="@color/app_text_color"
-            android:textSize="16sp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="16dp"
+            android:background="#E4E5E6" />
 
-        <TextView
-            android:id="@+id/tv_gre_gmat"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textColor="@color/app_text_color2"
-            android:textSize="16sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_gre"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="GRE/GMAT"
+                android:textColor="@color/app_text_color"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_gre_gmat"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="@color/app_text_color2"
+                android:textSize="16sp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="16dp"
-        android:background="#E4E5E6" />
-
     <LinearLayout
+        android:id="@+id/ll_bg"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="实习活动"
-            android:textColor="@color/app_text_color"
-            android:textSize="16sp" />
+        <LinearLayout
+            android:id="@+id/llyt_yjs_event"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_activity_internshi"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textColor="@color/app_text_color2"
-            android:textSize="16sp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="16dp"
+                android:background="#E4E5E6" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="实习活动"
+                    android:textColor="@color/app_text_color"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_activity_internshi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textColor="@color/app_text_color2"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llyt_bk_event"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="16dp"
+                android:background="#E4E5E6" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="社会活动"
+                    android:textColor="@color/app_text_color"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_shehui_event"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textColor="@color/app_text_color2"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <View
+                style="@style/horizontal_line"
+                android:layout_marginLeft="16dp" />
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="16dp"
+            android:background="#E4E5E6" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="科研活动"
+                android:textColor="@color/app_text_color"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_activity_research"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="@color/app_text_color2"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="16dp"
+            android:background="#E4E5E6" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="课外活动"
+                android:textColor="@color/app_text_color"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_activity_community"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="@color/app_text_color2"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="16dp"
+            android:background="#E4E5E6" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="国际交流"
+                android:textColor="@color/app_text_color"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_activity_exchangey"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="@color/app_text_color2"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E4E5E6" />
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="16dp"
-        android:background="#E4E5E6" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="科研活动"
-            android:textColor="@color/app_text_color"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/tv_activity_research"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textColor="@color/app_text_color2"
-            android:textSize="16sp" />
-
-    </LinearLayout>
-
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="16dp"
-        android:background="#E4E5E6" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="课外活动"
-            android:textColor="@color/app_text_color"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/tv_activity_community"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textColor="@color/app_text_color2"
-            android:textSize="16sp" />
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="16dp"
-        android:background="#E4E5E6" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="国际交流"
-            android:textColor="@color/app_text_color"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/tv_activity_exchangey"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textColor="@color/app_text_color2"
-            android:textSize="16sp" />
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#E4E5E6" />
 </LinearLayout>

@@ -12,6 +12,7 @@ import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.Options;
 import com.smartstudy.counselor_t.entity.StudentInfo;
 import com.smartstudy.counselor_t.entity.StudentPageInfo;
+import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.mvp.contract.MainActivityContract;
 import com.smartstudy.counselor_t.mvp.contract.StudentActivityContract;
 import com.smartstudy.counselor_t.mvp.presenter.StudentInfoActivityPresenter;
@@ -59,6 +60,10 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
 
     private TextView tvScore;
 
+    private TextView tvCurrentScore;
+
+    private TextView tvSchool;
+
     private TextView tvScoreLanguage;
 
     private TextView tvGreGmat;
@@ -70,6 +75,18 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
     private TextView tvActivityCommunity;
 
     private TextView tvActivityExchangey;
+
+    private LinearLayout ll_top_school;
+
+    private LinearLayout ll_bg;
+
+    private LinearLayout ll_target_direction;
+
+    private LinearLayout ll_gre;
+
+    private TextView tv_gre;
+
+    private TextView tv_shehui_event;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,11 +101,19 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
         llInfoDetail = findViewById(R.id.ll_info_detail);
         llIntentionInformation = findViewById(R.id.ll_intention_information);
         tvTime = findViewById(R.id.tv_time);
+        tv_gre = findViewById(R.id.tv_gre);
         tvTargeCountry = findViewById(R.id.tv_targe_country);
         tvTargetDegree = findViewById(R.id.tv_target_degree);
         tvTargetMajorDirection = findViewById(R.id.tv_target_direction);
+        ll_top_school = findViewById(R.id.ll_top_school);
         llBaseInfo = findViewById(R.id.ll_base_info);
+        ll_gre = findViewById(R.id.ll_gre);
+        tvCurrentScore = findViewById(R.id.tv_current_score);
+        tvSchool = findViewById(R.id.tv_school);
+        tv_shehui_event = findViewById(R.id.tv_shehui_event);
+        ll_target_direction = findViewById(R.id.ll_target_direction);
         tvCurrentSchool = findViewById(R.id.tv_current_school);
+        ll_bg = findViewById(R.id.ll_bg);
         tvScore = findViewById(R.id.tv_score);
         tvScoreLanguage = findViewById(R.id.tv_score_language);
         tvGreGmat = findViewById(R.id.tv_gre_gmat);
@@ -107,7 +132,7 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
     public void initView() {
         targeId = getIntent().getStringExtra("ids");
         if (!TextUtils.isEmpty(targeId)) {
-            presenter.getStudentDetailInfo("1");
+            presenter.getStudentDetailInfo(targeId);
         }
     }
 
@@ -164,12 +189,44 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
 
             StudentPageInfo.TargetSection.TargetCountry targetCountry = studentInfo.getTargetSection().getTargetCountry();
             if (targetCountry != null) {
+                if ("美国".equals(targetCountry.getName())) {
+                    ll_top_school.setVisibility(View.VISIBLE);
+                } else {
+                    ll_top_school.setVisibility(View.GONE);
+                }
                 tvTargeCountry.setText(targetCountry.getName());
             }
 
-
             StudentPageInfo.TargetSection.TargetDegree targetDegree = studentInfo.getTargetSection().getTargetDegree();
+
             if (targetDegree != null) {
+                if ("高中".equals(targetDegree.getName())) {
+                    ll_top_school.setVisibility(View.GONE);
+                    ll_bg.setVisibility(View.GONE);
+                    tvSchool.setText("初中学校");
+                    tvScore.setText("初中成绩");
+                    ll_target_direction.setVisibility(View.GONE);
+                    ll_gre.setVisibility(View.GONE);
+                } else if ("本科".equals(targetDegree.getName())) {
+                    ll_bg.setVisibility(View.VISIBLE);
+                    tvSchool.setText("高中学校");
+                    tvScore.setText("高中成绩");
+                    ll_target_direction.setVisibility(View.GONE);
+                    findViewById(R.id.llyt_bk_event).setVisibility(View.VISIBLE);
+                    findViewById(R.id.llyt_yjs_event).setVisibility(View.GONE);
+                    tv_gre.setText("SAT/ACT");
+                } else {
+                    ll_bg.setVisibility(View.VISIBLE);
+                    tvSchool.setText("本科学校");
+                    tvScore.setText("本科成绩");
+                    ll_target_direction.setVisibility(View.VISIBLE);
+                    tv_gre.setText("GRE/GMAT");
+                    findViewById(R.id.llyt_bk_event).setVisibility(View.GONE);
+                    findViewById(R.id.llyt_yjs_event).setVisibility(View.VISIBLE);
+                    if ("其他".equals(targetDegree.getName())) {
+                        ll_gre.setVisibility(View.GONE);
+                    }
+                }
                 tvTargetDegree.setText(targetDegree.getName());
             }
 
@@ -182,15 +239,19 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
         /**
          * 基本信息设置
          */
-        if (studentInfo.getBackgroundSection() == null) {
+        if (studentInfo.getBackgroundSection() == null)
+
+        {
             llBaseInfo.setVisibility(View.GONE);
-        } else {
+        } else
+
+        {
             if (studentInfo.getBackgroundSection().getCurrentSchool() != null) {
                 tvCurrentSchool.setText(studentInfo.getBackgroundSection().getCurrentSchool().getName());
             }
 
             if (studentInfo.getBackgroundSection().getScore() != null) {
-                tvScore.setText(studentInfo.getBackgroundSection().getScore().getName());
+                tvCurrentScore.setText(studentInfo.getBackgroundSection().getScore().getName());
             }
 
             if (studentInfo.getBackgroundSection().getScoreLanguage() != null) {
@@ -201,7 +262,12 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
             /**
              * GRE/GMAT
              */
-            tvGreGmat.setText("");
+
+            if (studentInfo.getBackgroundSection().getScoreStandard() != null) {
+                tvGreGmat.setText(studentInfo.getBackgroundSection().getScoreStandard().getName());
+            } else {
+                ll_gre.setVisibility(View.GONE);
+            }
 
             if (studentInfo.getBackgroundSection().getActivityInternship() != null) {
                 tvActivityInternshi.setText(studentInfo.getBackgroundSection().getActivityInternship().getName());
@@ -219,6 +285,10 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
 
             if (studentInfo.getBackgroundSection().getActivityExchange() != null) {
                 tvActivityExchangey.setText(studentInfo.getBackgroundSection().getActivityExchange().getName());
+            }
+
+            if (studentInfo.getBackgroundSection().getActivitySocial() != null) {
+                tv_shehui_event.setText(studentInfo.getBackgroundSection().getActivitySocial().getName());
             }
         }
     }

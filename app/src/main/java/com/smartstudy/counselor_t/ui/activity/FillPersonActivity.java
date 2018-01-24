@@ -199,12 +199,24 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
         if (!TextUtils.isEmpty(teacherInfo.getAvatar())) {
             DisplayImageUtils.displayCircleImage(this, teacherInfo.getAvatar(), ivAvatar);
         }
-        tv_nick_name.setText(teacherInfo.getName());
-        tv_work_name.setText(teacherInfo.getTitle());
-        tv_work_experience.setText(teacherInfo.getYearsOfWorking());
-        tv_graduated_school.setText(teacherInfo.getSchool());
-        tv_email.setText(teacherInfo.getEmail());
-        tv_name.setText(teacherInfo.getRealName());
+        if (!TextUtils.isEmpty(teacherInfo.getName())) {
+            tv_nick_name.setText(teacherInfo.getName());
+        }
+        if (!TextUtils.isEmpty(teacherInfo.getTitle())) {
+            tv_work_name.setText(teacherInfo.getTitle());
+        }
+        if (!TextUtils.isEmpty(teacherInfo.getYearsOfWorking())) {
+            tv_work_experience.setText(teacherInfo.getYearsOfWorking());
+        }
+        if (!TextUtils.isEmpty(teacherInfo.getSchool())) {
+            tv_graduated_school.setText(teacherInfo.getSchool());
+        }
+        if (!TextUtils.isEmpty(teacherInfo.getEmail())) {
+            tv_email.setText(teacherInfo.getEmail());
+        }
+        if (!TextUtils.isEmpty(teacherInfo.getRealName())) {
+            tv_name.setText(teacherInfo.getRealName());
+        }
     }
 
 

@@ -102,6 +102,10 @@ public class StudentPageInfo {
 
         private ActivityExchange activityExchange;
 
+        private ScoreStandardEntity scoreStandard;
+
+        private ActivitySocialEntity activitySocial;
+
         public ActivityExchange getActivityExchange() {
             return activityExchange;
         }
@@ -126,6 +130,7 @@ public class StudentPageInfo {
             this.activityResearch = activityResearch;
         }
 
+
         public ActivityInternship getActivityInternship() {
             return activityInternship;
         }
@@ -141,6 +146,7 @@ public class StudentPageInfo {
         public void setScoreLanguage(ScoreLanguage scoreLanguage) {
             this.scoreLanguage = scoreLanguage;
         }
+
 
         public Score getScore() {
             return score;
@@ -172,29 +178,52 @@ public class StudentPageInfo {
         }
 
 
-        public class Score extends CommonTarge{
+        public class Score extends CommonTarge {
 
         }
 
 
-        public class ScoreLanguage extends CommonStudentInfo{
+        public class ScoreLanguage extends CommonStudentInfo {
 
         }
 
 
-        public class ActivityInternship extends CommonTarge{
+        public class ScoreStandardEntity extends CommonTarge {
+        }
+
+
+        public class ActivitySocialEntity extends CommonTarge {
+        }
+
+        public ActivitySocialEntity getActivitySocial() {
+            return activitySocial;
+        }
+
+        public void setActivitySocial(ActivitySocialEntity activitySocial) {
+            this.activitySocial = activitySocial;
+        }
+
+        public ScoreStandardEntity getScoreStandard() {
+            return scoreStandard;
+        }
+
+        public void setScoreStandard(ScoreStandardEntity scoreStandard) {
+            this.scoreStandard = scoreStandard;
+        }
+
+        public class ActivityInternship extends CommonTarge {
 
         }
 
-        public class ActivityResearch extends CommonTarge{
+        public class ActivityResearch extends CommonTarge {
 
         }
 
-        public class ActivityCommunity extends CommonTarge{
+        public class ActivityCommunity extends CommonTarge {
 
         }
 
-        public class ActivityExchange extends  CommonTarge{
+        public class ActivityExchange extends CommonTarge {
 
         }
 
