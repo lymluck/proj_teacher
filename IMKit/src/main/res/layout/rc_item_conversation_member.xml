@@ -10,10 +10,10 @@
         android:id="@android:id/icon"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        app:RCShape="circle"
-        android:scaleType="centerCrop"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:scaleType="centerCrop"
+        app:RCShape="circle" />
 
     <ImageView
         android:id="@android:id/icon2"
@@ -21,7 +21,7 @@
         android:layout_height="56dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <TextView
         android:id="@android:id/text1"
