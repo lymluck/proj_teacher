@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,7 +20,6 @@ import com.smartstudy.counselor_t.ui.MainActivity;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.ui.widget.ClipImageLayout;
 import com.smartstudy.counselor_t.util.CheckUtil;
-import com.smartstudy.counselor_t.util.ConstantUtils;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
 import com.smartstudy.counselor_t.util.ParameterUtils;
 import com.smartstudy.counselor_t.util.SDCardUtils;
@@ -50,7 +48,6 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
     private EditText tv_email;
     private EditText tv_name;
 
-    private String ticket;
     private File photoFile;
     private File photoSaveFile;// 保存文件夹
     private String photoSaveName = null;// 图片名
@@ -113,7 +110,7 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
         tv_graduated_school = findViewById(R.id.tv_graduated_school);
         tv_name = findViewById(R.id.tv_name);
         tv_email = findViewById(R.id.tv_email);
-        DisplayImageUtils.displayCircleImage(this, "", ivPhoto);
+        presenter.getAuditResult();
     }
 
 
@@ -127,7 +124,8 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
             case ParameterUtils.REQUEST_CODE_CHANGEPHOTO:
                 if ("from_capture".equals(data.getStringExtra("flag_from"))) {
                     photoSaveName = System.currentTimeMillis() + ".png";
-                    photoSaveFile = SDCardUtils.getFileDirPath("Xxd" + File.separator + "pictures");// 存放照片的文件夹
+                    // 存放照片的文件夹
+                    photoSaveFile = SDCardUtils.getFileDirPath("Xxd" + File.separator + "pictures");
                     Utils.startActionCapture(FillPersonActivity.this, new File(photoSaveFile.getAbsolutePath(), photoSaveName), ParameterUtils.REQUEST_CODE_CAMERA);
                 }
                 if ("from_album".equals(data.getStringExtra("flag_from"))) {
@@ -177,7 +175,7 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
     }
 
     @Override
-    public void getAuditResult(TeacherInfo teacherInfo) {
+    public void showAuditResult(TeacherInfo teacherInfo) {
         if (teacherInfo.getStatus() == 2) {
             this.startActivity(new Intent(this, MainActivity.class));
             finish();

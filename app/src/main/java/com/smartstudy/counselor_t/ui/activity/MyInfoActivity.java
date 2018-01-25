@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -295,18 +293,16 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
     @Override
     public void getLogOutSuccess() {
         RongIM.getInstance().logout();
-        //友盟账号统计
-        SPCacheUtils.put("user_name", ParameterUtils.CACHE_NULL);
-        SPCacheUtils.put("user_pic", ParameterUtils.CACHE_NULL);
+        SPCacheUtils.put("phone", ParameterUtils.CACHE_NULL);
+        SPCacheUtils.put("name", ParameterUtils.CACHE_NULL);
+        SPCacheUtils.put("avatar", ParameterUtils.CACHE_NULL);
         SPCacheUtils.put("ticket", ParameterUtils.CACHE_NULL);
-        SPCacheUtils.put("user", ParameterUtils.CACHE_NULL);
-        SPCacheUtils.put("ss_user", ParameterUtils.CACHE_NULL);
-        SPCacheUtils.put("user_id", ParameterUtils.CACHE_NULL);
-        SPCacheUtils.put("imUserId", "");
+        SPCacheUtils.put("orgId", ParameterUtils.CACHE_NULL);
+        SPCacheUtils.put("title", ParameterUtils.CACHE_NULL);
         SPCacheUtils.put("imToken", "");
+        SPCacheUtils.put("imUserId", "");
         Utils.removeCookie(MyInfoActivity.this);
         Intent to_login = new Intent(MyInfoActivity.this, LoginActivity.class);
-//        to_login.putExtra("toMain", true);
         to_login.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                 Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(to_login);
@@ -345,7 +341,8 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
             case ParameterUtils.REQUEST_CODE_CHANGEPHOTO:
                 if ("from_capture".equals(data.getStringExtra("flag_from"))) {
                     photoSaveName = System.currentTimeMillis() + ".png";
-                    photoSaveFile = SDCardUtils.getFileDirPath("Xxd" + File.separator + "pictures");// 存放照片的文件夹
+                    // 存放照片的文件夹
+                    photoSaveFile = SDCardUtils.getFileDirPath("Xxd" + File.separator + "pictures");
                     Utils.startActionCapture(MyInfoActivity.this, new File(photoSaveFile.getAbsolutePath(), photoSaveName), ParameterUtils.REQUEST_CODE_CAMERA);
                 }
                 if ("from_album".equals(data.getStringExtra("flag_from"))) {

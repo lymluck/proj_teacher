@@ -20,7 +20,7 @@ public interface FillPersonContract {
 
         void getStudentInfoDetailSuccess();
 
-        void getAuditResult(TeacherInfo teacherInfo);
+        void showAuditResult(TeacherInfo teacherInfo);
     }
 
     interface Presenter extends BasePresenter {

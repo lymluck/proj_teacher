@@ -68,7 +68,7 @@ public class FillPersonPresenter extends BasePresenterImpl<FillPersonContract.Vi
             public void onNext(String s) {
                 TeacherInfo teacherInfo = JSON.parseObject(s, TeacherInfo.class);
                 if (teacherInfo != null) {
-                    view.getAuditResult(teacherInfo);
+                    view.showAuditResult(teacherInfo);
                 }
 
             }
