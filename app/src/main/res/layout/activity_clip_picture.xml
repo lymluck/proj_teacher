@@ -5,15 +5,10 @@
     android:clipToPadding="true"
     android:fitsSystemWindows="true">
 
-    <include
-        android:id="@+id/my_top_clip"
-        layout="@layout/app_top_default" />
-
     <com.smartstudy.counselor_t.ui.widget.ClipImageLayout
         android:id="@+id/id_clipImageLayout_circle"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@id/my_top_clip"
         android:tag="circle"
         android:visibility="gone" />
 
@@ -21,7 +16,6 @@
         android:id="@+id/id_clipImageLayout_square"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@id/my_top_clip"
         android:tag="square"
         android:visibility="gone" />
 

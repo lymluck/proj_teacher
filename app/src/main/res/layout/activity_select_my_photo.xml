@@ -6,10 +6,6 @@
     android:clipToPadding="true"
     android:fitsSystemWindows="true">
 
-    <include
-        android:id="@+id/top_select_myphoto"
-        layout="@layout/app_top_default" />
-
     <RelativeLayout
         android:id="@+id/id_bottom_ly"
         style="@style/clickable_simple_item_rlyt"
@@ -51,8 +47,7 @@
         android:id="@+id/id_gridView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/id_bottom_ly"
-        android:layout_below="@id/top_select_myphoto" />
+        android:layout_above="@id/id_bottom_ly" />
 
 
 </RelativeLayout>
