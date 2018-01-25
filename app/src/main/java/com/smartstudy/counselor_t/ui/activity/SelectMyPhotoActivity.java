@@ -108,7 +108,7 @@ public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implement
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.activity_select_my_photo);
-        setHeadVisible(View.GONE);
+//        setHeadVisible(View.GONE);
     }
 
     @Override
