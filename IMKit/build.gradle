@@ -1,5 +1,4 @@
 apply plugin: rootProject.ext.plugins.library
-
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
     buildToolsVersion rootProject.ext.android.buildToolsVersion
@@ -31,9 +30,15 @@ android {
         }
     }
 }
-
 dependencies {
-    compile fileTree(dir: 'src/main/libs', include: ['*.jar'])
-//    compile 'com.android.support:appcompat-v7:+'
+    compile fileTree(include: ['*.jar'], dir: 'src/main/libs')
+    //    compile 'com.android.support:appcompat-v7:+'
     compile project(':IMLib')
+}
+
+repositories { flatDir { dirs '../push/aars' }
+    maven {
+        url 'https://maven.google.com/'
+        name 'Google'
+    }
 }
