@@ -65,12 +65,10 @@ freeline_project_description.json
 /local.properties
 /gradlew
 /gradlew.bat
-/app/build/
-/app/app.iml
-/app/proguard-rules.pro
-/IMKit/build/
-/IMKit/IMKit.iml
 /IMLib/build/
 /IMLib/IMLib.iml
-/permissionlib/build/
+/IMKit/IMKit.iml
+/IMKit/build/
 /permissionlib/permissionlib.iml
+/permissionlib/build/
+/gradle.properties
