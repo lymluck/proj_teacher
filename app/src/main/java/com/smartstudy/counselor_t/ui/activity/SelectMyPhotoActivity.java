@@ -54,7 +54,6 @@ import java.util.List;
 public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implements ListImageDirPopupWindow.OnImageDirSelected {
 
     private TextView topdefault_centertitle;
-    private RelativeLayout top_select_myphoto;
     private TextView topdefault_righttext;
     private RecyclerView mGirdView;
     private TextView mChooseDir;
@@ -108,7 +107,6 @@ public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implement
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.activity_select_my_photo);
-//        setHeadVisible(View.GONE);
     }
 
     @Override
@@ -198,7 +196,6 @@ public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implement
     @Override
     public void initView() {
         topdefault_centertitle = (TextView) findViewById(R.id.topdefault_centertitle);
-        top_select_myphoto = (RelativeLayout) findViewById(R.id.top_select_myphoto);
         topdefault_righttext = (TextView) findViewById(R.id.topdefault_righttext);
         mGirdView = (RecyclerView) findViewById(R.id.id_gridView);
         mGirdView.setHasFixedSize(true);
@@ -221,7 +218,6 @@ public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implement
                 return false;
             }
         });
-        top_select_myphoto.getBackground().setAlpha(255);
         topdefault_centertitle.setText(getResources().getString(R.string.choose_pic));
         mScreenHeight = ScreenUtils.getScreenHeight();
         getImages();
