@@ -167,6 +167,7 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
     @Override
     public void showAuditResult(TeacherInfo teacherInfo) {
         if (teacherInfo.getStatus() == 2) {
+
             this.startActivity(new Intent(this, MainActivity.class));
             finish();
         } else if (teacherInfo.getStatus() == 1) {

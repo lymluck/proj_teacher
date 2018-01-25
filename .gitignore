@@ -65,3 +65,10 @@ freeline_project_description.json
 /local.properties
 /gradlew
 /gradlew.bat
+/IMLib/build/
+/IMLib/IMLib.iml
+/IMKit/IMKit.iml
+/IMKit/build/
+/permissionlib/permissionlib.iml
+/permissionlib/build/
+/gradle.properties
