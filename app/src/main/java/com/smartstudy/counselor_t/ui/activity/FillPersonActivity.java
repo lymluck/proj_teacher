@@ -20,6 +20,7 @@ import com.smartstudy.counselor_t.ui.MainActivity;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.ui.widget.ClipImageLayout;
 import com.smartstudy.counselor_t.util.CheckUtil;
+import com.smartstudy.counselor_t.util.ConstantUtils;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
 import com.smartstudy.counselor_t.util.ParameterUtils;
 import com.smartstudy.counselor_t.util.SDCardUtils;
