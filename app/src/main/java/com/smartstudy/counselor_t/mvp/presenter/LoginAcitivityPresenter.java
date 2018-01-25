@@ -65,7 +65,6 @@ public class LoginAcitivityPresenter extends BasePresenterImpl<LoginActivityCont
             public void onNext(String result) {
                 JSONObject data = JSON.parseObject(result);
                 if (data != null) {
-                    String id = data.getString("id");
                     String phone = data.getString("phone");
                     String name = data.getString("name");
                     String avatar = data.getString("avatar");
@@ -75,7 +74,6 @@ public class LoginAcitivityPresenter extends BasePresenterImpl<LoginActivityCont
                     String ticket = data.getString("ticket");
                     int status = data.getInteger("status");
 
-                    SPCacheUtils.put("id", id);
                     SPCacheUtils.put("phone", phone);
                     SPCacheUtils.put("name", name);
                     SPCacheUtils.put("avatar", avatar);

@@ -12,6 +12,7 @@ import com.smartstudy.counselor_t.ui.provider.MyTextMessageItemProvider;
 import java.util.List;
 
 import io.rong.imkit.RongIM;
+import io.rong.imkit.userInfoCache.RongUserInfoManager;
 
 
 /**
@@ -45,6 +46,7 @@ public class BaseApplication extends Application {
             appContext = this;
             //注册容云组件
             RongIM.init(this, "25wehl3u29wqw");
+            RongUserInfoManager.getInstance().setIsCacheUserInfo(true);
             RongIM.getInstance().setMessageAttachedUserInfo(true);
             RongIM.getInstance().registerConversationTemplate(new MyConversationListProvider());
             RongIM.registerMessageTemplate(new MyTextMessageItemProvider());

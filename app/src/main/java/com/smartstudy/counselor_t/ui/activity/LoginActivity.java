@@ -92,7 +92,7 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
         etcmobile.getMyEditText().setHint("请输入您的手机号");
         etcmobile.getMyEditText().setFilters(new InputFilter[]{new InputFilter.LengthFilter(11)});
         etcmobile.setInputType(InputType.TYPE_CLASS_NUMBER);
-        String account = (String) SPCacheUtils.get("user_account", ConstantUtils.CACHE_NULL);
+        String account = (String) SPCacheUtils.get("phone", ConstantUtils.CACHE_NULL);
         if (!ConstantUtils.CACHE_NULL.equals(account)) {
             etcmobile.setText(account);
         }
