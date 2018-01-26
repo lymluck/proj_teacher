@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
 import com.smartstudy.counselor_t.mvp.contract.LoginActivityContract;
@@ -63,25 +64,21 @@ public class LoginAcitivityPresenter extends BasePresenterImpl<LoginActivityCont
 
             @Override
             public void onNext(String result) {
+                Log.d("======", result);
                 JSONObject data = JSON.parseObject(result);
                 if (data != null) {
-                    String phone = data.getString("phone");
                     String name = data.getString("name");
                     String avatar = data.getString("avatar");
-                    String orgId = data.getString("orgId");
-                    String title = data.getString("title");
                     String imToken = data.getString("imToken");
-                    String ticket = data.getString("ticket");
-                    int status = data.getInteger("status");
 
                     SPCacheUtils.put("phone", phone);
                     SPCacheUtils.put("name", name);
                     SPCacheUtils.put("avatar", avatar);
-                    SPCacheUtils.put("ticket", ticket);
-                    SPCacheUtils.put("orgId", orgId);
-                    SPCacheUtils.put("title", title);
+                    SPCacheUtils.put("ticket", data.getString("ticket"));
+                    SPCacheUtils.put("orgId", data.getString("orgId"));
+                    SPCacheUtils.put("title", data.getString("title"));
                     SPCacheUtils.put("imToken", imToken);
-                    view.phoneCodeLoginSuccess(status);
+                    view.phoneCodeLoginSuccess(data.getIntValue("status"));
                     //登录融云
                     loginRongIM(imToken, name, avatar);
                 }

@@ -239,7 +239,6 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
             case R.id.topdefault_leftbutton:
                 finish();
                 break;
-
             case R.id.iv_avatar:
                 Intent intent = new Intent(MyInfoActivity.this, SelectMyPhotoActivity.class);
                 intent.putExtra("singlePic", true);
@@ -362,7 +361,7 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
                 break;
             case ParameterUtils.REQUEST_CODE_CLIP_OVER:
                 final String temppath = data.getStringExtra("path");
-                DisplayImageUtils.downloadImageFile(getApplicationContext(), temppath, new SimpleTarget<File>() {
+                DisplayImageUtils.downloadImageFile(getApplicationContext(), temppath, new SimpleTarget<File>(200, 200) {
 
                     @Override
                     public void onResourceReady(File resource, GlideAnimation<? super File> glideAnimation) {

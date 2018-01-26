@@ -1,6 +1,7 @@
 package com.smartstudy.counselor_t.mvp.presenter;
 
-import android.util.Log;
+import android.net.Uri;
+import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -9,9 +10,10 @@ import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
 import com.smartstudy.counselor_t.mvp.contract.MainActivityContract;
 import com.smartstudy.counselor_t.mvp.model.MainModel;
-import com.smartstudy.counselor_t.entity.StudentInfo;
 
 import io.reactivex.disposables.Disposable;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.model.UserInfo;
 
 /**
  * @author yqy
@@ -47,9 +49,9 @@ public class MainActivityPresenter extends BasePresenterImpl<MainActivityContrac
             @Override
             public void onNext(String s) {
                 JSONObject object = JSON.parseObject(s);
-                StudentInfo studentInfo = JSON.parseObject(object.getString(userId), StudentInfo.class);
-                if (studentInfo != null) {
-                    view.getStudentInfoSuccess(userId, studentInfo);
+                if (object != null) {
+                    RongIM.getInstance().refreshUserInfoCache(new UserInfo(userId, object.getString("name")
+                            , TextUtils.isEmpty(object.getString("avatar")) ? null : Uri.parse(object.getString("avatar"))));
                 }
             }
 

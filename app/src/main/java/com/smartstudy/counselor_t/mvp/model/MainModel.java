@@ -4,6 +4,8 @@ import com.smartstudy.counselor_t.api.ApiManager;
 import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.mvp.base.BaseModel;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,8 +20,12 @@ public class MainModel extends BaseModel {
 
     public void getStudentInfo(String id, ObserverListener listener) {
         Map<String, String> params = new HashMap<>();
-        params.put("ids", id);
-        apiSubscribe(ApiManager.getApiService().getStudentInfo(getHeadersMap(),params), listener);
+        try {
+            params.put("id", URLEncoder.encode(id, "utf-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        apiSubscribe(ApiManager.getApiService().getStudentInfo(getHeadersMap(), params), listener);
     }
 
     public void getAuditResult(ObserverListener listener) {

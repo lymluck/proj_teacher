@@ -6,11 +6,10 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import com.smartstudy.counselor_t.R;
-import com.smartstudy.counselor_t.entity.MyUserInfo;
-import com.smartstudy.counselor_t.entity.StudentInfo;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.mvp.contract.MainActivityContract;
 import com.smartstudy.counselor_t.mvp.presenter.MainActivityPresenter;
@@ -18,19 +17,22 @@ import com.smartstudy.counselor_t.ui.activity.FillPersonActivity;
 import com.smartstudy.counselor_t.ui.activity.LoginActivity;
 import com.smartstudy.counselor_t.ui.activity.MyInfoActivity;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
-import com.smartstudy.counselor_t.ui.fragment.MyConversationListFragment;
 import com.smartstudy.counselor_t.util.ConstantUtils;
 import com.smartstudy.counselor_t.util.IMUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
 
 import io.rong.imkit.RongIM;
+import io.rong.imkit.fragment.ConversationListFragment;
+import io.rong.imkit.manager.IUnReadMessageObserver;
+import io.rong.imkit.userInfoCache.RongUserInfoManager;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.UserInfo;
 
-public class MainActivity extends BaseActivity<MainActivityContract.Presenter> implements MainActivityContract.View {
+public class MainActivity extends BaseActivity<MainActivityContract.Presenter>
+        implements MainActivityContract.View {
     private FragmentManager mfragmentManager;
-    private MyConversationListFragment mConversationListFragment = null;
+    private ConversationListFragment mConversationListFragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +46,23 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
             @Override
             public UserInfo getUserInfo(String userId) {
 
-                if (userId.equals(SPCacheUtils.get("imUserId", ""))) {
-                    return new MyUserInfo(SPCacheUtils.get("imUserId", "").toString(),
-                            SPCacheUtils.get("name", "").toString(),
-                            Uri.parse(SPCacheUtils.get("avatar", "").toString()), "", "", "");
+                String imUserId = (String) SPCacheUtils.get("imUserId", "");
+                Log.d("cacheId======", imUserId);
+                Log.d("proId======", userId);
+                if (userId.equals(imUserId)) {
+                    UserInfo info = RongUserInfoManager.getInstance().getUserInfo(userId);
+                    if (info != null) {
+                        return info;
+                    }
                 } else {
-                    presenter.getStudentInfo(userId);
-
+                    //优先从缓存中取
+                    UserInfo info = RongUserInfoManager.getInstance().getUserInfo(userId);
+                    if (info != null) {
+                        return info;
+                    } else {
+                        //从接口中拿
+                        presenter.getStudentInfo(userId);
+                    }
                 }
                 return null;
             }
@@ -70,7 +82,7 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
         if (!TextUtils.isEmpty(ticket) && ConstantUtils.CACHE_NULL.equals(ticket)) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
-        }else{
+        } else {
             presenter.getAuditResult();
         }
         setLeftImgVisible(View.GONE);
@@ -78,7 +90,12 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
         setRightImgVisible(View.VISIBLE);
         setRightImg(R.drawable.ic_my_info);
         topdefaultRightbutton.setOnClickListener(this);
-
+        RongIM.getInstance().addUnReadMessageCountChangedObserver(new IUnReadMessageObserver() {
+            @Override
+            public void onCountChanged(int i) {
+                setTitle(String.format(getString(R.string.msg_unread), i + ""));
+            }
+        }, Conversation.ConversationType.PRIVATE);
     }
 
 
@@ -100,9 +117,6 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
     protected void onResume() {
         super.onResume();
         imConnect();
-        if (RongIM.getInstance().getCurrentConnectionStatus().equals(RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED)) {
-            unReadMessage();
-        }
     }
 
     private void imConnect() {
@@ -121,10 +135,22 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
 
     }
 
+    private void unReadMessage() {
+        RongIM.getInstance().getTotalUnreadCount(new RongIMClient.ResultCallback<Integer>() {
+            @Override
+            public void onSuccess(Integer integer) {
+                setTitle(String.format(getString(R.string.msg_unread), integer + ""));
+            }
 
-    private MyConversationListFragment initConversationList() {
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+            }
+        });
+    }
+
+    private ConversationListFragment initConversationList() {
         if (mConversationListFragment == null) {
-            MyConversationListFragment listFragment = new MyConversationListFragment();
+            ConversationListFragment listFragment = new ConversationListFragment();
             Uri uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
                     .appendPath("conversationlist")
                     .appendQueryParameter(Conversation.ConversationType.PRIVATE.getName(), "false") //设置私聊会话是否聚合显示
@@ -155,32 +181,6 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
         mConversationListFragment.setUserVisibleHint(true);
         ft.commitAllowingStateLoss();
         ft = null;
-    }
-
-
-    private void unReadMessage() {
-        RongIM.getInstance().getTotalUnreadCount(new RongIMClient.ResultCallback<Integer>() {
-            @Override
-            public void onSuccess(Integer integer) {
-                setTitle(String.format(getString(R.string.msg_unread), integer + ""));
-            }
-
-            @Override
-            public void onError(RongIMClient.ErrorCode errorCode) {
-            }
-        });
-    }
-
-
-    @Override
-    public void getStudentInfoSuccess(String id, StudentInfo studentInfo) {
-        if (studentInfo != null) {
-            MyUserInfo myUserInfo = new MyUserInfo(id, studentInfo.getName(),
-                    Uri.parse(TextUtils.isEmpty(studentInfo.getAvatar()) ? "" : studentInfo.getAvatar()), studentInfo.getAdmissionTime(),
-                    studentInfo.getTargetCountry(), studentInfo.getTargetDegree());
-            RongIM.getInstance().refreshUserInfoCache(myUserInfo);
-            SPCacheUtils.put("Rong" + id, studentInfo.getAdmissionTime() + "" + ":" + studentInfo.getTargetCountry() + "" + ":" + studentInfo.getTargetDegree() + "");
-        }
     }
 
     @Override

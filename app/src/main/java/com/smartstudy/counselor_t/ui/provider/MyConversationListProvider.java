@@ -11,7 +11,6 @@ import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smartstudy.counselor_t.R;
-import com.smartstudy.counselor_t.entity.MyUserInfo;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
 
 import io.rong.common.RLog;

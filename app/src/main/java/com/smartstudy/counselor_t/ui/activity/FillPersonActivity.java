@@ -3,6 +3,7 @@ package com.smartstudy.counselor_t.ui.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -29,6 +30,10 @@ import com.smartstudy.counselor_t.util.ToastUtils;
 import com.smartstudy.counselor_t.util.Utils;
 
 import java.io.File;
+
+import io.rong.imkit.RongIM;
+import io.rong.imkit.userInfoCache.RongUserInfoManager;
+import io.rong.imlib.model.UserInfo;
 
 /**
  * @author yqy
@@ -146,7 +151,7 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
                 break;
             case ParameterUtils.REQUEST_CODE_CLIP_OVER:
                 final String temppath = data.getStringExtra("path");
-                DisplayImageUtils.downloadImageFile(getApplicationContext(), temppath, new SimpleTarget<File>() {
+                DisplayImageUtils.downloadImageFile(getApplicationContext(), temppath, new SimpleTarget<File>(200, 200) {
 
                     @Override
                     public void onResourceReady(File resource, GlideAnimation<? super File> glideAnimation) {
@@ -178,7 +183,40 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
     @Override
     public void showAuditResult(TeacherInfo teacherInfo) {
         if (teacherInfo.getStatus() == 2) {
-
+            //更新融云
+            String imUserId = (String) SPCacheUtils.get("imUserId", "");
+            if (!TextUtils.isEmpty(imUserId)) {
+                UserInfo info = RongUserInfoManager.getInstance().getUserInfo(imUserId);
+                Uri avatarUri = null;
+                if (!TextUtils.isEmpty(teacherInfo.getAvatar())) {
+                    avatarUri = Uri.parse(teacherInfo.getAvatar());
+                }
+                String name = null;
+                if (!TextUtils.isEmpty(teacherInfo.getName())) {
+                    name = teacherInfo.getName();
+                }
+                if (info != null) {
+                    if (avatarUri != null) {
+                        info.setPortraitUri(avatarUri);
+                    }
+                    if (name != null) {
+                        info.setName(name);
+                    }
+                    if (RongIM.getInstance() != null) {
+                        RongIM.getInstance().refreshUserInfoCache(info);
+                    }
+                } else {
+                    if (RongIM.getInstance() != null) {
+                        if (avatarUri != null) {
+                            RongIM.getInstance().refreshUserInfoCache(new UserInfo(imUserId, (String) SPCacheUtils.get("name", ""), avatarUri));
+                        }
+                        if (name != null) {
+                            String avatar = (String) SPCacheUtils.get("avatar", "");
+                            RongIM.getInstance().refreshUserInfoCache(new UserInfo(imUserId, name, TextUtils.isEmpty(avatar) ? null : Uri.parse(avatar)));
+                        }
+                    }
+                }
+            }
             this.startActivity(new Intent(this, MainActivity.class));
             finish();
         } else if (teacherInfo.getStatus() == 1) {
