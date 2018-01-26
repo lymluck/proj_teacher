@@ -39,7 +39,9 @@ public class BaseModel {
                     @Override
                     public void onNext(ResponseInfo responseInfo) {
                         if (responseInfo.isSuccess()) {
-                            Log.d("result======", responseInfo.getData());
+                            if (responseInfo.getData() != null) {
+                                Log.d("result======", responseInfo.getData());
+                            }
                             listener.onNext(responseInfo.getData());
                         } else {
                             listener.onError(responseInfo.getMsg());

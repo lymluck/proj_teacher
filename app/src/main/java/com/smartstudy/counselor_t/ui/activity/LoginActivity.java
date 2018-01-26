@@ -305,10 +305,8 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
     }
 
     @Override
-    public void phoneCodeLoginSuccess(int status, String avatar) {
+    public void phoneCodeLoginSuccess(int status) {
         KeyBoardUtils.closeKeybord(etc_yzm, this);
-        SPCacheUtils.put("avatar", presenter.getCacheUrl(avatar));
-
         if (status == 2) {
             startActivity(new Intent(this, MainActivity.class));
             finish();
@@ -325,13 +323,15 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
             public void onTick(long millisUntilFinished) {
                 tv_yzm.setTextColor(getResources().getColor(R.color.app_text_color));
                 tv_yzm.setText(String.format(getString(R.string.get_code_again), millisUntilFinished / 1000 + "s"));
-                tv_yzm.setEnabled(false);//防止重复点击
+                //防止重复点击
+                tv_yzm.setEnabled(false);
             }
 
             @Override
             public void onFinish() {
                 //可以在这做一些操作,如果没有获取到验证码再去请求服务器
-                tv_yzm.setEnabled(true);//防止重复点击
+                //防止重复点击
+                tv_yzm.setEnabled(true);
                 tv_yzm.setTextColor(getResources().getColor(R.color.app_main_color));
                 tv_yzm.setText(getString(R.string.send_again));
             }

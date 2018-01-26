@@ -13,7 +13,7 @@ public interface LoginActivityContract {
 
         void getPhoneCodeSuccess();
 
-        void phoneCodeLoginSuccess(int status, String avatar);
+        void phoneCodeLoginSuccess(int status);
 
     }
 
@@ -22,7 +22,5 @@ public interface LoginActivityContract {
         void getPhoneCode(String phone);
 
         void phoneCodeLogin(String phone, String code);
-
-        String getCacheUrl(String avatar);
     }
 }

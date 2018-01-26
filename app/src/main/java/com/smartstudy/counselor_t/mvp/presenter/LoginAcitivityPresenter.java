@@ -72,11 +72,12 @@ public class LoginAcitivityPresenter extends BasePresenterImpl<LoginActivityCont
 
                     SPCacheUtils.put("phone", phone);
                     SPCacheUtils.put("name", name);
+                    SPCacheUtils.put("avatar", getCacheUrl(avatar));
                     SPCacheUtils.put("ticket", data.getString("ticket"));
                     SPCacheUtils.put("orgId", data.getString("orgId"));
                     SPCacheUtils.put("title", data.getString("title"));
                     SPCacheUtils.put("imToken", imToken);
-                    view.phoneCodeLoginSuccess(data.getIntValue("status"), avatar);
+                    view.phoneCodeLoginSuccess(data.getIntValue("status"));
                     //登录融云
                     loginRongIM(imToken, name, avatar);
                 }
@@ -89,8 +90,7 @@ public class LoginAcitivityPresenter extends BasePresenterImpl<LoginActivityCont
         });
     }
 
-    @Override
-    public String getCacheUrl(String avatar) {
+    private String getCacheUrl(String avatar) {
         return DisplayImageUtils.formatImgUrl(avatar, 90, 90);
     }
 
