@@ -44,7 +44,6 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
     private TextView tv_login_out;
     private Button btSave;
     private ImageView ivAvatar;
-    private ImageView ivPhoto;
     private EditText tv_nick_name;
     private EditText tv_work_name;
     private EditText tv_work_experience;
@@ -74,7 +73,6 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
         btSave = findViewById(R.id.bt_post_info);
         setBtNotSave();
         ivAvatar = findViewById(R.id.iv_avatar);
-        ivPhoto = findViewById(R.id.iv_photo);
         tv_nick_name = findViewById(R.id.tv_nick_name);
         tv_work_name = findViewById(R.id.tv_work_name);
         tv_work_experience = findViewById(R.id.tv_work_experience);
@@ -274,10 +272,7 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
     public void getMyInfoSuccess(TeacherInfo teacherInfo) {
         if (teacherInfo != null) {
             this.teacherInfo = teacherInfo;
-            DisplayImageUtils.displayCircleImage(this, "", ivPhoto);
-            if (!TextUtils.isEmpty(teacherInfo.getAvatar())) {
-                DisplayImageUtils.displayCircleImage(this, teacherInfo.getAvatar(), ivAvatar);
-            }
+            DisplayImageUtils.formatPersonImgUrl(this, teacherInfo.getAvatar(), ivAvatar);
             tv_nick_name.setText(teacherInfo.getName());
             tv_work_name.setText(teacherInfo.getTitle());
             tv_work_experience.setText(teacherInfo.getYearsOfWorking());
