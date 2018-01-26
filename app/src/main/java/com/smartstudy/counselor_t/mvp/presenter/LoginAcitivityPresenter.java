@@ -7,11 +7,11 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
 import com.smartstudy.counselor_t.mvp.contract.LoginActivityContract;
 import com.smartstudy.counselor_t.mvp.model.LoginModel;
+import com.smartstudy.counselor_t.util.DisplayImageUtils;
 import com.smartstudy.counselor_t.util.IMUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
 
@@ -64,7 +64,6 @@ public class LoginAcitivityPresenter extends BasePresenterImpl<LoginActivityCont
 
             @Override
             public void onNext(String result) {
-                Log.d("======", result);
                 JSONObject data = JSON.parseObject(result);
                 if (data != null) {
                     String name = data.getString("name");
@@ -73,12 +72,11 @@ public class LoginAcitivityPresenter extends BasePresenterImpl<LoginActivityCont
 
                     SPCacheUtils.put("phone", phone);
                     SPCacheUtils.put("name", name);
-                    SPCacheUtils.put("avatar", avatar);
                     SPCacheUtils.put("ticket", data.getString("ticket"));
                     SPCacheUtils.put("orgId", data.getString("orgId"));
                     SPCacheUtils.put("title", data.getString("title"));
                     SPCacheUtils.put("imToken", imToken);
-                    view.phoneCodeLoginSuccess(data.getIntValue("status"));
+                    view.phoneCodeLoginSuccess(data.getIntValue("status"), avatar);
                     //登录融云
                     loginRongIM(imToken, name, avatar);
                 }
@@ -91,6 +89,11 @@ public class LoginAcitivityPresenter extends BasePresenterImpl<LoginActivityCont
         });
     }
 
+    @Override
+    public String getCacheUrl(String avatar) {
+        return DisplayImageUtils.formatImgUrl(avatar, 90, 90);
+    }
+
     private void loginRongIM(String imToken, final String userName, final String avatar) {
         if (!TextUtils.isEmpty(imToken)) {
             RongIM.connect(imToken, new RongIMClient.ConnectCallback() {
@@ -100,7 +103,8 @@ public class LoginAcitivityPresenter extends BasePresenterImpl<LoginActivityCont
                     //登录成功后保存imUserId
                     SPCacheUtils.put("imUserId", userid);
                     //更新用户信息
-                    RongIM.getInstance().refreshUserInfoCache(new UserInfo(userid, userName, TextUtils.isEmpty(avatar) ? null : Uri.parse(avatar)));
+                    String cacheUrl = getCacheUrl(avatar);
+                    RongIM.getInstance().refreshUserInfoCache(new UserInfo(userid, userName, TextUtils.isEmpty(cacheUrl) ? null : Uri.parse(cacheUrl)));
                 }
 
                 @Override

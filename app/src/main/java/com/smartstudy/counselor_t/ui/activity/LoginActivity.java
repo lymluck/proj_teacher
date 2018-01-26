@@ -14,7 +14,6 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
@@ -306,8 +305,10 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
     }
 
     @Override
-    public void phoneCodeLoginSuccess(int status) {
+    public void phoneCodeLoginSuccess(int status, String avatar) {
         KeyBoardUtils.closeKeybord(etc_yzm, this);
+        SPCacheUtils.put("avatar", presenter.getCacheUrl(avatar));
+
         if (status == 2) {
             startActivity(new Intent(this, MainActivity.class));
             finish();

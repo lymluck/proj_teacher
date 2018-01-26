@@ -13,7 +13,8 @@ public interface LoginActivityContract {
 
         void getPhoneCodeSuccess();
 
-        void phoneCodeLoginSuccess(int status);
+        void phoneCodeLoginSuccess(int status, String avatar);
+
     }
 
     interface Presenter extends BasePresenter {
@@ -21,5 +22,7 @@ public interface LoginActivityContract {
         void getPhoneCode(String phone);
 
         void phoneCodeLogin(String phone, String code);
+
+        String getCacheUrl(String avatar);
     }
 }

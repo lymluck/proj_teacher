@@ -2,6 +2,7 @@ package com.smartstudy.counselor_t.mvp.base;
 
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.smartstudy.counselor_t.app.BaseApplication;
 import com.smartstudy.counselor_t.entity.ResponseInfo;
@@ -38,6 +39,7 @@ public class BaseModel {
                     @Override
                     public void onNext(ResponseInfo responseInfo) {
                         if (responseInfo.isSuccess()) {
+                            Log.d("result======", responseInfo.getData());
                             listener.onNext(responseInfo.getData());
                         } else {
                             listener.onError(responseInfo.getMsg());

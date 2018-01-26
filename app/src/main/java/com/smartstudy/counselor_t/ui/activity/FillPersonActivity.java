@@ -151,7 +151,7 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
                 break;
             case ParameterUtils.REQUEST_CODE_CLIP_OVER:
                 final String temppath = data.getStringExtra("path");
-                DisplayImageUtils.downloadImageFile(getApplicationContext(), temppath, new SimpleTarget<File>(200, 200) {
+                DisplayImageUtils.downloadImageFile(getApplicationContext(), temppath, new SimpleTarget<File>(100, 100) {
 
                     @Override
                     public void onResourceReady(File resource, GlideAnimation<? super File> glideAnimation) {
@@ -189,7 +189,8 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
                 UserInfo info = RongUserInfoManager.getInstance().getUserInfo(imUserId);
                 Uri avatarUri = null;
                 if (!TextUtils.isEmpty(teacherInfo.getAvatar())) {
-                    avatarUri = Uri.parse(teacherInfo.getAvatar());
+                    String avatarUrl = DisplayImageUtils.formatImgUrl(teacherInfo.getAvatar(), ivAvatar.getWidth(), ivAvatar.getHeight());
+                    avatarUri = Uri.parse(avatarUrl);
                 }
                 String name = null;
                 if (!TextUtils.isEmpty(teacherInfo.getName())) {

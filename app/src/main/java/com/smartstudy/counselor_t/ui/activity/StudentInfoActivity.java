@@ -2,18 +2,13 @@ package com.smartstudy.counselor_t.ui.activity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.smartstudy.counselor_t.R;
-import com.smartstudy.counselor_t.entity.Options;
-import com.smartstudy.counselor_t.entity.StudentInfo;
 import com.smartstudy.counselor_t.entity.StudentPageInfo;
-import com.smartstudy.counselor_t.entity.TeacherInfo;
-import com.smartstudy.counselor_t.mvp.contract.MainActivityContract;
 import com.smartstudy.counselor_t.mvp.contract.StudentActivityContract;
 import com.smartstudy.counselor_t.mvp.presenter.StudentInfoActivityPresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
@@ -141,7 +136,7 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
         /**
          * 个人信息头像等基本信息设置
          */
-        DisplayImageUtils.displayCircleImage(this, studentInfo.getAvatar(), ivAvatar);
+        DisplayImageUtils.formatPersonImgUrl(this, studentInfo.getAvatar(), ivAvatar);
         tvName.setText(studentInfo.getName());
         if (TextUtils.isEmpty(studentInfo.getGenderId())) {
             ivSex.setVisibility(View.GONE);

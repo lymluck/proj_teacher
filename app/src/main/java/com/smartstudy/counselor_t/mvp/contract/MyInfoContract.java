@@ -1,5 +1,7 @@
 package com.smartstudy.counselor_t.mvp.contract;
 
+import android.widget.ImageView;
+
 import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.mvp.base.BasePresenter;
 import com.smartstudy.counselor_t.mvp.base.BaseView;
@@ -32,7 +34,7 @@ public interface MyInfoContract {
         void getLogOut();
 
         void updateMyInfo(String name, File avatar, String title, String school, String yearsOfWorking,
-                          String email, String realName);
+                          String email, String realName, ImageView ivAvatar);
 
 
     }

@@ -2,6 +2,7 @@ package com.smartstudy.counselor_t.mvp.presenter;
 
 import android.net.Uri;
 import android.text.TextUtils;
+import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSON;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
@@ -9,6 +10,7 @@ import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
 import com.smartstudy.counselor_t.mvp.contract.MyInfoContract;
 import com.smartstudy.counselor_t.mvp.model.MyInfoModel;
+import com.smartstudy.counselor_t.util.DisplayImageUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
 
 import java.io.File;
@@ -86,7 +88,8 @@ public class MyInfoActivityPresenter extends BasePresenterImpl<MyInfoContract.Vi
     }
 
     @Override
-    public void updateMyInfo(String name, File avatar, String title, String school, String yearsOfWorking, String email, String realName) {
+    public void updateMyInfo(String name, File avatar, String title, String school, String yearsOfWorking,
+                             String email, String realName, final ImageView ivAvatar) {
         myInfoModel.updatePersonInfo(name, avatar, title, school, yearsOfWorking, email, realName, new ObserverListener<String>() {
             @Override
             public void onSubscribe(Disposable disposable) {
@@ -103,7 +106,8 @@ public class MyInfoActivityPresenter extends BasePresenterImpl<MyInfoContract.Vi
                         UserInfo info = RongUserInfoManager.getInstance().getUserInfo(imUserId);
                         Uri avatarUri = null;
                         if (!TextUtils.isEmpty(teacherInfo.getAvatar())) {
-                            avatarUri = Uri.parse(teacherInfo.getAvatar());
+                            String avatarUrl = DisplayImageUtils.formatImgUrl(teacherInfo.getAvatar(), ivAvatar.getWidth(), ivAvatar.getHeight());
+                            avatarUri = Uri.parse(avatarUrl);
                         }
                         String name = null;
                         if (!TextUtils.isEmpty(teacherInfo.getName())) {
