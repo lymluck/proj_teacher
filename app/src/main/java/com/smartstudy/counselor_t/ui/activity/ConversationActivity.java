@@ -3,10 +3,10 @@ package com.smartstudy.counselor_t.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.mvp.base.BasePresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
@@ -16,6 +16,11 @@ import com.smartstudy.counselor_t.util.SPCacheUtils;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Message;
+import io.rong.message.FileMessage;
+import io.rong.message.ImageMessage;
+import io.rong.message.LocationMessage;
+import io.rong.message.TextMessage;
+import io.rong.message.VoiceMessage;
 
 //CallKit start 1
 //CallKit end 1
@@ -84,9 +89,7 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
     @Override
     public Message onSend(Message message) {
         //获取个人信息，通过extra
-        Log.d("======", message.getConversationType() + "======" + message.getContent().getJSONUserInfo());
-        message.setExtra("my extra");
-        return message;
+        return setExtra(message);
     }
 
     @Override
@@ -102,5 +105,31 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
         }
         tvTitleTag.setText(RongUtils.setTitleTag(message));
         return false;
+    }
+
+    private Message setExtra(Message message) {
+        //按消息类型添加extra
+        JSONObject object = new JSONObject();
+        object.put("title", SPCacheUtils.get("title", ""));
+        object.put("year", SPCacheUtils.get("year", ""));
+        object.put("company", SPCacheUtils.get("company", ""));
+
+        //按消息类型添加extra
+        if (message.getContent() instanceof TextMessage) {
+            ((TextMessage) message.getContent()).setExtra(object.toJSONString());
+        }
+        if (message.getContent() instanceof ImageMessage) {
+            ((ImageMessage) message.getContent()).setExtra(object.toJSONString());
+        }
+        if (message.getContent() instanceof LocationMessage) {
+            ((LocationMessage) message.getContent()).setExtra(object.toJSONString());
+        }
+        if (message.getContent() instanceof FileMessage) {
+            ((FileMessage) message.getContent()).setExtra(object.toJSONString());
+        }
+        if (message.getContent() instanceof VoiceMessage) {
+            ((VoiceMessage) message.getContent()).setExtra(object.toJSONString());
+        }
+        return message;
     }
 }

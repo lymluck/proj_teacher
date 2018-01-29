@@ -69,13 +69,18 @@ public class LoginAcitivityPresenter extends BasePresenterImpl<LoginActivityCont
                     String name = data.getString("name");
                     String avatar = data.getString("avatar");
                     String imToken = data.getString("imToken");
-
+                    JSONObject organization = data.getJSONObject("organization");
+                    if (organization != null) {
+                        SPCacheUtils.put("company", organization.getString("name"));
+                    }
                     SPCacheUtils.put("phone", phone);
                     SPCacheUtils.put("name", name);
                     SPCacheUtils.put("avatar", getCacheUrl(avatar));
                     SPCacheUtils.put("ticket", data.getString("ticket"));
                     SPCacheUtils.put("orgId", data.getString("orgId"));
                     SPCacheUtils.put("title", data.getString("title"));
+                    SPCacheUtils.put("school", data.getString("school"));
+                    SPCacheUtils.put("year", data.getString("yearsOfWorking"));
                     SPCacheUtils.put("imToken", imToken);
                     view.phoneCodeLoginSuccess(data.getIntValue("status"));
                     //登录融云

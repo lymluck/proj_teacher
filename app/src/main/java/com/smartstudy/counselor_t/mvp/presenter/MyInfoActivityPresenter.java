@@ -121,6 +121,9 @@ public class MyInfoActivityPresenter extends BasePresenterImpl<MyInfoContract.Vi
                             }
                         }
                     }
+                    SPCacheUtils.put("title", teacherInfo.getTitle());
+                    SPCacheUtils.put("year", teacherInfo.getYearsOfWorking());
+                    SPCacheUtils.put("company", teacherInfo.getOrganization().getName());
                     view.updateMyInfoSuccesee();
                 }
             }
