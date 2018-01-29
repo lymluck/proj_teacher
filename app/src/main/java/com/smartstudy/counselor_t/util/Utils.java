@@ -32,7 +32,6 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-
 import com.smartstudy.counselor_t.app.BaseApplication;
 
 import java.io.BufferedReader;
@@ -46,7 +45,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 
 
 /**
@@ -617,7 +615,7 @@ public class Utils {
 
     public static String getStringNum(String str) {
         String str2 = "";
-        if (!TextUtils.isEmpty(str.trim())) {
+        if (str != null && !TextUtils.isEmpty(str.trim())) {
             for (int i = 0; i < str.length(); i++) {
                 if (str.charAt(i) >= 48 && str.charAt(i) <= 57) {
                     str2 += str.charAt(i);

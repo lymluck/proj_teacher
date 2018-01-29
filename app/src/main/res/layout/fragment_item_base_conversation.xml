@@ -111,7 +111,6 @@
             android:ellipsize="end"
             android:paddingTop="1dp"
             android:singleLine="true"
-            android:text="语音"
             android:textColor="@color/rc_text_color_secondary"
             android:textSize="@dimen/rc_conversation_item_data_size" />
 

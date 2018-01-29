@@ -10,6 +10,8 @@ import com.smartstudy.counselor_t.ui.provider.MyConversationListProvider;
 import com.smartstudy.counselor_t.ui.provider.MyTextMessageItemProvider;
 import com.smartstudy.counselor_t.util.RongUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import io.rong.imkit.RongIM;
@@ -110,6 +112,7 @@ public class BaseApplication extends Application {
             @Override
             public boolean onReceived(Message message, int i) {
                 RongUtils.setTitleTag(message);
+                EventBus.getDefault().post(message.getContent());
                 return false;
             }
         });
