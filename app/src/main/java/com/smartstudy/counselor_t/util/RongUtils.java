@@ -42,7 +42,7 @@ public class RongUtils {
         }
         if (!TextUtils.isEmpty(extra)) {
             JSONObject object = JSON.parseObject(extra);
-            String year = Utils.getStringNum(object.getString("year"));
+            String year = Utils.getStringNum(object.getString("abroadyear"));
             if (!TextUtils.isEmpty(year)) {
                 titleTag += year + " | ";
             }
