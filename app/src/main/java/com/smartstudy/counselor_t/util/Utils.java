@@ -22,6 +22,7 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.CookieManager;
@@ -612,5 +613,17 @@ public class Utils {
             uri = Uri.fromFile(file);
         }
         return uri;
+    }
+
+    public static String getStringNum(String str) {
+        String str2 = "";
+        if (!TextUtils.isEmpty(str.trim())) {
+            for (int i = 0; i < str.length(); i++) {
+                if (str.charAt(i) >= 48 && str.charAt(i) <= 57) {
+                    str2 += str.charAt(i);
+                }
+            }
+        }
+        return str2;
     }
 }

@@ -32,7 +32,6 @@ import com.smartstudy.counselor_t.util.Utils;
 import java.io.File;
 
 import io.rong.imkit.RongIM;
-import io.rong.imkit.userInfoCache.RongUserInfoManager;
 import io.rong.imlib.model.UserInfo;
 
 /**
@@ -186,7 +185,6 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
             //更新融云
             String imUserId = (String) SPCacheUtils.get("imUserId", "");
             if (!TextUtils.isEmpty(imUserId)) {
-                UserInfo info = RongUserInfoManager.getInstance().getUserInfo(imUserId);
                 Uri avatarUri = null;
                 if (!TextUtils.isEmpty(teacherInfo.getAvatar())) {
                     String avatarUrl = DisplayImageUtils.formatImgUrl(teacherInfo.getAvatar(), ivAvatar.getWidth(), ivAvatar.getHeight());
@@ -196,25 +194,13 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
                 if (!TextUtils.isEmpty(teacherInfo.getName())) {
                     name = teacherInfo.getName();
                 }
-                if (info != null) {
+                if (RongIM.getInstance() != null) {
                     if (avatarUri != null) {
-                        info.setPortraitUri(avatarUri);
+                        RongIM.getInstance().setCurrentUserInfo(new UserInfo(imUserId, (String) SPCacheUtils.get("name", ""), avatarUri));
                     }
                     if (name != null) {
-                        info.setName(name);
-                    }
-                    if (RongIM.getInstance() != null) {
-                        RongIM.getInstance().refreshUserInfoCache(info);
-                    }
-                } else {
-                    if (RongIM.getInstance() != null) {
-                        if (avatarUri != null) {
-                            RongIM.getInstance().refreshUserInfoCache(new UserInfo(imUserId, (String) SPCacheUtils.get("name", ""), avatarUri));
-                        }
-                        if (name != null) {
-                            String avatar = (String) SPCacheUtils.get("avatar", "");
-                            RongIM.getInstance().refreshUserInfoCache(new UserInfo(imUserId, name, TextUtils.isEmpty(avatar) ? null : Uri.parse(avatar)));
-                        }
+                        String avatar = (String) SPCacheUtils.get("avatar", "");
+                        RongIM.getInstance().setCurrentUserInfo(new UserInfo(imUserId, name, TextUtils.isEmpty(avatar) ? null : Uri.parse(avatar)));
                     }
                 }
             }

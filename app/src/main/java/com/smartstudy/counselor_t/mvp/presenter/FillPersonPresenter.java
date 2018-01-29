@@ -1,13 +1,12 @@
 package com.smartstudy.counselor_t.mvp.presenter;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
 import com.smartstudy.counselor_t.mvp.contract.FillPersonContract;
 import com.smartstudy.counselor_t.mvp.model.FillPersonModel;
-
+import com.smartstudy.counselor_t.util.SPCacheUtils;
 
 import java.io.File;
 
@@ -68,9 +67,11 @@ public class FillPersonPresenter extends BasePresenterImpl<FillPersonContract.Vi
             public void onNext(String s) {
                 TeacherInfo teacherInfo = JSON.parseObject(s, TeacherInfo.class);
                 if (teacherInfo != null) {
+                    SPCacheUtils.put("title", teacherInfo.getTitle());
+                    SPCacheUtils.put("year", teacherInfo.getYearsOfWorking());
+                    SPCacheUtils.put("company", teacherInfo.getOrganization().getName());
                     view.showAuditResult(teacherInfo);
                 }
-
             }
 
             @Override

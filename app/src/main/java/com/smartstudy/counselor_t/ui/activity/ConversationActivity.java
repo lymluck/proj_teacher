@@ -3,15 +3,24 @@ package com.smartstudy.counselor_t.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.smartstudy.counselor_t.R;
-import com.smartstudy.counselor_t.entity.StudentInfo;
 import com.smartstudy.counselor_t.mvp.base.BasePresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
+import com.smartstudy.counselor_t.util.RongUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
+
+import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Message;
+import io.rong.message.FileMessage;
+import io.rong.message.ImageMessage;
+import io.rong.message.LocationMessage;
+import io.rong.message.TextMessage;
+import io.rong.message.VoiceMessage;
 
 //CallKit start 1
 //CallKit end 1
@@ -22,7 +31,7 @@ import com.smartstudy.counselor_t.util.SPCacheUtils;
  * 2，加载会话页面
  * 3，push 和 通知 判断
  */
-public class ConversationActivity extends BaseActivity implements View.OnClickListener {
+public class ConversationActivity extends BaseActivity implements View.OnClickListener, RongIM.OnSendMessageListener, RongIMClient.OnReceiveMessageListener {
     private TextView tvTitle;
     private String targeId;
     private TextView tvTitleTag;
@@ -39,6 +48,8 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
     public void initEvent() {
         this.findViewById(R.id.topdefault_rightbutton2).setOnClickListener(this);
         this.findViewById(R.id.topdefault_leftbutton2).setOnClickListener(this);
+        RongIM.getInstance().setSendMessageListener(this);
+        RongIM.setOnReceiveMessageListener(this);
     }
 
     @Override
@@ -48,28 +59,11 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void initView() {
-        tvTitle = (TextView) findViewById(R.id.topdefault_centertitle2);
+        tvTitle = findViewById(R.id.topdefault_centertitle2);
         tvTitleTag = findViewById(R.id.tv_title_tag);
         tvTitle.setText(getIntent().getData().getQueryParameter("title"));
-        targeId = getIntent().getData().getQueryParameter("targetId");
-        String myUserInfo = (String) SPCacheUtils.get("Rong" + targeId, "");
-        String[] detail = myUserInfo.split(":");
-        if (detail.length == 3) {
-            String detailInfo = "";
-            if (!TextUtils.isEmpty(detail[0])) {
-                detailInfo += detail[0];
-            }
-
-            if (!TextUtils.isEmpty(detail[1])) {
-                detailInfo += " | " + detail[1];
-            }
-
-            if (!TextUtils.isEmpty(detail[2])) {
-                detailInfo += " | " + detail[2];
-            }
-
-            tvTitleTag.setText(detailInfo);
-        }
+        String titleTag = (String) SPCacheUtils.get("titleTag", "");
+        tvTitleTag.setText(titleTag);
     }
 
     @Override
@@ -90,5 +84,52 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
 
         }
 
+    }
+
+    @Override
+    public Message onSend(Message message) {
+        //获取个人信息，通过extra
+        return setExtra(message);
+    }
+
+    @Override
+    public boolean onSent(Message message, RongIM.SentMessageErrorCode sentMessageErrorCode) {
+        return false;
+    }
+
+    @Override
+    public boolean onReceived(Message message, int i) {
+        String userName = message.getContent().getUserInfo().getName();
+        if (!TextUtils.isEmpty(userName)) {
+            tvTitle.setText(userName);
+        }
+        tvTitleTag.setText(RongUtils.setTitleTag(message));
+        return false;
+    }
+
+    private Message setExtra(Message message) {
+        //按消息类型添加extra
+        JSONObject object = new JSONObject();
+        object.put("title", SPCacheUtils.get("title", ""));
+        object.put("year", SPCacheUtils.get("year", ""));
+        object.put("company", SPCacheUtils.get("company", ""));
+
+        //按消息类型添加extra
+        if (message.getContent() instanceof TextMessage) {
+            ((TextMessage) message.getContent()).setExtra(object.toJSONString());
+        }
+        if (message.getContent() instanceof ImageMessage) {
+            ((ImageMessage) message.getContent()).setExtra(object.toJSONString());
+        }
+        if (message.getContent() instanceof LocationMessage) {
+            ((LocationMessage) message.getContent()).setExtra(object.toJSONString());
+        }
+        if (message.getContent() instanceof FileMessage) {
+            ((FileMessage) message.getContent()).setExtra(object.toJSONString());
+        }
+        if (message.getContent() instanceof VoiceMessage) {
+            ((VoiceMessage) message.getContent()).setExtra(object.toJSONString());
+        }
+        return message;
     }
 }

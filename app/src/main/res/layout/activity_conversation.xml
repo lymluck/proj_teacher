@@ -8,7 +8,6 @@
     android:orientation="vertical">
 
 
-
     <RelativeLayout
         android:id="@+id/rlyt_top2"
         android:layout_width="match_parent"
@@ -46,14 +45,16 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/app_top_leftright_btnimagewh"
                 android:layout_marginRight="@dimen/app_top_leftright_btnimagewh"
-                android:paddingTop="3dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingTop="3dp">
 
                 <TextView
                     android:id="@+id/topdefault_centertitle2"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
                     android:maxLines="1"
                     android:maxWidth="220dp"
                     android:textColor="#ff333333"
@@ -65,9 +66,9 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:text="杭州智课教育有限公司"
                     android:textColor="@color/app_text_color"
-                    android:textSize="11sp" />
+                    android:textSize="11sp"
+                    android:visibility="visible" />
             </LinearLayout>
 
             <LinearLayout
@@ -87,8 +88,8 @@
                     android:clickable="true"
                     android:paddingLeft="@dimen/app_top_right_btn_marginleftright"
                     android:paddingRight="@dimen/app_top_right_btn_marginright"
-                    android:src="@drawable/teacher_info"
                     android:scaleType="centerInside"
+                    android:src="@drawable/teacher_info"
                     android:transitionName="btn_tr" />
 
 
