@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.smartstudy.counselor_t.R;
+import com.smartstudy.counselor_t.util.Utils;
 
 import io.rong.common.RLog;
 import io.rong.imkit.RongContext;
@@ -82,7 +83,7 @@ public class MyConversationListProvider implements IContainerItemProvider.Conver
             String extra = ((TextMessage) data.getMessageContent()).getExtra();
             if (!TextUtils.isEmpty(extra)) {
                 JSONObject object = JSON.parseObject(extra);
-                String year = object.getString("year");
+                String year = Utils.getStringNum(object.getString("year"));
                 if (!TextUtils.isEmpty(year)) {
                     holder.tagYear.setVisibility(View.VISIBLE);
                     holder.tagYear.setText(year);
