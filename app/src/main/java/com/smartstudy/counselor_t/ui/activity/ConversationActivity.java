@@ -49,7 +49,7 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
         this.findViewById(R.id.topdefault_rightbutton2).setOnClickListener(this);
         this.findViewById(R.id.topdefault_leftbutton2).setOnClickListener(this);
         RongIM.getInstance().setSendMessageListener(this);
-        RongIMClient.setOnReceiveMessageListener(this);
+        RongIM.setOnReceiveMessageListener(this);
     }
 
     @Override

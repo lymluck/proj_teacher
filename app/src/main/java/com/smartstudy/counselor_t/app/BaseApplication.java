@@ -106,7 +106,7 @@ public class BaseApplication extends Application {
         RongIM.getInstance().setMessageAttachedUserInfo(true);
         RongIM.getInstance().registerConversationTemplate(new MyConversationListProvider());
         RongIM.registerMessageTemplate(new MyTextMessageItemProvider());
-        RongIMClient.setOnReceiveMessageListener(new RongIMClient.OnReceiveMessageListener() {
+        RongIM.setOnReceiveMessageListener(new RongIMClient.OnReceiveMessageListener() {
             @Override
             public boolean onReceived(Message message, int i) {
                 RongUtils.setTitleTag(message);
