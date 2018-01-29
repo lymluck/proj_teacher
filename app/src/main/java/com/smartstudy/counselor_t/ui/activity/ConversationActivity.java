@@ -10,12 +10,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.mvp.base.BasePresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
-import com.smartstudy.counselor_t.util.RongUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import io.rong.imkit.RongIM;
-import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Message;
+import io.rong.imlib.model.MessageContent;
 import io.rong.message.FileMessage;
 import io.rong.message.ImageMessage;
 import io.rong.message.LocationMessage;
@@ -31,7 +33,7 @@ import io.rong.message.VoiceMessage;
  * 2，加载会话页面
  * 3，push 和 通知 判断
  */
-public class ConversationActivity extends BaseActivity implements View.OnClickListener, RongIM.OnSendMessageListener, RongIMClient.OnReceiveMessageListener {
+public class ConversationActivity extends BaseActivity implements View.OnClickListener, RongIM.OnSendMessageListener {
     private TextView tvTitle;
     private String targeId;
     private TextView tvTitleTag;
@@ -41,15 +43,20 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conversation);
         setHeadVisible(View.GONE);
+        EventBus.getDefault().register(this);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 
     @Override
     public void initEvent() {
         this.findViewById(R.id.topdefault_rightbutton2).setOnClickListener(this);
         this.findViewById(R.id.topdefault_leftbutton2).setOnClickListener(this);
         RongIM.getInstance().setSendMessageListener(this);
-        RongIM.setOnReceiveMessageListener(this);
     }
 
     @Override
@@ -97,21 +104,20 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
         return false;
     }
 
-    @Override
-    public boolean onReceived(Message message, int i) {
-        String userName = message.getContent().getUserInfo().getName();
+    @Subscribe(threadMode = org.greenrobot.eventbus.ThreadMode.MAIN)
+    public void onMessageEvent(MessageContent messageContent) {
+        String userName = messageContent.getUserInfo().getName();
         if (!TextUtils.isEmpty(userName)) {
             tvTitle.setText(userName);
         }
-        tvTitleTag.setText(RongUtils.setTitleTag(message));
-        return false;
+        tvTitleTag.setText(SPCacheUtils.get("titleTag", "").toString());
     }
 
     private Message setExtra(Message message) {
         //按消息类型添加extra
         JSONObject object = new JSONObject();
         object.put("title", SPCacheUtils.get("title", ""));
-        object.put("year", SPCacheUtils.get("year", ""));
+        object.put("workyear", SPCacheUtils.get("year", ""));
         object.put("company", SPCacheUtils.get("company", ""));
 
         //按消息类型添加extra

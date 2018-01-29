@@ -65,7 +65,6 @@
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:paddingTop="2dp"
-                android:text="教学总监"
                 android:textColor="#949BA1"
                 android:textSize="11sp"
                 android:visibility="gone" />
@@ -81,7 +80,6 @@
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:paddingTop="2dp"
-                android:text="从业5年"
                 android:textColor="#949BA1"
                 android:textSize="11sp"
                 android:visibility="gone" />
@@ -114,7 +112,6 @@
             android:ellipsize="end"
             android:paddingTop="1dp"
             android:singleLine="true"
-            android:text="语音"
             android:textColor="@color/rc_text_color_secondary"
             android:textSize="@dimen/rc_conversation_item_data_size" />
 

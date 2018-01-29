@@ -102,7 +102,7 @@ public class MyConversationListProvider implements IContainerItemProvider.Conver
             }
             if (!TextUtils.isEmpty(extra)) {
                 JSONObject object = JSON.parseObject(extra);
-                String year = Utils.getStringNum(object.getString("year"));
+                String year = Utils.getStringNum(object.getString("abroadyear"));
                 if (!TextUtils.isEmpty(year)) {
                     holder.tagYear.setVisibility(View.VISIBLE);
                     holder.tagYear.setText(year);
