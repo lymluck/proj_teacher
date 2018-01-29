@@ -34,6 +34,8 @@ public class StudentPageInfo {
 
         private TargetMajorDirection targetMajorDirection;
 
+        private TargetSchoolRank targetSchoolRank;
+
         public class AdmissionTime extends CommonTarge {
 
 
@@ -51,6 +53,9 @@ public class StudentPageInfo {
 
         }
 
+        public class TargetSchoolRank extends CommonTarge {
+        }
+
         public AdmissionTime getAdmissionTime() {
             return admissionTime;
         }
@@ -65,6 +70,14 @@ public class StudentPageInfo {
 
         public void setTargetCountry(TargetCountry targetCountry) {
             this.targetCountry = targetCountry;
+        }
+
+        public TargetSchoolRank getTargetSchoolRank() {
+            return targetSchoolRank;
+        }
+
+        public void setTargetSchoolRank(TargetSchoolRank targetSchoolRank) {
+            this.targetSchoolRank = targetSchoolRank;
         }
 
         public TargetDegree getTargetDegree() {

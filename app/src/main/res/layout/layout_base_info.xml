@@ -40,7 +40,9 @@
             android:id="@+id/tv_current_school"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:ellipsize="end"
             android:gravity="center"
+            android:maxLines="1"
             android:textColor="@color/app_text_color2"
             android:textSize="16sp" />
 
@@ -70,7 +72,9 @@
             android:id="@+id/tv_current_score"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:ellipsize="end"
             android:gravity="center"
+            android:maxLines="1"
             android:textColor="@color/app_text_color2"
             android:textSize="16sp" />
 
@@ -100,7 +104,9 @@
             android:id="@+id/tv_score_language"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:ellipsize="end"
             android:gravity="center"
+            android:maxLines="1"
             android:textColor="@color/app_text_color2"
             android:textSize="16sp" />
 
@@ -136,7 +142,9 @@
                 android:id="@+id/tv_gre_gmat"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:ellipsize="end"
                 android:gravity="center"
+                android:maxLines="1"
                 android:textColor="@color/app_text_color2"
                 android:textSize="16sp" />
 
@@ -179,7 +187,9 @@
                     android:id="@+id/tv_activity_internshi"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:ellipsize="end"
                     android:gravity="center"
+                    android:maxLines="1"
                     android:textColor="@color/app_text_color2"
                     android:textSize="16sp" />
 
@@ -216,74 +226,90 @@
                     android:id="@+id/tv_shehui_event"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:ellipsize="end"
                     android:gravity="center"
+                    android:maxLines="1"
                     android:textColor="@color/app_text_color2"
                     android:textSize="16sp" />
 
             </LinearLayout>
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llyt_activity_research"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
             <View
-                style="@style/horizontal_line"
-                android:layout_marginLeft="16dp" />
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="16dp"
+                android:background="#E4E5E6" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="科研活动"
+                    android:textColor="@color/app_text_color"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_activity_research"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:textColor="@color/app_text_color2"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
         </LinearLayout>
 
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginLeft="16dp"
-            android:background="#E4E5E6" />
-
         <LinearLayout
+            android:id="@+id/llyt_activity_community"
             android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="科研活动"
-                android:textColor="@color/app_text_color"
-                android:textSize="16sp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="16dp"
+                android:background="#E4E5E6" />
 
-            <TextView
-                android:id="@+id/tv_activity_research"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:textColor="@color/app_text_color2"
-                android:textSize="16sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:orientation="horizontal">
 
-        </LinearLayout>
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="课外活动"
+                    android:textColor="@color/app_text_color"
+                    android:textSize="16sp" />
 
+                <TextView
+                    android:id="@+id/tv_activity_community"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:textColor="@color/app_text_color2"
+                    android:textSize="16sp" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginLeft="16dp"
-            android:background="#E4E5E6" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="课外活动"
-                android:textColor="@color/app_text_color"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/tv_activity_community"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:textColor="@color/app_text_color2"
-                android:textSize="16sp" />
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -310,7 +336,9 @@
                 android:id="@+id/tv_activity_exchangey"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:ellipsize="end"
                 android:gravity="center"
+                android:maxLines="1"
                 android:textColor="@color/app_text_color2"
                 android:textSize="16sp" />
 

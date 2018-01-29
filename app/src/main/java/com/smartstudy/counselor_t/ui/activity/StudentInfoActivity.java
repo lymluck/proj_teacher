@@ -88,6 +88,12 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
 
     private TextView tv_shehui_event;
 
+    private LinearLayout llyt_activity_research;
+
+    private LinearLayout llyt_activity_community;
+
+    private TextView tv_targe_school;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +104,7 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
         tvGrade = findViewById(R.id.tv_grade);
         tvLocation = findViewById(R.id.tv_location);
         vLine = findViewById(R.id.v_line);
+        tv_targe_school = findViewById(R.id.tv_targe_school);
         llInfoDetail = findViewById(R.id.ll_info_detail);
         llIntentionInformation = findViewById(R.id.ll_intention_information);
         tvTime = findViewById(R.id.tv_time);
@@ -121,6 +128,8 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
         tvActivityResearch = findViewById(R.id.tv_activity_research);
         tvActivityCommunity = findViewById(R.id.tv_activity_community);
         tvActivityExchangey = findViewById(R.id.tv_activity_exchangey);
+        llyt_activity_research = findViewById(R.id.llyt_activity_research);
+        llyt_activity_community = findViewById(R.id.llyt_activity_community);
     }
 
     @Override
@@ -191,6 +200,10 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
             if (targetCountry != null) {
                 if ("美国".equals(targetCountry.getName())) {
                     ll_top_school.setVisibility(View.VISIBLE);
+                    StudentPageInfo.TargetSection.TargetSchoolRank targetSchoolRank = studentInfo.getTargetSection().getTargetSchoolRank();
+                    if (targetSchoolRank != null) {
+                        tv_targe_school.setText(targetSchoolRank.getName());
+                    }
                 } else {
                     ll_top_school.setVisibility(View.GONE);
                 }
@@ -211,6 +224,8 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
                     ll_bg.setVisibility(View.VISIBLE);
                     tvSchool.setText("高中学校");
                     tvScore.setText("高中成绩");
+                    llyt_activity_research.setVisibility(View.GONE);
+                    llyt_activity_community.setVisibility(View.GONE);
                     ll_target_direction.setVisibility(View.GONE);
                     findViewById(R.id.llyt_bk_event).setVisibility(View.VISIBLE);
                     findViewById(R.id.llyt_yjs_event).setVisibility(View.GONE);
@@ -225,6 +240,8 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
                     findViewById(R.id.llyt_yjs_event).setVisibility(View.VISIBLE);
                     if ("其他".equals(targetDegree.getName())) {
                         ll_gre.setVisibility(View.GONE);
+                        tvSchool.setText("在读学校");
+                        tvScore.setText("在读成绩");
                     }
                 }
                 tvTargetDegree.setText(targetDegree.getName());

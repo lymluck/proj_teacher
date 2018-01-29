@@ -232,25 +232,25 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
         }
 
         DisplayImageUtils.displayCircleImage(this, "", ivPhoto);
-        if (!TextUtils.isEmpty(teacherInfo.getAvatar())) {
+        if (!TextUtils.isEmpty(teacherInfo.getAvatar())&&photoFile==null) {
             DisplayImageUtils.displayCircleImage(this, teacherInfo.getAvatar(), ivAvatar);
         }
-        if (!TextUtils.isEmpty(teacherInfo.getName())) {
+        if (!TextUtils.isEmpty(teacherInfo.getName()) && TextUtils.isEmpty(getNickName())) {
             tv_nick_name.setText(teacherInfo.getName());
         }
-        if (!TextUtils.isEmpty(teacherInfo.getTitle())) {
+        if (!TextUtils.isEmpty(teacherInfo.getTitle()) && TextUtils.isEmpty(getWorkTitle())) {
             tv_work_name.setText(teacherInfo.getTitle());
         }
-        if (!TextUtils.isEmpty(teacherInfo.getYearsOfWorking())) {
+        if (!TextUtils.isEmpty(teacherInfo.getYearsOfWorking()) && TextUtils.isEmpty(getWorkExperience())) {
             tv_work_experience.setText(teacherInfo.getYearsOfWorking());
         }
-        if (!TextUtils.isEmpty(teacherInfo.getSchool())) {
+        if (!TextUtils.isEmpty(teacherInfo.getSchool()) && TextUtils.isEmpty(getGraduatedSchool())) {
             tv_graduated_school.setText(teacherInfo.getSchool());
         }
-        if (!TextUtils.isEmpty(teacherInfo.getEmail())) {
+        if (!TextUtils.isEmpty(teacherInfo.getEmail()) && TextUtils.isEmpty(getEmail())) {
             tv_email.setText(teacherInfo.getEmail());
         }
-        if (!TextUtils.isEmpty(teacherInfo.getRealName())) {
+        if (!TextUtils.isEmpty(teacherInfo.getRealName()) && TextUtils.isEmpty(getRealName())) {
             tv_name.setText(teacherInfo.getRealName());
         }
     }
