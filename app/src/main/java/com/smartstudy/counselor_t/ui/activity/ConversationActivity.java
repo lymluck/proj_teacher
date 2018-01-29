@@ -8,10 +8,13 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.smartstudy.counselor_t.R;
-import com.smartstudy.counselor_t.entity.StudentInfo;
 import com.smartstudy.counselor_t.mvp.base.BasePresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
+
+import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Message;
 
 //CallKit start 1
 //CallKit end 1
@@ -22,7 +25,7 @@ import com.smartstudy.counselor_t.util.SPCacheUtils;
  * 2，加载会话页面
  * 3，push 和 通知 判断
  */
-public class ConversationActivity extends BaseActivity implements View.OnClickListener {
+public class ConversationActivity extends BaseActivity implements View.OnClickListener, RongIM.OnSendMessageListener, RongIMClient.OnReceiveMessageListener {
     private TextView tvTitle;
     private String targeId;
     private TextView tvTitleTag;
@@ -39,6 +42,7 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
     public void initEvent() {
         this.findViewById(R.id.topdefault_rightbutton2).setOnClickListener(this);
         this.findViewById(R.id.topdefault_leftbutton2).setOnClickListener(this);
+        RongIM.getInstance().setSendMessageListener(this);
     }
 
     @Override
@@ -90,5 +94,27 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
 
         }
 
+    }
+
+    @Override
+    public Message onSend(Message message) {
+        //获取个人信息，通过extra
+        Log.d("======", message.getConversationType() + "======" + message.getContent().getJSONUserInfo());
+        message.setExtra("my extra");
+        return message;
+    }
+
+    @Override
+    public boolean onSent(Message message, RongIM.SentMessageErrorCode sentMessageErrorCode) {
+        return false;
+    }
+
+    @Override
+    public boolean onReceived(Message message, int i) {
+        String userName = message.getContent().getUserInfo().getName();
+        if (!TextUtils.isEmpty(userName)) {
+            tvTitle.setText(userName);
+        }
+        return false;
     }
 }

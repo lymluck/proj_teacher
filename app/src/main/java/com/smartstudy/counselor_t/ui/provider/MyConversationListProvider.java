@@ -17,8 +17,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.smartstudy.counselor_t.R;
-import com.smartstudy.counselor_t.util.SPCacheUtils;
 
 import io.rong.common.RLog;
 import io.rong.imkit.RongContext;
@@ -34,6 +35,7 @@ import io.rong.imkit.widget.provider.IContainerItemProvider;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 import io.rong.imlib.model.UserInfo;
+import io.rong.message.TextMessage;
 
 /**
  * Created by yqy on 2017/12/29.
@@ -57,9 +59,9 @@ public class MyConversationListProvider implements IContainerItemProvider.Conver
         holder.content = (TextView) result.findViewById(R.id.rc_conversation_content);
         holder.notificationBlockImage = (ImageView) result.findViewById(R.id.rc_conversation_msg_block);
         holder.readStatus = (ImageView) result.findViewById(R.id.rc_conversation_status);
-        holder.tvTag1 = result.findViewById(R.id.tv_tag);
-        holder.tvTag2 = result.findViewById(R.id.tv_tag2);
-        holder.tvTag3 = result.findViewById(R.id.tv_tag3);
+        holder.tagYear = result.findViewById(R.id.tag_year);
+        holder.tagCountry = result.findViewById(R.id.tag_country);
+        holder.tagGrade = result.findViewById(R.id.tag_grade);
         result.setTag(holder);
         return result;
     }
@@ -72,31 +74,34 @@ public class MyConversationListProvider implements IContainerItemProvider.Conver
             holder.title.setText((CharSequence) null);
             holder.time.setText((CharSequence) null);
             holder.content.setText((CharSequence) null);
-            holder.tvTag1.setVisibility(View.GONE);
-            holder.tvTag2.setVisibility(View.GONE);
-            holder.tvTag3.setVisibility(View.GONE);
+            holder.tagYear.setVisibility(View.GONE);
+            holder.tagCountry.setVisibility(View.GONE);
+            holder.tagGrade.setVisibility(View.GONE);
         } else {
             holder.title.setText(data.getUIConversationTitle());
-            String myUserInfo = (String) SPCacheUtils.get("Rong" + data.getConversationTargetId(), "");
-            String[] detail = myUserInfo.split(":");
-            if (detail.length == 3) {
-                if (TextUtils.isEmpty(detail[0])) {
-                    holder.tvTag1.setVisibility(View.GONE);
+            String extra = ((TextMessage) data.getMessageContent()).getExtra();
+            if (!TextUtils.isEmpty(extra)) {
+                JSONObject object = JSON.parseObject(extra);
+                String year = object.getString("year");
+                if (!TextUtils.isEmpty(year)) {
+                    holder.tagYear.setVisibility(View.VISIBLE);
+                    holder.tagYear.setText(year);
                 } else {
-                    holder.tvTag1.setText(detail[0]);
+                    holder.tagYear.setVisibility(View.GONE);
                 }
-
-                if (TextUtils.isEmpty(detail[1])) {
-                    holder.tvTag2.setVisibility(View.GONE);
+                String country = object.getString("country");
+                if (!TextUtils.isEmpty(country)) {
+                    holder.tagCountry.setVisibility(View.VISIBLE);
+                    holder.tagCountry.setText(country);
                 } else {
-                    holder.tvTag2.setText(detail[1]);
+                    holder.tagCountry.setVisibility(View.GONE);
                 }
-
-
-                if (TextUtils.isEmpty(detail[2])) {
-                    holder.tvTag3.setVisibility(View.GONE);
+                String grade = object.getString("grade");
+                if (!TextUtils.isEmpty(grade)) {
+                    holder.tagGrade.setVisibility(View.VISIBLE);
+                    holder.tagGrade.setText(grade);
                 } else {
-                    holder.tvTag3.setText(detail[2]);
+                    holder.tagGrade.setVisibility(View.GONE);
                 }
             }
             String time = RongDateUtils.getConversationListFormatDate(data.getUIConversationTime(), view.getContext());
@@ -219,9 +224,9 @@ public class MyConversationListProvider implements IContainerItemProvider.Conver
         public TextView content;
         public ImageView notificationBlockImage;
         public ImageView readStatus;
-        public TextView tvTag1;
-        public TextView tvTag2;
-        public TextView tvTag3;
+        public TextView tagYear;
+        public TextView tagCountry;
+        public TextView tagGrade;
 
         protected ViewHolder() {
         }

@@ -3,7 +3,6 @@ package com.smartstudy.counselor_t.mvp.contract;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.mvp.base.BasePresenter;
 import com.smartstudy.counselor_t.mvp.base.BaseView;
-import com.smartstudy.counselor_t.entity.StudentInfo;
 
 /**
  * @author yqy
@@ -20,8 +19,6 @@ public interface MainActivityContract {
     }
 
     interface Presenter extends BasePresenter {
-
-        void getStudentInfo(String userId);
 
         void getAuditResult();
 

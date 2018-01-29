@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 
 import com.smartstudy.counselor_t.R;
@@ -24,10 +23,8 @@ import com.smartstudy.counselor_t.util.SPCacheUtils;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imkit.manager.IUnReadMessageObserver;
-import io.rong.imkit.userInfoCache.RongUserInfoManager;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
-import io.rong.imlib.model.UserInfo;
 
 public class MainActivity extends BaseActivity<MainActivityContract.Presenter>
         implements MainActivityContract.View {
@@ -41,34 +38,6 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter>
         mfragmentManager = getSupportFragmentManager();
         setTopLineVisibility(View.VISIBLE);
         showChatList(mfragmentManager.beginTransaction());
-        RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
-
-            @Override
-            public UserInfo getUserInfo(String userId) {
-
-                String imUserId = (String) SPCacheUtils.get("imUserId", "");
-                Log.d("cacheId======", imUserId);
-                Log.d("proId======", userId);
-                if (userId.equals(imUserId)) {
-                    UserInfo info = RongUserInfoManager.getInstance().getUserInfo(userId);
-                    if (info != null) {
-                        return info;
-                    }
-                } else {
-                    //优先从缓存中取
-                    UserInfo info = RongUserInfoManager.getInstance().getUserInfo(userId);
-                    if (info != null) {
-                        return info;
-                    } else {
-                        //从接口中拿
-                        presenter.getStudentInfo(userId);
-                    }
-                }
-                return null;
-            }
-
-        }, true);
-
     }
 
     @Override
