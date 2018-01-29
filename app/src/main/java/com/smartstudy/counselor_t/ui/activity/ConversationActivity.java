@@ -69,6 +69,7 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
         tvTitle = findViewById(R.id.topdefault_centertitle2);
         tvTitleTag = findViewById(R.id.tv_title_tag);
         tvTitle.setText(getIntent().getData().getQueryParameter("title"));
+        targeId = getIntent().getData().getQueryParameter("targetId");
         String titleTag = (String) SPCacheUtils.get("titleTag", "");
         tvTitleTag.setText(titleTag);
     }
