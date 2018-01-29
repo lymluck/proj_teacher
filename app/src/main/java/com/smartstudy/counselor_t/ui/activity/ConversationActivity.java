@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.mvp.base.BasePresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
+import com.smartstudy.counselor_t.util.RongUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
 
 import io.rong.imkit.RongIM;
@@ -43,6 +44,7 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
         this.findViewById(R.id.topdefault_rightbutton2).setOnClickListener(this);
         this.findViewById(R.id.topdefault_leftbutton2).setOnClickListener(this);
         RongIM.getInstance().setSendMessageListener(this);
+        RongIMClient.setOnReceiveMessageListener(this);
     }
 
     @Override
@@ -52,28 +54,11 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void initView() {
-        tvTitle = (TextView) findViewById(R.id.topdefault_centertitle2);
+        tvTitle = findViewById(R.id.topdefault_centertitle2);
         tvTitleTag = findViewById(R.id.tv_title_tag);
         tvTitle.setText(getIntent().getData().getQueryParameter("title"));
-        targeId = getIntent().getData().getQueryParameter("targetId");
-        String myUserInfo = (String) SPCacheUtils.get("Rong" + targeId, "");
-        String[] detail = myUserInfo.split(":");
-        if (detail.length == 3) {
-            String detailInfo = "";
-            if (!TextUtils.isEmpty(detail[0])) {
-                detailInfo += detail[0];
-            }
-
-            if (!TextUtils.isEmpty(detail[1])) {
-                detailInfo += " | " + detail[1];
-            }
-
-            if (!TextUtils.isEmpty(detail[2])) {
-                detailInfo += " | " + detail[2];
-            }
-
-            tvTitleTag.setText(detailInfo);
-        }
+        String titleTag = (String) SPCacheUtils.get("titleTag", "");
+        tvTitleTag.setText(titleTag);
     }
 
     @Override
@@ -115,6 +100,7 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
         if (!TextUtils.isEmpty(userName)) {
             tvTitle.setText(userName);
         }
+        tvTitleTag.setText(RongUtils.setTitleTag(message));
         return false;
     }
 }

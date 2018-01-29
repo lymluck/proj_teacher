@@ -8,10 +8,13 @@ import android.text.TextUtils;
 
 import com.smartstudy.counselor_t.ui.provider.MyConversationListProvider;
 import com.smartstudy.counselor_t.ui.provider.MyTextMessageItemProvider;
+import com.smartstudy.counselor_t.util.RongUtils;
 
 import java.util.List;
 
 import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Message;
 
 
 /**
@@ -44,10 +47,7 @@ public class BaseApplication extends Application {
         if (getProcessName(this).equals(getPackageName())) {
             appContext = this;
             //注册容云组件
-            RongIM.init(this, "25wehl3u29wqw");
-            RongIM.getInstance().setMessageAttachedUserInfo(true);
-            RongIM.getInstance().registerConversationTemplate(new MyConversationListProvider());
-            RongIM.registerMessageTemplate(new MyTextMessageItemProvider());
+            initRong();
         }
     }
 
@@ -99,5 +99,19 @@ public class BaseApplication extends Application {
             }
         }
         return "";
+    }
+
+    private void initRong() {
+        RongIM.init(this, "25wehl3u29wqw");
+        RongIM.getInstance().setMessageAttachedUserInfo(true);
+        RongIM.getInstance().registerConversationTemplate(new MyConversationListProvider());
+        RongIM.registerMessageTemplate(new MyTextMessageItemProvider());
+        RongIMClient.setOnReceiveMessageListener(new RongIMClient.OnReceiveMessageListener() {
+            @Override
+            public boolean onReceived(Message message, int i) {
+                RongUtils.setTitleTag(message);
+                return false;
+            }
+        });
     }
 }

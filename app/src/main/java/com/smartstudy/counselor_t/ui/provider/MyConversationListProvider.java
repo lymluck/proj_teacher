@@ -36,7 +36,11 @@ import io.rong.imkit.widget.provider.IContainerItemProvider;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 import io.rong.imlib.model.UserInfo;
+import io.rong.message.FileMessage;
+import io.rong.message.ImageMessage;
+import io.rong.message.LocationMessage;
 import io.rong.message.TextMessage;
+import io.rong.message.VoiceMessage;
 
 /**
  * Created by yqy on 2017/12/29.
@@ -80,7 +84,22 @@ public class MyConversationListProvider implements IContainerItemProvider.Conver
             holder.tagGrade.setVisibility(View.GONE);
         } else {
             holder.title.setText(data.getUIConversationTitle());
-            String extra = ((TextMessage) data.getMessageContent()).getExtra();
+            String extra = null;
+            if (data.getMessageContent() instanceof TextMessage) {
+                extra = ((TextMessage) data.getMessageContent()).getExtra();
+            }
+            if (data.getMessageContent() instanceof ImageMessage) {
+                extra = ((ImageMessage) data.getMessageContent()).getExtra();
+            }
+            if (data.getMessageContent() instanceof LocationMessage) {
+                extra = ((LocationMessage) data.getMessageContent()).getExtra();
+            }
+            if (data.getMessageContent() instanceof FileMessage) {
+                extra = ((FileMessage) data.getMessageContent()).getExtra();
+            }
+            if (data.getMessageContent() instanceof VoiceMessage) {
+                extra = ((VoiceMessage) data.getMessageContent()).getExtra();
+            }
             if (!TextUtils.isEmpty(extra)) {
                 JSONObject object = JSON.parseObject(extra);
                 String year = Utils.getStringNum(object.getString("year"));
@@ -208,7 +227,6 @@ public class MyConversationListProvider implements IContainerItemProvider.Conver
     @Override
     public String getTitle(String userId) {
         UserInfo userInfo = RongUserInfoManager.getInstance().getUserInfo(userId);
-
         return userInfo == null ? userId : userInfo.getName();
     }
 

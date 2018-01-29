@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.mvp.contract.MainActivityContract;
@@ -18,16 +20,24 @@ import com.smartstudy.counselor_t.ui.activity.MyInfoActivity;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.util.ConstantUtils;
 import com.smartstudy.counselor_t.util.IMUtils;
+import com.smartstudy.counselor_t.util.RongUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
+import com.smartstudy.counselor_t.util.Utils;
 
 import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imkit.manager.IUnReadMessageObserver;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.Message;
+import io.rong.message.FileMessage;
+import io.rong.message.ImageMessage;
+import io.rong.message.LocationMessage;
+import io.rong.message.TextMessage;
+import io.rong.message.VoiceMessage;
 
 public class MainActivity extends BaseActivity<MainActivityContract.Presenter>
-        implements MainActivityContract.View {
+        implements MainActivityContract.View, RongIMClient.OnReceiveMessageListener {
     private FragmentManager mfragmentManager;
     private ConversationListFragment mConversationListFragment = null;
 
@@ -62,9 +72,14 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter>
         RongIM.getInstance().addUnReadMessageCountChangedObserver(new IUnReadMessageObserver() {
             @Override
             public void onCountChanged(int i) {
-                setTitle(String.format(getString(R.string.msg_unread), i + ""));
+                if (i > 0) {
+                    setTitle(String.format(getString(R.string.msg_unread), i + ""));
+                } else {
+                    setTitle(getString(R.string.msg_name));
+                }
             }
         }, Conversation.ConversationType.PRIVATE);
+        RongIMClient.setOnReceiveMessageListener(this);
     }
 
 
@@ -160,5 +175,11 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter>
                 finish();
             }
         }
+    }
+
+    @Override
+    public boolean onReceived(Message message, int i) {
+        RongUtils.setTitleTag(message);
+        return false;
     }
 }
