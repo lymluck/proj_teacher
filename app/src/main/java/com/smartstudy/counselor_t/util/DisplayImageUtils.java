@@ -328,8 +328,9 @@ public class DisplayImageUtils {
         return new_url;
     }
 
-    public static String formatImgUrl(String url, final String params) {
+    public static String formatImgUrl(String url, int width, int height) {
         String new_url = url;
+        String params = "?x-oss-process=image/resize,m_lfit,w_" + width + ",h_" + height;
         if (new_url != null && !"".equals(new_url)) {
             if (new_url.contains("!")) {
                 new_url = new_url.split("!")[0] + params;

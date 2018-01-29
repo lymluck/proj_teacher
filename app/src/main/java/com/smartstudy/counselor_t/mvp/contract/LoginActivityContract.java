@@ -14,6 +14,7 @@ public interface LoginActivityContract {
         void getPhoneCodeSuccess();
 
         void phoneCodeLoginSuccess(int status);
+
     }
 
     interface Presenter extends BasePresenter {

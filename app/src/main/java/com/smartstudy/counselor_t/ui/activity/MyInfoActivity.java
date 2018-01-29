@@ -252,7 +252,7 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
                     ToastUtils.shortToast(this, "信息未填写完整");
                     return;
                 }
-                presenter.updateMyInfo(getNickName(), photoFile, getWorkTitle(), getGraduatedSchool(), getWorkExperience(), getEmail(), getRealName());
+                presenter.updateMyInfo(getNickName(), photoFile, getWorkTitle(), getGraduatedSchool(), getWorkExperience(), getEmail(), getRealName(), ivAvatar);
                 break;
 
             case R.id.tv_login_out:
@@ -356,7 +356,7 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
                 break;
             case ParameterUtils.REQUEST_CODE_CLIP_OVER:
                 final String temppath = data.getStringExtra("path");
-                DisplayImageUtils.downloadImageFile(getApplicationContext(), temppath, new SimpleTarget<File>(200, 200) {
+                DisplayImageUtils.downloadImageFile(getApplicationContext(), temppath, new SimpleTarget<File>(100, 100) {
 
                     @Override
                     public void onResourceReady(File resource, GlideAnimation<? super File> glideAnimation) {

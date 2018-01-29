@@ -14,7 +14,6 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
@@ -324,13 +323,15 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
             public void onTick(long millisUntilFinished) {
                 tv_yzm.setTextColor(getResources().getColor(R.color.app_text_color));
                 tv_yzm.setText(String.format(getString(R.string.get_code_again), millisUntilFinished / 1000 + "s"));
-                tv_yzm.setEnabled(false);//防止重复点击
+                //防止重复点击
+                tv_yzm.setEnabled(false);
             }
 
             @Override
             public void onFinish() {
                 //可以在这做一些操作,如果没有获取到验证码再去请求服务器
-                tv_yzm.setEnabled(true);//防止重复点击
+                //防止重复点击
+                tv_yzm.setEnabled(true);
                 tv_yzm.setTextColor(getResources().getColor(R.color.app_main_color));
                 tv_yzm.setText(getString(R.string.send_again));
             }
