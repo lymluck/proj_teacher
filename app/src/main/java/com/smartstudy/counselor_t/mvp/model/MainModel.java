@@ -1,5 +1,7 @@
 package com.smartstudy.counselor_t.mvp.model;
 
+import android.util.Log;
+
 import com.smartstudy.counselor_t.api.ApiManager;
 import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.mvp.base.BaseModel;
@@ -21,6 +23,7 @@ public class MainModel extends BaseModel {
     public void getStudentInfo(String id, ObserverListener listener) {
         Map<String, String> params = new HashMap<>();
         try {
+            Log.w("kim","--->"+URLEncoder.encode(id, "utf-8"));
             params.put("id", URLEncoder.encode(id, "utf-8"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
