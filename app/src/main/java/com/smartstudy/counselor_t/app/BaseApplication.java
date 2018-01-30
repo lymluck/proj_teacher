@@ -5,21 +5,15 @@ import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.smartstudy.counselor_t.StudentInfManager;
+import com.smartstudy.counselor_t.manager.StudentInfoManager;
 import com.smartstudy.counselor_t.ui.provider.MyConversationListProvider;
 import com.smartstudy.counselor_t.ui.provider.MyTextMessageItemProvider;
-import com.smartstudy.counselor_t.util.RongUtils;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
 import io.rong.imkit.RongIM;
 import io.rong.imkit.userInfoCache.RongUserInfoManager;
-import io.rong.imlib.RongIMClient;
-import io.rong.imlib.model.Message;
 import io.rong.imlib.model.UserInfo;
 
 
@@ -111,20 +105,12 @@ public class BaseApplication extends Application {
         RongIM.init(this, "25wehl3u29wqw");
         RongIM.getInstance().registerConversationTemplate(new MyConversationListProvider());
         RongIM.registerMessageTemplate(new MyTextMessageItemProvider());
-        RongIM.setOnReceiveMessageListener(new RongIMClient.OnReceiveMessageListener() {
-            @Override
-            public boolean onReceived(Message message, int i) {
-                RongUtils.setTitleTag(message);
-                EventBus.getDefault().post(message.getContent());
-                return false;
-            }
-        });
         RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
             @Override
             public UserInfo getUserInfo(String s) {
                 UserInfo info = RongUserInfoManager.getInstance().getUserInfo(s);
                 if (info == null) {
-                    StudentInfManager.getInstance().getStudentInfo(s);
+                    StudentInfoManager.getInstance().getStudentInfo(s);
                 }
                 return null;
 

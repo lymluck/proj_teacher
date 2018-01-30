@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
-import io.rong.imlib.model.Message;
 import io.rong.imlib.model.MessageContent;
 import io.rong.message.FileMessage;
 import io.rong.message.ImageMessage;
@@ -22,28 +21,6 @@ import io.rong.message.VoiceMessage;
  */
 
 public class RongUtils {
-
-    public static String setTitleTag(Message message) {
-        String extra = getMsgExtra(message.getContent());
-        String titleTag = "";
-        if (!TextUtils.isEmpty(extra)) {
-            JSONObject object = JSON.parseObject(extra);
-            String year = Utils.getStringNum(object.getString("abroadyear"));
-            if (!TextUtils.isEmpty(year)) {
-                titleTag += year + " | ";
-            }
-            String country = object.getString("country");
-            if (!TextUtils.isEmpty(country)) {
-                titleTag += country + " | ";
-            }
-            String grade = object.getString("grade");
-            if (!TextUtils.isEmpty(grade)) {
-                titleTag += grade;
-            }
-            SPCacheUtils.put("titleTag", titleTag);
-        }
-        return titleTag;
-    }
 
     public static String getMsgExtra(MessageContent messageContent) {
         String extra = null;
@@ -63,5 +40,23 @@ public class RongUtils {
             extra = ((VoiceMessage) messageContent).getExtra();
         }
         return extra;
+    }
+
+    public static String getTitleTag(String extra) {
+        String titleTag = "";
+        JSONObject object = JSON.parseObject(extra);
+        String year = Utils.getStringNum(object.getString("abroadyear"));
+        if (!TextUtils.isEmpty(year)) {
+            titleTag += year + " | ";
+        }
+        String country = object.getString("country");
+        if (!TextUtils.isEmpty(country)) {
+            titleTag += country + " | ";
+        }
+        String grade = object.getString("grade");
+        if (!TextUtils.isEmpty(grade)) {
+            titleTag += grade;
+        }
+        return titleTag;
     }
 }

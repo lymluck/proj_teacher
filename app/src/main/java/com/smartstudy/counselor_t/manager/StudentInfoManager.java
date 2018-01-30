@@ -1,4 +1,4 @@
-package com.smartstudy.counselor_t;
+package com.smartstudy.counselor_t.manager;
 
 import android.net.Uri;
 import android.text.TextUtils;
@@ -22,15 +22,15 @@ import io.rong.imlib.model.UserInfo;
  * @email luoyongming@innobuddy.com
  */
 
-public class StudentInfManager extends BaseModel {
+public class StudentInfoManager extends BaseModel {
 
-    private static StudentInfManager instance;
+    private static StudentInfoManager instance;
 
-    public static StudentInfManager getInstance() {
+    public static StudentInfoManager getInstance() {
         if (null == instance) {
-            synchronized (StudentInfManager.class) {
+            synchronized (StudentInfoManager.class) {
                 if (null == instance) {
-                    instance = new StudentInfManager();
+                    instance = new StudentInfoManager();
                 }
             }
         }

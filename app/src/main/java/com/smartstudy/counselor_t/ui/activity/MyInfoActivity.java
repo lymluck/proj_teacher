@@ -306,6 +306,7 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
     @Override
     public void updateMyInfoSuccesee() {
         ToastUtils.shortToast(this, "修改成功");
+        finish();
     }
 
 

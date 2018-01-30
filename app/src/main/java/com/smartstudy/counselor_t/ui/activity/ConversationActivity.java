@@ -2,20 +2,22 @@ package com.smartstudy.counselor_t.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.mvp.base.BasePresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
+import com.smartstudy.counselor_t.util.RongUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
+import java.util.List;
 
 import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 import io.rong.imlib.model.MessageContent;
 import io.rong.message.FileMessage;
@@ -43,13 +45,6 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conversation);
         setHeadVisible(View.GONE);
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -70,8 +65,23 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
         tvTitleTag = findViewById(R.id.tv_title_tag);
         tvTitle.setText(getIntent().getData().getQueryParameter("title"));
         targeId = getIntent().getData().getQueryParameter("targetId");
-        String titleTag = (String) SPCacheUtils.get("titleTag", "");
-        tvTitleTag.setText(titleTag);
+        RongIM.getInstance().getHistoryMessages(Conversation.ConversationType.PRIVATE, targeId, 0, 100, new RongIMClient.ResultCallback<List<Message>>() {
+            @Override
+            public void onSuccess(List<Message> messages) {
+                for (Message message : messages) {
+                    String extra = RongUtils.getMsgExtra(message.getContent());
+                    JSONObject obj_msg = JSON.parseObject(extra);
+                    if (obj_msg != null && obj_msg.containsKey("abroadyear")) {
+                        tvTitleTag.setText(RongUtils.getTitleTag(extra));
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+            }
+        });
     }
 
     @Override
@@ -103,15 +113,6 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
     @Override
     public boolean onSent(Message message, RongIM.SentMessageErrorCode sentMessageErrorCode) {
         return false;
-    }
-
-    @Subscribe(threadMode = org.greenrobot.eventbus.ThreadMode.MAIN)
-    public void onMessageEvent(MessageContent messageContent) {
-        String userName = messageContent.getUserInfo().getName();
-        if (!TextUtils.isEmpty(userName)) {
-            tvTitle.setText(userName);
-        }
-        tvTitleTag.setText(SPCacheUtils.get("titleTag", "").toString());
     }
 
     private Message setExtra(Message message) {
