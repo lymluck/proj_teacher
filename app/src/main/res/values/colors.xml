@@ -37,4 +37,5 @@
     <color name="black10">#10000000</color><!--10%的黑色 -->
     <color name="black5">#0c000000</color><!--10%的黑色 -->
     <color name="orange_clor">#FFB400</color>
+    <color name="bg_answer_color">#FE5252</color> <!-- 答icon背景颜色 -->
 </resources>

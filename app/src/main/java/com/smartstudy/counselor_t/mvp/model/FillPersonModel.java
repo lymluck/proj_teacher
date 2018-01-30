@@ -20,15 +20,21 @@ import okhttp3.RequestBody;
  */
 public class FillPersonModel extends BaseModel {
     public void postPersonInfo(String name, File file, String title, String school, String yearsOfWorking, String email, String realName, ObserverListener listener) {
-        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                .addFormDataPart("name", name)
+        MultipartBody.Builder builder = new MultipartBody.Builder();
+        builder.setType(MultipartBody.FORM);
+
+        builder.addFormDataPart("name", name)
                 .addFormDataPart("title", title)
                 .addFormDataPart("school", school)
                 .addFormDataPart("yearsOfWorking", yearsOfWorking)
                 .addFormDataPart("email", email)
-                .addFormDataPart("realName", realName)
-                .addFormDataPart("avatar", file.getName(), RequestBody.create(MediaType.parse("image/*"), file))
-                .build();
+                .addFormDataPart("realName", realName);
+
+        if (file != null) {
+            builder.addFormDataPart("avatar", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
+        }
+
+        RequestBody requestBody = builder.build();
         apiSubscribe(ApiManager.getApiService().postPersonInfo(getHeadersMap(), HttpUrlUtils.URL_COUNSELLOR_VERIFY, requestBody), listener);
     }
 

@@ -345,6 +345,7 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/v_backline"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:background="#E4E5E6" />

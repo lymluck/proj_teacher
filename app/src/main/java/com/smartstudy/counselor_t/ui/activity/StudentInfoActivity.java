@@ -1,6 +1,8 @@
 package com.smartstudy.counselor_t.ui.activity;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,8 +13,16 @@ import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.StudentPageInfo;
 import com.smartstudy.counselor_t.mvp.contract.StudentActivityContract;
 import com.smartstudy.counselor_t.mvp.presenter.StudentInfoActivityPresenter;
+import com.smartstudy.counselor_t.ui.adapter.CommonAdapter;
+import com.smartstudy.counselor_t.ui.adapter.base.ViewHolder;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
+import com.smartstudy.counselor_t.ui.widget.HorizontalDividerItemDecoration;
+import com.smartstudy.counselor_t.ui.widget.NoScrollLinearLayoutManager;
+import com.smartstudy.counselor_t.util.DensityUtils;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author yqy
@@ -89,6 +99,20 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
 
     private TextView tv_targe_school;
 
+    private RecyclerView rv_school;
+
+    private NoScrollLinearLayoutManager mLayoutManager;
+
+    private LinearLayout ll_student;
+
+    private View v_backline;
+
+    private TextView tv_count_school;
+
+    private CommonAdapter<StudentPageInfo.WatchSchools.SchoolData> mAdapter;
+
+    private List<StudentPageInfo.WatchSchools.SchoolData> schoolDataList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +128,7 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
         llIntentionInformation = findViewById(R.id.ll_intention_information);
         tvTime = findViewById(R.id.tv_time);
         tv_gre = findViewById(R.id.tv_gre);
+        ll_student = findViewById(R.id.ll_student);
         tvTargeCountry = findViewById(R.id.tv_targe_country);
         tvTargetDegree = findViewById(R.id.tv_target_degree);
         tvTargetMajorDirection = findViewById(R.id.tv_target_direction);
@@ -125,6 +150,50 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
         tvActivityExchangey = findViewById(R.id.tv_activity_exchangey);
         llyt_activity_research = findViewById(R.id.llyt_activity_research);
         llyt_activity_community = findViewById(R.id.llyt_activity_community);
+        rv_school = findViewById(R.id.rv_school);
+        v_backline = findViewById(R.id.v_backline);
+        tv_count_school = findViewById(R.id.tv_count_school);
+
+        rv_school.setHasFixedSize(true);
+
+        mLayoutManager = new NoScrollLinearLayoutManager(this);
+
+        mLayoutManager.setScrollEnabled(true);
+
+        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
+        rv_school.setLayoutManager(mLayoutManager);
+
+        initAdapter();
+
+        rv_school.setAdapter(mAdapter);
+
+        rv_school.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
+                .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.horizontal_line_color).margin(32, 0).build());
+
+    }
+
+
+    private void initAdapter() {
+        schoolDataList = new ArrayList<>();
+        mAdapter = new CommonAdapter<StudentPageInfo.WatchSchools.SchoolData>(this, R.layout.item_studetn_school, schoolDataList) {
+
+            @Override
+            protected void convert(ViewHolder holder, StudentPageInfo.WatchSchools.SchoolData schoolData, int position) {
+                holder.setText(R.id.tv_school, schoolData.getSchool().getChineseName());
+                if (schoolData.getMatchTypeId().equals("MS_MATCH_TYPE_TOP")) {
+                    holder.setText(R.id.tv_status, "冲");
+                    holder.setBackgroundRes(R.id.tv_status, R.drawable.bg_oval_red_size);
+                } else if (schoolData.getMatchTypeId().equals("MS_MATCH_TYPE_MIDDLE")) {
+                    holder.setText(R.id.tv_status, "核");
+                    holder.setBackgroundRes(R.id.tv_status, R.drawable.bg_oval_blue_size);
+                } else {
+                    holder.setText(R.id.tv_status, "保");
+                    holder.setBackgroundRes(R.id.tv_status, R.drawable.bg_oval_green_size);
+                }
+
+            }
+        };
     }
 
     @Override
@@ -302,6 +371,25 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
             if (studentInfo.getBackgroundSection().getActivitySocial() != null) {
                 tv_shehui_event.setText(studentInfo.getBackgroundSection().getActivitySocial().getName());
             }
+        }
+
+
+        if (studentInfo.getWatchSchools() != null) {
+            ll_student.setVisibility(View.VISIBLE);
+            v_backline.setVisibility(View.GONE);
+            if (schoolDataList != null) {
+                schoolDataList.clear();
+            }
+
+            if (studentInfo.getWatchSchools().getData() != null) {
+                schoolDataList.addAll(studentInfo.getWatchSchools().getData());
+                mAdapter.notifyDataSetChanged();
+            }
+
+            tv_count_school.setText("(" + schoolDataList.size() + "所)");
+        } else {
+            ll_student.setVisibility(View.GONE);
+            v_backline.setVisibility(View.VISIBLE);
         }
     }
 }
