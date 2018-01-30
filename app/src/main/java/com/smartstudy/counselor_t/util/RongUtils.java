@@ -24,24 +24,8 @@ import io.rong.message.VoiceMessage;
 public class RongUtils {
 
     public static String setTitleTag(Message message) {
-        String extra = null;
+        String extra = getMsgExtra(message.getContent());
         String titleTag = "";
-        MessageContent messageContent = message.getContent();
-        if (TextMessage.class.isAssignableFrom(messageContent.getClass())) {
-            extra = ((TextMessage) messageContent).getExtra();
-        }
-        if (ImageMessage.class.isAssignableFrom(messageContent.getClass())) {
-            extra = ((ImageMessage) messageContent).getExtra();
-        }
-        if (LocationMessage.class.isAssignableFrom(messageContent.getClass())) {
-            extra = ((LocationMessage) messageContent).getExtra();
-        }
-        if (FileMessage.class.isAssignableFrom(messageContent.getClass())) {
-            extra = ((FileMessage) messageContent).getExtra();
-        }
-        if (VoiceMessage.class.isAssignableFrom(messageContent.getClass())) {
-            extra = ((VoiceMessage) messageContent).getExtra();
-        }
         if (!TextUtils.isEmpty(extra)) {
             JSONObject object = JSON.parseObject(extra);
             String year = Utils.getStringNum(object.getString("abroadyear"));

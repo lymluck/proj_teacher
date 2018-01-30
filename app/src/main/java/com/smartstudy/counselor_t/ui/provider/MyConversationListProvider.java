@@ -220,21 +220,21 @@ public class MyConversationListProvider implements IContainerItemProvider.Conver
 
     private void handleTag(MyConversationListProvider.ViewHolder holder, JSONObject object) {
         String year = Utils.getStringNum(object.getString("abroadyear"));
-        if (!TextUtils.isEmpty(year)) {
+        if (!TextUtils.isEmpty(year.trim())) {
             holder.tagYear.setVisibility(View.VISIBLE);
             holder.tagYear.setText(year);
         } else {
             holder.tagYear.setVisibility(View.GONE);
         }
         String country = object.getString("country");
-        if (!TextUtils.isEmpty(country)) {
+        if (!TextUtils.isEmpty(country.trim())) {
             holder.tagCountry.setVisibility(View.VISIBLE);
             holder.tagCountry.setText(country);
         } else {
             holder.tagCountry.setVisibility(View.GONE);
         }
         String grade = object.getString("grade");
-        if (!TextUtils.isEmpty(grade)) {
+        if (!TextUtils.isEmpty(grade.trim())) {
             holder.tagGrade.setVisibility(View.VISIBLE);
             holder.tagGrade.setText(grade);
         } else {
