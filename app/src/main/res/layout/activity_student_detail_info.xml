@@ -80,13 +80,14 @@
                     android:layout_height="wrap_content"
                     android:textColor="#949BA1"
                     android:textSize="13sp" />
-
             </LinearLayout>
         </LinearLayout>
 
         <include layout="@layout/layout_intention_information" />
 
-        <include layout="@layout/layout_base_info"/>
+        <include layout="@layout/layout_base_info" />
+
+        <include layout="@layout/layout_student_school_info" />
     </LinearLayout>
 
 </ScrollView>
