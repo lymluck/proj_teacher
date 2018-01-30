@@ -5,6 +5,7 @@ import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.smartstudy.counselor_t.StudentInfManager;
 import com.smartstudy.counselor_t.ui.provider.MyConversationListProvider;
