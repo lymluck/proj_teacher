@@ -109,7 +109,9 @@ public class LoginAcitivityPresenter extends BasePresenterImpl<LoginActivityCont
                     SPCacheUtils.put("imUserId", userid);
                     //更新用户信息
                     String cacheUrl = getCacheUrl(avatar);
-                    RongIM.getInstance().setCurrentUserInfo(new UserInfo(userid, userName, TextUtils.isEmpty(cacheUrl) ? null : Uri.parse(cacheUrl)));
+                    UserInfo userInfo = new UserInfo(userid, userName, TextUtils.isEmpty(cacheUrl) ? null : Uri.parse(cacheUrl));
+                    RongIM.getInstance().setCurrentUserInfo(userInfo);
+                    RongIM.getInstance().refreshUserInfoCache(userInfo);
                 }
 
                 @Override

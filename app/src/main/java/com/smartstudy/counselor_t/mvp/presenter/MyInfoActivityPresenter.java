@@ -117,7 +117,9 @@ public class MyInfoActivityPresenter extends BasePresenterImpl<MyInfoContract.Vi
                             }
                             if (name != null) {
                                 String avatar = (String) SPCacheUtils.get("avatar", "");
-                                RongIM.getInstance().setCurrentUserInfo(new UserInfo(imUserId, name, TextUtils.isEmpty(avatar) ? null : Uri.parse(avatar)));
+                                UserInfo userInfo = new UserInfo(imUserId, name, TextUtils.isEmpty(avatar) ? null : Uri.parse(avatar));
+                                RongIM.getInstance().setCurrentUserInfo(userInfo);
+                                RongIM.getInstance().refreshUserInfoCache(userInfo);
                             }
                         }
                     }

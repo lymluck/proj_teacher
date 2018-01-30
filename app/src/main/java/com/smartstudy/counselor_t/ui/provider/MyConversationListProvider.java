@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -35,7 +34,7 @@ import io.rong.imkit.model.ProviderTag;
 import io.rong.imkit.model.UIConversation;
 import io.rong.imkit.userInfoCache.RongUserInfoManager;
 import io.rong.imkit.utils.RongDateUtils;
-import io.rong.imkit.widget.provider.IContainerItemProvider;
+import io.rong.imkit.widget.provider.PrivateConversationProvider;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
@@ -48,11 +47,7 @@ import io.rong.imlib.model.UserInfo;
         conversationType = "private",
         portraitPosition = 1
 )
-public class MyConversationListProvider implements IContainerItemProvider.ConversationProvider<UIConversation> {
-    private static final String TAG = "MyConversationListProvider";
-
-    public MyConversationListProvider() {
-    }
+public class MyConversationListProvider extends PrivateConversationProvider {
 
     @Override
     public View newView(Context context, ViewGroup viewGroup) {
@@ -71,7 +66,7 @@ public class MyConversationListProvider implements IContainerItemProvider.Conver
     }
 
     @Override
-    public void bindView(View view, int position, UIConversation data) {
+    public void bindView(View view, int position, final UIConversation data) {
         final MyConversationListProvider.ViewHolder holder = (MyConversationListProvider.ViewHolder) view.getTag();
         ProviderTag tag = null;
         if (data == null) {
@@ -200,10 +195,6 @@ public class MyConversationListProvider implements IContainerItemProvider.Conver
                 holder.notificationBlockImage.setVisibility(View.GONE);
             }
         }
-    }
-
-    public Spannable getSummary(UIConversation data) {
-        return null;
     }
 
     @Override
