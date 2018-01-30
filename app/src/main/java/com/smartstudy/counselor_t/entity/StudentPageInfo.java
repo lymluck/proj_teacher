@@ -1,5 +1,7 @@
 package com.smartstudy.counselor_t.entity;
 
+import java.util.List;
+
 /**
  * @author yqy
  * @date on 2018/1/12
@@ -34,6 +36,8 @@ public class StudentPageInfo {
 
         private TargetMajorDirection targetMajorDirection;
 
+        private TargetSchoolRank targetSchoolRank;
+
         public class AdmissionTime extends CommonTarge {
 
 
@@ -51,6 +55,9 @@ public class StudentPageInfo {
 
         }
 
+        public class TargetSchoolRank extends CommonTarge {
+        }
+
         public AdmissionTime getAdmissionTime() {
             return admissionTime;
         }
@@ -65,6 +72,14 @@ public class StudentPageInfo {
 
         public void setTargetCountry(TargetCountry targetCountry) {
             this.targetCountry = targetCountry;
+        }
+
+        public TargetSchoolRank getTargetSchoolRank() {
+            return targetSchoolRank;
+        }
+
+        public void setTargetSchoolRank(TargetSchoolRank targetSchoolRank) {
+            this.targetSchoolRank = targetSchoolRank;
         }
 
         public TargetDegree getTargetDegree() {
@@ -231,6 +246,124 @@ public class StudentPageInfo {
 
     public class WatchSchools {
 
+        private List<SchoolData> data;
+
+
+        public List<SchoolData> getData() {
+            return data;
+        }
+
+        public void setData(List<SchoolData> data) {
+            this.data = data;
+        }
+
+        public class SchoolData {
+
+            private String id;
+
+            private String matchTypeId;
+
+            private String sourceId;
+
+            private String prob;
+
+            private String createTime;
+
+            private School school;
+
+
+            public String getId() {
+                return id;
+            }
+
+            public void setId(String id) {
+                this.id = id;
+            }
+
+            public String getMatchTypeId() {
+                return matchTypeId;
+            }
+
+            public void setMatchTypeId(String matchTypeId) {
+                this.matchTypeId = matchTypeId;
+            }
+
+            public String getSourceId() {
+                return sourceId;
+            }
+
+            public void setSourceId(String sourceId) {
+                this.sourceId = sourceId;
+            }
+
+            public String getProb() {
+                return prob;
+            }
+
+            public void setProb(String prob) {
+                this.prob = prob;
+            }
+
+            public String getCreateTime() {
+                return createTime;
+            }
+
+            public void setCreateTime(String createTime) {
+                this.createTime = createTime;
+            }
+
+            public School getSchool() {
+                return school;
+            }
+
+            public void setSchool(School school) {
+                this.school = school;
+            }
+
+            public class School {
+                private String id;
+
+                private String chineseName;
+
+                private String englishName;
+
+                private String logo;
+
+
+                public String getId() {
+                    return id;
+                }
+
+                public void setId(String id) {
+                    this.id = id;
+                }
+
+                public String getChineseName() {
+                    return chineseName;
+                }
+
+                public void setChineseName(String chineseName) {
+                    this.chineseName = chineseName;
+                }
+
+                public String getEnglishName() {
+                    return englishName;
+                }
+
+                public void setEnglishName(String englishName) {
+                    this.englishName = englishName;
+                }
+
+                public String getLogo() {
+                    return logo;
+                }
+
+                public void setLogo(String logo) {
+                    this.logo = logo;
+                }
+            }
+
+        }
     }
 
 

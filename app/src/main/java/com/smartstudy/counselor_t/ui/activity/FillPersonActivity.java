@@ -3,6 +3,7 @@ package com.smartstudy.counselor_t.ui.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -57,6 +58,7 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
     private File photoSaveFile;// 保存文件夹
     private String photoSaveName = null;// 图片名
     private String selected_path = null;
+    private boolean isImage = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -220,25 +222,26 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
         }
 
         DisplayImageUtils.displayCircleImage(this, "", ivPhoto);
-        if (!TextUtils.isEmpty(teacherInfo.getAvatar())) {
+        if (!TextUtils.isEmpty(teacherInfo.getAvatar()) && photoFile == null) {
+            isImage = true;
             DisplayImageUtils.displayCircleImage(this, teacherInfo.getAvatar(), ivAvatar);
         }
-        if (!TextUtils.isEmpty(teacherInfo.getName())) {
+        if (!TextUtils.isEmpty(teacherInfo.getName()) && TextUtils.isEmpty(getNickName())) {
             tv_nick_name.setText(teacherInfo.getName());
         }
-        if (!TextUtils.isEmpty(teacherInfo.getTitle())) {
+        if (!TextUtils.isEmpty(teacherInfo.getTitle()) && TextUtils.isEmpty(getWorkTitle())) {
             tv_work_name.setText(teacherInfo.getTitle());
         }
-        if (!TextUtils.isEmpty(teacherInfo.getYearsOfWorking())) {
+        if (!TextUtils.isEmpty(teacherInfo.getYearsOfWorking()) && TextUtils.isEmpty(getWorkExperience())) {
             tv_work_experience.setText(teacherInfo.getYearsOfWorking());
         }
-        if (!TextUtils.isEmpty(teacherInfo.getSchool())) {
+        if (!TextUtils.isEmpty(teacherInfo.getSchool()) && TextUtils.isEmpty(getGraduatedSchool())) {
             tv_graduated_school.setText(teacherInfo.getSchool());
         }
-        if (!TextUtils.isEmpty(teacherInfo.getEmail())) {
+        if (!TextUtils.isEmpty(teacherInfo.getEmail()) && TextUtils.isEmpty(getEmail())) {
             tv_email.setText(teacherInfo.getEmail());
         }
-        if (!TextUtils.isEmpty(teacherInfo.getRealName())) {
+        if (!TextUtils.isEmpty(teacherInfo.getRealName()) && TextUtils.isEmpty(getRealName())) {
             tv_name.setText(teacherInfo.getRealName());
         }
     }
@@ -268,6 +271,7 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
         return tv_email.getText().toString().trim();
     }
 
+
     private void setBtEnBleClick() {
         btPostInfo.setClickable(false);
         btPostInfo.setTextColor(Color.parseColor("#949BA1"));
@@ -275,8 +279,9 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
         btPostInfo.setBackgroundResource(R.drawable.bg_submit_review_grey);
     }
 
+
     private boolean checkInput() {
-        if (photoFile == null || TextUtils.isEmpty(getNickName()) || TextUtils.isEmpty(getWorkTitle()) ||
+        if ((photoFile == null && !isImage) || TextUtils.isEmpty(getNickName()) || TextUtils.isEmpty(getWorkTitle()) ||
                 TextUtils.isEmpty(getWorkExperience()) || TextUtils.isEmpty(getWorkExperience()) ||
                 TextUtils.isEmpty(getGraduatedSchool()) || TextUtils.isEmpty(getRealName()) ||
                 TextUtils.isEmpty(getEmail())) {

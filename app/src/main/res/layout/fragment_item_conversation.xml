@@ -18,8 +18,8 @@
 
         <FrameLayout
             android:id="@id/rc_item1"
-            android:layout_width="66dp"
-            android:layout_height="66dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_alignParentLeft="true">
 
             <io.rong.imkit.widget.AsyncImageView
@@ -65,8 +65,8 @@
 
         <FrameLayout
             android:id="@id/rc_item2"
-            android:layout_width="66dp"
-            android:layout_height="66dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_alignParentRight="true"
             android:background="@android:color/transparent">
 

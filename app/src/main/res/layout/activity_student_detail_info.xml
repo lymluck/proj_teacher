@@ -34,7 +34,8 @@
                     android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:textColor="@color/app_text_color2"
@@ -79,13 +80,14 @@
                     android:layout_height="wrap_content"
                     android:textColor="#949BA1"
                     android:textSize="13sp" />
-
             </LinearLayout>
         </LinearLayout>
 
         <include layout="@layout/layout_intention_information" />
 
-        <include layout="@layout/layout_base_info"/>
+        <include layout="@layout/layout_base_info" />
+
+        <include layout="@layout/layout_student_school_info" />
     </LinearLayout>
 
 </ScrollView>
