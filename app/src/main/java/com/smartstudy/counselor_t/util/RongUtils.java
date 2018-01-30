@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import io.rong.imlib.model.Message;
+import io.rong.imlib.model.MessageContent;
 import io.rong.message.FileMessage;
 import io.rong.message.ImageMessage;
 import io.rong.message.LocationMessage;
@@ -25,20 +26,21 @@ public class RongUtils {
     public static String setTitleTag(Message message) {
         String extra = null;
         String titleTag = "";
-        if (message.getContent() instanceof TextMessage) {
-            extra = ((TextMessage) message.getContent()).getExtra();
+        MessageContent messageContent = message.getContent();
+        if (TextMessage.class.isAssignableFrom(messageContent.getClass())) {
+            extra = ((TextMessage) messageContent).getExtra();
         }
-        if (message.getContent() instanceof ImageMessage) {
-            extra = ((ImageMessage) message.getContent()).getExtra();
+        if (ImageMessage.class.isAssignableFrom(messageContent.getClass())) {
+            extra = ((ImageMessage) messageContent).getExtra();
         }
-        if (message.getContent() instanceof LocationMessage) {
-            extra = ((LocationMessage) message.getContent()).getExtra();
+        if (LocationMessage.class.isAssignableFrom(messageContent.getClass())) {
+            extra = ((LocationMessage) messageContent).getExtra();
         }
-        if (message.getContent() instanceof FileMessage) {
-            extra = ((FileMessage) message.getContent()).getExtra();
+        if (FileMessage.class.isAssignableFrom(messageContent.getClass())) {
+            extra = ((FileMessage) messageContent).getExtra();
         }
-        if (message.getContent() instanceof VoiceMessage) {
-            extra = ((VoiceMessage) message.getContent()).getExtra();
+        if (VoiceMessage.class.isAssignableFrom(messageContent.getClass())) {
+            extra = ((VoiceMessage) messageContent).getExtra();
         }
         if (!TextUtils.isEmpty(extra)) {
             JSONObject object = JSON.parseObject(extra);
@@ -57,5 +59,25 @@ public class RongUtils {
             SPCacheUtils.put("titleTag", titleTag);
         }
         return titleTag;
+    }
+
+    public static String getMsgExtra(MessageContent messageContent) {
+        String extra = null;
+        if (TextMessage.class.isAssignableFrom(messageContent.getClass())) {
+            extra = ((TextMessage) messageContent).getExtra();
+        }
+        if (ImageMessage.class.isAssignableFrom(messageContent.getClass())) {
+            extra = ((ImageMessage) messageContent).getExtra();
+        }
+        if (LocationMessage.class.isAssignableFrom(messageContent.getClass())) {
+            extra = ((LocationMessage) messageContent).getExtra();
+        }
+        if (FileMessage.class.isAssignableFrom(messageContent.getClass())) {
+            extra = ((FileMessage) messageContent).getExtra();
+        }
+        if (VoiceMessage.class.isAssignableFrom(messageContent.getClass())) {
+            extra = ((VoiceMessage) messageContent).getExtra();
+        }
+        return extra;
     }
 }

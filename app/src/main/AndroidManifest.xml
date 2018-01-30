@@ -37,6 +37,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!-- Rong消息通知接收 -->
+        <receiver
+            android:name=".receiver.RongNotificationReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="io.rong.push.intent.MESSAGE_ARRIVED" />
+                <action android:name="io.rong.push.intent.MI_MESSAGE_ARRIVED" />
+                <action android:name="io.rong.push.intent.MESSAGE_CLICKED" />
+                <action android:name="io.rong.push.intent.MI_MESSAGE_CLICKED" />
+            </intent-filter>
+        </receiver>
+
         <!-- android N适配 -->
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -74,6 +86,7 @@
 
         <activity
             android:name=".ui.activity.ConversationActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize">
 

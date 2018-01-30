@@ -120,22 +120,22 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
         object.put("title", SPCacheUtils.get("title", ""));
         object.put("workyear", SPCacheUtils.get("year", ""));
         object.put("company", SPCacheUtils.get("company", ""));
-
+        MessageContent messageContent = message.getContent();
         //按消息类型添加extra
-        if (message.getContent() instanceof TextMessage) {
-            ((TextMessage) message.getContent()).setExtra(object.toJSONString());
+        if (TextMessage.class.isAssignableFrom(messageContent.getClass())) {
+            ((TextMessage) messageContent).setExtra(object.toJSONString());
         }
-        if (message.getContent() instanceof ImageMessage) {
-            ((ImageMessage) message.getContent()).setExtra(object.toJSONString());
+        if (ImageMessage.class.isAssignableFrom(messageContent.getClass())) {
+            ((ImageMessage) messageContent).setExtra(object.toJSONString());
         }
-        if (message.getContent() instanceof LocationMessage) {
-            ((LocationMessage) message.getContent()).setExtra(object.toJSONString());
+        if (LocationMessage.class.isAssignableFrom(messageContent.getClass())) {
+            ((LocationMessage) messageContent).setExtra(object.toJSONString());
         }
-        if (message.getContent() instanceof FileMessage) {
-            ((FileMessage) message.getContent()).setExtra(object.toJSONString());
+        if (FileMessage.class.isAssignableFrom(messageContent.getClass())) {
+            ((FileMessage) messageContent).setExtra(object.toJSONString());
         }
-        if (message.getContent() instanceof VoiceMessage) {
-            ((VoiceMessage) message.getContent()).setExtra(object.toJSONString());
+        if (VoiceMessage.class.isAssignableFrom(messageContent.getClass())) {
+            ((VoiceMessage) messageContent).setExtra(object.toJSONString());
         }
         return message;
     }

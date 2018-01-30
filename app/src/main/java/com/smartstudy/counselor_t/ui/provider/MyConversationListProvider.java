@@ -20,7 +20,10 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.smartstudy.counselor_t.R;
+import com.smartstudy.counselor_t.util.RongUtils;
 import com.smartstudy.counselor_t.util.Utils;
+
+import java.util.List;
 
 import io.rong.common.RLog;
 import io.rong.imkit.RongContext;
@@ -33,14 +36,10 @@ import io.rong.imkit.model.UIConversation;
 import io.rong.imkit.userInfoCache.RongUserInfoManager;
 import io.rong.imkit.utils.RongDateUtils;
 import io.rong.imkit.widget.provider.IContainerItemProvider;
+import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 import io.rong.imlib.model.UserInfo;
-import io.rong.message.FileMessage;
-import io.rong.message.ImageMessage;
-import io.rong.message.LocationMessage;
-import io.rong.message.TextMessage;
-import io.rong.message.VoiceMessage;
 
 /**
  * Created by yqy on 2017/12/29.
@@ -73,7 +72,7 @@ public class MyConversationListProvider implements IContainerItemProvider.Conver
 
     @Override
     public void bindView(View view, int position, UIConversation data) {
-        MyConversationListProvider.ViewHolder holder = (MyConversationListProvider.ViewHolder) view.getTag();
+        final MyConversationListProvider.ViewHolder holder = (MyConversationListProvider.ViewHolder) view.getTag();
         ProviderTag tag = null;
         if (data == null) {
             holder.title.setText((CharSequence) null);
@@ -84,51 +83,35 @@ public class MyConversationListProvider implements IContainerItemProvider.Conver
             holder.tagGrade.setVisibility(View.GONE);
         } else {
             holder.title.setText(data.getUIConversationTitle());
-            String extra = null;
-            if (data.getMessageContent() instanceof TextMessage) {
-                extra = ((TextMessage) data.getMessageContent()).getExtra();
-            }
-            if (data.getMessageContent() instanceof ImageMessage) {
-                extra = ((ImageMessage) data.getMessageContent()).getExtra();
-            }
-            if (data.getMessageContent() instanceof LocationMessage) {
-                extra = ((LocationMessage) data.getMessageContent()).getExtra();
-            }
-            if (data.getMessageContent() instanceof FileMessage) {
-                extra = ((FileMessage) data.getMessageContent()).getExtra();
-            }
-            if (data.getMessageContent() instanceof VoiceMessage) {
-                extra = ((VoiceMessage) data.getMessageContent()).getExtra();
-            }
+            String extra = RongUtils.getMsgExtra(data.getMessageContent());
             if (!TextUtils.isEmpty(extra)) {
-                JSONObject object = JSON.parseObject(extra);
-                String year = Utils.getStringNum(object.getString("abroadyear"));
-                if (!TextUtils.isEmpty(year)) {
-                    holder.tagYear.setVisibility(View.VISIBLE);
-                    holder.tagYear.setText(year);
+                final JSONObject object = JSON.parseObject(extra);
+                if (!object.containsKey("abroadyear")) {
+                    RongIM.getInstance().getHistoryMessages(Conversation.ConversationType.PRIVATE, data.getConversationTargetId(), data.getLatestMessageId(), 15, new RongIMClient.ResultCallback<List<Message>>() {
+                        @Override
+                        public void onSuccess(List<Message> messages) {
+                            for (Message message : messages) {
+                                String extra = RongUtils.getMsgExtra(message.getContent());
+                                JSONObject obj_msg = JSON.parseObject(extra);
+                                if (obj_msg != null &&obj_msg.containsKey("abroadyear")) {
+                                    handleTag(holder, obj_msg);
+                                    break;
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onError(RongIMClient.ErrorCode errorCode) {
+                        }
+                    });
                 } else {
-                    holder.tagYear.setVisibility(View.GONE);
-                }
-                String country = object.getString("country");
-                if (!TextUtils.isEmpty(country)) {
-                    holder.tagCountry.setVisibility(View.VISIBLE);
-                    holder.tagCountry.setText(country);
-                } else {
-                    holder.tagCountry.setVisibility(View.GONE);
-                }
-                String grade = object.getString("grade");
-                if (!TextUtils.isEmpty(grade)) {
-                    holder.tagGrade.setVisibility(View.VISIBLE);
-                    holder.tagGrade.setText(grade);
-                } else {
-                    holder.tagGrade.setVisibility(View.GONE);
+                    handleTag(holder, object);
                 }
             }
             String time = RongDateUtils.getConversationListFormatDate(data.getUIConversationTime(), view.getContext());
             holder.time.setText(time);
             if (TextUtils.isEmpty(data.getDraft()) && !data.getMentionedFlag()) {
                 boolean readRec = false;
-
                 try {
                     readRec = view.getResources().getBoolean(io.rong.imkit.R.bool.rc_read_receipt);
                 } catch (Resources.NotFoundException var11) {
@@ -217,7 +200,6 @@ public class MyConversationListProvider implements IContainerItemProvider.Conver
                 holder.notificationBlockImage.setVisibility(View.GONE);
             }
         }
-
     }
 
     public Spannable getSummary(UIConversation data) {
@@ -236,6 +218,29 @@ public class MyConversationListProvider implements IContainerItemProvider.Conver
         return userInfo == null ? null : userInfo.getPortraitUri();
     }
 
+    private void handleTag(MyConversationListProvider.ViewHolder holder, JSONObject object) {
+        String year = Utils.getStringNum(object.getString("abroadyear"));
+        if (!TextUtils.isEmpty(year)) {
+            holder.tagYear.setVisibility(View.VISIBLE);
+            holder.tagYear.setText(year);
+        } else {
+            holder.tagYear.setVisibility(View.GONE);
+        }
+        String country = object.getString("country");
+        if (!TextUtils.isEmpty(country)) {
+            holder.tagCountry.setVisibility(View.VISIBLE);
+            holder.tagCountry.setText(country);
+        } else {
+            holder.tagCountry.setVisibility(View.GONE);
+        }
+        String grade = object.getString("grade");
+        if (!TextUtils.isEmpty(grade)) {
+            holder.tagGrade.setVisibility(View.VISIBLE);
+            holder.tagGrade.setText(grade);
+        } else {
+            holder.tagGrade.setVisibility(View.GONE);
+        }
+    }
 
     protected class ViewHolder {
         public TextView title;
