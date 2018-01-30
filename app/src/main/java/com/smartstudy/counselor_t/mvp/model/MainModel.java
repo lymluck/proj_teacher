@@ -18,16 +18,6 @@ import java.util.Map;
  */
 public class MainModel extends BaseModel {
 
-    public void getStudentInfo(String id, ObserverListener listener) {
-        Map<String, String> params = new HashMap<>();
-        try {
-            params.put("id", URLEncoder.encode(id, "utf-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        apiSubscribe(ApiManager.getApiService().getStudentInfo(getHeadersMap(), params), listener);
-    }
-
     public void getAuditResult(ObserverListener listener) {
         apiSubscribe(ApiManager.getApiService().getAuditResult(getHeadersMap()), listener);
     }

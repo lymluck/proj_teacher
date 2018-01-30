@@ -10,7 +10,7 @@ public interface ObserverListener<T> {
 
     void onSubscribe(Disposable disposable);
 
-    void onNext(T t);
+    void onNext(T result);
 
     void onError(String msg);
 }

@@ -3,6 +3,7 @@ package com.smartstudy.counselor_t.util;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
@@ -331,7 +332,7 @@ public class DisplayImageUtils {
     public static String formatImgUrl(String url, int width, int height) {
         String new_url = url;
         String params = "?x-oss-process=image/resize,m_lfit,w_" + width + ",h_" + height;
-        if (new_url != null && !"".equals(new_url)) {
+        if (!TextUtils.isEmpty(new_url)) {
             if (new_url.contains("!")) {
                 new_url = new_url.split("!")[0] + params;
             } else {

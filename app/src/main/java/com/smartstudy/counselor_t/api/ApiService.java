@@ -40,16 +40,6 @@ public interface ApiService {
     @POST(HttpUrlUtils.URL_CODE_LOGIN)
     Observable<ResponseInfo> phoneCodeLogin(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
-
-    /**
-     * 获取学生信息
-     *
-     * @param
-     * @return
-     */
-    @GET(HttpUrlUtils.URL_STUDENT_INFO)
-    Observable<ResponseInfo> getStudentInfo(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
-
     /**
      * 获取学生主页详情
      *
@@ -58,6 +48,15 @@ public interface ApiService {
      */
     @GET(HttpUrlUtils.URL_STUDENT_DETAIL_INFO)
     Observable<ResponseInfo> getStudentDetailInfo(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+
+    /**
+     * 获取学生信息
+     *
+     * @param id
+     * @return
+     */
+    @GET(HttpUrlUtils.URL_STUDENT_DETAIL_INFO)
+    Observable<ResponseInfo> getStudentInfo(@HeaderMap Map<String, String> header, @Query("id") String id);
 
     /**
      * 重新获取token
