@@ -2,6 +2,7 @@ package com.smartstudy.counselor_t.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -16,10 +17,12 @@ import com.smartstudy.counselor_t.util.SPCacheUtils;
 import java.util.List;
 
 import io.rong.imkit.RongIM;
+import io.rong.imkit.userInfoCache.RongUserInfoManager;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 import io.rong.imlib.model.MessageContent;
+import io.rong.imlib.model.UserInfo;
 import io.rong.message.FileMessage;
 import io.rong.message.ImageMessage;
 import io.rong.message.LocationMessage;
@@ -82,6 +85,10 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
             public void onError(RongIMClient.ErrorCode errorCode) {
             }
         });
+        UserInfo userInfo = RongUserInfoManager.getInstance().getUserInfo("xxdcnsl#8@tdc");
+        Log.d("id====", userInfo.getUserId());
+        Log.d("name====", userInfo.getName());
+        Log.d("avatar====", userInfo.getPortraitUri().toString());
     }
 
     @Override

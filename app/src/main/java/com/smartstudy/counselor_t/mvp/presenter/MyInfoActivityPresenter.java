@@ -112,13 +112,18 @@ public class MyInfoActivityPresenter extends BasePresenterImpl<MyInfoContract.Vi
                             name = teacherInfo.getName();
                         }
                         if (RongIM.getInstance() != null) {
-                            if (avatarUri != null) {
-                                RongIM.getInstance().refreshUserInfoCache(new UserInfo(imUserId, (String) SPCacheUtils.get("name", ""), avatarUri));
-                            }
-                            if (name != null) {
-                                String avatar = (String) SPCacheUtils.get("avatar", "");
-                                UserInfo userInfo = new UserInfo(imUserId, name, TextUtils.isEmpty(avatar) ? null : Uri.parse(avatar));
-                                RongIM.getInstance().refreshUserInfoCache(userInfo);
+                            if (avatarUri != null && name != null) {
+                                RongIM.getInstance().refreshUserInfoCache(new UserInfo(imUserId, name, avatarUri));
+                            } else {
+                                if (avatarUri != null && name == null) {
+                                    RongIM.getInstance().refreshUserInfoCache(new UserInfo(imUserId, (String) SPCacheUtils.get("name", ""), avatarUri));
+                                }
+                                if (name != null && avatarUri == null) {
+                                    String avatar = (String) SPCacheUtils.get("avatar", "");
+                                    UserInfo userInfo = new UserInfo(imUserId, name, TextUtils.isEmpty(avatar) ? null : Uri.parse(avatar));
+                                    RongIM.getInstance().refreshUserInfoCache(userInfo);
+                                    RongIM.getInstance().setCurrentUserInfo(userInfo);
+                                }
                             }
                         }
                     }

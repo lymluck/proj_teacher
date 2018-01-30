@@ -5,7 +5,6 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -32,13 +31,11 @@ import io.rong.imkit.model.ConversationKey;
 import io.rong.imkit.model.ConversationProviderTag;
 import io.rong.imkit.model.ProviderTag;
 import io.rong.imkit.model.UIConversation;
-import io.rong.imkit.userInfoCache.RongUserInfoManager;
 import io.rong.imkit.utils.RongDateUtils;
 import io.rong.imkit.widget.provider.PrivateConversationProvider;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
-import io.rong.imlib.model.UserInfo;
 
 /**
  * Created by yqy on 2017/12/29.
@@ -195,18 +192,6 @@ public class MyConversationListProvider extends PrivateConversationProvider {
                 holder.notificationBlockImage.setVisibility(View.GONE);
             }
         }
-    }
-
-    @Override
-    public String getTitle(String userId) {
-        UserInfo userInfo = RongUserInfoManager.getInstance().getUserInfo(userId);
-        return userInfo == null ? userId : userInfo.getName();
-    }
-
-    @Override
-    public Uri getPortraitUri(String userId) {
-        UserInfo userInfo = RongUserInfoManager.getInstance().getUserInfo(userId);
-        return userInfo == null ? null : userInfo.getPortraitUri();
     }
 
     private void handleTag(MyConversationListProvider.ViewHolder holder, JSONObject object) {
