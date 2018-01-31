@@ -22,7 +22,7 @@
         android:id="@+id/rc_message"
         android:layout_width="235dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/rc_ic_bubble_right"
+        android:background="@drawable/rc_ic_bubble_left"
         android:orientation="vertical">
 
         <LinearLayout

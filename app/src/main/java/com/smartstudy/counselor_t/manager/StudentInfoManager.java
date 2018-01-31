@@ -4,7 +4,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
-import com.smartstudy.counselor_t.api.ApiManager;
+import com.smartstudy.counselor_t.server.api.ApiManager;
 import com.smartstudy.counselor_t.entity.StudentPageInfo;
 import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.mvp.base.BaseModel;

@@ -20,4 +20,6 @@ public class ConstantUtils {
     public static final int REQUEST_CODE_LOGIN = 15;
     public static final String API_SERVER = "api_server";
     public static final String CACHE_NULL = "xxd_null";
+    //请求缓存类型
+    public static final String REQUEST_CACHE_TYPE_HEAD = "requestCacheType";
 }

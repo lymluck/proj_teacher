@@ -1,6 +1,7 @@
-package com.smartstudy.counselor_t.api;
+package com.smartstudy.counselor_t.server.api;
 
 import com.smartstudy.counselor_t.converter.FastJsonConverterFactory;
+import com.smartstudy.counselor_t.server.okhttpcache.interceptor.CacheAndCookieInterceptor;
 import com.smartstudy.counselor_t.util.HttpUrlUtils;
 import com.smartstudy.counselor_t.util.SDCardUtils;
 
@@ -45,6 +46,7 @@ public class ApiManager {
         //写入超时
         ClientBuilder.writeTimeout(30, TimeUnit.SECONDS);
         ClientBuilder.cache(cache);
+        ClientBuilder.addInterceptor(new CacheAndCookieInterceptor());
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(HttpUrlUtils.getBaseUrl())

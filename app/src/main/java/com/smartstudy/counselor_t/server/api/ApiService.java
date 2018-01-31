@@ -1,7 +1,9 @@
-package com.smartstudy.counselor_t.api;
+package com.smartstudy.counselor_t.server.api;
 
 import com.smartstudy.counselor_t.entity.ResponseInfo;
+import com.smartstudy.counselor_t.util.ConstantUtils;
 import com.smartstudy.counselor_t.util.HttpUrlUtils;
+import com.smartstudy.counselor_t.util.ParameterUtils;
 
 import java.util.Map;
 
@@ -10,6 +12,7 @@ import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.HeaderMap;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
@@ -17,9 +20,12 @@ import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
 /**
- * Created by louis on 2017/12/27.
+ * @author louis
+ * @date on 2017/12/27.
+ * @describe get请求按需进行@Headers配置缓存
+ * @org com.smartstudy.counselor_t
+ * @email luoyongming@innobuddy.com
  */
-
 public interface ApiService {
 
     /**
@@ -47,6 +53,7 @@ public interface ApiService {
      * @return
      */
     @GET(HttpUrlUtils.URL_STUDENT_DETAIL_INFO)
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
     Observable<ResponseInfo> getStudentDetailInfo(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
     /**
@@ -56,6 +63,7 @@ public interface ApiService {
      * @return
      */
     @GET(HttpUrlUtils.URL_STUDENT_DETAIL_INFO)
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
     Observable<ResponseInfo> getStudentInfo(@HeaderMap Map<String, String> header, @Query("id") String id);
 
     /**
@@ -91,17 +99,18 @@ public interface ApiService {
      */
 
     @GET(HttpUrlUtils.URL_COUNSELLOR_PROFILE)
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
     Observable<ResponseInfo> getAuditResult(@HeaderMap Map<String, String> header);
 
 
     @GET(HttpUrlUtils.URL_COUNSELLOR_PROFILE)
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
     Observable<ResponseInfo> getMyInfo(@HeaderMap Map<String, String> header);
 
 
     /**
      *
      */
-
     @POST(HttpUrlUtils.URL_USER_LOGOUT)
     Observable<ResponseInfo> getLogOut(@HeaderMap Map<String, String> header);
 }

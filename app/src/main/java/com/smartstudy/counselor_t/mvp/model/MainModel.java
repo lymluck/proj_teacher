@@ -1,13 +1,8 @@
 package com.smartstudy.counselor_t.mvp.model;
 
-import com.smartstudy.counselor_t.api.ApiManager;
+import com.smartstudy.counselor_t.server.api.ApiManager;
 import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.mvp.base.BaseModel;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author yqy

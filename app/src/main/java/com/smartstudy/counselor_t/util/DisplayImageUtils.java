@@ -123,33 +123,33 @@ public class DisplayImageUtils {
 
     public static void displayPersonImageWithborder(Context context, String url, ImageView view,
                                                     int border_width, int border_color) {
-        Glide.with(context).load(url).centerCrop().diskCacheStrategy(DiskCacheStrategy.RESULT).placeholder(R.drawable.ic_person_default)
-                .error(R.drawable.ic_person_default).transform(new GlideCircleTransform(context, border_width, border_color))
+        Glide.with(context).load(url).centerCrop().diskCacheStrategy(DiskCacheStrategy.RESULT).placeholder(R.drawable.rc_default_portrait)
+                .error(R.drawable.rc_default_portrait).transform(new GlideCircleTransform(context, border_width, border_color))
                 .dontAnimate().into(view);
     }
 
     public static void displayPersonImage(Context context, String url, ImageView view) {
-        Glide.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.RESULT).placeholder(R.drawable.ic_person_default)
-                .error(R.drawable.ic_person_default).transform(new GlideCircleTransform(context))
+        Glide.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.RESULT).placeholder(R.drawable.rc_default_portrait)
+                .error(R.drawable.rc_default_portrait).transform(new GlideCircleTransform(context))
                 .dontAnimate().into(view);
     }
 
     public static void displayPersonImage(Context context, String url, ImageView view, RequestListener<String, GlideDrawable> listener) {
-        Glide.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.RESULT).listener(listener).placeholder(R.drawable.ic_person_default)
-                .error(R.drawable.ic_person_default).transform(new GlideCircleTransform(context))
+        Glide.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.RESULT).listener(listener).placeholder(R.drawable.rc_default_portrait)
+                .error(R.drawable.rc_default_portrait).transform(new GlideCircleTransform(context))
                 .dontAnimate().into(view);
     }
 
     public static void displayPersonRes(Context context, int id, ImageView view) {
-        Glide.with(context).load(id).error(R.drawable.ic_person_default).transform(new GlideCircleTransform(context)).dontAnimate().into(view);
+        Glide.with(context).load(id).error(R.drawable.rc_default_portrait).transform(new GlideCircleTransform(context)).dontAnimate().into(view);
     }
 
     public static void displayPersonRes(Context context, File file, ImageView view) {
-        Glide.with(context).load(file).error(R.drawable.ic_person_default).transform(new GlideCircleTransform(context)).dontAnimate().into(view);
+        Glide.with(context).load(file).error(R.drawable.rc_default_portrait).transform(new GlideCircleTransform(context)).dontAnimate().into(view);
     }
 
     public static void displayPersonRes(Context context, Bitmap bmp, ImageView view) {
-        Glide.with(context).load(BitmapUtils.compressBitmap2Byte(bmp)).error(R.drawable.ic_person_default).transform(new GlideCircleTransform(context))
+        Glide.with(context).load(BitmapUtils.compressBitmap2Byte(bmp)).error(R.drawable.rc_default_portrait).transform(new GlideCircleTransform(context))
                 .dontAnimate().into(view);
     }
 

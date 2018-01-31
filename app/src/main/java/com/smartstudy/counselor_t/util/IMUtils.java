@@ -3,7 +3,7 @@ package com.smartstudy.counselor_t.util;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
-import com.smartstudy.counselor_t.api.ApiManager;
+import com.smartstudy.counselor_t.server.api.ApiManager;
 import com.smartstudy.counselor_t.entity.ResponseInfo;
 
 import io.reactivex.Observer;
