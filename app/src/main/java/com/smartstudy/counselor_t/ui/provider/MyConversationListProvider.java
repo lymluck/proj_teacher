@@ -58,26 +58,12 @@ public class MyConversationListProvider extends PrivateConversationProvider {
             if (!TextUtils.isEmpty(extra)) {
                 final JSONObject object = JSON.parseObject(extra);
                 if (!object.containsKey("abroadyear")) {
-                    RongIM.getInstance().getHistoryMessages(Conversation.ConversationType.PRIVATE, data.getConversationTargetId(), data.getLatestMessageId(), 100, new RongIMClient.ResultCallback<List<Message>>() {
-                        @Override
-                        public void onSuccess(List<Message> messages) {
-                            for (Message message : messages) {
-                                String extra = RongUtils.getMsgExtra(message.getContent());
-                                JSONObject obj_msg = JSON.parseObject(extra);
-                                if (obj_msg != null && obj_msg.containsKey("abroadyear")) {
-                                    handleTag(holder, obj_msg);
-                                    break;
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onError(RongIMClient.ErrorCode errorCode) {
-                        }
-                    });
+                    getExtraFromCache(holder, data);
                 } else {
                     handleTag(holder, object);
                 }
+            } else {
+                getExtraFromCache(holder, data);
             }
         }
     }
@@ -104,6 +90,26 @@ public class MyConversationListProvider extends PrivateConversationProvider {
         } else {
             holder.tagGrade.setVisibility(View.GONE);
         }
+    }
+
+    private void getExtraFromCache(final MyConversationListProvider.MyHolder holder, UIConversation data) {
+        RongIM.getInstance().getHistoryMessages(Conversation.ConversationType.PRIVATE, data.getConversationTargetId(), data.getLatestMessageId(), 100, new RongIMClient.ResultCallback<List<Message>>() {
+            @Override
+            public void onSuccess(List<Message> messages) {
+                for (Message message : messages) {
+                    String extra = RongUtils.getMsgExtra(message.getContent());
+                    JSONObject obj_msg = JSON.parseObject(extra);
+                    if (obj_msg != null && obj_msg.containsKey("abroadyear")) {
+                        handleTag(holder, obj_msg);
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+            }
+        });
     }
 
     protected class MyHolder {
