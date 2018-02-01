@@ -169,7 +169,7 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
         rv_school.setAdapter(mAdapter);
 
         rv_school.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
-                .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.horizontal_line_color).margin(32, 0).build());
+                .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.horizontal_line_color).build());
 
     }
 
