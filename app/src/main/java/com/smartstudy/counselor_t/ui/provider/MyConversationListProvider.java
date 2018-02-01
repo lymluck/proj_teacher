@@ -44,6 +44,10 @@ public class MyConversationListProvider extends PrivateConversationProvider {
 
     @Override
     public void bindView(View view, int position, final UIConversation data) {
+        super.bindView(view, position, data);
+        //默认的会话列表回执不显示，样式不合适，需要的话自己定义
+        ((ViewHolder) view.getTag()).readStatus.setVisibility(View.GONE);
+        //自定义部分
         final MyConversationListProvider.MyHolder holder = (MyConversationListProvider.MyHolder) view.getTag(R.id.my_holder);
         if (data == null) {
             holder.tagYear.setVisibility(View.GONE);
@@ -76,7 +80,6 @@ public class MyConversationListProvider extends PrivateConversationProvider {
                 }
             }
         }
-        super.bindView(view, position, data);
     }
 
     private void handleTag(MyConversationListProvider.MyHolder holder, JSONObject object) {

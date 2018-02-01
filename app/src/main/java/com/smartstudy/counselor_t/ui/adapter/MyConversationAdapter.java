@@ -1,0 +1,45 @@
+package com.smartstudy.counselor_t.ui.adapter;
+
+import android.content.Context;
+import android.graphics.Color;
+import android.view.View;
+
+import io.rong.imkit.model.UIMessage;
+import io.rong.imkit.widget.adapter.MessageListAdapter;
+import io.rong.imlib.model.Message;
+
+/**
+ * @author louis
+ * @date on 2018/2/1
+ * @describe 自定义聊天列表适配器
+ * @org xxd.smartstudy.com
+ * @email luoyongming@innobuddy.com
+ */
+
+public class MyConversationAdapter extends MessageListAdapter {
+    public MyConversationAdapter(Context context) {
+        super(context);
+    }
+
+    @Override
+    protected void bindView(View v, int position, UIMessage data) {
+        super.bindView(v, position, data);
+        if (data != null) {
+            //逻辑前提是配置中开启了使用阅读回执功能
+            final MessageListAdapter.ViewHolder holder = (MessageListAdapter.ViewHolder) v.getTag();
+            if (holder != null) {
+                if (data.getMessageDirection() == Message.MessageDirection.SEND) {
+                    if (data.getSentStatus() == Message.SentStatus.READ) {
+                        holder.readReceipt.setVisibility(View.VISIBLE);
+                        holder.readReceipt.setText("已读");
+                        holder.readReceipt.setTextColor(Color.parseColor("#d7d7d7"));
+                    } else {
+                        holder.readReceipt.setVisibility(View.VISIBLE);
+                        holder.readReceipt.setText("未读");
+                        holder.readReceipt.setTextColor(Color.parseColor("#96c4ec"));
+                    }
+                }
+            }
+        }
+    }
+}
