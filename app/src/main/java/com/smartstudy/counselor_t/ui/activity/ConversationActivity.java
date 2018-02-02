@@ -42,9 +42,12 @@ import io.rong.message.VoiceMessage;
  * 3，push 和 通知 判断
  */
 public class ConversationActivity extends BaseActivity implements View.OnClickListener, RongIM.OnSendMessageListener {
+
     private TextView tvTitle;
     private String targeId;
     private TextView tvTitleTag;
+
+    private MyConversationFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +69,7 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
         RongIM.getInstance().setSendMessageListener(this);
     }
 
-    private void enterFragment(final Conversation.ConversationType mConversationType, final String mTargetId) {
-        setTvTitleTag();
+    private void enterFragment(final Conversation.ConversationType mConversationType) {
         if (RongIM.getInstance().getCurrentConnectionStatus().equals(RongIMClient.ConnectionStatusListener.ConnectionStatus.DISCONNECTED)) {
             new WeakHandler().postDelayed(new Runnable() {
                 @Override
@@ -82,12 +84,12 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
 
                             @Override
                             public void onSuccess(String s) {
-                                enterFragment(mConversationType, mTargetId);
+                                showFragment(mConversationType);
                             }
 
                             @Override
                             public void onError(RongIMClient.ErrorCode errorCode) {
-                                enterFragment(mConversationType, mTargetId);
+                                showFragment(mConversationType);
                             }
                         });
                     } else {
@@ -96,19 +98,25 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
                 }
             }, 300);
         } else {
-            MyConversationFragment fragment = new MyConversationFragment();
+            showFragment(mConversationType);
+        }
+    }
 
+    private void showFragment(Conversation.ConversationType mConversationType) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        if (fragment != null) {
+            transaction.show(fragment);
+        } else {
+            fragment = new MyConversationFragment();
             Uri uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
                     .appendPath("conversation").appendPath(mConversationType.getName().toLowerCase())
-                    .appendQueryParameter("targetId", mTargetId).build();
+                    .appendQueryParameter("targetId", targeId).build();
 
             fragment.setUri(uri);
-
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            //xxx 为你要加载的 id
             transaction.add(R.id.rong_content, fragment);
-            transaction.commitAllowingStateLoss();
         }
+        transaction.commitAllowingStateLoss();
+        setTvTitleTag();
     }
 
     @Override
@@ -125,7 +133,7 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
         targeId = uri.getQueryParameter("targetId");
         Conversation.ConversationType mConversationType = Conversation.ConversationType.valueOf(uri
                 .getLastPathSegment().toUpperCase(Locale.US));
-        enterFragment(mConversationType, targeId);
+        enterFragment(mConversationType);
     }
 
     private void setTvTitleTag() {
