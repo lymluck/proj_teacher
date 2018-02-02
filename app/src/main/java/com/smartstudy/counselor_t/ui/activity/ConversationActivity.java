@@ -1,19 +1,25 @@
 package com.smartstudy.counselor_t.ui.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.smartstudy.counselor_t.R;
+import com.smartstudy.counselor_t.handler.WeakHandler;
 import com.smartstudy.counselor_t.mvp.base.BasePresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
+import com.smartstudy.counselor_t.ui.fragment.MyConversationFragment;
 import com.smartstudy.counselor_t.util.RongUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
 
 import java.util.List;
+import java.util.Locale;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
@@ -48,10 +54,61 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+    }
+
+    @Override
     public void initEvent() {
         this.findViewById(R.id.topdefault_rightbutton2).setOnClickListener(this);
         this.findViewById(R.id.topdefault_leftbutton2).setOnClickListener(this);
         RongIM.getInstance().setSendMessageListener(this);
+    }
+
+    private void enterFragment(final Conversation.ConversationType mConversationType, final String mTargetId) {
+        setTvTitleTag();
+        if (RongIM.getInstance().getCurrentConnectionStatus().equals(RongIMClient.ConnectionStatusListener.ConnectionStatus.DISCONNECTED)) {
+            new WeakHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    //登录融云IM
+                    String cacheToken = (String) SPCacheUtils.get("imToken", "");
+                    if (!TextUtils.isEmpty(cacheToken)) {
+                        RongIM.connect(cacheToken, new RongIMClient.ConnectCallback() {
+                            @Override
+                            public void onTokenIncorrect() {
+                            }
+
+                            @Override
+                            public void onSuccess(String s) {
+                                enterFragment(mConversationType, mTargetId);
+                            }
+
+                            @Override
+                            public void onError(RongIMClient.ErrorCode errorCode) {
+                                enterFragment(mConversationType, mTargetId);
+                            }
+                        });
+                    } else {
+                        startActivity(new Intent(ConversationActivity.this, LoginActivity.class));
+                    }
+                }
+            }, 300);
+        } else {
+            MyConversationFragment fragment = new MyConversationFragment();
+
+            Uri uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
+                    .appendPath("conversation").appendPath(mConversationType.getName().toLowerCase())
+                    .appendQueryParameter("targetId", mTargetId).build();
+
+            fragment.setUri(uri);
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            //xxx 为你要加载的 id
+            transaction.add(R.id.rong_content, fragment);
+            transaction.commitAllowingStateLoss();
+        }
     }
 
     @Override
@@ -63,8 +120,15 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
     public void initView() {
         tvTitle = findViewById(R.id.topdefault_centertitle2);
         tvTitleTag = findViewById(R.id.tv_title_tag);
-        tvTitle.setText(getIntent().getData().getQueryParameter("title"));
-        targeId = getIntent().getData().getQueryParameter("targetId");
+        Uri uri = getIntent().getData();
+        tvTitle.setText(uri.getQueryParameter("title"));
+        targeId = uri.getQueryParameter("targetId");
+        Conversation.ConversationType mConversationType = Conversation.ConversationType.valueOf(uri
+                .getLastPathSegment().toUpperCase(Locale.US));
+        enterFragment(mConversationType, targeId);
+    }
+
+    private void setTvTitleTag() {
         RongIM.getInstance().getHistoryMessages(Conversation.ConversationType.PRIVATE, targeId, 0, 100, new RongIMClient.ResultCallback<List<Message>>() {
             @Override
             public void onSuccess(List<Message> messages) {
@@ -72,7 +136,13 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
                     String extra = RongUtils.getMsgExtra(message.getContent());
                     JSONObject obj_msg = JSON.parseObject(extra);
                     if (obj_msg != null && obj_msg.containsKey("abroadyear")) {
-                        tvTitleTag.setText(RongUtils.getTitleTag(extra));
+                        String tag = RongUtils.getTitleTag(extra);
+                        if (TextUtils.isEmpty(tag)) {
+                            tvTitleTag.setVisibility(View.GONE);
+                        } else {
+                            tvTitleTag.setText(RongUtils.getTitleTag(extra));
+                            tvTitleTag.setVisibility(View.VISIBLE);
+                        }
                         break;
                     }
                 }
