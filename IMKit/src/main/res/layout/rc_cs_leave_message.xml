@@ -9,48 +9,44 @@
         android:id="@+id/layout_head"
         android:layout_width="match_parent"
         android:layout_height="48dip"
-        android:background="#0195ff"
+        android:background="@android:color/white"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/rc_btn_cancel"
             android:layout_width="48dp"
-            android:layout_height="match_parent"
+            android:layout_height="48dp"
             android:background="@drawable/rc_cs_back_selector"
-            android:drawableLeft="@drawable/rc_cs_back_icon"
+            android:drawableLeft="@drawable/rc_back_icon"
             android:gravity="center_vertical"
             android:onClick="onHeadLeftButtonClick"
+            android:paddingLeft="16dp"
             android:textColor="@android:color/white" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="24dp"
-            android:layout_marginBottom="12dp"
-            android:layout_marginTop="12dp"
-            android:background="#0083e0" />
-
 
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="12dp"
+            android:layout_marginRight="48dp"
             android:layout_weight="1"
-            android:gravity="center_vertical|left"
+            android:gravity="center"
             android:maxLength="20"
             android:maxLines="1"
             android:text="@string/rc_cs_leave_message"
-            android:textColor="@android:color/white"
-            android:textSize="18sp" />
+            android:textColor="#ff333333"
+            android:textSize="17sp" />
     </LinearLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -65,19 +61,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-        </LinearLayout>
+
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/rc_submit_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/rc_cs_leave_message_btn"
-                android:textColor="@android:color/white"
+                android:gravity="center"
                 android:text="@string/rc_cs_submit_message"
-                android:gravity="center"/>
-    </LinearLayout>
+                android:textColor="@android:color/white" />
+        </LinearLayout>
     </ScrollView>
 
 

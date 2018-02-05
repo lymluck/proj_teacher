@@ -19,3 +19,9 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-dontwarn io.rong.push.**
+ -dontnote com.xiaomi.**
+-keep public class com.google.firebase.* {*;}
+ -dontnote io.rong.**
+
+-keep class com.smartstudy.counselor_t.receiver.RongNotificationReceiver {*;}

@@ -58,7 +58,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     @Override
     protected void onResume() {
         requestPermissions(getString(R.string.permission_external) + "，" + getString(R.string.permission_phone)
-                + "，" + getString(R.string.permission_voice) + "," + getString(R.string.permission_access_fine_location));
+                + "，" + getString(R.string.permission_voice) + "，" + getString(R.string.permission_access_fine_location));
         super.onResume();
     }
 

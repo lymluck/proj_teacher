@@ -34,9 +34,6 @@ import io.rong.message.LocationMessage;
 import io.rong.message.TextMessage;
 import io.rong.message.VoiceMessage;
 
-//CallKit start 1
-//CallKit end 1
-
 /**
  * 会话页面
  * 1，设置 ActionBar title
@@ -174,7 +171,6 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
                 intent.setClass(this, StudentInfoActivity.class);
                 startActivity(intent);
                 break;
-
             case R.id.topdefault_leftbutton2:
                 finish();
                 break;
