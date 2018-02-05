@@ -3,6 +3,7 @@ package com.smartstudy.counselor_t.ui.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.smartstudy.counselor_t.handler.WeakHandler;
 import com.smartstudy.counselor_t.mvp.base.BasePresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.ui.fragment.MyConversationFragment;
+import com.smartstudy.counselor_t.util.IMUtils;
 import com.smartstudy.counselor_t.util.RongUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
 
@@ -48,6 +50,8 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
     private TextView tvTitleTag;
 
     private MyConversationFragment fragment;
+    private WeakHandler mHandler;
+    private Conversation.ConversationType mConversationType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,38 +75,21 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
 
     private void enterFragment(final Conversation.ConversationType mConversationType) {
         if (RongIM.getInstance().getCurrentConnectionStatus().equals(RongIMClient.ConnectionStatusListener.ConnectionStatus.DISCONNECTED)) {
-            new WeakHandler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    //登录融云IM
-                    String cacheToken = (String) SPCacheUtils.get("imToken", "");
-                    if (!TextUtils.isEmpty(cacheToken)) {
-                        RongIM.connect(cacheToken, new RongIMClient.ConnectCallback() {
-                            @Override
-                            public void onTokenIncorrect() {
-                            }
-
-                            @Override
-                            public void onSuccess(String s) {
-                                showFragment(mConversationType);
-                            }
-
-                            @Override
-                            public void onError(RongIMClient.ErrorCode errorCode) {
-                                showFragment(mConversationType);
-                            }
-                        });
-                    } else {
-                        startActivity(new Intent(ConversationActivity.this, LoginActivity.class));
-                    }
-                }
-            }, 300);
+            String cacheToken = (String) SPCacheUtils.get("imToken", "");
+            if (!TextUtils.isEmpty(cacheToken)) {
+                //登录融云IM
+                RongIM.connect(cacheToken, IMUtils.getConnectCallback());
+                mHandler.sendEmptyMessageDelayed(1, 300);
+            } else {
+                startActivity(new Intent(ConversationActivity.this, LoginActivity.class));
+            }
         } else {
-            showFragment(mConversationType);
+            setTvTitleTag();
+            showFragment();
         }
     }
 
-    private void showFragment(Conversation.ConversationType mConversationType) {
+    private void showFragment() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (fragment != null) {
             transaction.show(fragment);
@@ -116,7 +103,6 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
             transaction.add(R.id.rong_content, fragment);
         }
         transaction.commitAllowingStateLoss();
-        setTvTitleTag();
     }
 
     @Override
@@ -131,8 +117,25 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
         Uri uri = getIntent().getData();
         tvTitle.setText(uri.getQueryParameter("title"));
         targeId = uri.getQueryParameter("targetId");
-        Conversation.ConversationType mConversationType = Conversation.ConversationType.valueOf(uri
+        mConversationType = Conversation.ConversationType.valueOf(uri
                 .getLastPathSegment().toUpperCase(Locale.US));
+        mHandler = new WeakHandler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(android.os.Message msg) {
+                switch (msg.what) {
+                    case 1:
+                        showFragment();
+                        mHandler.sendEmptyMessageDelayed(2, 300);
+                        break;
+                    case 2:
+                        setTvTitleTag();
+                        break;
+                    default:
+                        break;
+                }
+                return false;
+            }
+        });
         enterFragment(mConversationType);
     }
 
