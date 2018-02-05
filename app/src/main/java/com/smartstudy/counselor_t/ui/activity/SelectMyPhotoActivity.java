@@ -1,6 +1,5 @@
 package com.smartstudy.counselor_t.ui.activity;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -38,6 +37,7 @@ import com.smartstudy.counselor_t.util.ParameterUtils;
 import com.smartstudy.counselor_t.util.SDCardUtils;
 import com.smartstudy.counselor_t.util.ScreenUtils;
 import com.smartstudy.counselor_t.util.Utils;
+import com.smartstudy.permissions.Permission;
 import com.smartstudy.permissions.PermissionUtil;
 
 import java.io.File;
@@ -231,7 +231,7 @@ public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implement
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                     if (ParameterUtils.ALL_PICS.equals(mChooseDir.getText().toString())) {
                         if (position == 0 && "".equals(mImgs.get(position))) {
-                            PermissionUtil.requestPermissions(SelectMyPhotoActivity.this, getString(R.string.permission_camera), ParameterUtils.REQUEST_CODE_CAMERA, Manifest.permission.CAMERA);
+                            PermissionUtil.requestPermissions(SelectMyPhotoActivity.this, getString(R.string.permission_camera), ParameterUtils.REQUEST_CODE_CAMERA, Permission.CAMERA);
                         } else {
                             String photo_path = mImgs.get(position);
                             Intent toClipImage = new Intent();
@@ -263,7 +263,7 @@ public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implement
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                     if (ParameterUtils.ALL_PICS.equals(mChooseDir.getText().toString())) {
                         if (position == 0 && "".equals(mImgs.get(position))) {
-                            PermissionUtil.requestPermissions(SelectMyPhotoActivity.this, getString(R.string.permission_camera), ParameterUtils.REQUEST_CODE_CAMERA, Manifest.permission.CAMERA);
+                            PermissionUtil.requestPermissions(SelectMyPhotoActivity.this, getString(R.string.permission_camera), ParameterUtils.REQUEST_CODE_CAMERA, Permission.CAMERA);
                         }
                     }
                 }
@@ -511,7 +511,7 @@ public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implement
 
     @Override
     public void onPermissionsDenied(int requestCode, List<String> perms) {
-        verifyPermission(perms, getString(R.string.permission_camera), Manifest.permission.CAMERA);
+        verifyPermission(perms, getString(R.string.permission_camera), Permission.CAMERA);
     }
 
 }
