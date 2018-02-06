@@ -16,8 +16,10 @@ import io.rong.imkit.widget.adapter.MessageListAdapter;
  */
 
 public class MyConversationFragment extends ConversationFragment {
+
     @Override
     public MessageListAdapter onResolveAdapter(Context context) {
         return new MyConversationAdapter(context);
     }
+
 }
