@@ -256,7 +256,7 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
                 break;
 
             case R.id.tv_login_out:
-                presenter.getLogOut();
+//                presenter.getLogOut();
                 break;
             default:
                 break;
@@ -284,23 +284,23 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
         }
     }
 
-    @Override
-    public void getLogOutSuccess() {
-        RongIM.getInstance().logout();
-        SPCacheUtils.put("phone", ParameterUtils.CACHE_NULL);
-        SPCacheUtils.put("name", ParameterUtils.CACHE_NULL);
-        SPCacheUtils.put("avatar", ParameterUtils.CACHE_NULL);
-        SPCacheUtils.put("ticket", ParameterUtils.CACHE_NULL);
-        SPCacheUtils.put("orgId", ParameterUtils.CACHE_NULL);
-        SPCacheUtils.put("title", ParameterUtils.CACHE_NULL);
-        SPCacheUtils.put("imToken", "");
-        SPCacheUtils.put("imUserId", "");
-        Utils.removeCookie(MyInfoActivity.this);
-        Intent to_login = new Intent(MyInfoActivity.this, LoginActivity.class);
-        to_login.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(to_login);
-    }
+//    @Override
+//    public void getLogOutSuccess() {
+//        RongIM.getInstance().logout();
+//        SPCacheUtils.put("phone", ParameterUtils.CACHE_NULL);
+//        SPCacheUtils.put("name", ParameterUtils.CACHE_NULL);
+//        SPCacheUtils.put("avatar", ParameterUtils.CACHE_NULL);
+//        SPCacheUtils.put("ticket", ParameterUtils.CACHE_NULL);
+//        SPCacheUtils.put("orgId", ParameterUtils.CACHE_NULL);
+//        SPCacheUtils.put("title", ParameterUtils.CACHE_NULL);
+//        SPCacheUtils.put("imToken", "");
+//        SPCacheUtils.put("imUserId", "");
+//        Utils.removeCookie(MyInfoActivity.this);
+//        Intent to_login = new Intent(MyInfoActivity.this, LoginActivity.class);
+//        to_login.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+//                Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        startActivity(to_login);
+//    }
 
 
     @Override

@@ -14,6 +14,7 @@
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:gravity="left|center_vertical"
+            android:paddingLeft="@dimen/app_top_right_btn_marginleft"
             android:minWidth="@dimen/app_top_leftright_btnimagewh">
 
             <ImageView
@@ -22,7 +23,6 @@
                 android:layout_height="match_parent"
                 android:layout_marginRight="5dp"
                 android:clickable="true"
-                android:paddingLeft="@dimen/app_top_right_btn_marginleft"
                 android:paddingRight="@dimen/app_top_right_btn_marginleftright"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_go_back" />

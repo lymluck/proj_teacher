@@ -66,25 +66,7 @@ public class MyInfoActivityPresenter extends BasePresenterImpl<MyInfoContract.Vi
         });
     }
 
-    @Override
-    public void getLogOut() {
-        myInfoModel.getLogOut(new ObserverListener<String>() {
-            @Override
-            public void onSubscribe(Disposable disposable) {
-                addDisposable(disposable);
-            }
 
-            @Override
-            public void onNext(String s) {
-                view.getLogOutSuccess();
-            }
-
-            @Override
-            public void onError(String msg) {
-                view.showTip(msg);
-            }
-        });
-    }
 
     @Override
     public void updateMyInfo(String name, File avatar, String title, String school, String yearsOfWorking,

@@ -55,5 +55,25 @@ public class MainActivityPresenter extends BasePresenterImpl<MainActivityContrac
             }
         });
     }
+
+    @Override
+    public void getLogOut() {
+        mainModel.getLogOut(new ObserverListener<String>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                addDisposable(disposable);
+            }
+
+            @Override
+            public void onNext(String s) {
+                view.getLogOutSuccess();
+            }
+
+            @Override
+            public void onError(String msg) {
+                view.showTip(msg);
+            }
+        });
+    }
 }
 

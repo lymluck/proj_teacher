@@ -1,5 +1,6 @@
 package com.smartstudy.counselor_t.ui.base;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -121,6 +122,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     public void initEvent() {
         topdefaultLeftbutton.setOnClickListener(this);
         topdefaultRightbutton.setOnClickListener(this);
+//        topdefaultLefttext.setOnClickListener(this);
     }
 
     @Override
@@ -184,6 +186,15 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
     public void setTopLineVisibility(int visible) {
         topLine.setVisibility(visible);
+    }
+
+    public void setTopdefaultLefttextVisible(int visible) {
+        topdefaultLefttext.setVisibility(visible);
+    }
+
+
+    public void setTopdefaultLefttextColor(String color) {
+        topdefaultLefttext.setTextColor(Color.parseColor(color));
     }
 
     @Override

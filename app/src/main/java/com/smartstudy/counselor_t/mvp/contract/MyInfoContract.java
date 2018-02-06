@@ -21,7 +21,6 @@ public interface MyInfoContract {
 
         void getMyInfoSuccess(TeacherInfo teacherInfo);
 
-        void getLogOutSuccess();
 
         void updateMyInfoSuccesee();
 
@@ -31,7 +30,6 @@ public interface MyInfoContract {
 
         void getMyInfo();
 
-        void getLogOut();
 
         void updateMyInfo(String name, File avatar, String title, String school, String yearsOfWorking,
                           String email, String realName, ImageView ivAvatar);

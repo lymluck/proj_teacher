@@ -16,5 +16,9 @@ public class MainModel extends BaseModel {
     public void getAuditResult(ObserverListener listener) {
         apiSubscribe(ApiManager.getApiService().getAuditResult(getHeadersMap()), listener);
     }
+
+    public void getLogOut(ObserverListener listener) {
+        apiSubscribe(ApiManager.getApiService().getLogOut(getHeadersMap()), listener);
+    }
 }
 

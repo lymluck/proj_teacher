@@ -25,9 +25,6 @@ public class MyInfoModel extends BaseModel {
         apiSubscribe(ApiManager.getApiService().getMyInfo(getHeadersMap()), listener);
     }
 
-    public void getLogOut(ObserverListener listener) {
-        apiSubscribe(ApiManager.getApiService().getLogOut(getHeadersMap()), listener);
-    }
 
     public void updatePersonInfo(String name, File file, String title, String school, String yearsOfWorking, String email, String realName, ObserverListener listener) {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
