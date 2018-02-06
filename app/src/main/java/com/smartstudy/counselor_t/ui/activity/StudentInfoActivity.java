@@ -375,21 +375,20 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
 
 
         if (studentInfo.getWatchSchools() != null) {
-            ll_student.setVisibility(View.VISIBLE);
-            v_backline.setVisibility(View.GONE);
+
             if (schoolDataList != null) {
                 schoolDataList.clear();
             }
-
-            if (studentInfo.getWatchSchools().getData() != null) {
+            if (studentInfo.getWatchSchools().getData() != null&&studentInfo.getWatchSchools().getData().size()>0) {
+                ll_student.setVisibility(View.VISIBLE);
+                v_backline.setVisibility(View.GONE);
                 schoolDataList.addAll(studentInfo.getWatchSchools().getData());
                 mAdapter.notifyDataSetChanged();
+                tv_count_school.setText("(" + schoolDataList.size() + "所)");
+            } else {
+                ll_student.setVisibility(View.GONE);
+                v_backline.setVisibility(View.VISIBLE);
             }
-
-            tv_count_school.setText("(" + schoolDataList.size() + "所)");
-        } else {
-            ll_student.setVisibility(View.GONE);
-            v_backline.setVisibility(View.VISIBLE);
         }
     }
 }

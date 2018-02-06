@@ -19,9 +19,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:paddingLeft="5dp"
+            android:paddingBottom="6dp"
             android:layout_gravity="bottom"
-            android:background="@drawable/rc_edit_text_background_selector"
-            android:paddingTop="3dp"
+            android:background="@drawable/bg_ext_input_edit"
+            android:paddingTop="6dp"
             android:maxLines="4"
             android:textSize="16sp"/>
     </RelativeLayout>
@@ -37,7 +39,7 @@
 
     <FrameLayout
         android:id="@+id/rc_send_toggle"
-        android:layout_width="44dp"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:background="@drawable/rc_send_toggle_selector"
