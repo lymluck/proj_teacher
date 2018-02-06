@@ -122,6 +122,13 @@
             android:name=".ui.activity.MyInfoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
+
+        <activity
+            android:name=".ui.activity.CommonEditNameActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
+
     </application>
 
 </manifest>

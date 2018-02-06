@@ -20,6 +20,7 @@ import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.mvp.contract.MyInfoContract;
 import com.smartstudy.counselor_t.mvp.presenter.MyInfoActivityPresenter;
 import com.smartstudy.counselor_t.ui.activity.ClipPictureActivity;
+import com.smartstudy.counselor_t.ui.activity.CommonEditNameActivity;
 import com.smartstudy.counselor_t.ui.activity.SelectMyPhotoActivity;
 import com.smartstudy.counselor_t.ui.base.UIFragment;
 import com.smartstudy.counselor_t.ui.widget.ClipImageLayout;
@@ -60,6 +61,7 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
     private LinearLayout ll_graduated_school;
     private LinearLayout ll_name;
     private LinearLayout ll_email;
+
     @Override
     protected View getLayoutView() {
         return mActivity.getLayoutInflater().inflate(R.layout.fragment_person_info, null);
@@ -74,19 +76,39 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
         tv_graduated_school = rootView.findViewById(R.id.tv_graduated_school);
         tv_name = rootView.findViewById(R.id.tv_name);
         tv_email = rootView.findViewById(R.id.tv_email);
-        ll_nick_name=rootView.findViewById(R.id.ll_nick_name);
-        ll_work_name=rootView.findViewById(R.id.ll_work_name);
-        ll_work_experience=rootView.findViewById(R.id.ll_work_experience);
-        ll_graduated_school=rootView.findViewById(R.id.ll_graduated_school);
-        ll_name=rootView.findViewById(R.id.ll_name);
-        ll_email=rootView.findViewById(R.id.ll_email);
+        ll_nick_name = rootView.findViewById(R.id.ll_nick_name);
+        ll_work_name = rootView.findViewById(R.id.ll_work_name);
+        ll_work_experience = rootView.findViewById(R.id.ll_work_experience);
+        ll_graduated_school = rootView.findViewById(R.id.ll_graduated_school);
+        ll_name = rootView.findViewById(R.id.ll_name);
+        ll_email = rootView.findViewById(R.id.ll_email);
         if (presenter != null) {
             presenter.getMyInfo();
         }
     }
 
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.ll_nick_name:
+                Intent toNickName = new Intent(mActivity, CommonEditNameActivity.class);
+                toNickName.putExtra("value", getNickName());
+                toNickName.putExtra(ParameterUtils.TRANSITION_FLAG, ParameterUtils.EDIT_NAME);
+                toNickName.putExtra("title", "修改昵称");
+                startActivityForResult(toNickName, ParameterUtils.REQUEST_CODE_EDIT_MYINFO);
+                break;
+        }
+    }
+
     @Override
     protected void initEvent() {
+        ll_nick_name.setOnClickListener(this);
+        ll_work_name.setOnClickListener(this);
+        ll_work_experience.setOnClickListener(this);
+        ll_graduated_school.setOnClickListener(this);
+        ll_name.setOnClickListener(this);
+        ll_email.setOnClickListener(this);
     }
 
     @Override
