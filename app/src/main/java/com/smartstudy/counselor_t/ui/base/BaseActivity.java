@@ -18,8 +18,10 @@ import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.mvp.base.BasePresenter;
 import com.smartstudy.counselor_t.mvp.base.BaseView;
 import com.smartstudy.counselor_t.util.ParameterUtils;
+import com.smartstudy.counselor_t.util.StringUtis;
 import com.smartstudy.counselor_t.util.ToastUtils;
 import com.smartstudy.permissions.AppSettingsDialog;
+import com.smartstudy.permissions.Permission;
 import com.smartstudy.permissions.PermissionUtil;
 
 import java.util.List;
@@ -43,6 +45,8 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     private View topLine;
     protected boolean hasBasePer = false;
     protected P presenter;
+    private static String[] REQUEST_PERMISSIONS = StringUtis.concatAll(
+            Permission.STORAGE, Permission.PHONE, Permission.MICROPHONE);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,16 +58,16 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     @Override
     protected void onResume() {
         requestPermissions(getString(R.string.permission_external) + "，" + getString(R.string.permission_phone)
-                + "，" + getString(R.string.permission_access_fine_location));
+                + "，" + getString(R.string.permission_voice) + "，" + getString(R.string.permission_access_fine_location));
         super.onResume();
     }
 
     public void requestPermissions(String permStr) {
-        if (!PermissionUtil.hasPermissions(this, ParameterUtils.REQUEST_PERMISSIONS)) {
+        if (!PermissionUtil.hasPermissions(this, REQUEST_PERMISSIONS)) {
             hasBasePer = false;
             //申请基本的权限
             PermissionUtil.requestPermissions(this, permStr,
-                    ParameterUtils.REQUEST_CODE_PERMISSIONS, ParameterUtils.REQUEST_PERMISSIONS);
+                    ParameterUtils.REQUEST_CODE_PERMISSIONS, REQUEST_PERMISSIONS);
         } else {
             hasBasePer = true;
         }
@@ -195,7 +199,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
     @Override
     public void onPermissionsDenied(int requestCode, List<String> perms) {
-        verifyPermission(perms, "", ParameterUtils.REQUEST_PERMISSIONS);
+        verifyPermission(perms, "", REQUEST_PERMISSIONS);
     }
 
     public void verifyPermission(List<String> Denyperms, String tips, String... requestPerms) {

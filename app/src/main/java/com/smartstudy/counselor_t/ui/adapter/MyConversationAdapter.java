@@ -29,10 +29,10 @@ public class MyConversationAdapter extends MessageListAdapter {
             //逻辑前提是配置中开启了使用阅读回执功能
             MessageListAdapter.ViewHolder holder = (MessageListAdapter.ViewHolder) v.getTag();
             if (holder != null) {
-                if (data.getMessageDirection() == Message.MessageDirection.SEND) {
-                    if (RecallNotificationMessage.class.isAssignableFrom(data.getContent().getClass())) {
-                        holder.readReceipt.setVisibility(View.GONE);
-                    } else {
+                if (RecallNotificationMessage.class.isAssignableFrom(data.getContent().getClass())) {
+                    holder.readReceipt.setVisibility(View.GONE);
+                } else {
+                    if (data.getMessageDirection() == Message.MessageDirection.SEND) {
                         if (data.getSentStatus() == Message.SentStatus.SENT) {
                             holder.readReceipt.setVisibility(View.VISIBLE);
                             holder.readReceipt.setText("未读");
@@ -44,9 +44,9 @@ public class MyConversationAdapter extends MessageListAdapter {
                         } else {
                             holder.readReceipt.setVisibility(View.GONE);
                         }
+                    } else {
+                        holder.readReceipt.setVisibility(View.GONE);
                     }
-                } else {
-                    holder.readReceipt.setVisibility(View.GONE);
                 }
             }
         }

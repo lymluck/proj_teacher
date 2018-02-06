@@ -1,15 +1,7 @@
 package com.smartstudy.counselor_t.util;
 
-import android.Manifest;
-
 public class ParameterUtils {
     public static final long SMS_TIMEOUT = 30 * 1000;  //短信验证倒计时
-
-    public static String[] REQUEST_PERMISSIONS = {
-            Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-    };
 
     public static final String CACHE_NULL = "xxd_null";
     // / 没有连接
