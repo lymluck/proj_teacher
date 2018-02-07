@@ -3,6 +3,7 @@ package com.smartstudy.counselor_t.ui.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -28,10 +29,14 @@ import com.smartstudy.counselor_t.util.CheckUtil;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
 import com.smartstudy.counselor_t.util.ParameterUtils;
 import com.smartstudy.counselor_t.util.SDCardUtils;
+import com.smartstudy.counselor_t.util.SPCacheUtils;
 import com.smartstudy.counselor_t.util.ToastUtils;
 import com.smartstudy.counselor_t.util.Utils;
 
 import java.io.File;
+
+import io.rong.imkit.RongIM;
+import io.rong.imlib.model.UserInfo;
 
 /**
  * @author yqy
@@ -48,7 +53,6 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
     private TextView tv_graduated_school;
     private TextView tv_email;
     private TextView tv_name;
-    private File photoFile;
 
     private File photoSaveFile;// 保存文件夹
     private String photoSaveName = null;// 图片名
@@ -98,6 +102,52 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
                 toNickName.putExtra("title", "修改昵称");
                 startActivityForResult(toNickName, ParameterUtils.REQUEST_CODE_EDIT_MYINFO);
                 break;
+
+            case R.id.iv_avatar:
+                Intent intent = new Intent(mActivity, SelectMyPhotoActivity.class);
+                intent.putExtra("singlePic", true);
+                startActivityForResult(intent, ParameterUtils.REQUEST_CODE_CHANGEPHOTO);
+                break;
+
+            case R.id.ll_work_name:
+                Intent toWorkName = new Intent(mActivity, CommonEditNameActivity.class);
+                toWorkName.putExtra("value", getWorkTitle());
+                toWorkName.putExtra(ParameterUtils.TRANSITION_FLAG, ParameterUtils.EDIT_WORK_NAME);
+                toWorkName.putExtra("title", "修改工作职称");
+                startActivityForResult(toWorkName, ParameterUtils.REQUEST_CODE_EDIT_MYINFO);
+                break;
+
+            case R.id.ll_work_experience:
+                Intent toWorkExperience = new Intent(mActivity, CommonEditNameActivity.class);
+                toWorkExperience.putExtra("value", getWorkExperience());
+                toWorkExperience.putExtra(ParameterUtils.TRANSITION_FLAG, ParameterUtils.EDIT_WORK_EXPERIENCE);
+                toWorkExperience.putExtra("title", "修改工作经验");
+                startActivityForResult(toWorkExperience, ParameterUtils.REQUEST_CODE_EDIT_MYINFO);
+                break;
+
+            case R.id.ll_graduated_school:
+                Intent toGraduatedSchool = new Intent(mActivity, CommonEditNameActivity.class);
+                toGraduatedSchool.putExtra("value", getGraduatedSchool());
+                toGraduatedSchool.putExtra(ParameterUtils.TRANSITION_FLAG, ParameterUtils.EDIT_GRADUATED_SCHOOL);
+                toGraduatedSchool.putExtra("title", "修改毕业学校");
+                startActivityForResult(toGraduatedSchool, ParameterUtils.REQUEST_CODE_EDIT_MYINFO);
+                break;
+            case R.id.ll_name:
+                Intent toRealName = new Intent(mActivity, CommonEditNameActivity.class);
+                toRealName.putExtra("value", getRealName());
+                toRealName.putExtra(ParameterUtils.TRANSITION_FLAG, ParameterUtils.EDIT_REAL_NAME);
+                toRealName.putExtra("title", "修改真实姓名");
+                startActivityForResult(toRealName, ParameterUtils.REQUEST_CODE_EDIT_MYINFO);
+                break;
+
+            case R.id.ll_email:
+                Intent toEmail = new Intent(mActivity, CommonEditNameActivity.class);
+                toEmail.putExtra("value", getEmail());
+                toEmail.putExtra(ParameterUtils.TRANSITION_FLAG, ParameterUtils.EDIT_EMAIL);
+                toEmail.putExtra("title", "修改邮箱");
+                startActivityForResult(toEmail, ParameterUtils.REQUEST_CODE_EDIT_MYINFO);
+                break;
+
         }
     }
 
@@ -109,6 +159,7 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
         ll_graduated_school.setOnClickListener(this);
         ll_name.setOnClickListener(this);
         ll_email.setOnClickListener(this);
+        ivAvatar.setOnClickListener(this);
     }
 
     @Override
@@ -137,8 +188,8 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
 
 
     @Override
-    public void updateMyInfoSuccesee() {
-        ToastUtils.shortToast(mActivity, "修改成功");
+    public void updateMyAvatarSuccesee() {
+        ToastUtils.shortToast(mActivity, "头像修改成功");
     }
 
 
@@ -177,10 +228,64 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
 
                     @Override
                     public void onResourceReady(File resource, GlideAnimation<? super File> glideAnimation) {
-                        photoFile = resource;
                         DisplayImageUtils.displayPersonRes(mActivity, resource, ivAvatar);
+                        presenter.updateMyAvatarInfo(resource,ivAvatar);
                     }
                 });
+                break;
+
+            case ParameterUtils.REQUEST_CODE_EDIT_MYINFO:
+                String flag = data.getStringExtra(ParameterUtils.TRANSITION_FLAG);
+                String value = data.getStringExtra("new_value");
+                TeacherInfo teacherInfo = (TeacherInfo) data.getSerializableExtra("");
+                if (ParameterUtils.EDIT_NAME.equals(flag)) {
+                    tv_nick_name.setText(value);
+                } else if (ParameterUtils.EDIT_WORK_NAME.equals(flag)) {
+                    tv_work_name.setText(value);
+                } else if (ParameterUtils.EDIT_WORK_EXPERIENCE.equals(flag)) {
+                    tv_work_experience.setText(value);
+                } else if (ParameterUtils.EDIT_GRADUATED_SCHOOL.equals(flag)) {
+                    tv_graduated_school.setText(value);
+                } else if (ParameterUtils.EDIT_REAL_NAME.equals(flag)) {
+                    tv_name.setText(value);
+                } else if (ParameterUtils.EDIT_EMAIL.equals(flag)) {
+                    tv_email.setText(value);
+                }
+
+                //更新缓存
+                if (teacherInfo != null) {
+                    //更新融云
+                    String imUserId = (String) SPCacheUtils.get("imUserId", "");
+                    if (!TextUtils.isEmpty(imUserId)) {
+                        Uri avatarUri = null;
+                        if (!TextUtils.isEmpty(teacherInfo.getAvatar())) {
+                            String avatarUrl = DisplayImageUtils.formatImgUrl(teacherInfo.getAvatar(), ivAvatar.getWidth(), ivAvatar.getHeight());
+                            avatarUri = Uri.parse(avatarUrl);
+                        }
+                        String name = null;
+                        if (!TextUtils.isEmpty(teacherInfo.getName())) {
+                            name = teacherInfo.getName();
+                        }
+                        if (RongIM.getInstance() != null) {
+                            if (avatarUri != null && name != null) {
+                                RongIM.getInstance().refreshUserInfoCache(new UserInfo(imUserId, name, avatarUri));
+                            } else {
+                                if (avatarUri != null && name == null) {
+                                    RongIM.getInstance().refreshUserInfoCache(new UserInfo(imUserId, (String) SPCacheUtils.get("name", ""), avatarUri));
+                                }
+                                if (name != null && avatarUri == null) {
+                                    String avatar = (String) SPCacheUtils.get("avatar", "");
+                                    UserInfo userInfo = new UserInfo(imUserId, name, TextUtils.isEmpty(avatar) ? null : Uri.parse(avatar));
+                                    RongIM.getInstance().refreshUserInfoCache(userInfo);
+                                    RongIM.getInstance().setCurrentUserInfo(userInfo);
+                                }
+                            }
+                        }
+                    }
+                    SPCacheUtils.put("title", teacherInfo.getTitle());
+                    SPCacheUtils.put("year", teacherInfo.getYearsOfWorking());
+                    SPCacheUtils.put("company", teacherInfo.getOrganization().getName());
+                }
                 break;
 
             default:

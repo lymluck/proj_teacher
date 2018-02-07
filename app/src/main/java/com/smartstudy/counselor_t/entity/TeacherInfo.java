@@ -1,5 +1,9 @@
 package com.smartstudy.counselor_t.entity;
 
+import android.support.v4.os.ParcelableCompat;
+
+import java.io.Serializable;
+
 /**
  * @author yqy
  * @date on 2018/1/22
@@ -7,7 +11,7 @@ package com.smartstudy.counselor_t.entity;
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */
-public class TeacherInfo {
+public class TeacherInfo implements Serializable{
 
     /**
      * createTime : 2018-01-11T08:32:32.240Z

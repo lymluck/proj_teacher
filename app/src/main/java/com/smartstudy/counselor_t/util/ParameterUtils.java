@@ -131,4 +131,10 @@ public class ParameterUtils {
     public static final String EDIT_EG_SCORE = "edit_eg_score";  //flag
     public static final String EDIT_GRE_SCORE = "edit_gre_score";  //flag
     public static final String EDIT_SAT_SCORE = "edit_sat_score";  //flag
+    public static final String EDIT_WORK_NAME = "edit_work_name";//工作职称
+    public static final String EDIT_WORK_EXPERIENCE = "edit_work_experience";//工作经验
+    public static final String EDIT_GRADUATED_SCHOOL = "edit_graduated_school";//毕业学校
+    public static final String EDIT_REAL_NAME = "edit_real_name";//修改真实姓名
+    public static final String EDIT_EMAIL = "edit_email";//修改邮箱
+
 }

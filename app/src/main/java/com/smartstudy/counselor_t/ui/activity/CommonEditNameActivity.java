@@ -2,19 +2,23 @@ package com.smartstudy.counselor_t.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
-import com.smartstudy.counselor_t.mvp.contract.MyInfoContract;
+import com.smartstudy.counselor_t.mvp.contract.CommonEditNameContract;
+import com.smartstudy.counselor_t.mvp.presenter.CommonEditNamePresenter;
 import com.smartstudy.counselor_t.mvp.presenter.MyInfoActivityPresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
+import com.smartstudy.counselor_t.util.CheckUtil;
 import com.smartstudy.counselor_t.util.KeyBoardUtils;
 import com.smartstudy.counselor_t.util.ParameterUtils;
+import com.smartstudy.counselor_t.util.ToastUtils;
 
-public class CommonEditNameActivity extends BaseActivity<MyInfoContract.Presenter> implements MyInfoContract.View {
+public class CommonEditNameActivity extends BaseActivity<CommonEditNameContract.Presenter> implements CommonEditNameContract.View {
 
     private EditText etname;
 
@@ -39,7 +43,11 @@ public class CommonEditNameActivity extends BaseActivity<MyInfoContract.Presente
         etname.requestFocus();
         KeyBoardUtils.openKeybord(etname, this);
         flag = data.getStringExtra(ParameterUtils.TRANSITION_FLAG);
-//        new EditMyInfoPresenter(this);
+        if (flag.equals(ParameterUtils.EDIT_WORK_EXPERIENCE)) {
+            etname.setInputType(InputType.TYPE_CLASS_NUMBER);
+        } else {
+            etname.setInputType(InputType.TYPE_CLASS_TEXT);
+        }
     }
 
     @Override
@@ -49,8 +57,8 @@ public class CommonEditNameActivity extends BaseActivity<MyInfoContract.Presente
     }
 
     @Override
-    public MyInfoContract.Presenter initPresenter() {
-        return new MyInfoActivityPresenter(this);
+    public CommonEditNameContract.Presenter initPresenter() {
+        return new CommonEditNamePresenter(this);
     }
 
 
@@ -63,48 +71,49 @@ public class CommonEditNameActivity extends BaseActivity<MyInfoContract.Presente
                 finish();
                 break;
             case R.id.topdefault_righttext:
-                if (flag.equals(ParameterUtils.EDIT_NAME)) {
-//                    presenter.updateMyInfo(etname,null,);
+                TeacherInfo teacherInfo = new TeacherInfo();
+                String content = etname.getText().toString().replaceAll(" ", "");
+                if (TextUtils.isEmpty(content)) {
+                    ToastUtils.shortToast(this, "输入的内容不能为空！");
+                    return;
                 }
-//                PersonalParamsInfo paramsModel = new PersonalParamsInfo();
-//                String content = etname.getText().toString().replaceAll(" ", "");
-//                if (TextUtils.isEmpty(content)) {
-//                    ToastUtils.showToast(this, "输入的内容不能为空！");
-//                    return;
-//                }
-//                if (ParameterUtils.EDIT_NAME.equals(flag)) {
-//                    paramsModel.setName(content);
-//                } else if (ParameterUtils.EDIT_GZ.equals(flag) || ParameterUtils.EDIT_BK.equals(flag) || ParameterUtils.EDIT_CZ.equals(flag)) {
-//                    paramsModel.setCurrentSchool(content);
-//                }
-//                editP.editMyInfo(paramsModel);
+
+                if (flag.equals(ParameterUtils.EDIT_EMAIL)) {
+                    if (!CheckUtil.checkEmail(content)) {
+                        ToastUtils.shortToast(this, "邮箱不合法");
+                        return;
+                    }
+                }
+                if (flag.equals(ParameterUtils.EDIT_NAME)) {
+                    teacherInfo.setName(content);
+                } else if (flag.equals(ParameterUtils.EDIT_WORK_NAME)) {
+                    teacherInfo.setTitle(content);
+                } else if (flag.equals(ParameterUtils.EDIT_WORK_EXPERIENCE)) {
+                    teacherInfo.setYearsOfWorking(content);
+                } else if (flag.equals(ParameterUtils.EDIT_GRADUATED_SCHOOL)) {
+                    teacherInfo.setSchool(content);
+                } else if (flag.equals(ParameterUtils.EDIT_REAL_NAME)) {
+                    teacherInfo.setRealName(content);
+                } else if (flag.equals(ParameterUtils.EDIT_EMAIL)) {
+                    teacherInfo.setEmail(content);
+                }
+
+                presenter.updateMyInfo(teacherInfo);
                 break;
         }
     }
 
-
-//    @Override
-//    public void editMyInfoSuccess(String jsonObject) {
-//        Intent data = new Intent();
-//        if (ParameterUtils.EDIT_NAME.equals(flag)) {
-//            //更新缓存
-//            SPCacheUtils.put("user_name", etname.getText().toString());
-//        }
-//        data.putExtra(ParameterUtils.TRANSITION_FLAG, flag);
-//        data.putExtra("new_value", etname.getText().toString());
-//        //保存成功后销毁页面隐藏软键盘
-//        KeyBoardUtils.closeKeybord(etname, this);
-//        setResult(RESULT_OK, data);
-//        finish();
-//    }
-
     @Override
-    public void getMyInfoSuccess(TeacherInfo teacherInfo) {
+    public void updateMyInfoSuccesee(TeacherInfo teacherInfo) {
 
-    }
-
-    @Override
-    public void updateMyInfoSuccesee() {
+        Intent data = new Intent();
+        data.putExtra(ParameterUtils.TRANSITION_FLAG, flag);
+        data.putExtra("new_value", etname.getText().toString());
+        data.putExtra("TEACHERINFO", teacherInfo);
+        //保存成功后销毁页面隐藏软键盘
+        KeyBoardUtils.closeKeybord(etname, this);
+        setResult(RESULT_OK, data);
+        finish();
 
     }
 }

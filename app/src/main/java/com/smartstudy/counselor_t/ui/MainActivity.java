@@ -3,12 +3,10 @@ package com.smartstudy.counselor_t.ui;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.View;
@@ -22,7 +20,6 @@ import com.smartstudy.counselor_t.mvp.contract.MainActivityContract;
 import com.smartstudy.counselor_t.mvp.presenter.MainActivityPresenter;
 import com.smartstudy.counselor_t.ui.activity.FillPersonActivity;
 import com.smartstudy.counselor_t.ui.activity.LoginActivity;
-import com.smartstudy.counselor_t.ui.activity.MyInfoActivity;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.ui.fragment.MyFragment;
 import com.smartstudy.counselor_t.ui.fragment.QaFragment;
@@ -136,10 +133,6 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.topdefault_rightbutton:
-                startActivity(new Intent(this, MyInfoActivity.class));
-                break;
-
             case R.id.xxd_chat:
                 if (mViewPager.getCurrentItem() == 0) {
                     if (firstClick == 0) {

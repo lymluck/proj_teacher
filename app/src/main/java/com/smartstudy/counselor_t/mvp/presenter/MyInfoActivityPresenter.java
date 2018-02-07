@@ -67,11 +67,9 @@ public class MyInfoActivityPresenter extends BasePresenterImpl<MyInfoContract.Vi
     }
 
 
-
     @Override
-    public void updateMyInfo(String name, File avatar, String title, String school, String yearsOfWorking,
-                             String email, String realName, final ImageView ivAvatar) {
-        myInfoModel.updatePersonInfo(name, avatar, title, school, yearsOfWorking, email, realName, new ObserverListener<String>() {
+    public void updateMyAvatarInfo(File avatar, final ImageView ivAvatar) {
+        myInfoModel.updatePersonInfo(avatar, new ObserverListener<String>() {
             @Override
             public void onSubscribe(Disposable disposable) {
                 addDisposable(disposable);
@@ -112,7 +110,7 @@ public class MyInfoActivityPresenter extends BasePresenterImpl<MyInfoContract.Vi
                     SPCacheUtils.put("title", teacherInfo.getTitle());
                     SPCacheUtils.put("year", teacherInfo.getYearsOfWorking());
                     SPCacheUtils.put("company", teacherInfo.getOrganization().getName());
-                    view.updateMyInfoSuccesee();
+                    view.updateMyAvatarSuccesee();
                 }
             }
 

@@ -10,27 +10,22 @@ import java.io.File;
 
 /**
  * @author yqy
- * @date on 2018/1/22
+ * @date on 2018/2/7
  * @describe TODO
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */
-public interface MyInfoContract {
+public interface CommonEditNameContract {
 
     interface View extends BaseView {
 
-        void getMyInfoSuccess(TeacherInfo teacherInfo);
-
-        void updateMyAvatarSuccesee();
+        void updateMyInfoSuccesee(TeacherInfo teacherInfo);
 
     }
 
     interface Presenter extends BasePresenter {
 
-        void getMyInfo();
-
-        void updateMyAvatarInfo( File avatar, ImageView ivAvatar);
-
+        void updateMyInfo(TeacherInfo teacherInfo);
 
     }
 }

@@ -26,34 +26,13 @@ public class MyInfoModel extends BaseModel {
     }
 
 
-    public void updatePersonInfo(String name, File file, String title, String school, String yearsOfWorking, String email, String realName, ObserverListener listener) {
+    public void updatePersonInfo(File file, ObserverListener listener) {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-        if (!TextUtils.isEmpty(name)) {
-            builder.addFormDataPart("name", name);
-        }
+
         if (file != null) {
             builder.addFormDataPart("avatar", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
         }
 
-        if (!TextUtils.isEmpty(title)) {
-            builder.addFormDataPart("title", title);
-        }
-
-        if (!TextUtils.isEmpty(school)) {
-            builder.addFormDataPart("school", school);
-        }
-
-        if (!TextUtils.isEmpty(email)) {
-            builder.addFormDataPart("email", email);
-        }
-
-        if (!TextUtils.isEmpty(realName)) {
-            builder.addFormDataPart("realName", realName);
-        }
-
-        if (!TextUtils.isEmpty(yearsOfWorking)) {
-            builder.addFormDataPart("yearsOfWorking", yearsOfWorking);
-        }
         apiSubscribe(ApiManager.getApiService().updatePersonInfo(getHeadersMap(), HttpUrlUtils.URL_COUNSELLOR_PROFILE, builder.build()), listener);
     }
 }
