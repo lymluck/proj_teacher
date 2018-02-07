@@ -18,6 +18,7 @@ import io.rong.message.RecallNotificationMessage;
  */
 
 public class MyConversationAdapter extends MessageListAdapter {
+
     public MyConversationAdapter(Context context) {
         super(context);
     }

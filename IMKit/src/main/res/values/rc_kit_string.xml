@@ -69,7 +69,7 @@
     <string name="rc_plugins_camera">相机</string>
     <string name="rc_plugins_files">文件</string>
 
-    <string name="rc_voice_rec">手指上滑，取消发送</string>
+    <string name="rc_voice_rec">松开发送，上滑取消</string>
     <string name="rc_voice_cancel">松开手指，取消发送</string>
     <string name="rc_voice_short">录音时间太短</string>
     <string name="rc_voice_failure">录音失败！</string>

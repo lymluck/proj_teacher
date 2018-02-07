@@ -15,6 +15,7 @@ import java.util.List;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.userInfoCache.RongUserInfoManager;
 import io.rong.imlib.model.UserInfo;
+import io.rong.push.RongPushClient;
 
 
 /**
@@ -101,7 +102,15 @@ public class BaseApplication extends Application {
         return "";
     }
 
+
     private void initRong() {
+        RongPushClient.registerHWPush(this);
+        RongPushClient.registerMiPush(this, "2882303761517712539", "5481771291539");
+        //        try {
+//            RongPushClient.registerFCM(this);
+//        } catch (RongException e) {
+//            e.printStackTrace();
+//        }
         RongIM.init(this, "25wehl3u29wqw");
         RongIM.getInstance().registerConversationTemplate(new MyConversationListProvider());
         RongIM.registerMessageTemplate(new MyTextMessageItemProvider());
