@@ -6,8 +6,8 @@
     android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="186dp"
-        android:layout_height="186dp"
+        android:layout_width="155dp"
+        android:layout_height="155dp"
         android:layout_gravity="center"
         android:background="@drawable/rc_bg_voice_popup"
         android:gravity="center"
@@ -15,12 +15,9 @@
 
         <ImageView
             android:id="@+id/rc_audio_state_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="76dp"
+            android:layout_height="76dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="11dp"
-            android:layout_marginLeft="41dp"
-            android:layout_marginRight="41dp"
             android:layout_marginTop="20dp" />
 
         <TextView
@@ -29,8 +26,6 @@
             android:layout_height="105dp"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="11dp"
-            android:layout_marginLeft="41dp"
-            android:layout_marginRight="41dp"
             android:layout_marginTop="20dp"
             android:gravity="center"
             android:textColor="@android:color/white"
@@ -43,13 +38,9 @@
             android:layout_height="40dp"
             android:layout_alignParentBottom="true"
             android:layout_gravity="center"
-            android:layout_marginBottom="11dp"
-            android:layout_marginLeft="14dp"
-            android:layout_marginRight="14dp"
             android:layout_marginTop="11dp"
-            android:background="@drawable/rc_corner_voice_style"
             android:gravity="center"
             android:textColor="@android:color/white"
-            android:textSize="15sp" />
+            android:textSize="14sp" />
     </RelativeLayout>
 </FrameLayout>
