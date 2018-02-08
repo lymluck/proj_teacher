@@ -33,7 +33,8 @@ public class ClipPictureActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(FEATURE_NO_TITLE);// 去掉标题栏
+        // 去掉标题栏
+        requestWindowFeature(FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clip_picture);
     }
@@ -55,7 +56,7 @@ public class ClipPictureActivity extends BaseActivity {
             ToastUtils.shortToast(this, getString(R.string.picture_load_failure));
             return;
         }
-        DisplayImageUtils.displayImage(ClipPictureActivity.this, path, new SimpleTarget<Bitmap>(600, 600) {
+        DisplayImageUtils.displayImage(ClipPictureActivity.this, path, new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                 if (resource == null) {

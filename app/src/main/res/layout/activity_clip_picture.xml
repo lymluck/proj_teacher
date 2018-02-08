@@ -7,15 +7,15 @@
 
     <com.smartstudy.counselor_t.ui.widget.ClipImageLayout
         android:id="@+id/id_clipImageLayout_circle"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:tag="circle"
         android:visibility="gone" />
 
     <com.smartstudy.counselor_t.ui.widget.ClipImageLayout
         android:id="@+id/id_clipImageLayout_square"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:tag="square"
         android:visibility="gone" />
 
@@ -24,7 +24,7 @@
         android:layout_width="fill_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:background="#000000">
+        android:background="@color/black20">
 
         <Button
             android:id="@+id/id_action_clip"

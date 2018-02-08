@@ -22,11 +22,9 @@ import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.mvp.contract.MyInfoContract;
 import com.smartstudy.counselor_t.mvp.presenter.MyInfoActivityPresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
-import com.smartstudy.counselor_t.ui.widget.ClipImageLayout;
 import com.smartstudy.counselor_t.util.CheckUtil;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
 import com.smartstudy.counselor_t.util.ParameterUtils;
-import com.smartstudy.counselor_t.util.SDCardUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
 import com.smartstudy.counselor_t.util.ToastUtils;
 import com.smartstudy.counselor_t.util.Utils;
@@ -55,10 +53,6 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
     private File photoFile;
 
     private TextView tvLoginOut;
-
-    private File photoSaveFile;// 保存文件夹
-    private String photoSaveName = null;// 图片名
-    private String selected_path = null;
     private TeacherInfo teacherInfo;
 
     @Override
@@ -335,29 +329,7 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
         }
         switch (requestCode) {
             case ParameterUtils.REQUEST_CODE_CHANGEPHOTO:
-                if ("from_capture".equals(data.getStringExtra("flag_from"))) {
-                    photoSaveName = System.currentTimeMillis() + ".png";
-                    // 存放照片的文件夹
-                    photoSaveFile = SDCardUtils.getFileDirPath("Xxd" + File.separator + "pictures");
-                    Utils.startActionCapture(MyInfoActivity.this, new File(photoSaveFile.getAbsolutePath(), photoSaveName), ParameterUtils.REQUEST_CODE_CAMERA);
-                }
-                if ("from_album".equals(data.getStringExtra("flag_from"))) {
-                    selected_path = data.getStringExtra("path");
-                    Intent toClipImage = new Intent(MyInfoActivity.this, ClipPictureActivity.class);
-                    toClipImage.putExtra("path", selected_path);
-                    toClipImage.putExtra("clipType", ClipImageLayout.SQUARE);
-                    this.startActivityForResult(toClipImage, ParameterUtils.REQUEST_CODE_CLIP_OVER);
-                }
-                break;
-            case ParameterUtils.REQUEST_CODE_CAMERA:
-                String path_capture = photoSaveFile.getAbsolutePath() + "/" + photoSaveName;
-                Intent toClipImage = new Intent(getApplicationContext(), ClipPictureActivity.class);
-                toClipImage.putExtra("path", path_capture);
-                toClipImage.putExtra("clipType", ClipImageLayout.SQUARE);
-                startActivityForResult(toClipImage, ParameterUtils.REQUEST_CODE_CLIP_OVER);
-                break;
-            case ParameterUtils.REQUEST_CODE_CLIP_OVER:
-                final String temppath = data.getStringExtra("path");
+                String temppath = data.getStringExtra("path");
                 DisplayImageUtils.downloadImageFile(getApplicationContext(), temppath, new SimpleTarget<File>(100, 100) {
                     @Override
                     public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
@@ -367,7 +339,6 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
                     }
                 });
                 break;
-
             default:
                 break;
         }
