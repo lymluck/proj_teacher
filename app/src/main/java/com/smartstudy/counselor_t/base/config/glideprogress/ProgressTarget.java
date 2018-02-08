@@ -1,18 +1,17 @@
 package com.smartstudy.counselor_t.base.config.glideprogress;
 
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
 import com.smartstudy.counselor_t.base.config.GlideConfiguration;
 import com.smartstudy.counselor_t.ui.widget.ImageLoader;
 
 
 /**
  * Created by louis on 2017/3/1.
- * <p>
- * email: 196425254@qq.com
  */
 public abstract class ProgressTarget<T, Z> extends WrappingTarget<Z> implements GlideConfiguration.UIProgressListener {
     private T model;
@@ -33,7 +32,9 @@ public abstract class ProgressTarget<T, Z> extends WrappingTarget<Z> implements 
     }
 
     public final void setModel(T model) {
-        Glide.clear(this); // indirectly calls cleanup
+
+        // indirectly calls cleanup
+        cleanUp();
         this.model = model;
     }
 
@@ -117,15 +118,15 @@ public abstract class ProgressTarget<T, Z> extends WrappingTarget<Z> implements 
     }
 
     @Override
-    public void onResourceReady(Z resource, GlideAnimation<? super Z> animation) {
+    public void onResourceReady(@NonNull Z resource, @Nullable Transition<? super Z> transition) {
         cleanup(ImageLoader.STATUS_DISPLAY_SUCCESS);
-        super.onResourceReady(resource, animation);
+        super.onResourceReady(resource, transition);
     }
 
     @Override
-    public void onLoadFailed(Exception e, Drawable errorDrawable) {
+    public void onLoadFailed(@Nullable Drawable errorDrawable) {
         cleanup(ImageLoader.STATUS_DISPLAY_FAILED);
-        super.onLoadFailed(e, errorDrawable);
+        super.onLoadFailed(errorDrawable);
     }
 
     @Override

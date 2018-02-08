@@ -3,8 +3,5 @@
 
     <solid android:color="@color/rc_notification_bg" />
     <corners
-        android:bottomLeftRadius="2dp"
-        android:bottomRightRadius="2dp"
-        android:topLeftRadius="2dp"
-        android:topRightRadius="2dp" />
+        android:radius="5dp"/>
 </shape>

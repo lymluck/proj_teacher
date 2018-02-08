@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -13,8 +15,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.mvp.contract.MyInfoContract;
@@ -357,9 +359,8 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
             case ParameterUtils.REQUEST_CODE_CLIP_OVER:
                 final String temppath = data.getStringExtra("path");
                 DisplayImageUtils.downloadImageFile(getApplicationContext(), temppath, new SimpleTarget<File>(100, 100) {
-
                     @Override
-                    public void onResourceReady(File resource, GlideAnimation<? super File> glideAnimation) {
+                    public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
                         photoFile = resource;
                         setBtSave();
                         DisplayImageUtils.displayPersonRes(MyInfoActivity.this, resource, ivAvatar);

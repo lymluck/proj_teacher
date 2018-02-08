@@ -217,4 +217,5 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
         }
         return message;
     }
+
 }

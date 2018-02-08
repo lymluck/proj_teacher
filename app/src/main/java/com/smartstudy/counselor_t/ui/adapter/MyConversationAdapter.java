@@ -37,11 +37,11 @@ public class MyConversationAdapter extends MessageListAdapter {
                         if (data.getSentStatus() == Message.SentStatus.SENT) {
                             holder.readReceipt.setVisibility(View.VISIBLE);
                             holder.readReceipt.setText("未读");
-                            holder.readReceipt.setTextColor(Color.parseColor("#96c4ec"));
+                            holder.readReceipt.setTextColor(Color.parseColor("#078CF1"));
                         } else if (data.getSentStatus() == Message.SentStatus.READ) {
                             holder.readReceipt.setVisibility(View.VISIBLE);
                             holder.readReceipt.setText("已读");
-                            holder.readReceipt.setTextColor(Color.parseColor("#d7d7d7"));
+                            holder.readReceipt.setTextColor(Color.parseColor("#b2949BA1"));
                         } else {
                             holder.readReceipt.setVisibility(View.GONE);
                         }

@@ -14,6 +14,7 @@ import java.util.List;
 
 import io.rong.imkit.RongIM;
 import io.rong.imkit.userInfoCache.RongUserInfoManager;
+import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.UserInfo;
 import io.rong.push.RongPushClient;
 
@@ -106,7 +107,7 @@ public class BaseApplication extends Application {
     private void initRong() {
         RongPushClient.registerHWPush(this);
         RongPushClient.registerMiPush(this, "2882303761517712539", "5481771291539");
-        //        try {
+//        try {
 //            RongPushClient.registerFCM(this);
 //        } catch (RongException e) {
 //            e.printStackTrace();
@@ -125,5 +126,13 @@ public class BaseApplication extends Application {
 
             }
         }, true);
+        RongIM.setConnectionStatusListener(new RongIMClient.ConnectionStatusListener() {
+            @Override
+            public void onChanged(ConnectionStatus connectionStatus) {
+                if (ConnectionStatus.CONN_USER_BLOCKED.equals(connectionStatus)) {
+
+                }
+            }
+        });
     }
 }
