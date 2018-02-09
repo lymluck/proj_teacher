@@ -1,7 +1,9 @@
 package com.smartstudy.counselor_t.ui.widget.audio;
 
+import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +23,7 @@ public class AudioRecorder implements RecordStrategy {
     private String fileName;
     private String fileFolder = Environment.getExternalStorageDirectory()
             .getPath() + "/xxd-im";
+    private MediaPlayer mPlayer;
 
     private boolean isRecording = false;
 
@@ -92,6 +95,26 @@ public class AudioRecorder implements RecordStrategy {
         return fileFolder + "/" + fileName + ".amr";
     }
 
+    @Override
+    public void play(String path) {
+        mPlayer = new MediaPlayer();
+
+        try {
+            mPlayer.setDataSource(path);
+            mPlayer.prepare();
+            mPlayer.start();
+        } catch (IOException e) {
+            Log.e("kim", "prepare() failed");
+        }
+    }
+
+    @Override
+    public void playStop() {
+        if (mPlayer != null) {
+            mPlayer.release();
+            mPlayer = null;
+        }
+    }
 }
 
 

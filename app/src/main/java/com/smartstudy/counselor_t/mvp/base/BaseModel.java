@@ -9,6 +9,7 @@ import com.smartstudy.counselor_t.entity.ResponseInfo;
 import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.util.AppUtils;
 import com.smartstudy.counselor_t.util.ConstantUtils;
+import com.smartstudy.counselor_t.util.DeviceUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
 
 import java.util.HashMap;
@@ -66,7 +67,7 @@ public class BaseModel {
         Map<String, String> params = new HashMap<>();
         params.put("User-Agent", AppUtils.getUserAgent(AppUtils.getAndroidUserAgent(BaseApplication.getInstance())) + " Store/"
                 + "xxd");
-        params.put("X-xxd-uid", "00000000");
+        params.put("X-xxd-uid", DeviceUtils.getIdentifier() + "c");
         String ticket = (String) SPCacheUtils.get("ticket", ConstantUtils.CACHE_NULL);
         if (!TextUtils.isEmpty(ticket) && !ConstantUtils.CACHE_NULL.equals(ticket)) {
             params.put("X-xxd-counsellor-ticket", ticket);

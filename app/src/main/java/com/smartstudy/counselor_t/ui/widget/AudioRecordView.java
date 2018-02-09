@@ -1,6 +1,9 @@
 package com.smartstudy.counselor_t.ui.widget;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -32,6 +35,11 @@ public class AudioRecordView extends LinearLayout {
     private static final int RECORD_PLAY = 3;//正在播放的状态
     private int recordState = 0; // 录音状态
 
+    private Thread mRecordThread;
+
+    private int recodeTime = 0; // 录音时长，如果录音时间太短则录音失败
+    private boolean isCanceled = false; // 是否关闭录音
+
 
     public AudioRecordView(Context context) {
         super(context);
@@ -44,6 +52,8 @@ public class AudioRecordView extends LinearLayout {
         tv_again_audio = view.findViewById(R.id.tv_again_audio);
         iv_audio = view.findViewById(R.id.iv_audio);
         tv_send = view.findViewById(R.id.tv_send);
+        tv_again_audio.setVisibility(GONE);
+        tv_send.setVisibility(GONE);
 
 
         iv_audio.setOnClickListener(new OnClickListener() {
@@ -54,9 +64,20 @@ public class AudioRecordView extends LinearLayout {
                     startRecord();
                 } else if (recordState == RECORD_ON) {
                     mAudioRecorder.stop();
-                    recordState=RECORD_COMPLETE;
-                }else if(recordState==RECORD_COMPLETE){
-                    
+                    recordState = RECORD_COMPLETE;
+                    tv_again_audio.setVisibility(VISIBLE);
+                    tv_send.setVisibility(VISIBLE);
+                    mRecordThread.interrupt();
+                    iv_audio.setImageResource(R.drawable.icon_audio_play);
+                } else if (recordState == RECORD_COMPLETE) {
+                    mAudioRecorder.play(mAudioRecorder.getFilePath());
+                    recordState = RECORD_PLAY;
+                    iv_audio.setImageResource(R.drawable.icon_audio_stop);
+                    callRecordTimeThread();
+                } else if (recordState == RECORD_PLAY) {
+                    mAudioRecorder.playStop();
+                    recordState = RECORD_COMPLETE;
+                    iv_audio.setImageResource(R.drawable.icon_audio_play);
                 }
             }
         });
@@ -65,7 +86,11 @@ public class AudioRecordView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 //重新录音
+//                mAudioRecorder.stop();
+                recodeTime = 0;
                 mAudioRecorder.deleteOldFile();
+                tv_again_audio.setVisibility(GONE);
+                tv_send.setVisibility(GONE);
                 startRecord();
             }
         });
@@ -79,7 +104,6 @@ public class AudioRecordView extends LinearLayout {
                 }
             }
         });
-
     }
 
     /**
@@ -98,7 +122,7 @@ public class AudioRecordView extends LinearLayout {
 
 
     interface SendOnClickListener {
-        public void sendOnClick();
+        void sendOnClick();
     }
 
 
@@ -108,8 +132,9 @@ public class AudioRecordView extends LinearLayout {
 
 
     private void startRecord() {
-        iv_audio.setImageResource(R.drawable.icon_audio_play);
         recordState = RECORD_ON;
+        callRecordTimeThread();
+        iv_audio.setImageResource(R.drawable.icon_audio_stop);
         if (mAudioRecorder != null) {
             mAudioRecorder.ready();
             recordState = RECORD_ON;
@@ -117,4 +142,83 @@ public class AudioRecordView extends LinearLayout {
 //                        callRecordTimeThread();
         }
     }
+
+
+    // 开启录音计时线程
+    private void callRecordTimeThread() {
+        mRecordThread = new Thread(recordThread);
+        mRecordThread.start();
+    }
+
+
+    // 录音线程
+    private Runnable recordThread = new Runnable() {
+
+        @Override
+        public void run() {
+            recodeTime = 0;
+            while (recordState == RECORD_ON||RECORD_PLAY==recordState) {
+                {
+                    try {
+                        Thread.sleep(1000);
+                        if (!isCanceled) {
+                            Message message = new Message();
+                            message.what = RECORD_ON;
+                            recodeTime += 1;
+                            recordHandler.sendMessage(message);
+                        }
+
+                        if (recodeTime >= 180) {
+                            Message message = new Message();
+                            message.what = RECORD_COMPLETE;
+                            recordHandler.sendMessage(message);
+                        }
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    };
+
+    @SuppressLint("HandlerLeak")
+    private Handler recordHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case RECORD_ON:
+                    tv_title.setText(getTime(recodeTime));
+                    break;
+                case RECORD_COMPLETE:
+                    mAudioRecorder.stop();
+                    recordState = RECORD_COMPLETE;
+                    tv_title.setText("");
+                    mRecordThread.interrupt();
+                    iv_audio.setImageResource(R.drawable.icon_audio_play);
+                    break;
+            }
+
+        }
+    };
+
+
+    private String getTime(int time) {
+        if (0 < time && time < 10) {
+            return "0:0" + time;
+        } else if (10 <= time && time < 60) {
+            return "0:" + time;
+        } else if (60 <= time && time < 70) {
+            return "1:0" + (time - 60);
+        } else if (70 <= time && time < 120) {
+            return "1:" + (time - 60);
+        } else if (120 <= time && time < 130) {
+            return "2:0" + (time - 120);
+        } else if (130 <= time && time < 170) {
+            return "2:" + (time - 120);
+        } else {
+            return "倒计时 " + (180 - time);
+        }
+    }
+
 }

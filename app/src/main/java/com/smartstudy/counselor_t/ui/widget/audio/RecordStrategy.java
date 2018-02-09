@@ -41,4 +41,16 @@ public interface RecordStrategy {
      * @return
      */
     public String getFilePath();
+
+
+    /**
+     * 录音播放
+     */
+    public void play(String path);
+
+    /**
+     * 播放停止
+     */
+
+    public void playStop();
 }
