@@ -3,13 +3,15 @@ package com.smartstudy.counselor_t.ui.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.transition.Transition;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
@@ -221,7 +223,7 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
                 DisplayImageUtils.downloadImageFile(mActivity.getApplicationContext(), temppath, new SimpleTarget<File>(100, 100) {
 
                     @Override
-                    public void onResourceReady(File resource, GlideAnimation<? super File> glideAnimation) {
+                    public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
                         DisplayImageUtils.displayPersonRes(mActivity, resource, ivAvatar);
                         presenter.updateMyAvatarInfo(resource,ivAvatar);
                     }
