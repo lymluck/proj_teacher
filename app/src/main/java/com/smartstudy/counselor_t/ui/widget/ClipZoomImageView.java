@@ -30,8 +30,8 @@ public class ClipZoomImageView extends AppCompatImageView implements
 
 {
 
-    public static float SCALE_MAX = 4.0f;
-    private static float SCALE_MID = 2.0f;
+    public static float SCALE_MAX = 6.0f;
+    private static float SCALE_MID = 1.0f;
 
     private float initScale = 1.0f;
     private boolean once = true;
@@ -285,8 +285,8 @@ public class ClipZoomImageView extends AppCompatImageView implements
                 scale = Math.max(scaleW, scaleH);
             }
             initScale = scale;
-            SCALE_MID = initScale * 2;
-            SCALE_MAX = initScale * 4;
+            SCALE_MID = initScale * 1.0f;
+            SCALE_MAX = initScale * 6f;
             mScaleMatrix.postTranslate((width - dw) / 2, (height - dh) / 2);
             mScaleMatrix.postScale(scale, scale, getWidth() / 2, getHeight() / 2);
             setImageMatrix(mScaleMatrix);

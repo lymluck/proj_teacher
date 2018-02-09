@@ -14,6 +14,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -31,6 +32,7 @@ import com.smartstudy.counselor_t.ui.adapter.MultiItemTypeAdapter;
 import com.smartstudy.counselor_t.ui.adapter.SelectMyPhotoAdapter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.ui.popupwindow.ListImageDirPopupWindow;
+import com.smartstudy.counselor_t.ui.widget.ClipImageLayout;
 import com.smartstudy.counselor_t.ui.widget.DividerGridItemDecoration;
 import com.smartstudy.counselor_t.util.DensityUtils;
 import com.smartstudy.counselor_t.util.ParameterUtils;
@@ -102,6 +104,8 @@ public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implement
     private String firstImage = null;
     private Uri imageUri = null;
     private WeakHandler myHandler = null;
+    private File photoSaveFile;// 保存文件夹
+    private String photoSaveName = null;// 图片名
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -234,11 +238,14 @@ public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implement
                             PermissionUtil.requestPermissions(SelectMyPhotoActivity.this, getString(R.string.permission_camera), ParameterUtils.REQUEST_CODE_CAMERA, Permission.CAMERA);
                         } else {
                             String photo_path = mImgs.get(position);
-                            Intent toClipImage = new Intent();
-                            toClipImage.putExtra("path", photo_path);
-                            toClipImage.putExtra("flag_from", "from_album");
-                            setResult(RESULT_OK, toClipImage);
-                            finish();
+                            if (!TextUtils.isEmpty(photo_path)) {
+                                Intent toClipImage = new Intent(SelectMyPhotoActivity.this, ClipPictureActivity.class);
+                                toClipImage.putExtra("path", photo_path);
+                                toClipImage.putExtra("clipType", ClipImageLayout.SQUARE);
+                                startActivityForResult(toClipImage, ParameterUtils.REQUEST_CODE_CLIP_OVER);
+                            } else {
+                                showTip(getString(R.string.picture_load_failure));
+                            }
                         }
                     } else {
                         String photo_path = mDirImgs.get(position);
@@ -465,12 +472,25 @@ public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implement
         }
         switch (requestCode) {
             case ParameterUtils.REQUEST_CODE_CAMERA:
-                Intent localIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, imageUri);
-                sendBroadcast(localIntent);
-                mImgs.removeFirst();
-                mImgs.addFirst(imageUri.getPath());
-                mImgs.addFirst("");
-                mAdapter.notifyDataSetChanged();
+                if (imageUri != null) {
+                    Intent localIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, imageUri);
+                    sendBroadcast(localIntent);
+                    mImgs.removeFirst();
+                    mImgs.addFirst(imageUri.getPath());
+                    mImgs.addFirst("");
+                    mAdapter.notifyDataSetChanged();
+                    imageUri = null;
+                } else {
+                    String path_capture = photoSaveFile.getAbsolutePath() + "/" + photoSaveName;
+                    Intent toClipImage = new Intent(SelectMyPhotoActivity.this, ClipPictureActivity.class);
+                    toClipImage.putExtra("path", path_capture);
+                    toClipImage.putExtra("clipType", ClipImageLayout.SQUARE);
+                    startActivityForResult(toClipImage, ParameterUtils.REQUEST_CODE_CLIP_OVER);
+                }
+                break;
+            case ParameterUtils.REQUEST_CODE_CLIP_OVER:
+                setResult(RESULT_OK, data);
+                finish();
                 break;
             default:
                 break;
@@ -487,14 +507,14 @@ public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implement
         switch (requestCode) {
             case ParameterUtils.REQUEST_CODE_CAMERA:
                 if (getIntent().getBooleanExtra("singlePic", true)) {
-                    Intent toTakePhoto = new Intent();
-                    toTakePhoto.putExtra("flag_from", "from_capture");
-                    setResult(RESULT_OK, toTakePhoto);
-                    finish();
-                } else {
-                    String photoSaveName = System.currentTimeMillis() + ".png";
+                    photoSaveName = System.currentTimeMillis() + ".png";
                     // 存放照片的文件夹
-                    File photoSaveFile = SDCardUtils.getFileDirPath("Xxd" + File.separator + "pictures");
+                    photoSaveFile = SDCardUtils.getFileDirPath("Xxd" + File.separator + "pictures");
+                    Utils.startActionCapture(SelectMyPhotoActivity.this, new File(photoSaveFile.getAbsolutePath(), photoSaveName), ParameterUtils.REQUEST_CODE_CAMERA);
+                } else {
+                    photoSaveName = System.currentTimeMillis() + ".png";
+                    // 存放照片的文件夹
+                    photoSaveFile = SDCardUtils.getFileDirPath("Xxd" + File.separator + "pictures");
                     Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     if (photoSaveFile != null) {
                         imageUri = Uri.fromFile(new File(photoSaveFile.getAbsolutePath(), photoSaveName));

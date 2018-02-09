@@ -61,7 +61,6 @@ public class UnsafeOkHttpClient {
             return okHttpClient.build();
         } catch (Exception e) {
             e.printStackTrace();
-            Log.d("msg==========", e.getMessage());
         }
         return null;
     }

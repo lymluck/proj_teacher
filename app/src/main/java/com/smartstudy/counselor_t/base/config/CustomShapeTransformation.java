@@ -7,20 +7,26 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
-import android.view.Display;
-import android.view.WindowManager;
 
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.bumptech.glide.load.resource.bitmap.TransformationUtils;
+import com.smartstudy.counselor_t.util.ScreenUtils;
+
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
 
 
 public class CustomShapeTransformation extends BitmapTransformation {
 
-    private Paint mPaint; // 画笔
+    // 画笔
+    private Paint mPaint;
     private Context mContext;
-    private int mShapeRes; // 形状的drawable资源
+    // 形状的drawable资源
+    private int mShapeRes;
+    private static final String ID = "com.bumptech.glide.transformations.FillSpace";
 
     public CustomShapeTransformation(Context context, int shapeRes) {
         super(context);
@@ -54,8 +60,8 @@ public class CustomShapeTransformation extends BitmapTransformation {
         // 居中裁剪图片，调用Glide库中TransformationUtils类的centerCrop()方法完成裁剪，保证图片居中且填满
         final Bitmap toReuse = pool.get(width, height, toTransform.getConfig() != null
                 ? toTransform.getConfig() : Bitmap.Config.ARGB_8888);
-        Bitmap transformed = TransformationUtils.centerCrop(toReuse, toTransform, width, height);
-        if (toReuse != null && toReuse != transformed && !pool.put(toReuse)) {
+        Bitmap transformed = TransformationUtils.centerCrop(pool, toTransform, width, height);
+        if (toReuse != null && toReuse != transformed) {
             toReuse.recycle();
         }
 
@@ -73,34 +79,31 @@ public class CustomShapeTransformation extends BitmapTransformation {
     }
 
     @Override
-    public String getId() {
+    public boolean equals(Object o) {
+        return o instanceof CustomShapeTransformation;
+    }
+
+
+    @Override
+    public int hashCode() {
         // 用于缓存的唯一标识符
-        return "CustomShapeTransformation" + mShapeRes;
-    }
-
-    // 获取屏幕的宽度
-    @SuppressWarnings("deprecation")
-    public int getScreenWidth(Context context) {
-        WindowManager manager = (WindowManager) context
-                .getSystemService(Context.WINDOW_SERVICE);
-        Display display = manager.getDefaultDisplay();
-        return display.getWidth();
-    }
-
-    // 获取屏幕的高度
-    @SuppressWarnings("deprecation")
-    public int getScreenHeight(Context context) {
-        WindowManager manager = (WindowManager) context
-                .getSystemService(Context.WINDOW_SERVICE);
-        Display display = manager.getDefaultDisplay();
-        return display.getHeight();
+        return ID.hashCode();
     }
 
     public int getBitmapWidth() {
-        return getScreenWidth(mContext) / 3;
+        return ScreenUtils.getScreenWidth() / 3;
     }
 
     public int getBitmapHeight() {
-        return getScreenHeight(mContext) / 4;
+        return ScreenUtils.getScreenHeight() / 4;
+    }
+
+    @Override
+    public void updateDiskCacheKey(@NonNull MessageDigest messageDigest) {
+        try {
+            messageDigest.update(ID.getBytes(STRING_CHARSET_NAME));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 }

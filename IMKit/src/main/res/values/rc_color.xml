@@ -7,7 +7,7 @@
     <color name="rc_normal_bg">#EBEBEB</color>
     <color name="rc_message_user_name">#828282</color>
 
-    <color name="rc_notification_bg">#D3D3D3</color>
+    <color name="rc_notification_bg">#C8CDD0</color>
     <color name="rc_conversation_top_bg">#f2faff</color>
     <color name="rc_plugins_bg">#F8F8F8</color>
     <color name="rc_input_bg">#F4F4F4</color>

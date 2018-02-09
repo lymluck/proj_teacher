@@ -1,12 +1,13 @@
 package com.smartstudy.counselor_t.base.config.https;
 
-import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
-import com.bumptech.glide.load.data.DataFetcher;
-import com.bumptech.glide.load.model.GenericLoaderFactory;
+import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.ModelLoader;
 import com.bumptech.glide.load.model.ModelLoaderFactory;
+import com.bumptech.glide.load.model.MultiModelLoaderFactory;
 
 import java.io.InputStream;
 
@@ -14,6 +15,17 @@ import okhttp3.OkHttpClient;
 
 
 public class OkHttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
+
+    @Nullable
+    @Override
+    public LoadData<InputStream> buildLoadData(@NonNull GlideUrl glideUrl, int width, int height, @NonNull Options options) {
+        return new LoadData<>(glideUrl, new OkHttpStreamFetcher(client, glideUrl));
+    }
+
+    @Override
+    public boolean handles(@NonNull GlideUrl glideUrl) {
+        return true;
+    }
 
     /**
      * The default factory for {@link OkHttpUrlLoader}s.
@@ -47,8 +59,9 @@ public class OkHttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
             this.client = client;
         }
 
+        @NonNull
         @Override
-        public ModelLoader<GlideUrl, InputStream> build(Context context, GenericLoaderFactory factories) {
+        public ModelLoader<GlideUrl, InputStream> build(@NonNull MultiModelLoaderFactory multiFactory) {
             return new OkHttpUrlLoader(client);
         }
 
@@ -62,10 +75,5 @@ public class OkHttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
 
     public OkHttpUrlLoader(OkHttpClient client) {
         this.client = client;
-    }
-
-    @Override
-    public DataFetcher<InputStream> getResourceFetcher(GlideUrl model, int width, int height) {
-        return new OkHttpStreamFetcher(client, model);
     }
 }

@@ -3,11 +3,13 @@ package com.smartstudy.counselor_t.ui.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
 
-import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.mvp.base.BasePresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
@@ -31,7 +33,8 @@ public class ClipPictureActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(FEATURE_NO_TITLE);// 去掉标题栏
+        // 去掉标题栏
+        requestWindowFeature(FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clip_picture);
     }
@@ -53,9 +56,9 @@ public class ClipPictureActivity extends BaseActivity {
             ToastUtils.shortToast(this, getString(R.string.picture_load_failure));
             return;
         }
-        DisplayImageUtils.displayImage(ClipPictureActivity.this, path, new SimpleTarget<Bitmap>(600, 600) {
+        DisplayImageUtils.displayImage(ClipPictureActivity.this, path, new SimpleTarget<Bitmap>() {
             @Override
-            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                 if (resource == null) {
                     ToastUtils.shortToast(ClipPictureActivity.this, getString(R.string.picture_load_failure));
                     return;
@@ -86,7 +89,7 @@ public class ClipPictureActivity extends BaseActivity {
             Bitmap bitmap = mClipImageLayout.clip();
             DisplayImageUtils.displayImageFile(ClipPictureActivity.this, bitmap, new SimpleTarget<File>() {
                 @Override
-                public void onResourceReady(File resource, GlideAnimation<? super File> glideAnimation) {
+                public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
                     Intent intent = new Intent();
                     intent.putExtra("path", resource.getAbsolutePath());
                     setResult(RESULT_OK, intent);
