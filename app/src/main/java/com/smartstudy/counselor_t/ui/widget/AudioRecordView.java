@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.smartstudy.counselor_t.R;
+import com.smartstudy.counselor_t.ui.widget.audio.AudioRecorder;
 import com.smartstudy.counselor_t.ui.widget.audio.RecordStrategy;
 
 /**
@@ -55,7 +57,6 @@ public class AudioRecordView extends LinearLayout {
         tv_again_audio.setVisibility(GONE);
         tv_send.setVisibility(GONE);
 
-
         iv_audio.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,6 +75,15 @@ public class AudioRecordView extends LinearLayout {
                     recordState = RECORD_PLAY;
                     iv_audio.setImageResource(R.drawable.icon_audio_stop);
                     callRecordTimeThread();
+                    mAudioRecorder.playComplete(new AudioRecorder.PlayComplete() {
+                        @Override
+                        public void playComplete() {
+                            recordState = RECORD_COMPLETE;
+                            mRecordThread.interrupt();
+                            iv_audio.setImageResource(R.drawable.icon_audio_play);
+                        }
+                    });
+
                 } else if (recordState == RECORD_PLAY) {
                     mAudioRecorder.playStop();
                     recordState = RECORD_COMPLETE;

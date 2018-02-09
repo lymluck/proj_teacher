@@ -115,6 +115,23 @@ public class AudioRecorder implements RecordStrategy {
             mPlayer = null;
         }
     }
+
+    @Override
+    public void playComplete(final PlayComplete playComplete) {
+        if (mPlayer != null) {
+            mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    mp.release();
+                    playComplete.playComplete();
+                }
+            });
+        }
+    }
+
+    public interface PlayComplete {
+        void playComplete();
+    }
 }
 
 

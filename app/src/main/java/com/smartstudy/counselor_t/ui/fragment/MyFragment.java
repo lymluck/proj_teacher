@@ -6,13 +6,13 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.transition.Transition;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.mvp.contract.MyInfoContract;
@@ -221,11 +221,10 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
             case ParameterUtils.REQUEST_CODE_CLIP_OVER:
                 final String temppath = data.getStringExtra("path");
                 DisplayImageUtils.downloadImageFile(mActivity.getApplicationContext(), temppath, new SimpleTarget<File>(100, 100) {
-
                     @Override
                     public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
                         DisplayImageUtils.displayPersonRes(mActivity, resource, ivAvatar);
-                        presenter.updateMyAvatarInfo(resource,ivAvatar);
+                        presenter.updateMyAvatarInfo(resource, ivAvatar);
                     }
                 });
                 break;

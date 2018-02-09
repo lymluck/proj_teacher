@@ -53,4 +53,10 @@ public interface RecordStrategy {
      */
 
     public void playStop();
+
+
+    /**
+     * 播放完成
+     */
+    public void playComplete(final AudioRecorder.PlayComplete playComplete);
 }
