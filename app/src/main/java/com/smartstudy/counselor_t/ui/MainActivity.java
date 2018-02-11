@@ -24,11 +24,13 @@ import com.smartstudy.counselor_t.ui.activity.LoginActivity;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.ui.fragment.MyFragment;
 import com.smartstudy.counselor_t.ui.fragment.QaFragment;
+import com.smartstudy.counselor_t.ui.widget.DragPointView;
 import com.smartstudy.counselor_t.util.ConstantUtils;
 import com.smartstudy.counselor_t.util.DeviceUtils;
 import com.smartstudy.counselor_t.util.IMUtils;
 import com.smartstudy.counselor_t.util.ParameterUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
+import com.smartstudy.counselor_t.util.ToastUtils;
 import com.smartstudy.counselor_t.util.Utils;
 
 import java.util.ArrayList;
@@ -41,7 +43,8 @@ import io.rong.imkit.manager.IUnReadMessageObserver;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 
-public class MainActivity extends BaseActivity<MainActivityContract.Presenter> implements MainActivityContract.View, ViewPager.OnPageChangeListener {
+public class MainActivity extends BaseActivity<MainActivityContract.Presenter> implements DragPointView.OnDragListencer,
+        MainActivityContract.View, ViewPager.OnPageChangeListener {
     private FragmentManager mfragmentManager;
     private ConversationListFragment mConversationListFragment = null;
     public static ViewPager mViewPager;
@@ -54,6 +57,8 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
     private RelativeLayout meRLayout;
     long firstClick = 0;
     long secondClick = 0;
+    private DragPointView mUnreadNumView;
+    private Conversation.ConversationType[] mConversationsTypes = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +85,7 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
         tvXxdQa = findViewById(R.id.tab_text_qa);
         xxdMeImage = findViewById(R.id.tab_img_me);
         tvXxdMe = findViewById(R.id.tab_text_me);
-
+        mUnreadNumView = findViewById(R.id.xxd_num);
         mFragment.add(conversationList);
         mFragment.add(new QaFragment());
         mFragment.add(new MyFragment());
@@ -118,6 +123,16 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
                     } else {
                         setTitle(getString(R.string.msg_name));
                     }
+
+                    if (i == 0) {
+                        mUnreadNumView.setVisibility(View.GONE);
+                    } else if (i > 0 && i < 100) {
+                        mUnreadNumView.setVisibility(View.VISIBLE);
+                        mUnreadNumView.setText(String.valueOf(i));
+                    } else {
+                        mUnreadNumView.setVisibility(View.VISIBLE);
+                        mUnreadNumView.setText("...");
+                    }
                 }
             }
         }, Conversation.ConversationType.PRIVATE);
@@ -130,6 +145,8 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
         answerRLayout.setOnClickListener(this);
         meRLayout.setOnClickListener(this);
         topdefaultLefttext.setOnClickListener(this);
+        mUnreadNumView.setOnClickListener(this);
+        mUnreadNumView.setDragListencer(this);
     }
 
     @Override
@@ -214,9 +231,15 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
                     .appendQueryParameter(Conversation.ConversationType.DISCUSSION.getName(), "false")
                     .appendQueryParameter(Conversation.ConversationType.SYSTEM.getName(), "true")
                     .build();
+            mConversationsTypes = new Conversation.ConversationType[]{Conversation.ConversationType.PRIVATE,
+                    Conversation.ConversationType.GROUP,
+                    Conversation.ConversationType.DISCUSSION,
+                    Conversation.ConversationType.SYSTEM
+            };
             listFragment.setUri(uri);
             mConversationListFragment = listFragment;
             return listFragment;
+
         } else {
             return mConversationListFragment;
         }
@@ -315,5 +338,27 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
         to_login.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                 Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(to_login);
+    }
+
+
+    @Override
+    public void onDragOut() {
+        mUnreadNumView.setVisibility(View.GONE);
+        ToastUtils.shortToast(this, "清除成功");
+        RongIM.getInstance().getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
+            @Override
+            public void onSuccess(List<Conversation> conversations) {
+                if (conversations != null && conversations.size() > 0) {
+                    for (Conversation c : conversations) {
+                        RongIM.getInstance().clearMessagesUnreadStatus(c.getConversationType(), c.getTargetId(), null);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode e) {
+
+            }
+        }, mConversationsTypes);
     }
 }
