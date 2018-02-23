@@ -12,18 +12,17 @@
 
         <ImageButton
             android:id="@+id/back"
-            android:layout_width="48dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:background="@android:color/white"
+            android:padding="16dp"
             android:src="@drawable/rc_back_icon" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="1dp"
-            android:layout_marginRight="48dp"
-            android:layout_toRightOf="@id/back"
             android:gravity="center"
             android:text="@string/rc_picsel_toolbar"
             android:textColor="#ff333333"
@@ -57,10 +56,10 @@
             android:layout_height="match_parent"
             android:background="@android:color/black"
             android:gravity="center"
-            android:horizontalSpacing="2dip"
+            android:horizontalSpacing="8dp"
             android:numColumns="3"
             android:stretchMode="columnWidth"
-            android:verticalSpacing="2dip" />
+            android:verticalSpacing="8dp" />
 
         <RelativeLayout
             android:id="@+id/catalog_window"
@@ -80,7 +79,8 @@
                 android:paddingBottom="6dp"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
-                android:paddingTop="6dp" />
+                android:paddingTop="6dp"
+                android:scrollbars="none" />
 
         </RelativeLayout>
 

@@ -72,3 +72,4 @@ freeline_project_description.json
 /permissionlib/permissionlib.iml
 /permissionlib/build/
 /gradle.properties
+/app/debug/

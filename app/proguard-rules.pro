@@ -19,12 +19,6 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--dontwarn io.rong.push.**
- -dontnote com.xiaomi.**
--keep public class com.google.firebase.* {*;}
- -dontnote io.rong.**
-
--keep class com.smartstudy.counselor_t.receiver.RongNotificationReceiver {*;}
 
 #glide
 -keep public class * implements com.bumptech.glide.module.GlideModule
@@ -33,3 +27,25 @@
   **[] $VALUES;
   public *;
 }
+
+# RongCloud SDK
+-keep class io.rong.** {*;}
+-keep class * implements io.rong.imlib.model.MessageContent {*;}
+-dontwarn io.rong.push.**
+-dontnote com.xiaomi.**
+-keep public class com.google.firebase.* {*;}
+-dontnote com.google.android.gms.gcm.**
+-dontnote io.rong.**
+-keep class com.smartstudy.counselor_t.receiver.RongNotificationReceiver {*;}
+
+
+#huawei
+-ignorewarning -keepattributes *Annotation*
+-keepattributes Exceptions -keepattributes InnerClasses -keepattributes Signature
+# hmscore-support: remote transport
+-keep class * extends com.huawei.hms.core.aidl.IMessageEntity { *; }
+# hmscore-support: remote transport
+-keepclasseswithmembers class * implements com.huawei.hms.support.api.transport.DatagramTransport {
+<init>(...); }
+# manifest: provider for updates
+-keep public class com.huawei.hms.update.provider.UpdateProvider { public *; protected *; }

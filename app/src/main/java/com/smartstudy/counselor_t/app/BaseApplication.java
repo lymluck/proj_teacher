@@ -2,9 +2,10 @@ package com.smartstudy.counselor_t.app;
 
 
 import android.app.ActivityManager;
-import android.app.Application;
 import android.content.Context;
 import android.text.TextUtils;
+import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 
 import com.smartstudy.counselor_t.manager.StudentInfoManager;
 import com.smartstudy.counselor_t.ui.provider.MyConversationListProvider;
@@ -17,12 +18,13 @@ import io.rong.imkit.userInfoCache.RongUserInfoManager;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.UserInfo;
 import io.rong.push.RongPushClient;
+import io.rong.push.common.RongException;
 
 
 /**
  * Created by louis on 2017/2/22.
  */
-public class BaseApplication extends Application {
+public class BaseApplication extends MultiDexApplication {
 
     private static BaseApplication instance;
     public static Context appContext;
@@ -51,6 +53,12 @@ public class BaseApplication extends Application {
             //注册容云组件
             initRong();
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     public boolean isBackground() {
@@ -134,5 +142,10 @@ public class BaseApplication extends Application {
                 }
             }
         });
+        try {
+            RongPushClient.checkManifest(this);
+        } catch (RongException e) {
+            e.printStackTrace();
+        }
     }
 }
