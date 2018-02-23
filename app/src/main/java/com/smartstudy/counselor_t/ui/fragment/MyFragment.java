@@ -197,28 +197,6 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
         }
         switch (requestCode) {
             case ParameterUtils.REQUEST_CODE_CHANGEPHOTO:
-                if ("from_capture".equals(data.getStringExtra("flag_from"))) {
-                    photoSaveName = System.currentTimeMillis() + ".png";
-                    // 存放照片的文件夹
-                    photoSaveFile = SDCardUtils.getFileDirPath("Xxd" + File.separator + "pictures");
-                    Utils.startActionCapture(mActivity, new File(photoSaveFile.getAbsolutePath(), photoSaveName), ParameterUtils.REQUEST_CODE_CAMERA);
-                }
-                if ("from_album".equals(data.getStringExtra("flag_from"))) {
-                    selected_path = data.getStringExtra("path");
-                    Intent toClipImage = new Intent(mActivity, ClipPictureActivity.class);
-                    toClipImage.putExtra("path", selected_path);
-                    toClipImage.putExtra("clipType", ClipImageLayout.SQUARE);
-                    this.startActivityForResult(toClipImage, ParameterUtils.REQUEST_CODE_CLIP_OVER);
-                }
-                break;
-            case ParameterUtils.REQUEST_CODE_CAMERA:
-                String path_capture = photoSaveFile.getAbsolutePath() + "/" + photoSaveName;
-                Intent toClipImage = new Intent(mActivity.getApplicationContext(), ClipPictureActivity.class);
-                toClipImage.putExtra("path", path_capture);
-                toClipImage.putExtra("clipType", ClipImageLayout.SQUARE);
-                startActivityForResult(toClipImage, ParameterUtils.REQUEST_CODE_CLIP_OVER);
-                break;
-            case ParameterUtils.REQUEST_CODE_CLIP_OVER:
                 final String temppath = data.getStringExtra("path");
                 DisplayImageUtils.downloadImageFile(mActivity.getApplicationContext(), temppath, new SimpleTarget<File>(100, 100) {
                     @Override
@@ -227,6 +205,14 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
                         presenter.updateMyAvatarInfo(resource, ivAvatar);
                     }
                 });
+                break;
+
+            case ParameterUtils.REQUEST_CODE_CAMERA:
+                String path_capture = photoSaveFile.getAbsolutePath() + "/" + photoSaveName;
+                Intent toClipImage = new Intent(mActivity.getApplicationContext(), ClipPictureActivity.class);
+                toClipImage.putExtra("path", path_capture);
+                toClipImage.putExtra("clipType", ClipImageLayout.SQUARE);
+                startActivityForResult(toClipImage, ParameterUtils.REQUEST_CODE_CLIP_OVER);
                 break;
 
             case ParameterUtils.REQUEST_CODE_EDIT_MYINFO:

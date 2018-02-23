@@ -130,28 +130,6 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
         }
         switch (requestCode) {
             case ParameterUtils.REQUEST_CODE_CHANGEPHOTO:
-                if ("from_capture".equals(data.getStringExtra("flag_from"))) {
-                    photoSaveName = System.currentTimeMillis() + ".png";
-                    // 存放照片的文件夹
-                    photoSaveFile = SDCardUtils.getFileDirPath("Xxd" + File.separator + "pictures");
-                    Utils.startActionCapture(FillPersonActivity.this, new File(photoSaveFile.getAbsolutePath(), photoSaveName), ParameterUtils.REQUEST_CODE_CAMERA);
-                }
-                if ("from_album".equals(data.getStringExtra("flag_from"))) {
-                    selected_path = data.getStringExtra("path");
-                    Intent toClipImage = new Intent(FillPersonActivity.this, ClipPictureActivity.class);
-                    toClipImage.putExtra("path", selected_path);
-                    toClipImage.putExtra("clipType", ClipImageLayout.SQUARE);
-                    this.startActivityForResult(toClipImage, ParameterUtils.REQUEST_CODE_CLIP_OVER);
-                }
-                break;
-            case ParameterUtils.REQUEST_CODE_CAMERA:
-                String path_capture = photoSaveFile.getAbsolutePath() + "/" + photoSaveName;
-                Intent toClipImage = new Intent(getApplicationContext(), ClipPictureActivity.class);
-                toClipImage.putExtra("path", path_capture);
-                toClipImage.putExtra("clipType", ClipImageLayout.SQUARE);
-                startActivityForResult(toClipImage, ParameterUtils.REQUEST_CODE_CLIP_OVER);
-                break;
-            case ParameterUtils.REQUEST_CODE_CLIP_OVER:
                 final String temppath = data.getStringExtra("path");
                 DisplayImageUtils.downloadImageFile(getApplicationContext(), temppath, new SimpleTarget<File>(100, 100) {
 
@@ -161,6 +139,13 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
                         DisplayImageUtils.displayPersonRes(FillPersonActivity.this, resource, ivAvatar);
                     }
                 });
+                break;
+            case ParameterUtils.REQUEST_CODE_CAMERA:
+                String path_capture = photoSaveFile.getAbsolutePath() + "/" + photoSaveName;
+                Intent toClipImage = new Intent(getApplicationContext(), ClipPictureActivity.class);
+                toClipImage.putExtra("path", path_capture);
+                toClipImage.putExtra("clipType", ClipImageLayout.SQUARE);
+                startActivityForResult(toClipImage, ParameterUtils.REQUEST_CODE_CLIP_OVER);
                 break;
 
             default:
