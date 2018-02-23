@@ -13,8 +13,6 @@ import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.QuestionInfo;
 import com.smartstudy.counselor_t.entity.SchoolInfo;
 import com.smartstudy.counselor_t.handler.WeakHandler;
-import com.smartstudy.counselor_t.mvp.base.BasePresenter;
-import com.smartstudy.counselor_t.mvp.contract.CommonEditNameContract;
 import com.smartstudy.counselor_t.mvp.contract.QaListContract;
 import com.smartstudy.counselor_t.mvp.presenter.QuestionsPresenter;
 import com.smartstudy.counselor_t.ui.adapter.CommonAdapter;

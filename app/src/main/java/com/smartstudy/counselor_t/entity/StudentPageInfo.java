@@ -103,11 +103,9 @@ public class StudentPageInfo {
     public class BackgroundSection {
         private CurrentSchool currentSchool;
 
-
         private Score score;
 
         private ScoreLanguage scoreLanguage;
-
 
         private ActivityInternship activityInternship;
 
