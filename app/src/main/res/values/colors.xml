@@ -25,6 +25,8 @@
     <color name="white20">#38ffffff</color><!--20%的白色 -->
     <color name="white15">#26ffffff</color><!--15%的白色 -->
     <color name="white10">#19ffffff</color><!--10%的白色 -->
+    <color name="transparent">#00ffffff</color> <!-- 透明色 -->
+    <color name="search_bg">#fff7f7f7</color>
     <color name="black">#ff000000</color><!-- 黑色文本 -->
     <color name="black80">#cc000000</color><!-- 80%的黑色 -->
     <color name="black70">#b2000000</color><!-- 70%的黑色 -->
@@ -38,4 +40,6 @@
     <color name="black5">#0c000000</color><!--10%的黑色 -->
     <color name="orange_clor">#FFB400</color>
     <color name="bg_answer_color">#FE5252</color> <!-- 答icon背景颜色 -->
+    <color name="home_search_title_bg">#F5F6F7</color> <!-- 首页搜索列表标题背景颜色 -->
+    <color name="bg_home_search">#E4E5E6</color>
 </resources>

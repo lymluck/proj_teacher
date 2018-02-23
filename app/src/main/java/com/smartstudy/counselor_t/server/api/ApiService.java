@@ -113,4 +113,16 @@ public interface ApiService {
      */
     @POST(HttpUrlUtils.URL_USER_LOGOUT)
     Observable<ResponseInfo> getLogOut(@HeaderMap Map<String, String> header);
+
+
+    /**
+     *
+     */
+    @GET(HttpUrlUtils.URL_QUESTS)
+    Observable<ResponseInfo> getQuestions(@HeaderMap Map<String, String> header,@QueryMap Map<String, String> params);
+
+
+    @GET(HttpUrlUtils.URL_MYQA)
+    Observable<ResponseInfo> getMyQuestions(@HeaderMap Map<String, String> header,@QueryMap Map<String, String> params);
+
 }

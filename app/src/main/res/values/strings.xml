@@ -22,4 +22,9 @@
     <string name="picture_max">最多只能同时上传9张图片</string>
     <string name="move_and_zoom">移动和缩放</string>
     <string name="picture_load_failure">图片加载失败</string>
+    <string name="page_empty_tip">抱歉，没有相关数据哦～</string>
+    <string name="search">搜索</string>
+    <string name="no_net_tip">连接不上网络啦～</string>
+    <string name="no_qa_tip">还没有提过问题哦～</string>
+    <string name="visit_count">%1$s人看过</string>
 </resources>

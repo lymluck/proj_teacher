@@ -15,6 +15,7 @@ import android.graphics.Path;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -29,7 +30,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 
-public class DragPointView extends TextView {
+public class DragPointView extends AppCompatTextView {
     private boolean initBgFlag;
     private OnDragListencer dragListencer;
     private int backgroundColor = Color.parseColor("#f43530");
@@ -66,6 +67,7 @@ public class DragPointView extends TextView {
         }
     }
 
+    @Override
     @SuppressWarnings("deprecation")
     public void setBackgroundColor(int backgroundColor) {
         this.backgroundColor = backgroundColor;
@@ -150,8 +152,9 @@ public class DragPointView extends TextView {
             } catch (ClassCastException e) {
                 return null;
             }
-            if (v == null)
+            if (v == null) {
                 return null;
+            }
             if (v instanceof AbsListView || v instanceof ScrollView || v instanceof ViewPager) {
                 return (ViewGroup) v;
             }
@@ -333,12 +336,6 @@ public class DragPointView extends TextView {
 
     }
 
-    /**
-     * @param radius 圆角角度
-     * @param color  填充颜色
-     * @return StateListDrawable 对象
-     * @author zy
-     */
     public static StateListDrawable createStateListDrawable(int radius, int color) {
         StateListDrawable bg = new StateListDrawable();
         GradientDrawable gradientStateNormal = new GradientDrawable();
