@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
 
+import io.rong.imkit.RongIM;
 import io.rong.imkit.model.UIMessage;
 import io.rong.imkit.widget.adapter.MessageListAdapter;
 import io.rong.imlib.model.Message;

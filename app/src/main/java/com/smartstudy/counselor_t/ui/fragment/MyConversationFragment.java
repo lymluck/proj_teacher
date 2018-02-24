@@ -22,4 +22,5 @@ public class MyConversationFragment extends ConversationFragment {
         return new MyConversationAdapter(context);
     }
 
+
 }

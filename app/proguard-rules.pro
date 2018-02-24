@@ -49,3 +49,8 @@
 <init>(...); }
 # manifest: provider for updates
 -keep public class com.huawei.hms.update.provider.UpdateProvider { public *; protected *; }
+
+
+-dontwarn com.xiaomi.mipush.sdk.**
+-keep public class com.xiaomi.mipush.sdk.* {*; }
+-keep public class com.google.firebase.* {*;}

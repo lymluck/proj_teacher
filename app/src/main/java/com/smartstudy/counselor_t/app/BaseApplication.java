@@ -3,22 +3,17 @@ package com.smartstudy.counselor_t.app;
 
 import android.app.ActivityManager;
 import android.content.Context;
-import android.text.TextUtils;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
+import android.text.TextUtils;
 
-import com.smartstudy.counselor_t.manager.StudentInfoManager;
 import com.smartstudy.counselor_t.ui.provider.MyConversationListProvider;
 import com.smartstudy.counselor_t.ui.provider.MyTextMessageItemProvider;
 
 import java.util.List;
 
 import io.rong.imkit.RongIM;
-import io.rong.imkit.userInfoCache.RongUserInfoManager;
-import io.rong.imlib.RongIMClient;
-import io.rong.imlib.model.UserInfo;
 import io.rong.push.RongPushClient;
-import io.rong.push.common.RongException;
 
 
 /**
@@ -123,29 +118,6 @@ public class BaseApplication extends MultiDexApplication {
         RongIM.init(this, "25wehl3u29wqw");
         RongIM.getInstance().registerConversationTemplate(new MyConversationListProvider());
         RongIM.registerMessageTemplate(new MyTextMessageItemProvider());
-        RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
-            @Override
-            public UserInfo getUserInfo(String s) {
-                UserInfo info = RongUserInfoManager.getInstance().getUserInfo(s);
-                if (info == null) {
-                    StudentInfoManager.getInstance().getStudentInfo(s);
-                }
-                return null;
-
-            }
-        }, true);
-        RongIM.setConnectionStatusListener(new RongIMClient.ConnectionStatusListener() {
-            @Override
-            public void onChanged(ConnectionStatus connectionStatus) {
-                if (ConnectionStatus.CONN_USER_BLOCKED.equals(connectionStatus)) {
-
-                }
-            }
-        });
-        try {
-            RongPushClient.checkManifest(this);
-        } catch (RongException e) {
-            e.printStackTrace();
-        }
+        AppManager.init(this);
     }
 }

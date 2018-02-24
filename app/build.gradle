@@ -65,4 +65,5 @@ dependencies {
     compile files('libs/MiPush_SDK_Client_3_6_1.jar')
 }
 
+
 repositories { flatDir { dirs 'aars' } }

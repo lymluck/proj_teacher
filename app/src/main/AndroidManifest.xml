@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.smartstudy.counselor_t">
+
     <!-- 一般权限 -->
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -32,15 +33,10 @@
     <permission
         android:name="com.smartstudy.counselor_t.permission.MIPUSH_RECEIVE"
         android:protectionLevel="signature" />
-    <uses-permission android:name="com.smartstudy.counselor_t.permission.MIPUSH_RECEIVE" />
-    <!-- ⼩米 配置结束 < -->
-    <!-- GCM 配置开始 < -->
-    <!--<permission-->
-    <!--android:name="com.smartstudy.counselor_t.permission.C2D_MESSAGE"-->
-    <!--android:protectionLevel="signature" />-->
-    <!--<uses-permission android:name="com.smartstudy.counselor_t.permission.C2D_MESSAGE" />-->
-    <!-- GCM 配置结束 < -->
 
+    <uses-permission android:name="com.smartstudy.counselor_t.permission.MIPUSH_RECEIVE" />
+
+    <!-- ⼩米 配置结束 < -->
     <application
         android:name=".app.BaseApplication"
         android:allowBackup="false"
@@ -49,19 +45,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <service
             android:name="io.rong.imlib.ipc.RongService"
             android:process=":ipc" />
         <service android:name="io.rong.imlib.ReConnectService" />
 
         <receiver android:name="io.rong.imlib.ConnectChangeReceiver" />
-
         <receiver
             android:name="io.rong.imlib.HeartbeatReceiver"
             android:process=":ipc" />
 
-        <!-- HMS 配置开始-->
+        <!-- HMS 配置开始 -->
         <meta-data
             android:name="com.huawei.hms.client.appid"
             android:value="100208445" />
@@ -86,7 +80,8 @@
                 <action android:name="com.huawei.intent.action.PUSH" />
             </intent-filter>
         </receiver>
-        <!-- HMS 配置结束-->
+        <!-- HMS 配置结束 -->
+
 
         <!-- 小米 配置开始 < -->
         <service
@@ -99,20 +94,21 @@
         <service
             android:name="com.xiaomi.mipush.sdk.MessageHandleService"
             android:enabled="true" />
-        <!--注：此service必须在2.2.5版本以后（包括2.2.5版本）加入-->
+        <!-- 注：此service必须在2.2.5版本以后（包括2.2.5版本）加入 -->
 
         <service
             android:name="com.xiaomi.push.service.XMJobService"
             android:enabled="true"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE" />
-        <!--注：此service必须在3.0.1版本以后（包括3.0.1版本）加入-->
+        <!-- 注：此service必须在3.0.1版本以后（包括3.0.1版本）加入 -->
 
         <receiver
             android:name="com.xiaomi.push.service.receivers.NetworkStatusReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
@@ -137,6 +133,7 @@
             </intent-filter>
         </receiver>
         <!-- 小米 配置结束 < -->
+
 
         <!-- Rong消息通知接收 -->
         <receiver
@@ -184,22 +181,18 @@
             android:name=".ui.activity.LoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing|stateHidden" />
-
         <activity
             android:name=".ui.activity.StudentInfoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing|stateHidden" />
-
         <activity
             android:name=".ui.activity.FillPersonActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.ConversationActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize">
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -223,7 +216,7 @@
             android:name=".ui.activity.MyInfoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-
+        <activity android:name=".ui.activity.MsgShareActivity"></activity>
     </application>
 
 </manifest>
