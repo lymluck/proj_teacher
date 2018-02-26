@@ -217,6 +217,12 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity android:name=".ui.activity.MsgShareActivity"></activity>
+
+        <activity
+            android:name=".ui.activity.ImageEditActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing|stateHidden" />
+
     </application>
 
 </manifest>
