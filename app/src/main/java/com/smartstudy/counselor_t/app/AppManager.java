@@ -8,6 +8,9 @@ import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.manager.StudentInfoManager;
 import com.smartstudy.counselor_t.ui.activity.LoginActivity;
 import com.smartstudy.counselor_t.ui.activity.MsgShareActivity;
+import com.smartstudy.counselor_t.ui.activity.MyInfoActivity;
+import com.smartstudy.counselor_t.ui.activity.StudentInfoActivity;
+import com.smartstudy.counselor_t.util.SPCacheUtils;
 
 import java.util.List;
 
@@ -79,6 +82,17 @@ public class AppManager implements RongIMClient.ConnectionStatusListener, RongIM
 
     @Override
     public boolean onUserPortraitClick(Context context, Conversation.ConversationType conversationType, UserInfo userInfo, String s) {
+        String myId = (String) SPCacheUtils.get("imUserId", "");
+        String userId = userInfo.getUserId();
+        Intent intent = new Intent();
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (userId.equals(myId)) {
+            intent.setClass(mContext, MyInfoActivity.class);
+        } else {
+            intent.putExtra("ids", s);
+            intent.setClass(mContext, StudentInfoActivity.class);
+        }
+        mContext.startActivity(intent);
         return false;
     }
 
