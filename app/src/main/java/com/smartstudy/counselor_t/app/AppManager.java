@@ -2,10 +2,12 @@ package com.smartstudy.counselor_t.app;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.manager.StudentInfoManager;
+import com.smartstudy.counselor_t.ui.activity.ImageEditActivity;
 import com.smartstudy.counselor_t.ui.activity.LoginActivity;
 import com.smartstudy.counselor_t.ui.activity.MsgShareActivity;
 import com.smartstudy.counselor_t.ui.activity.MyInfoActivity;
@@ -147,6 +149,7 @@ public class AppManager implements RongIMClient.ConnectionStatusListener, RongIM
                     @Override
                     public boolean onMessageItemLongClick(Context context, UIMessage message) {
                         //编辑图片
+                        context.startActivity(new Intent(context, ImageEditActivity.class).putExtra("msg", clickMsg));
                         return true;
                     }
                 }).build();

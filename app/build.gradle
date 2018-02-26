@@ -63,6 +63,7 @@ dependencies {
     compile project(path: ':permissionlib')
     compile(name: 'HMS-SDK-2.4.0.300', ext: 'aar')
     compile files('libs/MiPush_SDK_Client_3_6_1.jar')
+    compile project(path: ':image')
 }
 
 
