@@ -32,7 +32,6 @@ public class MsgShareActivity extends BaseActivity<BasePresenter> {
 
             @Override
             public void onError(RongIMClient.ErrorCode errorCode) {
-
             }
         });
     }

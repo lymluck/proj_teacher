@@ -33,6 +33,7 @@ import io.rong.message.ImageMessage;
 public class AppManager implements RongIMClient.ConnectionStatusListener, RongIM.ConversationClickListener {
 
     private static AppManager mInstance;
+    //application context
     private Context mContext;
 
     public AppManager(Context mContext) {
@@ -103,7 +104,7 @@ public class AppManager implements RongIMClient.ConnectionStatusListener, RongIM
     }
 
 
-    private void addMsgAction(Message message) {
+    private void addMsgAction(final Message clickMsg) {
         List<MessageItemLongClickAction> messageItemLongClickActions = RongMessageItemLongClickActionManager.getInstance().getMessageItemLongClickActions();
         MessageItemLongClickAction shareAction = null;
         MessageItemLongClickAction imgAction = null;
@@ -120,14 +121,14 @@ public class AppManager implements RongIMClient.ConnectionStatusListener, RongIM
                 @Override
                 public boolean onMessageItemLongClick(Context context, UIMessage message) {
                     //转发消息
-                    context.startActivity(new Intent(context, MsgShareActivity.class).putExtra("msg", message.getMessage()));
+                    context.startActivity(new Intent(context, MsgShareActivity.class).putExtra("msg", clickMsg));
                     return true;
                 }
             }).build();
             RongMessageItemLongClickActionManager.getInstance().addMessageItemLongClickAction(shareAction, 0);
         }
         if (imgAction == null) {
-            if (ImageMessage.class.isAssignableFrom(message.getContent().getClass())) {
+            if (ImageMessage.class.isAssignableFrom(clickMsg.getContent().getClass())) {
                 imgAction = (new MessageItemLongClickAction.Builder()).titleResId(io.rong.imkit.R.string.rc_dialog_item_message_edit).actionListener(new MessageItemLongClickAction.MessageItemLongClickListener() {
                     @Override
                     public boolean onMessageItemLongClick(Context context, UIMessage message) {
@@ -138,7 +139,7 @@ public class AppManager implements RongIMClient.ConnectionStatusListener, RongIM
                 RongMessageItemLongClickActionManager.getInstance().addMessageItemLongClickAction(imgAction, 1);
             }
         } else {
-            if (!ImageMessage.class.isAssignableFrom(message.getContent().getClass())) {
+            if (!ImageMessage.class.isAssignableFrom(clickMsg.getContent().getClass())) {
                 RongMessageItemLongClickActionManager.getInstance().removeMessageItemLongClickAction(imgAction);
             }
         }
