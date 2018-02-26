@@ -10,6 +10,11 @@
         android:id="@+id/rlyt_top"
         layout="@layout/app_top_default" />
 
+    <View
+        android:id="@+id/title_line"
+        style="@style/horizontal_line"
+        android:visibility="gone" />
+
     <FrameLayout
         android:id="@+id/content_view"
         android:layout_width="match_parent"

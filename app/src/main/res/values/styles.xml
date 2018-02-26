@@ -45,4 +45,9 @@
         <item name="android:paddingRight">@dimen/simple_item_paddingr</item>
         <item name="android:gravity">center_vertical</item>
     </style>
+    <!-- 20%黑背景 -->
+    <style name="AppDialogActivityTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@color/black20</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
 </resources>

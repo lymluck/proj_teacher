@@ -40,6 +40,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     protected TextView topdefaultCentertitle;
     protected TextView topdefaultRighttext;
     private AppSettingsDialog permissionDialog;
+    protected LayoutInflater mInflater;
 
     private View mView;
     private View topLine;
@@ -53,6 +54,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.activity_base);
         presenter = initPresenter();
+        mInflater = getLayoutInflater();
     }
 
     @Override
@@ -78,6 +80,9 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         if (presenter != null) {
             presenter.detach();//在presenter中解绑释放view
             presenter = null;
+        }
+        if (mInflater != null) {
+            mInflater = null;
         }
         if (permissionDialog != null) {
             permissionDialog.dialogDismiss();
@@ -149,6 +154,10 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     public abstract P initPresenter();
 
     public abstract void initView();
+
+    public void setTitleLineVisible(int visible) {
+        findViewById(R.id.title_line).setVisibility(visible);
+    }
 
     public void setHeadVisible(int visible) {
         rlytTop.setVisibility(visible);

@@ -16,6 +16,7 @@ import java.io.File;
  * @email yeqingyu@innobuddy.com
  */
 public interface FillPersonContract {
+
     interface View extends BaseView {
 
         void getStudentInfoDetailSuccess();

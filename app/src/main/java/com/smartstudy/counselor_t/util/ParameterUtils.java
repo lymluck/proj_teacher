@@ -105,6 +105,7 @@ public class ParameterUtils {
     public static final String COURSE_FLAG = "course_list";  //flag
     public static final String RANKS_FLAG = "rank_list";  //flag
     public static final String MYSCHOOL_FLAG = "mySchool";  //flag
+    public static final String RECENTUSER_FLAG = "mySchool";  //flag
     public static final String SPEDATA_FLAG = "speData";  //flag
     public static final String RANKTYPE_FLAG = "ranktype";  //flag
     public static final String PROGRAMSPE_FLAG = "programSpe";  //flag
