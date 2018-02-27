@@ -40,4 +40,5 @@
     <color name="bg_answer_color">#FE5252</color> <!-- 答icon背景颜色 -->
     <color name="bg_recent_search">#e4e5e6</color> <!-- 转发消息页面联系人搜索背景 -->
     <color name="bg_recent_user">#f5f6f7</color> <!-- 转发消息页面最近联系人背景 -->
+    <color name="app_basicdialog_editborder">#cccccc</color><!--标准对话框边框色 -->
 </resources>

@@ -10,6 +10,7 @@
     <string name="choose_pic">选择图片</string>
     <string name="sure">确定</string>
     <string name="cancle">取消</string>
+    <string name="word">留言</string>
     <string name="permission_camera">相机</string>
     <string name="permission_phone">电话</string>
     <string name="permission_voice">语音</string>
@@ -27,4 +28,8 @@
     <string name="no_net_tip">连接不上网络啦～</string>
     <string name="no_search_tip">抱歉，没有找到你想要的内容哦～</string>
     <string name="search">搜索</string>
+    <string name="login">登录</string>
+    <string name="login_now">您还未登录，立即登录？</string>
+    <string name="send_to">发送给：</string>
+    <string name="send">发送</string>
 </resources>
