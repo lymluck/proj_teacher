@@ -44,11 +44,13 @@ public class MsgSharePresenter extends BasePresenterImpl<MsgShareContract.View> 
                 ChatUserInfo info = null;
                 for (Conversation conversation : conversations) {
                     info = new ChatUserInfo();
-                    UserInfo userInfo = RongUserInfoManager.getInstance().getUserInfo(conversation.getSenderUserId());
-                    info.setId(userInfo.getUserId());
-                    info.setName(userInfo.getName());
-                    info.setAvatar(userInfo.getPortraitUri().toString());
-                    datas.add(info);
+                    UserInfo userInfo = RongUserInfoManager.getInstance().getUserInfo(conversation.getTargetId());
+                    if (userInfo != null) {
+                        info.setId(userInfo.getUserId());
+                        info.setName(userInfo.getName());
+                        info.setAvatar(userInfo.getPortraitUri().toString());
+                        datas.add(info);
+                    }
                     info = null;
                 }
                 view.showUsers(datas);
