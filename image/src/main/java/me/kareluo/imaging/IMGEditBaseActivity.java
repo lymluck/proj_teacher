@@ -52,7 +52,9 @@ abstract class IMGEditBaseActivity extends Activity implements View.OnClickListe
             initViews();
             mImgView.setImageBitmap(bitmap);
             onCreated();
-        } else finish();
+        } else {
+            finish();
+        }
     }
 
     public void onCreated() {

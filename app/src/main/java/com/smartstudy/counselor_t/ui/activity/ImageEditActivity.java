@@ -3,25 +3,14 @@ package com.smartstudy.counselor_t.ui.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.util.Log;
-import android.widget.Button;
-import android.widget.ImageView;
 
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.mvp.base.BasePresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
-import com.smartstudy.counselor_t.util.DisplayImageUtils;
 
 import java.io.File;
 import java.util.UUID;
 
-import io.rong.imkit.RongIM;
-import io.rong.imlib.IRongCallback;
-import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Message;
 import io.rong.message.ImageMessage;
 import me.kareluo.imaging.IMGEditActivity;
@@ -35,11 +24,7 @@ import me.kareluo.imaging.IMGEditActivity;
  */
 public class ImageEditActivity extends BaseActivity {
     private File mImageFile = null;
-    private String imageUri;
     private static int REQ_IMAGE_EDIT = 1;
-    private int REQ_IMAGE_CHOOSE = 2;
-    private ImageView sdv_image;
-    private ImageView sdv_image_edit;
     Message message;
     ImageMessage imageMessage;
 

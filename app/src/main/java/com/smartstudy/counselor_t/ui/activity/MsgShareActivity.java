@@ -9,7 +9,6 @@ import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
@@ -23,10 +22,8 @@ import com.smartstudy.counselor_t.mvp.presenter.MsgSharePresenter;
 import com.smartstudy.counselor_t.ui.adapter.CommonAdapter;
 import com.smartstudy.counselor_t.ui.adapter.MultiItemTypeAdapter;
 import com.smartstudy.counselor_t.ui.adapter.base.ViewHolder;
-import com.smartstudy.counselor_t.ui.adapter.wrapper.EmptyWrapper;
 import com.smartstudy.counselor_t.ui.adapter.wrapper.HeaderAndFooterWrapper;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
-import com.smartstudy.counselor_t.ui.dialog.AppBasicDialog;
 import com.smartstudy.counselor_t.ui.dialog.DialogCreator;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
 import com.smartstudy.counselor_t.util.ParameterUtils;
@@ -40,16 +37,15 @@ import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 import io.rong.imlib.model.MessageContent;
+import io.rong.message.ImageMessage;
 import io.rong.message.TextMessage;
 
 public class MsgShareActivity extends BaseActivity<MsgShareContract.Presenter> implements MsgShareContract.View {
 
     private HeaderAndFooterWrapper<ChatUserInfo> mHeaderAdapter;
     private RecyclerView rclv_recent;
-    private EmptyWrapper<ChatUserInfo> emptyWrapper;
     private CommonAdapter<ChatUserInfo> chatUserAdapter;
     private View searchView;
-    private View emptyView;
 
     private List<ChatUserInfo> chatUserInfoList;
     private WeakHandler mHandler;
@@ -73,11 +69,8 @@ public class MsgShareActivity extends BaseActivity<MsgShareContract.Presenter> i
         rclv_recent.setHasFixedSize(true);
         rclv_recent.setLayoutManager(new LinearLayoutManager(this));
         initAdapter();
-        emptyView = mInflater.inflate(R.layout.layout_empty, rclv_recent, false);
-        presenter.showLoading(this, emptyView);
         presenter.getChatUsers();
         sendMsg = getIntent().getParcelableExtra("msg");
-        Log.d("msg====", sendMsg.toString());
     }
 
     private void initAdapter() {
@@ -92,10 +85,8 @@ public class MsgShareActivity extends BaseActivity<MsgShareContract.Presenter> i
         mHeaderAdapter = new HeaderAndFooterWrapper<>(chatUserAdapter);
         View headView = mInflater.inflate(R.layout.header_rencent_user, null, false);
         mHeaderAdapter.addHeaderView(headView);
-        emptyWrapper = new EmptyWrapper<>(mHeaderAdapter);
         searchView = headView.findViewById(R.id.searchView);
-        emptyWrapper = new EmptyWrapper<>(mHeaderAdapter);
-        rclv_recent.setAdapter(emptyWrapper);
+        rclv_recent.setAdapter(mHeaderAdapter);
     }
 
     @Override
@@ -108,6 +99,7 @@ public class MsgShareActivity extends BaseActivity<MsgShareContract.Presenter> i
                     case ParameterUtils.MSG_WHAT_REFRESH:
                         rclv_recent.scrollBy(0, searchView.getHeight());
                         break;
+
                     default:
                         break;
                 }
@@ -140,15 +132,28 @@ public class MsgShareActivity extends BaseActivity<MsgShareContract.Presenter> i
                     MessageContent messageContent = sendMsg.getContent();
                     if (TextMessage.class.isAssignableFrom(messageContent.getClass())) {
                         final String content = ((TextMessage) messageContent).getContent();
-                        final AppBasicDialog dialog = DialogCreator.createSendTextMsgDialog(MsgShareActivity.this, chatUserInfo.getAvatar(), chatUserInfo.getName(), content, new OnSendMsgDialogClickListener() {
+                        DialogCreator.createSendTextMsgDialog(MsgShareActivity.this, chatUserInfo.getAvatar(), chatUserInfo.getName(), content, new OnSendMsgDialogClickListener() {
                             @Override
                             public void onPositive(String word) {
                                 //转发内容
-                                sendTextMsg(chatUserInfo.getId(), chatUserInfo.getName(), content);
+                                sendTextMsg(chatUserInfo.getId(), content);
                                 if (!TextUtils.isEmpty(word)) {
                                     //转发留言
-                                    sendTextMsg(chatUserInfo.getId(), chatUserInfo.getName(), word);
+                                    sendTextMsg(chatUserInfo.getId(), word);
                                 }
+                            }
+
+                            @Override
+                            public void onNegative() {
+                            }
+                        });
+                    } else if (ImageMessage.class.isAssignableFrom(messageContent.getClass())) {
+                        final ImageMessage imageMessage = (ImageMessage) messageContent;
+                        DialogCreator.createSendImgMsgDialog(MsgShareActivity.this, chatUserInfo.getAvatar(), chatUserInfo.getName(), imageMessage.getLocalUri().toString(), new OnSendMsgDialogClickListener() {
+                            @Override
+                            public void onPositive(String word) {
+                                //转发内容
+                                sendImgMsg(chatUserInfo.getId(), imageMessage, word);
                             }
 
                             @Override
@@ -168,10 +173,9 @@ public class MsgShareActivity extends BaseActivity<MsgShareContract.Presenter> i
 
     @Override
     public void showUsers(List<ChatUserInfo> data) {
-        presenter.setEmptyView(emptyView);
         chatUserInfoList.clear();
         chatUserInfoList.addAll(data);
-        chatUserAdapter.notifyDataSetChanged();
+        mHeaderAdapter.notifyDataSetChanged();
         searchView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -181,13 +185,7 @@ public class MsgShareActivity extends BaseActivity<MsgShareContract.Presenter> i
         });
     }
 
-    @Override
-    public void showEmptyView(View view) {
-        emptyWrapper.setEmptyView(view);
-        emptyWrapper.notifyDataSetChanged();
-    }
-
-    private void sendTextMsg(final String userId, final String userName, String content) {
+    private void sendTextMsg(final String userId, String content) {
         TextMessage myTextMessage = TextMessage.obtain(content);
         Message myMessage = Message.obtain(userId, Conversation.ConversationType.PRIVATE, myTextMessage);
         RongIM.getInstance().sendMessage(myMessage, null, null, new IRongCallback.ISendMessageCallback() {
@@ -199,13 +197,48 @@ public class MsgShareActivity extends BaseActivity<MsgShareContract.Presenter> i
             @Override
             public void onSuccess(Message message) {
                 //消息通过网络发送成功的回调
-                RongIM.getInstance().startPrivateChat(MsgShareActivity.this, userId, userName);
+                showTip("已发送");
+                finish();
             }
 
             @Override
             public void onError(Message message, RongIMClient.ErrorCode errorCode) {
                 //消息发送失败的回调
                 showTip("消息发送失败！");
+            }
+        });
+    }
+
+    private void sendImgMsg(final String userId, ImageMessage imageMessage, final String word) {
+        ImageMessage imgMsg = ImageMessage.obtain(imageMessage.getThumUri(), imageMessage.getLocalUri(), true);
+        RongIM.getInstance().sendImageMessage(Conversation.ConversationType.PRIVATE, userId, imgMsg, null, null, new RongIMClient.SendImageMessageCallback() {
+
+            @Override
+            public void onAttached(Message message) {
+                //保存数据库成功
+            }
+
+            @Override
+            public void onError(Message message, RongIMClient.ErrorCode code) {
+                //发送失败
+                showTip("消息发送失败！");
+            }
+
+            @Override
+            public void onSuccess(Message message) {
+                //发送成功
+                if (!TextUtils.isEmpty(word)) {
+                    //转发留言
+                    sendTextMsg(userId, word);
+                } else {
+                    showTip("已发送");
+                    finish();
+                }
+            }
+
+            @Override
+            public void onProgress(Message message, int progress) {
+                //发送进度
             }
         });
     }

@@ -2,7 +2,6 @@ package com.smartstudy.counselor_t.app;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 
 import com.smartstudy.counselor_t.R;
@@ -41,8 +40,9 @@ public class AppManager implements RongIMClient.ConnectionStatusListener, RongIM
     private static AppManager mInstance;
     //application context
     private Context mContext;
-
     private Message msg;
+
+
     public AppManager(Context mContext) {
         this.mContext = mContext;
         initListener();
@@ -117,13 +117,13 @@ public class AppManager implements RongIMClient.ConnectionStatusListener, RongIM
 
     @Override
     public boolean onMessageLongClick(Context context, View view, Message message) {
-        addMsgAction(message);
+        this.msg = message;
+        addMsgAction();
         return false;
     }
 
 
-    private void addMsgAction(Message clickMsg) {
-        this.msg=clickMsg;
+    private void addMsgAction() {
         List<MessageItemLongClickAction> messageItemLongClickActions = RongMessageItemLongClickActionManager.getInstance().getMessageItemLongClickActions();
         MessageItemLongClickAction shareAction = null;
         MessageItemLongClickAction imgAction = null;
@@ -135,7 +135,7 @@ public class AppManager implements RongIMClient.ConnectionStatusListener, RongIM
                 imgAction = clickAction;
             }
         }
-        Class clazz = clickMsg.getContent().getClass();
+        Class clazz = msg.getContent().getClass();
         if (shareAction == null) {
             if (ImageMessage.class.isAssignableFrom(clazz) || TextMessage.class.isAssignableFrom(clazz)) {
                 shareAction = (new MessageItemLongClickAction.Builder()).titleResId(io.rong.imkit.R.string.rc_dialog_item_message_share).actionListener(new MessageItemLongClickAction.MessageItemLongClickListener() {

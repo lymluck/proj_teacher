@@ -9,7 +9,6 @@
         android:id="@+id/rclv_recent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:clipToPadding="false"
         android:overScrollMode="always" />
 </LinearLayout>

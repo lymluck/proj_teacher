@@ -21,6 +21,7 @@ import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.listener.OnSendMsgDialogClickListener;
 import com.smartstudy.counselor_t.ui.activity.LoginActivity;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
+import com.smartstudy.counselor_t.util.KeyBoardUtils;
 import com.smartstudy.counselor_t.util.ParameterUtils;
 import com.smartstudy.counselor_t.util.ScreenUtils;
 
@@ -69,8 +70,8 @@ public class DialogCreator {
         return dialog;
     }
 
-    public static AppBasicDialog createSendTextMsgDialog(final Context context, String avatar, String name,
-                                                         String content, final OnSendMsgDialogClickListener onClickListener) {
+    public static void createSendTextMsgDialog(final Context context, String avatar, String name,
+                                               String content, final OnSendMsgDialogClickListener onClickListener) {
         final AppBasicDialog dialog = new AppBasicDialog(context, R.style.appBasicDialog);
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.dialog_send_text, null);
@@ -83,6 +84,7 @@ public class DialogCreator {
         positive_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                KeyBoardUtils.closeKeybord(et_word, context);
                 onClickListener.onPositive(et_word.getText().toString());
             }
         });
@@ -90,6 +92,7 @@ public class DialogCreator {
             @Override
             public void onClick(View v) {
                 onClickListener.onNegative();
+                KeyBoardUtils.closeKeybord(et_word, context);
                 dialog.dismiss();
             }
         });
@@ -98,7 +101,39 @@ public class DialogCreator {
         dialog.getWindow().setAttributes(p);
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
-        return dialog;
+    }
+
+    public static void createSendImgMsgDialog(final Context context, String avatar, String name, String url,
+                                              final OnSendMsgDialogClickListener onClickListener) {
+        final AppBasicDialog dialog = new AppBasicDialog(context, R.style.appBasicDialog);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.dialog_send_img, null);
+        dialog.setContentView(view);
+        DisplayImageUtils.displayPersonImage(context, avatar, (ImageView) view.findViewById(R.id.iv_avatar));
+        ((TextView) view.findViewById(R.id.tv_name)).setText(name);
+        DisplayImageUtils.displayImage(context, url, (ImageView) view.findViewById(R.id.iv_content));
+        Button positive_btn = view.findViewById(R.id.positive_btn);
+        final EditText et_word = view.findViewById(R.id.dialog_edit);
+        positive_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                KeyBoardUtils.closeKeybord(et_word, context);
+                onClickListener.onPositive(et_word.getText().toString());
+            }
+        });
+        view.findViewById(R.id.negative_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickListener.onNegative();
+                KeyBoardUtils.closeKeybord(et_word, context);
+                dialog.dismiss();
+            }
+        });
+        WindowManager.LayoutParams p = dialog.getWindow().getAttributes();
+        p.width = (int) (ScreenUtils.getScreenWidth() * 0.85);
+        dialog.getWindow().setAttributes(p);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
 
     /**
