@@ -2,6 +2,7 @@ package com.smartstudy.counselor_t.app;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 
 import com.smartstudy.counselor_t.R;
@@ -41,6 +42,7 @@ public class AppManager implements RongIMClient.ConnectionStatusListener, RongIM
     //application context
     private Context mContext;
 
+    private Message msg;
     public AppManager(Context mContext) {
         this.mContext = mContext;
         initListener();
@@ -120,7 +122,8 @@ public class AppManager implements RongIMClient.ConnectionStatusListener, RongIM
     }
 
 
-    private void addMsgAction(final Message clickMsg) {
+    private void addMsgAction(Message clickMsg) {
+        this.msg=clickMsg;
         List<MessageItemLongClickAction> messageItemLongClickActions = RongMessageItemLongClickActionManager.getInstance().getMessageItemLongClickActions();
         MessageItemLongClickAction shareAction = null;
         MessageItemLongClickAction imgAction = null;
@@ -139,7 +142,7 @@ public class AppManager implements RongIMClient.ConnectionStatusListener, RongIM
                     @Override
                     public boolean onMessageItemLongClick(Context context, UIMessage message) {
                         //转发消息
-                        context.startActivity(new Intent(context, MsgShareActivity.class).putExtra("msg", clickMsg));
+                        context.startActivity(new Intent(context, MsgShareActivity.class).putExtra("msg", msg));
                         return true;
                     }
                 }).build();
@@ -157,7 +160,7 @@ public class AppManager implements RongIMClient.ConnectionStatusListener, RongIM
                     @Override
                     public boolean onMessageItemLongClick(Context context, UIMessage message) {
                         //编辑图片
-                        context.startActivity(new Intent(context, ImageEditActivity.class).putExtra("msg", clickMsg));
+                        context.startActivity(new Intent(context, ImageEditActivity.class).putExtra("msg", msg));
                         return true;
                     }
                 }).build();
