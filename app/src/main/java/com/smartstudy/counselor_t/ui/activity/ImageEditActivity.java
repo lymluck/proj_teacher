@@ -3,13 +3,18 @@ package com.smartstudy.counselor_t.ui.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.mvp.base.BasePresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
+import com.smartstudy.counselor_t.util.DisplayImageUtils;
 
 import java.io.File;
 import java.util.UUID;
@@ -53,17 +58,14 @@ public class ImageEditActivity extends BaseActivity {
     public void initView() {
         message = getIntent().getParcelableExtra("msg");
         imageMessage = (ImageMessage) message.getContent();
-        sdv_image = findViewById(R.id.sdv_image);
-        sdv_image_edit = findViewById(R.id.sdv_image_edit);
         if (imageMessage != null) {
-            onChooseImages(imageMessage.getThumUri());
+            onChooseImages(imageMessage.getLocalUri());
         }
     }
 
 
     private void onChooseImages(Uri uri) {
         if (uri != null) {
-            sdv_image.setImageURI(uri);
             mImageFile = new File(this.getCacheDir(), UUID.randomUUID().toString() + ".jpg");
             startActivityForResult(
                     new Intent(this, IMGEditActivity.class)
@@ -71,57 +73,12 @@ public class ImageEditActivity extends BaseActivity {
                             .putExtra(IMGEditActivity.EXTRA_IMAGE_SAVE_PATH, mImageFile.getAbsolutePath()),
                     REQ_IMAGE_EDIT
             );
+            finish();
         }
     }
 
     private void onImageEditDone() {
-        Log.w("kim","---->"+((ImageMessage) message.getContent()).getThumUri());
         ((ImageMessage) message.getContent()).setThumUri(Uri.fromFile(mImageFile));
-//        sdv_image_edit.setImageURI(Uri.fromFile(mImageFile));
-//        if (imageMessage.getRemoteUri() != null && !imageMessage.getRemoteUri().toString().startsWith("file")) {
-//            RongIM.getInstance().sendMessage(message, "", "", new IRongCallback.ISendMessageCallback() {
-//                @Override
-//                public void onAttached(Message message) {
-//
-//                }
-//
-//                @Override
-//                public void onSuccess(Message message) {
-//
-//                }
-//
-//                @Override
-//                public void onError(Message message, RongIMClient.ErrorCode errorCode) {
-//
-//                }
-//            });
-//        } else {
-        Log.w("kim","---->"+((ImageMessage) message.getContent()).getThumUri());
-        RongIM.getInstance().sendImageMessage(message, "", "", new RongIMClient.SendImageMessageCallback() {
-
-            @Override
-            public void onAttached(Message message) {
-
-                Log.w("kim", "-----");
-            }
-
-            @Override
-            public void onError(Message message, RongIMClient.ErrorCode errorCode) {
-                Log.w("kim", "=====");
-            }
-
-            @Override
-            public void onSuccess(Message message) {
-                Log.w("kim", "11111");
-            }
-
-            @Override
-            public void onProgress(Message message, int i) {
-                Log.w("kim", "222222");
-
-            }
-        });
-//        }
         finish();
 
     }
