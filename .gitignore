@@ -77,3 +77,5 @@ freeline_project_description.json
 !/image/proguard-rules.pro
 !/image/.gitignore
 /image/.gitignore
+/image/build/
+/image/image.iml
