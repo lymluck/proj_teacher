@@ -58,14 +58,6 @@ public class ImageEditActivity extends BaseActivity {
     public void initView() {
         message = getIntent().getParcelableExtra("msg");
         imageMessage = (ImageMessage) message.getContent();
-//        sdv_image = findViewById(R.id.sdv_image);
-//        sdv_image_edit = findViewById(R.id.sdv_image_edit);
-//        DisplayImageUtils.downloadImageFile(this, Uri,imageMessage.getThumUri(), new SimpleTarget<File>() {
-//            @Override
-//            public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
-//
-//            }
-//        });
         if (imageMessage != null) {
             onChooseImages(imageMessage.getLocalUri());
         }
@@ -74,7 +66,6 @@ public class ImageEditActivity extends BaseActivity {
 
     private void onChooseImages(Uri uri) {
         if (uri != null) {
-//            sdv_image.setImageURI(uri);
             mImageFile = new File(this.getCacheDir(), UUID.randomUUID().toString() + ".jpg");
             startActivityForResult(
                     new Intent(this, IMGEditActivity.class)
@@ -88,51 +79,6 @@ public class ImageEditActivity extends BaseActivity {
 
     private void onImageEditDone() {
         ((ImageMessage) message.getContent()).setThumUri(Uri.fromFile(mImageFile));
-//        sdv_image_edit.setImageURI(Uri.fromFile(mImageFile));
-//        if (imageMessage.getRemoteUri() != null && !imageMessage.getRemoteUri().toString().startsWith("file")) {
-//            RongIM.getInstance().sendMessage(message, "", "", new IRongCallback.ISendMessageCallback() {
-//                @Override
-//                public void onAttached(Message message) {
-//
-//                }
-//
-//                @Override
-//                public void onSuccess(Message message) {
-//
-//                }
-//
-//                @Override
-//                public void onError(Message message, RongIMClient.ErrorCode errorCode) {
-//
-//                }
-//            });
-//        } else {
-
-
-        RongIM.getInstance().sendImageMessage(message, "", "", new RongIMClient.SendImageMessageCallback() {
-
-            @Override
-            public void onAttached(Message message) {
-
-                Log.w("kim", "-----");
-            }
-
-            @Override
-            public void onError(Message message, RongIMClient.ErrorCode errorCode) {
-                Log.w("kim", "=====");
-            }
-
-            @Override
-            public void onSuccess(Message message) {
-                Log.w("kim", "11111");
-            }
-
-            @Override
-            public void onProgress(Message message, int i) {
-                Log.w("kim", "222222");
-
-            }
-        });
         finish();
 
     }
