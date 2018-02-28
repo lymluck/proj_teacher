@@ -148,6 +148,7 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
                 startActivityForResult(toClipImage, ParameterUtils.REQUEST_CODE_CLIP_OVER);
                 break;
 
+
             default:
                 break;
         }

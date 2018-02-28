@@ -35,8 +35,6 @@
         <item name="android:clickable">true</item>
         <item name="android:background">@drawable/simple_item_bg</item>
     </style>
-
-
     <!-- 单项rlyt列表样式 -->
     <style name="simple_item_rlyt">
         <item name="android:layout_width">match_parent</item>
@@ -44,5 +42,19 @@
         <item name="android:paddingLeft">@dimen/simple_item_paddingl</item>
         <item name="android:paddingRight">@dimen/simple_item_paddingr</item>
         <item name="android:gravity">center_vertical</item>
+    </style>
+    <!-- 20%黑背景 -->
+    <style name="AppDialogActivityTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@color/black20</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+    <!-- 全局标准对话框 -->
+    <style name="appBasicDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:background">#00000000</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
     </style>
 </resources>

@@ -2,27 +2,24 @@ package com.smartstudy.counselor_t.app;
 
 
 import android.app.ActivityManager;
-import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 
-import com.smartstudy.counselor_t.manager.StudentInfoManager;
 import com.smartstudy.counselor_t.ui.provider.MyConversationListProvider;
 import com.smartstudy.counselor_t.ui.provider.MyTextMessageItemProvider;
 
 import java.util.List;
 
 import io.rong.imkit.RongIM;
-import io.rong.imkit.userInfoCache.RongUserInfoManager;
-import io.rong.imlib.RongIMClient;
-import io.rong.imlib.model.UserInfo;
 import io.rong.push.RongPushClient;
 
 
 /**
  * Created by louis on 2017/2/22.
  */
-public class BaseApplication extends Application {
+public class BaseApplication extends MultiDexApplication {
 
     private static BaseApplication instance;
     public static Context appContext;
@@ -51,6 +48,12 @@ public class BaseApplication extends Application {
             //注册容云组件
             initRong();
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     public boolean isBackground() {
@@ -115,24 +118,6 @@ public class BaseApplication extends Application {
         RongIM.init(this, "25wehl3u29wqw");
         RongIM.getInstance().registerConversationTemplate(new MyConversationListProvider());
         RongIM.registerMessageTemplate(new MyTextMessageItemProvider());
-        RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
-            @Override
-            public UserInfo getUserInfo(String s) {
-                UserInfo info = RongUserInfoManager.getInstance().getUserInfo(s);
-                if (info == null) {
-                    StudentInfoManager.getInstance().getStudentInfo(s);
-                }
-                return null;
-
-            }
-        }, true);
-        RongIM.setConnectionStatusListener(new RongIMClient.ConnectionStatusListener() {
-            @Override
-            public void onChanged(ConnectionStatus connectionStatus) {
-                if (ConnectionStatus.CONN_USER_BLOCKED.equals(connectionStatus)) {
-
-                }
-            }
-        });
+        AppManager.init(this);
     }
 }

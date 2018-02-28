@@ -70,7 +70,7 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
         RongIM.getInstance().setSendMessageListener(this);
     }
 
-    private void enterFragment(final Conversation.ConversationType mConversationType) {
+    private void enterFragment() {
         if (RongIM.getInstance().getCurrentConnectionStatus().equals(RongIMClient.ConnectionStatusListener.ConnectionStatus.DISCONNECTED)) {
             String cacheToken = (String) SPCacheUtils.get("imToken", "");
             if (!TextUtils.isEmpty(cacheToken)) {
@@ -133,7 +133,7 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
                 return false;
             }
         });
-        enterFragment(mConversationType);
+        enterFragment();
     }
 
     private void setTvTitleTag() {

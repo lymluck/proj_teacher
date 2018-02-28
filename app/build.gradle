@@ -5,6 +5,7 @@ android {
     buildToolsVersion rootProject.ext.android.buildToolsVersion
 
     defaultConfig {
+        multiDexEnabled true
         applicationId rootProject.ext.android.applicationId
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
@@ -15,13 +16,29 @@ android {
             abiFilters 'armeabi', 'armeabi-v7a', 'x86'
         }
     }
-    buildTypes {
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
+    signingConfigs {
         release {
-            minifyEnabled false
+            keyAlias KEY_ALIAS
+            keyPassword KEY_PASSWORD
+            storeFile file(STORE_FILE)
+            storePassword KEYSTORE_PASSWORD
+        }
+    }
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.release
+        }
+        release {
+            zipAlignEnabled true
+            shrinkResources true  // 移除无用的resource文件
+            minifyEnabled true
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
@@ -46,6 +63,8 @@ dependencies {
     compile project(path: ':permissionlib')
     compile(name: 'HMS-SDK-2.4.0.300', ext: 'aar')
     compile files('libs/MiPush_SDK_Client_3_6_1.jar')
+    compile project(path: ':image')
 }
+
 
 repositories { flatDir { dirs 'aars' } }

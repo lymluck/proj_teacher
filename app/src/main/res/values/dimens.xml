@@ -1,6 +1,6 @@
 <resources>
     <dimen name="app_basicdialog_titleh">50dp</dimen><!-- 全局标准对话框标题高度 -->
-    <dimen name="app_basicdialog_inputh">50dp</dimen><!-- 全局标准对话框输入框高度 -->
+    <dimen name="app_basicdialog_inputh">36dp</dimen><!-- 全局标准对话框输入框高度 -->
     <dimen name="app_basicdialog_btnh">45dp</dimen><!-- 全局标准对话框按钮高度 -->
     <dimen name="app_basicdialog_infomarginb">20dp</dimen><!-- 全局标准对话框文本外下边距 -->
     <dimen name="app_basicdialog_editmarginb">10dp</dimen><!-- 全局标准对话框输入框外下边距 -->

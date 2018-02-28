@@ -71,21 +71,21 @@ public class HeaderAndFooterWrapper<T> extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-//        WrapperUtils.onAttachedToRecyclerView(mInnerAdapter, recyclerView, new WrapperUtils.SpanSizeCallback() {
-//            @Override
-//            public int getSpanSize(GridLayoutManager layoutManager, GridLayoutManager.SpanSizeLookup oldLookup, int position) {
-//                int viewType = getItemViewType(position);
-//                if (mHeaderViews.get(viewType) != null) {
-//                    return layoutManager.getSpanCount();
-//                } else if (mFootViews.get(viewType) != null) {
-//                    return layoutManager.getSpanCount();
-//                }
-//                if (oldLookup != null) {
-//                    return oldLookup.getSpanSize(position);
-//                }
-//                return 1;
-//            }
-//        });
+        WrapperUtils.onAttachedToRecyclerView(mInnerAdapter, recyclerView, new WrapperUtils.SpanSizeCallback() {
+            @Override
+            public int getSpanSize(GridLayoutManager layoutManager, GridLayoutManager.SpanSizeLookup oldLookup, int position) {
+                int viewType = getItemViewType(position);
+                if (mHeaderViews.get(viewType) != null) {
+                    return layoutManager.getSpanCount();
+                } else if (mFootViews.get(viewType) != null) {
+                    return layoutManager.getSpanCount();
+                }
+                if (oldLookup != null) {
+                    return oldLookup.getSpanSize(position);
+                }
+                return 1;
+            }
+        });
     }
 
     @Override
@@ -93,7 +93,7 @@ public class HeaderAndFooterWrapper<T> extends RecyclerView.Adapter<RecyclerView
         mInnerAdapter.onViewAttachedToWindow(holder);
         int position = holder.getLayoutPosition();
         if (isHeaderViewPos(position) || isFooterViewPos(position)) {
-//            WrapperUtils.setFullSpan(holder);
+            WrapperUtils.setFullSpan(holder);
         }
     }
 

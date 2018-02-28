@@ -379,7 +379,7 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
             if (schoolDataList != null) {
                 schoolDataList.clear();
             }
-            if (studentInfo.getWatchSchools().getData() != null&&studentInfo.getWatchSchools().getData().size()>0) {
+            if (studentInfo.getWatchSchools().getData() != null && studentInfo.getWatchSchools().getData().size() > 0) {
                 ll_student.setVisibility(View.VISIBLE);
                 v_backline.setVisibility(View.GONE);
                 schoolDataList.addAll(studentInfo.getWatchSchools().getData());

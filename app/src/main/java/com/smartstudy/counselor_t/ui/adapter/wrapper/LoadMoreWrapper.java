@@ -127,6 +127,8 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
             case STATE_NODATA:
                 result = "没有更多了";
                 break;
+            default:
+                break;
         }
         return result;
     }
