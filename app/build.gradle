@@ -47,9 +47,9 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation rootProject.ext.dependencies.support
-    implementation rootProject.ext.dependencies.glide
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile rootProject.ext.dependencies.support
+    compile rootProject.ext.dependencies.glide
     annotationProcessor rootProject.ext.dependencies.glideprocessor
     compile project(':IMKit')
     compile project(':IMLib')
@@ -64,6 +64,7 @@ dependencies {
     compile(name: 'HMS-SDK-2.4.0.300', ext: 'aar')
     compile files('libs/MiPush_SDK_Client_3_6_1.jar')
     compile project(path: ':image')
+    compile project(':xxdAnnotation')
 }
 
 

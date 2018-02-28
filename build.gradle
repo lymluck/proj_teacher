@@ -4,12 +4,13 @@ apply from: "config.gradle"
 buildscript {
 
     repositories {
-        google()
         jcenter()
+        google()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
-
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        classpath 'com.growingio.android:vds-gradle-plugin:+'
     }
 }
 

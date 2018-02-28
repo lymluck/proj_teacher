@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
+import com.smartstudy.annotation.Route;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.ChatUserInfo;
 import com.smartstudy.counselor_t.handler.WeakHandler;
@@ -39,7 +40,7 @@ import io.rong.imlib.model.Message;
 import io.rong.imlib.model.MessageContent;
 import io.rong.message.ImageMessage;
 import io.rong.message.TextMessage;
-
+@Route("MsgShareActivity")
 public class MsgShareActivity extends BaseActivity<MsgShareContract.Presenter> implements MsgShareContract.View {
 
     private HeaderAndFooterWrapper<ChatUserInfo> mHeaderAdapter;

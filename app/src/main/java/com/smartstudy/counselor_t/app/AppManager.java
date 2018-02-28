@@ -26,6 +26,7 @@ import io.rong.imlib.model.Message;
 import io.rong.imlib.model.UserInfo;
 import io.rong.message.ImageMessage;
 import io.rong.message.TextMessage;
+import me.kareluo.imaging.IMGEditActivity;
 
 /**
  * @author louis
@@ -160,7 +161,7 @@ public class AppManager implements RongIMClient.ConnectionStatusListener, RongIM
                     @Override
                     public boolean onMessageItemLongClick(Context context, UIMessage message) {
                         //编辑图片
-                        context.startActivity(new Intent(context, ImageEditActivity.class).putExtra("msg", msg));
+                        context.startActivity(new Intent(context, IMGEditActivity.class).putExtra("msg", msg));
                         return true;
                     }
                 }).build();

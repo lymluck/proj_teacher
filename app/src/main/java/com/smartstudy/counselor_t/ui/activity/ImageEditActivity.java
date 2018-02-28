@@ -61,20 +61,4 @@ public class ImageEditActivity extends BaseActivity {
             finish();
         }
     }
-
-    private void onImageEditDone() {
-        ((ImageMessage) message.getContent()).setThumUri(Uri.fromFile(mImageFile));
-        finish();
-
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQ_IMAGE_EDIT) {
-            if (resultCode == RESULT_OK) {
-                onImageEditDone();
-            }
-        }
-    }
 }
