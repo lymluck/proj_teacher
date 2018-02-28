@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TagsLayout">
+        <attr name="tagVerticalSpace" format="dimension" />
+        <attr name="tagHorizontalSpace" format="dimension" />
+        <attr name="textColor" format="color" />
+        <attr name="textChildSize" format="dimension" />
+        <attr name="padding_left_right" format="dimension" />
+        <attr name="padding_bottom_top" format="dimension" />
+    </declare-styleable>
+</resources>

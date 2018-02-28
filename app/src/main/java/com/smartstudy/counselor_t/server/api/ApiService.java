@@ -109,7 +109,7 @@ public interface ApiService {
 
 
     /**
-     *
+     *用户注销
      */
     @POST(HttpUrlUtils.URL_USER_LOGOUT)
     Observable<ResponseInfo> getLogOut(@HeaderMap Map<String, String> header);
@@ -119,10 +119,23 @@ public interface ApiService {
      *
      */
     @GET(HttpUrlUtils.URL_QUESTS)
-    Observable<ResponseInfo> getQuestions(@HeaderMap Map<String, String> header,@QueryMap Map<String, String> params);
+    Observable<ResponseInfo> getQuestions(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
 
     @GET(HttpUrlUtils.URL_MYQA)
-    Observable<ResponseInfo> getMyQuestions(@HeaderMap Map<String, String> header,@QueryMap Map<String, String> params);
+    Observable<ResponseInfo> getMyQuestions(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+
+
+    @GET(HttpUrlUtils.URL_QUESTS_LINK)
+    Observable<ResponseInfo> getQaDetail(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+
+    @GET(HttpUrlUtils.URL_FAVORITE)
+    Observable<ResponseInfo> checkFavorite(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+
+    @POST(HttpUrlUtils.URL_FAVORITE)
+    Observable<ResponseInfo> addFavorite(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+
+    @POST(HttpUrlUtils.URL_POST_QUESTION)
+    Observable<ResponseInfo> postQuestion(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
 }

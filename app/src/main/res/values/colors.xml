@@ -42,4 +42,7 @@
     <color name="bg_answer_color">#FE5252</color> <!-- 答icon背景颜色 -->
     <color name="home_search_title_bg">#F5F6F7</color> <!-- 首页搜索列表标题背景颜色 -->
     <color name="bg_home_search">#E4E5E6</color>
+    <color name="qa_post_clor">#949BA1</color>
+    <color name="home_top_bg_start">#078CF1</color> <!-- 首页渐变色起始颜色 -->
+    <color name="user_rate_clor">#FFB400</color> <!-- 录取率测试结果用户录取率颜色 -->
 </resources>

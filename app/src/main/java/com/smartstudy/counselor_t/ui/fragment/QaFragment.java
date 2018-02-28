@@ -1,10 +1,12 @@
 package com.smartstudy.counselor_t.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
@@ -39,13 +41,10 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
     private EmptyWrapper<SchoolInfo> emptyWrapper;
     private NoScrollLinearLayoutManager mLayoutManager;
     private View emptyView;
-    private View searchView;
 
     private List<QuestionInfo> questionInfoList;
     private int mPage = 1;
     private String data_tag;
-    private boolean isFirst = true;
-    private WeakHandler mHandler;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,11 +61,7 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
     @Override
     public void onResume() {
         super.onResume();
-        if (Utils.getScollYDistance(rclv_qa) >= 0) {
-            if ("list".equals(data_tag)) {
-                searchView.setVisibility(View.INVISIBLE);
-            }
-        }
+
     }
 
     @Override
@@ -121,9 +116,8 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
 
     @Override
     protected void initView(View rootView) {
-        searchView = rootView.findViewById(R.id.searchView);
         rclv_qa = (LoadMoreRecyclerView) rootView.findViewById(R.id.rclv_qa);
-        data_tag ="list";
+        data_tag = "list";
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.srlt_qa);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.app_main_color));
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -133,30 +127,11 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
                 getQa(ParameterUtils.PULL_DOWN);
             }
         });
-        searchView.setOnClickListener(this);
         rclv_qa.setHasFixedSize(true);
         mLayoutManager = new NoScrollLinearLayoutManager(mActivity);
         mLayoutManager.setScrollEnabled(true);
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rclv_qa.setLayoutManager(mLayoutManager);
-//        if ("list".equals(data_tag)) {
-//            topdefault_centertitle.setText(mActivity.getString(R.string.qa));
-//            if (!getArguments().getBoolean("showBackBtn", false)) {
-//                topdefault_leftbutton.setVisibility(View.GONE);
-//            }
-//            rclv_qa.addItemDecoration(new HorizontalDividerItemDecoration.Builder(mActivity)
-//                    .size(DensityUtils.dip2px(10f)).colorResId(R.color.search_bg).build());
-//        } else if ("my".equals(data_tag)) {
-//            rclv_qa.setPadding(0, 0, 0, 0);
-//            topdefault_centertitle.setText(mActivity.getString(R.string.my_qa));
-//            rclv_qa.addItemDecoration(new HorizontalDividerItemDecoration.Builder(mActivity)
-//                    .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.horizontal_line_color).build());
-//        } else if ("school".equals(data_tag)) {
-//            rclv_qa.setPadding(0, 0, 0, 0);
-//            topdefault_centertitle.setText("留学问答");
-//            rclv_qa.addItemDecoration(new HorizontalDividerItemDecoration.Builder(mActivity)
-//                    .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.horizontal_line_color).build());
-//        }
         initAdapter();
         initEvent();
 
@@ -164,20 +139,7 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
 
     @Override
     protected void initEvent() {
-        mHandler = new WeakHandler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message msg) {
-                switch (msg.what) {
-                    case ParameterUtils.MSG_WHAT_REFRESH:
-                        rclv_qa.scrollBy(0, searchView.getHeight());
-                        searchView.setVisibility(View.INVISIBLE);
-                        break;
-                    default:
-                        break;
-                }
-                return false;
-            }
-        });
+
     }
 
     private void initAdapter() {
@@ -224,21 +186,21 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
                 getQa(ParameterUtils.PULL_UP);
             }
         });
-//        mAdapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-////                QuestionInfo info = questionInfoList.get(position);
-////                Intent toMoreDetails = new Intent(mActivity, QaDetailActivity.class);
-////                toMoreDetails.putExtra("id", info.getId() + "");
-////                startActivity(toMoreDetails);
-////                info = null;
-//            }
-//
-//            @Override
-//            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-//                return false;
-//            }
-//        });
+        mAdapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+//                QuestionInfo info = questionInfoList.get(position);
+//                Intent toMoreDetails = new Intent(mActivity, QaDetailActivity.class);
+//                toMoreDetails.putExtra("id", info.getId() + "");
+//                startActivity(toMoreDetails);
+//                info = null;
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
     }
 
     private void setupHolderView(ViewHolder holder, int visibility) {
@@ -251,9 +213,9 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
 
     private void getQa(int pullAction) {
         if ("list".equals(data_tag)) {
-            presenter.getQuestions( true, mPage, pullAction);
+            presenter.getQuestions(true, mPage, pullAction);
         } else if ("my".equals(data_tag)) {
-            presenter.getMyQuestions( mPage, pullAction);
+            presenter.getMyQuestions(mPage, pullAction);
         } else if ("school".equals(data_tag)) {
             String schoolId = getArguments().getString("schoolId");
             presenter.getSchoolQa(schoolId, mPage, pullAction);
@@ -266,29 +228,6 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
             case R.id.topdefault_leftbutton:
                 mActivity.finish();
                 break;
-//            case R.id.topdefault_rightmenu:
-//                String ticket = (String) SPCacheUtils.get("ticket", ParameterUtils.CACHE_NULL);
-//                if (!ParameterUtils.CACHE_NULL.equals(ticket)) {
-//                    startActivity(new Intent(mActivity, AddQuestionActivity.class));
-//                } else {
-//                    DialogCreator.createLoginDialog(mActivity);
-//                }
-//                break;
-//            case R.id.searchView:
-//                mHandler.sendEmptyMessageAtTime(ParameterUtils.MSG_WHAT_REFRESH, 600);
-//                Intent toSearch = new Intent(mActivity, CommonSearchActivity.class);
-//                toSearch.putExtra(ParameterUtils.TRANSITION_FLAG, ParameterUtils.QA_FLAG);
-//                Pair<View, String> searchTop = Pair.create(searchView, "search_top");
-//                ActivityOptionsCompat compat = ActivityOptionsCompat
-//                        .makeSceneTransitionAnimation(mActivity, searchTop);
-//                searchTop = null;
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-//                    startActivity(toSearch, compat.toBundle());
-//                    compat = null;
-//                } else {
-//                    startActivity(toSearch);
-//                }
-//                break;
             default:
                 break;
         }
@@ -310,16 +249,6 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
                 questionInfoList.addAll(data);
                 swipeRefreshLayout.setRefreshing(false);
                 loadMoreWrapper.notifyDataSetChanged();
-                if ("list".equals(data_tag)) {
-                    if (searchView.getVisibility() == View.INVISIBLE && isFirst) {
-                        rclv_qa.scrollBy(0, searchView.getHeight());
-                    }
-                    //判断是否可滑动， -1 表示 向上， 1 表示向下
-                    if (!rclv_qa.canScrollVertically(-1)) {
-                        searchView.setVisibility(View.VISIBLE);
-                    }
-                    isFirst = false;
-                }
             } else if (request_state == ParameterUtils.PULL_UP) {
                 //上拉加载
                 if (len <= 0) {

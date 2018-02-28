@@ -24,6 +24,7 @@ import com.smartstudy.counselor_t.ui.activity.LoginActivity;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.ui.fragment.MyFragment;
 import com.smartstudy.counselor_t.ui.fragment.QaFragment;
+import com.smartstudy.counselor_t.ui.fragment.VoiceFragment;
 import com.smartstudy.counselor_t.ui.widget.DragPointView;
 import com.smartstudy.counselor_t.util.ConstantUtils;
 import com.smartstudy.counselor_t.util.DeviceUtils;
