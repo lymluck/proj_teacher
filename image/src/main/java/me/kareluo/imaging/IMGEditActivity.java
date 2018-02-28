@@ -7,23 +7,23 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.view.View;
-import android.widget.Toast;
 
+import com.smartstudy.router.Router;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.UUID;
+
+import io.rong.imlib.model.Message;
+import io.rong.message.ImageMessage;
 import me.kareluo.imaging.core.IMGMode;
 import me.kareluo.imaging.core.IMGText;
 import me.kareluo.imaging.core.file.IMGAssetFileDecoder;
 import me.kareluo.imaging.core.file.IMGDecoder;
 import me.kareluo.imaging.core.file.IMGFileDecoder;
 import me.kareluo.imaging.core.util.IMGUtils;
-
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-/**
- * Created by felix on 2017/11/14 下午2:26.
- */
 
 public class IMGEditActivity extends IMGEditBaseActivity {
 
@@ -37,6 +37,12 @@ public class IMGEditActivity extends IMGEditBaseActivity {
 
     private String[] items = {"发送给朋友", "保存"};
 
+    private File mImageFile = null;
+
+    Message message;
+
+    ImageMessage imageMessage;
+
     @Override
     public void onCreated() {
 
@@ -44,16 +50,27 @@ public class IMGEditActivity extends IMGEditBaseActivity {
 
     @Override
     public Bitmap getBitmap() {
-        Intent intent = getIntent();
-        if (intent == null) {
-            return null;
+//        Intent intent = getIntent();
+//        if (intent == null) {
+//            return null;
+//        }
+//
+//        Uri uri = intent.getParcelableExtra(EXTRA_IMAGE_URI);
+//        if (uri == null) {
+//            return null;
+//        }
+        message = getIntent().getParcelableExtra("msg");
+
+        if (message != null) {
+            imageMessage = (ImageMessage) message.getContent();
         }
 
-        Uri uri = intent.getParcelableExtra(EXTRA_IMAGE_URI);
+        Uri uri = imageMessage.getLocalUri();
         if (uri == null) {
             return null;
+        } else {
+            mImageFile = new File(this.getCacheDir(), UUID.randomUUID().toString() + ".jpg");
         }
-
         IMGDecoder decoder = null;
 
         String path = uri.getPath();
@@ -169,8 +186,7 @@ public class IMGEditActivity extends IMGEditBaseActivity {
                 .setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(IMGEditActivity.this, items[which], Toast.LENGTH_SHORT).show();
-                        String path = getIntent().getStringExtra(EXTRA_IMAGE_SAVE_PATH);
+                        String path = mImageFile.getAbsolutePath();
                         if (!TextUtils.isEmpty(path)) {
                             Bitmap bitmap = mImgView.saveBitmap();
                             if (bitmap != null) {
@@ -189,10 +205,11 @@ public class IMGEditActivity extends IMGEditBaseActivity {
                                         }
                                     }
                                 }
-                                setResult(RESULT_OK);
-                                finish();
-                                return;
                             }
+                        }
+
+                        if (items[which].equals("发送给朋友")) {
+                            Router.build("MsgShareActivity").with("msg", message).go(IMGEditActivity.this);
                         }
                         setResult(RESULT_CANCELED);
                         finish();
