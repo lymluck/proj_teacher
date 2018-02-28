@@ -149,11 +149,23 @@ public class MsgShareActivity extends BaseActivity<MsgShareContract.Presenter> i
                         });
                     } else if (ImageMessage.class.isAssignableFrom(messageContent.getClass())) {
                         final ImageMessage imageMessage = (ImageMessage) messageContent;
-                        DialogCreator.createSendImgMsgDialog(MsgShareActivity.this, chatUserInfo.getAvatar(), chatUserInfo.getName(), imageMessage.getLocalUri().toString(), new OnSendMsgDialogClickListener() {
+                        String url = "";
+                        if (imageMessage.getLocalUri() != null) {
+                            url = imageMessage.getLocalUri().toString();
+                        } else if (imageMessage.getRemoteUri() != null) {
+                            url = imageMessage.getRemoteUri().toString();
+                        } else {
+                            url = imageMessage.getThumUri().toString();
+                        }
+                        DialogCreator.createSendImgMsgDialog(MsgShareActivity.this, chatUserInfo.getAvatar(), chatUserInfo.getName(), url, new OnSendMsgDialogClickListener() {
                             @Override
                             public void onPositive(String word) {
                                 //转发内容
-                                sendImgMsg(chatUserInfo.getId(), imageMessage, word);
+                                sendImgMsg(chatUserInfo.getId(), imageMessage);
+                                if (!TextUtils.isEmpty(word)) {
+                                    //转发留言
+                                    sendTextMsg(chatUserInfo.getId(), word);
+                                }
                             }
 
                             @Override
@@ -205,13 +217,13 @@ public class MsgShareActivity extends BaseActivity<MsgShareContract.Presenter> i
             public void onError(Message message, RongIMClient.ErrorCode errorCode) {
                 //消息发送失败的回调
                 showTip("消息发送失败！");
+                finish();
             }
         });
     }
 
-    private void sendImgMsg(final String userId, ImageMessage imageMessage, final String word) {
-        ImageMessage imgMsg = ImageMessage.obtain(imageMessage.getThumUri(), imageMessage.getLocalUri(), true);
-        RongIM.getInstance().sendImageMessage(Conversation.ConversationType.PRIVATE, userId, imgMsg, null, null, new RongIMClient.SendImageMessageCallback() {
+    private void sendImgMsg(final String userId, ImageMessage imageMessage) {
+        RongIM.getInstance().sendImageMessage(Conversation.ConversationType.PRIVATE, userId, imageMessage, null, null, new RongIMClient.SendImageMessageCallback() {
 
             @Override
             public void onAttached(Message message) {
@@ -222,18 +234,14 @@ public class MsgShareActivity extends BaseActivity<MsgShareContract.Presenter> i
             public void onError(Message message, RongIMClient.ErrorCode code) {
                 //发送失败
                 showTip("消息发送失败！");
+                finish();
             }
 
             @Override
             public void onSuccess(Message message) {
                 //发送成功
-                if (!TextUtils.isEmpty(word)) {
-                    //转发留言
-                    sendTextMsg(userId, word);
-                } else {
-                    showTip("已发送");
-                    finish();
-                }
+                showTip("已发送");
+                finish();
             }
 
             @Override
