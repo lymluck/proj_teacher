@@ -1,11 +1,10 @@
 package me.kareluo.imaging;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.smartstudy.router.Router;
 
@@ -23,6 +22,8 @@ import me.kareluo.imaging.core.file.IMGAssetFileDecoder;
 import me.kareluo.imaging.core.file.IMGDecoder;
 import me.kareluo.imaging.core.file.IMGFileDecoder;
 import me.kareluo.imaging.core.util.IMGUtils;
+import me.kareluo.imaging.util.ImgUtils;
+import me.kareluo.imaging.view.OptionsPopupDialog;
 
 public class IMGEditActivity extends IMGEditBaseActivity {
 
@@ -46,7 +47,6 @@ public class IMGEditActivity extends IMGEditBaseActivity {
     @Override
     public Bitmap getBitmap() {
         message = getIntent().getParcelableExtra("msg");
-
         if (message != null) {
             imageMessage = (ImageMessage) message.getContent();
         }
@@ -168,39 +168,56 @@ public class IMGEditActivity extends IMGEditBaseActivity {
 
 
     public void showOptDialog() {
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setItems(items, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String path = mImageFile.getAbsolutePath();
-                        if (!TextUtils.isEmpty(path)) {
-                            Bitmap bitmap = mImgView.saveBitmap();
-                            if (bitmap != null) {
-                                FileOutputStream fout = null;
+        OptionsPopupDialog dialog = new OptionsPopupDialog(this, items).setOptionsPopupDialogListener(new OptionsPopupDialog.OnOptionsItemClickedListener() {
+            @Override
+            public void onOptionsItemClicked(int var1) {
+                String path = mImageFile.getAbsolutePath();
+                if (!TextUtils.isEmpty(path)) {
+                    Bitmap bitmap = mImgView.saveBitmap();
+                    if (bitmap != null) {
+                        FileOutputStream fout = null;
+                        try {
+                            fout = new FileOutputStream(path);
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, fout);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } finally {
+                            if (fout != null) {
                                 try {
-                                    fout = new FileOutputStream(path);
-                                    bitmap.compress(Bitmap.CompressFormat.JPEG, 80, fout);
-                                } catch (FileNotFoundException e) {
+                                    fout.close();
+                                } catch (IOException e) {
                                     e.printStackTrace();
-                                } finally {
-                                    if (fout != null) {
-                                        try {
-                                            fout.close();
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
                                 }
                             }
                         }
-
-                        if (items[which].equals("发送给朋友")) {
-                            Router.build("MsgShareActivity").with("msg", message).go(IMGEditActivity.this);
-                        }
-                        setResult(RESULT_CANCELED);
-                        finish();
                     }
-                }).create();
+                }
+
+                if (mImageFile != null) {
+                    if (items[var1].equals("发送给朋友")) {
+                        if (Uri.fromFile(mImageFile) != null) {
+                            //TODO 这里设置的应该是修剪后的缩略图地址
+                            ((ImageMessage) message.getContent()).setThumUri(Uri.fromFile(mImageFile));
+                            ((ImageMessage) message.getContent()).setLocalUri(Uri.fromFile(mImageFile));
+                        }
+                        Router.build("MsgShareActivity").with("msg", message).go(IMGEditActivity.this);
+                    } else {
+                        Bitmap bitmap = BitmapFactory.decodeFile(mImageFile.getPath());
+                        boolean isSaveSuccess = ImgUtils.saveImageToGallery(IMGEditActivity.this, bitmap);
+                        if (isSaveSuccess) {
+                            Toast.makeText(IMGEditActivity.this, "保存图片成功", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(IMGEditActivity.this, "保存图片失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
+                }
+                setResult(RESULT_CANCELED);
+                finish();
+            }
+
+        });
         dialog.show();
     }
+
 }
