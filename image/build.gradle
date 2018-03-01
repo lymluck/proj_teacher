@@ -1,23 +1,24 @@
-apply plugin: 'com.android.library'
+apply plugin: rootProject.ext.plugins.library
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
 
     resourcePrefix "image_"
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+        multiDexEnabled true
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            zipAlignEnabled true
+            shrinkResources true  // 移除无用的resource文件
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -26,13 +27,10 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile rootProject.ext.dependencies.support
+    compile rootProject.ext.dependencies.recyclerview
     compile 'com.facebook.fresco:fresco:1.7.1'
-    compile 'com.android.support:appcompat-v7:+'
-    compile 'com.android.support:recyclerview-v7:+'
-    //    compile 'com.facebook.fresco:animated-gif:1.7.1'
-    //
-    //    compile 'com.facebook.fresco:animated-webp:1.7.1'
-    //    compile 'com.facebook.fresco:webpsupport:1.7.1'
-    compile project(path: ':xxdRouter')
-    compile project(':IMKit')
+    compile project(':xxdRouter')
+    compile project(':xxdAnnotation')
+    compile project(':IMLib')
 }

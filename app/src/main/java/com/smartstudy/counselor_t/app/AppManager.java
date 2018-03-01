@@ -6,7 +6,6 @@ import android.view.View;
 
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.manager.StudentInfoManager;
-import com.smartstudy.counselor_t.ui.activity.ImageEditActivity;
 import com.smartstudy.counselor_t.ui.activity.LoginActivity;
 import com.smartstudy.counselor_t.ui.activity.MsgShareActivity;
 import com.smartstudy.counselor_t.ui.activity.MyInfoActivity;

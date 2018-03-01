@@ -9,6 +9,7 @@ import android.text.TextUtils;
 
 import com.smartstudy.counselor_t.ui.provider.MyConversationListProvider;
 import com.smartstudy.counselor_t.ui.provider.MyTextMessageItemProvider;
+import com.smartstudy.router.Router;
 
 import java.util.List;
 
@@ -47,6 +48,7 @@ public class BaseApplication extends MultiDexApplication {
             appContext = this;
             //注册容云组件
             initRong();
+            Router.initialize(this);
         }
     }
 
