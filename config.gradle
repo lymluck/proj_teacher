@@ -3,6 +3,7 @@ ext {
     plugins = [
             application: 'com.android.application',
             library    : 'com.android.library',
+            router     : 'com.smartstudy.router',
     ]
 
     android = [

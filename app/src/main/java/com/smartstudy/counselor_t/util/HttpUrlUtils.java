@@ -57,7 +57,7 @@ public class HttpUrlUtils {
     public static final String URL_PROGRAM = "/major_lib/programs";  //本科项目列表
     public static final String URL_COMMAND_SCHOOL = "/major_lib/program/%1$s/schools";  //推荐院校列表
     public static final String URL_HOME_HOT = "/view/app/tab/index";  //首页各种列表
-    public static final String URL_USER_LOGOUT = "/user/logout";  //推荐院校列表
+    public static final String URL_USER_LOGOUT = "/counsellor/logout";  //推荐院校列表
     public static final String URL_MSG_CENTER = "/notification/list";  //消息中心
     public static final String URL_MSG_UNREAD = "/notification/count/unread";  //消息未读数
     public static final String URL_COURSE_LIST = "/course/list";  //课程列表
