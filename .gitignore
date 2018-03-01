@@ -79,3 +79,6 @@ freeline_project_description.json
 /image/.gitignore
 /image/build/
 /image/image.iml
+/xxdRouter/build/
+/xxdRouter/xxdRouter.iml
+/xxdCompiler/xxdCompiler.iml

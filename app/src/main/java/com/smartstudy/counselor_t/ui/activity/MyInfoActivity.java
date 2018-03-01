@@ -330,7 +330,7 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
         switch (requestCode) {
             case ParameterUtils.REQUEST_CODE_CHANGEPHOTO:
                 String temppath = data.getStringExtra("path");
-                DisplayImageUtils.downloadImageFile(getApplicationContext(), temppath, new SimpleTarget<File>(100, 100) {
+                DisplayImageUtils.displayImageFile(getApplicationContext(), temppath, new SimpleTarget<File>(100, 100) {
                     @Override
                     public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
                         photoFile = resource;

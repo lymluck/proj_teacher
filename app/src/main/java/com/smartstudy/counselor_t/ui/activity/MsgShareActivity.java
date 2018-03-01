@@ -1,18 +1,25 @@
 package com.smartstudy.counselor_t.ui.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
+import com.smartstudy.annotation.Route;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.ChatUserInfo;
 import com.smartstudy.counselor_t.handler.WeakHandler;
@@ -28,9 +35,11 @@ import com.smartstudy.counselor_t.ui.dialog.DialogCreator;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
 import com.smartstudy.counselor_t.util.ParameterUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.rong.imageloader.core.ImageLoader;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.IRongCallback;
 import io.rong.imlib.RongIMClient;
@@ -40,6 +49,7 @@ import io.rong.imlib.model.MessageContent;
 import io.rong.message.ImageMessage;
 import io.rong.message.TextMessage;
 
+@Route("MsgShareActivity")
 public class MsgShareActivity extends BaseActivity<MsgShareContract.Presenter> implements MsgShareContract.View {
 
     private HeaderAndFooterWrapper<ChatUserInfo> mHeaderAdapter;
@@ -149,29 +159,28 @@ public class MsgShareActivity extends BaseActivity<MsgShareContract.Presenter> i
                         });
                     } else if (ImageMessage.class.isAssignableFrom(messageContent.getClass())) {
                         final ImageMessage imageMessage = (ImageMessage) messageContent;
-                        String url = "";
-                        if (imageMessage.getLocalUri() != null) {
-                            url = imageMessage.getLocalUri().toString();
-                        } else if (imageMessage.getRemoteUri() != null) {
-                            url = imageMessage.getRemoteUri().toString();
-                        } else {
-                            url = imageMessage.getThumUri().toString();
-                        }
-                        DialogCreator.createSendImgMsgDialog(MsgShareActivity.this, chatUserInfo.getAvatar(), chatUserInfo.getName(), url, new OnSendMsgDialogClickListener() {
-                            @Override
-                            public void onPositive(String word) {
-                                //转发内容
-                                sendImgMsg(chatUserInfo.getId(), imageMessage);
-                                if (!TextUtils.isEmpty(word)) {
-                                    //转发留言
-                                    sendTextMsg(chatUserInfo.getId(), word);
-                                }
-                            }
+                        Log.d("thum======", imageMessage.getThumUri() + "");
+                        Log.d("local======", imageMessage.getLocalUri() + "");
+                        Log.d("path======", imageMessage.getLocalPath() + "");
+                        Log.d("remote======", imageMessage.getRemoteUri() + "");
+                        Log.d("base64======", imageMessage.getBase64() + "");
+                        Log.d("media======", imageMessage.getMediaUrl() + "");
+                        DialogCreator.createSendImgMsgDialog(MsgShareActivity.this, chatUserInfo.getAvatar(), chatUserInfo.getName(),
+                                imageMessage.getLocalPath() != null ? imageMessage.getLocalPath().toString() : imageMessage.getRemoteUri().toString(), new OnSendMsgDialogClickListener() {
+                                    @Override
+                                    public void onPositive(String word) {
+                                        //转发内容
+                                        handleMsg(chatUserInfo.getId(), imageMessage, imageMessage.isFull());
+                                        if (!TextUtils.isEmpty(word)) {
+                                            //转发留言
+                                            sendTextMsg(chatUserInfo.getId(), word);
+                                        }
+                                    }
 
-                            @Override
-                            public void onNegative() {
-                            }
-                        });
+                                    @Override
+                                    public void onNegative() {
+                                    }
+                                });
                     }
                 }
             }
@@ -222,8 +231,37 @@ public class MsgShareActivity extends BaseActivity<MsgShareContract.Presenter> i
         });
     }
 
-    private void sendImgMsg(final String userId, ImageMessage imageMessage) {
-        RongIM.getInstance().sendImageMessage(Conversation.ConversationType.PRIVATE, userId, imageMessage, null, null, new RongIMClient.SendImageMessageCallback() {
+    private void handleMsg(final String userId, final ImageMessage msg, final boolean isFull) {
+        if (msg.getLocalUri() != null && msg.getLocalUri().toString().startsWith("file")) {
+            if (msg.getLocalUri().toString().startsWith("file")) {
+                sendImageMsg(userId, msg.getThumUri(), msg.getLocalUri(), isFull);
+            } else {
+                Log.d("path=====", ImageLoader.getInstance().getDiskCache().get(msg.getLocalUri().toString()).getAbsolutePath());
+                DisplayImageUtils.displayImageFile(this, msg.getLocalUri().toString(), new SimpleTarget<File>() {
+                    @Override
+                    public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
+                        Uri uri = Uri.fromFile(resource);
+                        sendImageMsg(userId, msg.getThumUri(), uri, isFull);
+                    }
+                });
+            }
+        } else {
+            if (msg.getRemoteUri() != null) {
+                Log.d("path=====", ImageLoader.getInstance().getDiskCache().get(msg.getRemoteUri().toString()).getAbsolutePath());
+                DisplayImageUtils.displayImageFile(this, msg.getRemoteUri().toString(), new SimpleTarget<File>() {
+                    @Override
+                    public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
+                        Uri uri = Uri.fromFile(resource);
+                        sendImageMsg(userId, msg.getThumUri(), uri, isFull);
+                    }
+                });
+            }
+        }
+    }
+
+    private void sendImageMsg(String userId, Uri thumUri, Uri localUri, boolean isFull) {
+        ImageMessage sendImgMsg = ImageMessage.obtain(thumUri, localUri, isFull);
+        RongIM.getInstance().sendImageMessage(Conversation.ConversationType.PRIVATE, userId, sendImgMsg, null, null, new RongIMClient.SendImageMessageCallback() {
 
             @Override
             public void onAttached(Message message) {

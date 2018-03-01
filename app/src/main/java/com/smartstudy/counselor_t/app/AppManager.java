@@ -6,7 +6,6 @@ import android.view.View;
 
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.manager.StudentInfoManager;
-import com.smartstudy.counselor_t.ui.activity.ImageEditActivity;
 import com.smartstudy.counselor_t.ui.activity.LoginActivity;
 import com.smartstudy.counselor_t.ui.activity.MsgShareActivity;
 import com.smartstudy.counselor_t.ui.activity.MyInfoActivity;
@@ -28,6 +27,7 @@ import io.rong.imlib.model.MessageContent;
 import io.rong.imlib.model.UserInfo;
 import io.rong.message.ImageMessage;
 import io.rong.message.TextMessage;
+import me.kareluo.imaging.IMGEditActivity;
 
 /**
  * @author louis
@@ -144,6 +144,12 @@ public class AppManager implements RongIMClient.ConnectionStatusListener, RongIM
                     @Override
                     public boolean onMessageItemLongClick(Context context, UIMessage message) {
                         //转发消息
+                        if (ImageMessage.class.isAssignableFrom(msgContent.getClass())) {
+                            if (((ImageMessage) msgContent).getLocalPath() == null && ((ImageMessage) msgContent).getRemoteUri() == null) {
+                                ToastUtils.shortToast(mContext, "图片已被清理");
+                                return true;
+                            }
+                        }
                         context.startActivity(new Intent(context, MsgShareActivity.class).putExtra("msg", msg));
                         return true;
                     }
@@ -161,10 +167,10 @@ public class AppManager implements RongIMClient.ConnectionStatusListener, RongIM
                     @Override
                     public boolean onMessageItemLongClick(Context context, UIMessage message) {
                         //编辑图片
-                        if (((ImageMessage) msgContent).getLocalUri() != null) {
-                            context.startActivity(new Intent(context, ImageEditActivity.class).putExtra("msg", msg));
-                        } else {
+                        if (((ImageMessage) msgContent).getLocalPath() == null && ((ImageMessage) msgContent).getRemoteUri() == null) {
                             ToastUtils.shortToast(mContext, "图片已被清理");
+                        } else {
+                            context.startActivity(new Intent(context, IMGEditActivity.class).putExtra("msg", msg));
                         }
                         return true;
                     }

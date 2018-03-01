@@ -26,10 +26,8 @@ import com.smartstudy.counselor_t.util.CheckUtil;
 import com.smartstudy.counselor_t.util.ConstantUtils;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
 import com.smartstudy.counselor_t.util.ParameterUtils;
-import com.smartstudy.counselor_t.util.SDCardUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
 import com.smartstudy.counselor_t.util.ToastUtils;
-import com.smartstudy.counselor_t.util.Utils;
 
 import java.io.File;
 
@@ -131,7 +129,7 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
         switch (requestCode) {
             case ParameterUtils.REQUEST_CODE_CHANGEPHOTO:
                 final String temppath = data.getStringExtra("path");
-                DisplayImageUtils.downloadImageFile(getApplicationContext(), temppath, new SimpleTarget<File>(100, 100) {
+                DisplayImageUtils.displayImageFile(getApplicationContext(), temppath, new SimpleTarget<File>(100, 100) {
 
                     @Override
                     public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
