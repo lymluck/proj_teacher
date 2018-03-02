@@ -69,7 +69,7 @@ public class BaseModel {
         params.put("X-xxd-uid", "00000000");
         String ticket = (String) SPCacheUtils.get("ticket", ConstantUtils.CACHE_NULL);
         if (!TextUtils.isEmpty(ticket) && !ConstantUtils.CACHE_NULL.equals(ticket)) {
-            params.put("X-xxd-counsellor-ticket", ticket);
+            params.put("x-smartsa-counsellor-ticket", ticket);
         }
         return params;
     }
