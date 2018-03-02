@@ -1,5 +1,6 @@
 package me.kareluo.imaging;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -12,23 +13,21 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.UUID;
 
 import io.rong.imlib.model.Message;
 import io.rong.message.ImageMessage;
 import me.kareluo.imaging.core.IMGMode;
 import me.kareluo.imaging.core.IMGText;
-import me.kareluo.imaging.core.file.IMGAssetFileDecoder;
-import me.kareluo.imaging.core.file.IMGDecoder;
-import me.kareluo.imaging.core.file.IMGFileDecoder;
 import me.kareluo.imaging.core.util.IMGUtils;
+import me.kareluo.imaging.file.IMGAssetFileDecoder;
+import me.kareluo.imaging.file.IMGDecoder;
+import me.kareluo.imaging.file.IMGFileDecoder;
 import me.kareluo.imaging.util.ImgUtils;
 import me.kareluo.imaging.view.OptionsPopupDialog;
 
 public class IMGEditActivity extends IMGEditBaseActivity {
 
     private static final int MAX_WIDTH = 1024;
-
     private static final int MAX_HEIGHT = 1024;
 
     private String[] items = {"发送给朋友", "保存图片"};
@@ -37,8 +36,6 @@ public class IMGEditActivity extends IMGEditBaseActivity {
 
     Message message;
 
-    ImageMessage imageMessage;
-
     @Override
     public void onCreated() {
 
@@ -46,17 +43,17 @@ public class IMGEditActivity extends IMGEditBaseActivity {
 
     @Override
     public Bitmap getBitmap() {
-        message = getIntent().getParcelableExtra("msg");
-        if (message != null) {
-            imageMessage = (ImageMessage) message.getContent();
+        Intent intent = getIntent();
+        if (intent == null) {
+            return null;
         }
-
-        Uri uri = imageMessage.getLocalUri();
+        message = intent.getParcelableExtra("msg");
+        Uri uri = intent.getParcelableExtra("uri");
+        String filePath = intent.getStringExtra("path");
         if (uri == null) {
             return null;
-        } else {
-            mImageFile = new File(this.getCacheDir(), UUID.randomUUID().toString() + ".jpg");
         }
+
         IMGDecoder decoder = null;
 
         String path = uri.getPath();
@@ -68,11 +65,19 @@ public class IMGEditActivity extends IMGEditBaseActivity {
                 case "file":
                     decoder = new IMGFileDecoder(uri);
                     break;
+                default:
+                    break;
             }
         }
 
         if (decoder == null) {
             return null;
+        } else {
+            if (TextUtils.isEmpty(filePath)) {
+                mImageFile = new File(filePath);
+            } else {
+                mImageFile = new File(this.getFilesDir(), System.currentTimeMillis() + ".png");
+            }
         }
 
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -196,7 +201,6 @@ public class IMGEditActivity extends IMGEditBaseActivity {
                 if (mImageFile != null) {
                     if (items[var1].equals("发送给朋友")) {
                         if (Uri.fromFile(mImageFile) != null) {
-                            //TODO 这里设置的应该是修剪后的缩略图地址
                             ((ImageMessage) message.getContent()).setThumUri(Uri.fromFile(mImageFile));
                             ((ImageMessage) message.getContent()).setLocalUri(Uri.fromFile(mImageFile));
                         }

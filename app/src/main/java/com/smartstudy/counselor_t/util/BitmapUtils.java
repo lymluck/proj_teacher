@@ -11,6 +11,8 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+import com.smartstudy.counselor_t.app.BaseApplication;
+
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -230,7 +232,7 @@ public final class BitmapUtils {
      * @param fileName
      * @throws IOException
      */
-    public static boolean saveBitmap(Bitmap bm, String fileName, String filePath, Context context) {
+    public static boolean saveBitmap(Bitmap bm, String fileName, String filePath) {
         File file = new File(filePath, fileName);
         try {
             if (file.exists()) {
@@ -238,12 +240,12 @@ public final class BitmapUtils {
             }
             BufferedOutputStream bos = new BufferedOutputStream(
                     new FileOutputStream(file));
-            bm.compress(Bitmap.CompressFormat.PNG, 100, bos);
+            bm.compress(Bitmap.CompressFormat.PNG, 80, bos);
             bos.flush();
             bos.close();
-            MediaStore.Images.Media.insertImage(context.getContentResolver(),
+            MediaStore.Images.Media.insertImage(BaseApplication.appContext.getContentResolver(),
                     file.getAbsolutePath(), fileName, null);
-            galleryAddPic(context, file.getAbsolutePath());
+            galleryAddPic(BaseApplication.appContext, file.getAbsolutePath());
             return true;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -251,6 +253,20 @@ public final class BitmapUtils {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public static boolean deleteFile(String fileName) {
+        File file = new File(fileName);
+        // 如果文件路径所对应的文件存在，并且是一个文件，则直接删除
+        if (file.exists() && file.isFile()) {
+            if (file.delete()) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     /**

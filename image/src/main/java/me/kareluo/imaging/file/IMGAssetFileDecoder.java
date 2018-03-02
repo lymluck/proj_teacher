@@ -1,4 +1,4 @@
-package me.kareluo.imaging.core.file;
+package me.kareluo.imaging.file;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -22,6 +22,7 @@ public class IMGAssetFileDecoder extends IMGDecoder {
         mContext = context;
     }
 
+    @Override
     public Bitmap decode(BitmapFactory.Options options) {
         Uri uri = getUri();
         if (uri == null) {

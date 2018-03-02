@@ -108,7 +108,7 @@ public class HttpUrlUtils {
     /*********获取api接口url***********/
     public static String getBaseUrl() {
 //        String SERVER = "http://172.17.7.72:3000/";
-        String SERVER = "http://server.tdc.smartstudy.com:3000";
+        String SERVER = "http://server.tdc.smartstudy.com:3234";
         String api = (String) SPCacheUtils.get(ConstantUtils.API_SERVER, "");
         switch (api) {
             case "master":

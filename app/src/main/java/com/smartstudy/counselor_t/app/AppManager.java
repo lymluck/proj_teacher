@@ -2,19 +2,30 @@ package com.smartstudy.counselor_t.app;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.manager.StudentInfoManager;
 import com.smartstudy.counselor_t.ui.activity.LoginActivity;
 import com.smartstudy.counselor_t.ui.activity.MsgShareActivity;
 import com.smartstudy.counselor_t.ui.activity.MyInfoActivity;
 import com.smartstudy.counselor_t.ui.activity.StudentInfoActivity;
+import com.smartstudy.counselor_t.util.BitmapUtils;
+import com.smartstudy.counselor_t.util.DisplayImageUtils;
+import com.smartstudy.counselor_t.util.SDCardUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
 import com.smartstudy.counselor_t.util.ToastUtils;
 
+import java.io.File;
 import java.util.List;
 
+import io.rong.imageloader.core.ImageLoader;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.RongMessageItemLongClickActionManager;
 import io.rong.imkit.model.UIMessage;
@@ -42,7 +53,7 @@ public class AppManager implements RongIMClient.ConnectionStatusListener, RongIM
     private static AppManager mInstance;
     //application context
     private Context mContext;
-    private Message msg;
+    private Message clickMsg;
 
 
     public AppManager(Context mContext) {
@@ -119,7 +130,7 @@ public class AppManager implements RongIMClient.ConnectionStatusListener, RongIM
 
     @Override
     public boolean onMessageLongClick(Context context, View view, Message message) {
-        this.msg = message;
+        this.clickMsg = message;
         addMsgAction();
         return false;
     }
@@ -137,7 +148,7 @@ public class AppManager implements RongIMClient.ConnectionStatusListener, RongIM
                 imgAction = clickAction;
             }
         }
-        final MessageContent msgContent = msg.getContent();
+        final MessageContent msgContent = clickMsg.getContent();
         if (shareAction == null) {
             if (ImageMessage.class.isAssignableFrom(msgContent.getClass()) || TextMessage.class.isAssignableFrom(msgContent.getClass())) {
                 shareAction = (new MessageItemLongClickAction.Builder()).titleResId(io.rong.imkit.R.string.rc_dialog_item_message_share).actionListener(new MessageItemLongClickAction.MessageItemLongClickListener() {
@@ -150,7 +161,7 @@ public class AppManager implements RongIMClient.ConnectionStatusListener, RongIM
                                 return true;
                             }
                         }
-                        context.startActivity(new Intent(context, MsgShareActivity.class).putExtra("msg", msg));
+                        context.startActivity(new Intent(context, MsgShareActivity.class).putExtra("msg", clickMsg));
                         return true;
                     }
                 }).build();
@@ -170,7 +181,62 @@ public class AppManager implements RongIMClient.ConnectionStatusListener, RongIM
                         if (((ImageMessage) msgContent).getLocalPath() == null && ((ImageMessage) msgContent).getRemoteUri() == null) {
                             ToastUtils.shortToast(mContext, "图片已被清理");
                         } else {
-                            context.startActivity(new Intent(context, IMGEditActivity.class).putExtra("msg", msg));
+                            ImageMessage msg = (ImageMessage) msgContent;
+                            if (msg.getLocalPath() != null) {
+                                if (msg.getLocalPath().toString().startsWith("file")) {
+                                    context.startActivity(new Intent(context, IMGEditActivity.class).putExtra("msg", clickMsg).putExtra("uri", msg.getLocalPath()));
+                                } else {
+                                    File file = ImageLoader.getInstance().getDiskCache().get(msg.getLocalPath().toString());
+                                    if (file != null && file.exists()) {
+                                        Uri uri = Uri.parse("file://" + file.getAbsolutePath());
+                                        context.startActivity(new Intent(context, IMGEditActivity.class).putExtra("msg", clickMsg).putExtra("uri", uri));
+                                    } else {
+                                        DisplayImageUtils.displayImage(mContext, msg.getLocalPath().toString(), new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                String savePath = SDCardUtils.getFileDirPath("Xxd_im" + File.separator + "pictures").getAbsolutePath();
+                                                String fileName = "im_" + System.currentTimeMillis() + ".png";
+                                                //临时存储文件
+                                                if (BitmapUtils.saveBitmap(resource, fileName, savePath)) {
+                                                    Uri uri = Uri.parse("file://" + savePath + File.separator + fileName);
+                                                    mContext.startActivity(new Intent(mContext, IMGEditActivity.class)
+                                                            .putExtra("msg", clickMsg)
+                                                            .putExtra("uri", uri)
+                                                            .putExtra("path", savePath + File.separator + fileName));
+                                                } else {
+                                                    ToastUtils.shortToast(mContext, "获取图片失败！");
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            } else {
+                                if (msg.getRemoteUri() != null) {
+                                    File file = ImageLoader.getInstance().getDiskCache().get(msg.getRemoteUri().toString());
+                                    if (file != null && file.exists()) {
+                                        Uri uri = Uri.parse("file://" + file.getAbsolutePath());
+                                        context.startActivity(new Intent(context, IMGEditActivity.class).putExtra("msg", clickMsg).putExtra("uri", uri));
+                                    } else {
+                                        DisplayImageUtils.displayImage(mContext, msg.getRemoteUri().toString(), new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                String savePath = SDCardUtils.getFileDirPath("Xxd_im" + File.separator + "pictures").getAbsolutePath();
+                                                String fileName = "im_" + System.currentTimeMillis() + ".png";
+                                                //临时存储文件
+                                                if (BitmapUtils.saveBitmap(resource, fileName, savePath)) {
+                                                    Uri uri = Uri.parse("file://" + savePath + File.separator + fileName);
+                                                    mContext.startActivity(new Intent(mContext, IMGEditActivity.class)
+                                                            .putExtra("msg", clickMsg)
+                                                            .putExtra("uri", uri)
+                                                            .putExtra("path", savePath + File.separator + fileName));
+                                                } else {
+                                                    ToastUtils.shortToast(mContext, "获取图片失败！");
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            }
                         }
                         return true;
                     }
