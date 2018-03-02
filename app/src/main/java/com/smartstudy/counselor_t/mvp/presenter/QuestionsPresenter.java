@@ -1,6 +1,7 @@
 package com.smartstudy.counselor_t.mvp.presenter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -52,6 +53,15 @@ public class QuestionsPresenter extends BasePresenterImpl<QaListContract.View> i
                 DataListInfo dataListInfo = JSON.parseObject((String) result, DataListInfo.class);
                 List<QuestionInfo> data = JSON.parseArray(dataListInfo.getData(), QuestionInfo.class);
                 dataListInfo = null;
+                QuestionInfo questionInfo = new QuestionInfo();
+                questionInfo.setAnswerCount(2);
+                questionInfo.setContent("测试问题：天有多高？");
+                questionInfo.setCreateTime("2017-05-02");
+                QuestionInfo.Asker answerer = new QuestionInfo.Asker();
+                answerer.setAvatar("https://bkd-media.smartstudy.com/user/avatar/default/c1/96/c196d8a6bc7b1685bef28f7c8bb140984692.jpg");
+                answerer.setName("小明");
+                questionInfo.setAsker(answerer);
+                data.add(questionInfo);
                 if (data != null) {
                     view.getQuestionsSuccess(data, request_state);
                     data = null;

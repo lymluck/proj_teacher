@@ -83,6 +83,7 @@ public class LoginAcitivityPresenter extends BasePresenterImpl<LoginActivityCont
                     SPCacheUtils.put("year", data.getString("yearsOfWorking"));
                     SPCacheUtils.put("imToken", imToken);
                     view.phoneCodeLoginSuccess(data.getIntValue("status"));
+
                     //登录融云
                     loginRongIM(imToken, name, avatar);
                 }

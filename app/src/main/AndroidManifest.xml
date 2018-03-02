@@ -212,10 +212,7 @@
             android:name=".ui.activity.ClipPictureActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing|stateHidden" />
-        <activity
-            android:name=".ui.activity.MyInfoActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
+
         <activity
             android:name=".ui.activity.MsgShareActivity"
             android:screenOrientation="portrait"
@@ -228,6 +225,11 @@
 
         <activity
             android:name=".ui.activity.CommonEditNameActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
+        <activity
+            android:name=".ui.activity.QaDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
     </application>

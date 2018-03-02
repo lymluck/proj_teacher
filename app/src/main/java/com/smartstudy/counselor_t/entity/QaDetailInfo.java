@@ -9,20 +9,31 @@ import java.util.List;
 public class QaDetailInfo {
     private String id;
 
-    private String question;
+    private String userId;
 
-    private String askTime;
+    private String content;
 
-    private String answer;
+    private String schoolId;
 
+    private boolean isClassic;
+
+    private int answerCount;
+
+    private String visitCount;
+
+    private String createTime;
 
     private Asker asker;
 
+    private boolean answered;
+
+    private boolean needLogin;
+
     private int likedCount;
 
-    private Answerer answerer;
+    private int collectedCount;
 
-    private boolean liked;
+    private List<Answerer> answers;
 
     public String getId() {
         return id;
@@ -32,49 +43,60 @@ public class QaDetailInfo {
         this.id = id;
     }
 
-    public int getLikedCount() {
-        return likedCount;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setLikedCount(int likedCount) {
-        this.likedCount = likedCount;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public boolean isLiked() {
-        return liked;
+    public String getContent() {
+        return content;
     }
 
-    public void setLiked(boolean liked) {
-        this.liked = liked;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    private List<TagsData> tagsData;
-
-    private List<QuestionsAfter> questionsAfter;
-
-
-    public String getQuestion() {
-        return question;
+    public String getSchoolId() {
+        return schoolId;
     }
 
-    public void setQuestion(String question) {
-        this.question = question;
+    public void setSchoolId(String schoolId) {
+        this.schoolId = schoolId;
     }
 
-    public String getAskTime() {
-        return askTime;
+    public boolean isClassic() {
+        return isClassic;
     }
 
-    public void setAskTime(String askTime) {
-        this.askTime = askTime;
+    public void setClassic(boolean classic) {
+        isClassic = classic;
     }
 
-    public String getAnswer() {
-        return answer;
+    public int getAnswerCount() {
+        return answerCount;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public void setAnswerCount(int answerCount) {
+        this.answerCount = answerCount;
+    }
+
+    public String getVisitCount() {
+        return visitCount;
+    }
+
+    public void setVisitCount(String visitCount) {
+        this.visitCount = visitCount;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 
     public Asker getAsker() {
@@ -85,178 +107,43 @@ public class QaDetailInfo {
         this.asker = asker;
     }
 
-    public Answerer getAnswerer() {
-        return answerer;
+    public boolean isAnswered() {
+        return answered;
     }
 
-    public void setAnswerer(Answerer answerer) {
-        this.answerer = answerer;
+    public void setAnswered(boolean answered) {
+        this.answered = answered;
     }
 
-    public List<TagsData> getTagsData() {
-        return tagsData;
+    public boolean isNeedLogin() {
+        return needLogin;
     }
 
-    public void setTagsData(List<TagsData> tagsData) {
-        this.tagsData = tagsData;
+    public void setNeedLogin(boolean needLogin) {
+        this.needLogin = needLogin;
     }
 
-    public List<QuestionsAfter> getQuestionsAfter() {
-        return questionsAfter;
+    public int getLikedCount() {
+        return likedCount;
     }
 
-    public void setQuestionsAfter(List<QuestionsAfter> questionsAfter) {
-        this.questionsAfter = questionsAfter;
+    public void setLikedCount(int likedCount) {
+        this.likedCount = likedCount;
     }
 
-
-
-    public class TagsData {
-        private String id;
-
-        private String name;
-
-        private String type;
-
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
+    public int getCollectedCount() {
+        return collectedCount;
     }
 
-
-    public class QuestionsAfter {
-        private String id;
-
-        private String score;
-
-        private String question;
-
-        private String answer;
-
-
-        private String askTime;
-
-        private boolean answererIsUser;
-
-        private boolean answered;
-
-        private Asker asker;
-
-        private int likedCount;
-
-        private boolean liked;
-
-        private Answerer answerer;
-
-        public int getLikedCount() {
-            return likedCount;
-        }
-
-        public void setLikedCount(int likedCount) {
-            this.likedCount = likedCount;
-        }
-
-        public boolean isLiked() {
-            return liked;
-        }
-
-        public void setLiked(boolean liked) {
-            this.liked = liked;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getScore() {
-            return score;
-        }
-
-        public void setScore(String score) {
-            this.score = score;
-        }
-
-        public String getQuestion() {
-            return question;
-        }
-
-        public void setQuestion(String question) {
-            this.question = question;
-        }
-
-        public String getAnswer() {
-            return answer;
-        }
-
-        public void setAnswer(String answer) {
-            this.answer = answer;
-        }
-
-        public String getAskTime() {
-            return askTime;
-        }
-
-        public void setAskTime(String askTime) {
-            this.askTime = askTime;
-        }
-
-        public boolean isAnswererIsUser() {
-            return answererIsUser;
-        }
-
-        public void setAnswererIsUser(boolean answererIsUser) {
-            this.answererIsUser = answererIsUser;
-        }
-
-        public boolean isAnswered() {
-            return answered;
-        }
-
-        public void setAnswered(boolean answered) {
-            this.answered = answered;
-        }
-
-        public Asker getAsker() {
-            return asker;
-        }
-
-        public void setAsker(Asker asker) {
-            this.asker = asker;
-        }
-
-        public Answerer getAnswerer() {
-            return answerer;
-        }
-
-        public void setAnswerer(Answerer answerer) {
-            this.answerer = answerer;
-        }
+    public void setCollectedCount(int collectedCount) {
+        this.collectedCount = collectedCount;
     }
 
+    public List<Answerer> getAnswers() {
+        return answers;
+    }
 
+    public void setAnswers(List<Answerer> answers) {
+        this.answers = answers;
+    }
 }

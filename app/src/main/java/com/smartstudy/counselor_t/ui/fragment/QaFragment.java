@@ -1,6 +1,7 @@
 package com.smartstudy.counselor_t.ui.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,8 +23,10 @@ import com.smartstudy.counselor_t.ui.adapter.base.ViewHolder;
 import com.smartstudy.counselor_t.ui.adapter.wrapper.EmptyWrapper;
 import com.smartstudy.counselor_t.ui.adapter.wrapper.LoadMoreWrapper;
 import com.smartstudy.counselor_t.ui.base.UIFragment;
+import com.smartstudy.counselor_t.ui.widget.HorizontalDividerItemDecoration;
 import com.smartstudy.counselor_t.ui.widget.LoadMoreRecyclerView;
 import com.smartstudy.counselor_t.ui.widget.NoScrollLinearLayoutManager;
+import com.smartstudy.counselor_t.util.DensityUtils;
 import com.smartstudy.counselor_t.util.ParameterUtils;
 import com.smartstudy.counselor_t.util.ToastUtils;
 import com.smartstudy.counselor_t.util.Utils;
@@ -131,6 +134,8 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
         mLayoutManager = new NoScrollLinearLayoutManager(mActivity);
         mLayoutManager.setScrollEnabled(true);
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        rclv_qa.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity())
+                .size(DensityUtils.dip2px(10f)).colorResId(R.color.bg_recent_user).build());
         rclv_qa.setLayoutManager(mLayoutManager);
         initAdapter();
         initEvent();
@@ -148,28 +153,26 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
             @Override
             protected void convert(ViewHolder holder, QuestionInfo questionInfo, int position) {
                 if ("list".equals(data_tag)) {
-                    setupHolderView(holder, View.VISIBLE);
+                    holder.setText(R.id.tv_create_time, questionInfo.getCreateTime());
                     String avatar = questionInfo.getAsker().getAvatar();
                     String askName = questionInfo.getAsker().getName();
-                    String placeholder = questionInfo.getAsker().getAvatarPlaceholder();
-                    TextView tv_default_name = holder.getView(R.id.tv_default_name);
                     holder.setPersonImageUrl(R.id.iv_asker, avatar, true);
-                    if (!TextUtils.isEmpty(placeholder)) {
-                        tv_default_name.setVisibility(View.VISIBLE);
-                        tv_default_name.setText(placeholder);
-                    } else {
-                        tv_default_name.setVisibility(View.GONE);
-                    }
                     holder.setText(R.id.tv_qa_name, askName);
-                    holder.setText(R.id.tv_see, String.format(getString(R.string.visit_count), questionInfo.getVisitCount()));
-                    holder.setText(R.id.tv_answer_name, questionInfo.getAnswerer().getName());
-                    holder.setText(R.id.tv_title, questionInfo.getAnswerer().getTitle());
-                } else {
-                    setupHolderView(holder, View.GONE);
+                    holder.setText(R.id.tv_qa, questionInfo.getContent());
+                    TextView answerCounnt = holder.getView(R.id.tv_answer_count);
+                    if (questionInfo.getAnswerCount() == 0) {
+                        answerCounnt.setText("暂无人回答");
+                        answerCounnt.setTextColor(Color.parseColor("#078CF1"));
+                    } else {
+                        if (questionInfo.getSubQuestionCount() != 0) {
+                            answerCounnt.setText("对你有 " + questionInfo.getAnswerCount() + " 追问");
+                            answerCounnt.setTextColor(Color.parseColor("#F6611D"));
+                        } else {
+                            answerCounnt.setText(questionInfo.getAnswerCount() + " 回答");
+                            answerCounnt.setTextColor(Color.parseColor("#949BA1"));
+                        }
+                    }
                 }
-                //缩进一个空格
-                holder.setText(R.id.tv_qa, questionInfo.getQuestion());
-                holder.setText(R.id.tv_time, questionInfo.getAskTime());
             }
         };
         emptyWrapper = new EmptyWrapper<>(mAdapter);
@@ -201,14 +204,6 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
                 return false;
             }
         });
-    }
-
-    private void setupHolderView(ViewHolder holder, int visibility) {
-        holder.getView(R.id.llyt_qa_person).setVisibility(visibility);
-        holder.getView(R.id.tv_see).setVisibility(visibility);
-        holder.getView(R.id.view_home_list).setVisibility(visibility);
-        holder.getView(R.id.llyt_answer_person).setVisibility(visibility);
-        holder = null;
     }
 
     private void getQa(int pullAction) {

@@ -1,13 +1,9 @@
 package me.kareluo.imaging;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.smartstudy.router.Router;
@@ -35,10 +31,6 @@ public class IMGEditActivity extends IMGEditBaseActivity {
 
     private static final int MAX_HEIGHT = 1024;
 
-    public static final String EXTRA_IMAGE_URI = "IMAGE_URI";
-
-    public static final String EXTRA_IMAGE_SAVE_PATH = "IMAGE_SAVE_PATH";
-
     private String[] items = {"发送给朋友", "保存"};
 
     private File mImageFile = null;
@@ -54,15 +46,6 @@ public class IMGEditActivity extends IMGEditBaseActivity {
 
     @Override
     public Bitmap getBitmap() {
-//        Intent intent = getIntent();
-//        if (intent == null) {
-//            return null;
-//        }
-//
-//        Uri uri = intent.getParcelableExtra(EXTRA_IMAGE_URI);
-//        if (uri == null) {
-//            return null;
-//        }
         message = getIntent().getParcelableExtra("msg");
 
         if (message != null) {
@@ -186,53 +169,53 @@ public class IMGEditActivity extends IMGEditBaseActivity {
 
 
     public void showOptDialog() {
-        OptionsPopupDialog dialog=new OptionsPopupDialog(this,items).setOptionsPopupDialogListener(new OptionsPopupDialog.OnOptionsItemClickedListener() {
+        OptionsPopupDialog dialog = new OptionsPopupDialog(this, items).setOptionsPopupDialogListener(new OptionsPopupDialog.OnOptionsItemClickedListener() {
             @Override
             public void onOptionsItemClicked(int var1) {
                 String path = mImageFile.getAbsolutePath();
-                        if (!TextUtils.isEmpty(path)) {
-                            Bitmap bitmap = mImgView.saveBitmap();
-                            if (bitmap != null) {
-                                FileOutputStream fout = null;
+                if (!TextUtils.isEmpty(path)) {
+                    Bitmap bitmap = mImgView.saveBitmap();
+                    if (bitmap != null) {
+                        FileOutputStream fout = null;
+                        try {
+                            fout = new FileOutputStream(path);
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, fout);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } finally {
+                            if (fout != null) {
                                 try {
-                                    fout = new FileOutputStream(path);
-                                    bitmap.compress(Bitmap.CompressFormat.JPEG, 80, fout);
-                                } catch (FileNotFoundException e) {
+                                    fout.close();
+                                } catch (IOException e) {
                                     e.printStackTrace();
-                                } finally {
-                                    if (fout != null) {
-                                        try {
-                                            fout.close();
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
                                 }
                             }
                         }
-
-                        if (mImageFile != null) {
-                            if (items[var1].equals("发送给朋友")) {
-                                if (Uri.fromFile(mImageFile) != null) {
-                                    //TODO 这里设置的应该是修剪后的缩略图地址
-                                    ((ImageMessage) message.getContent()).setThumUri(Uri.fromFile(mImageFile));
-                                    ((ImageMessage) message.getContent()).setLocalUri(Uri.fromFile(mImageFile));
-                                }
-                                Router.build("MsgShareActivity").with("msg", message).go(IMGEditActivity.this);
-                            } else {
-                                Bitmap bitmap = BitmapFactory.decodeFile(mImageFile.getPath());
-                                boolean isSaveSuccess = ImgUtils.saveImageToGallery(IMGEditActivity.this, bitmap);
-                                if (isSaveSuccess) {
-                                    Toast.makeText(IMGEditActivity.this, "保存图片成功", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(IMGEditActivity.this, "保存图片失败，请稍后重试", Toast.LENGTH_SHORT).show();
-                                    return;
-                                }
-                            }
-                        }
-                        setResult(RESULT_CANCELED);
-                        finish();
                     }
+                }
+
+                if (mImageFile != null) {
+                    if (items[var1].equals("发送给朋友")) {
+                        if (Uri.fromFile(mImageFile) != null) {
+                            //TODO 这里设置的应该是修剪后的缩略图地址
+                            ((ImageMessage) message.getContent()).setThumUri(Uri.fromFile(mImageFile));
+                            ((ImageMessage) message.getContent()).setLocalUri(Uri.fromFile(mImageFile));
+                        }
+                        Router.build("MsgShareActivity").with("msg", message).go(IMGEditActivity.this);
+                    } else {
+                        Bitmap bitmap = BitmapFactory.decodeFile(mImageFile.getPath());
+                        boolean isSaveSuccess = ImgUtils.saveImageToGallery(IMGEditActivity.this, bitmap);
+                        if (isSaveSuccess) {
+                            Toast.makeText(IMGEditActivity.this, "保存图片成功", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(IMGEditActivity.this, "保存图片失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
+                }
+                setResult(RESULT_CANCELED);
+                finish();
+            }
 
         });
         dialog.show();
