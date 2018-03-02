@@ -69,7 +69,9 @@ public class FillPersonPresenter extends BasePresenterImpl<FillPersonContract.Vi
                 if (teacherInfo != null) {
                     SPCacheUtils.put("title", teacherInfo.getTitle());
                     SPCacheUtils.put("year", teacherInfo.getYearsOfWorking());
-                    SPCacheUtils.put("company", teacherInfo.getOrganization().getName());
+                    if (teacherInfo.getOrganization() != null) {
+                        SPCacheUtils.put("company", teacherInfo.getOrganization().getName());
+                    }
                     view.showAuditResult(teacherInfo);
                 }
             }
