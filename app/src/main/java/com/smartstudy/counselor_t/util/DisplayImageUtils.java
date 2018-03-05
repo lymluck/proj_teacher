@@ -5,11 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestListener;
@@ -18,8 +16,6 @@ import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.base.config.CustomShapeTransformation;
 import com.smartstudy.counselor_t.base.config.GlideApp;
 import com.smartstudy.counselor_t.base.config.glideprogress.ProgressTarget;
-import com.smartstudy.counselor_t.entity.ChatUserInfo;
-import com.smartstudy.counselor_t.ui.adapter.CommonAdapter;
 
 import java.io.File;
 
@@ -32,6 +28,7 @@ public class DisplayImageUtils {
     public static void displayGif(Context context, int resId, ImageView view) {
         GlideApp.with(context).asGif().load(resId).diskCacheStrategy(DiskCacheStrategy.RESOURCE).into(view);
     }
+
     public static void displayImage(Context context, String url, ImageView view) {
         GlideApp.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.DATA).placeholder(R.drawable.ic_img_default)
                 .error(R.drawable.ic_img_default).centerCrop().dontAnimate().into(view);
@@ -69,8 +66,8 @@ public class DisplayImageUtils {
         GlideApp.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.DATA).listener(listener).into(view);
     }
 
-    public static void downloadImageFile(Context context, String url, SimpleTarget<File> simpleTarget) {
-        GlideApp.with(context).downloadOnly().load(url).into(simpleTarget);
+    public static void displayImageFile(Context context, String url, SimpleTarget<File> simpleTarget) {
+        GlideApp.with(context).downloadOnly().load(url).diskCacheStrategy(DiskCacheStrategy.DATA).into(simpleTarget);
     }
 
     public static void displayImageFile(Context context, Bitmap btp, SimpleTarget<File> simpleTarget) {

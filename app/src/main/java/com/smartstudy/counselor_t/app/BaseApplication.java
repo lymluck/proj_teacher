@@ -48,6 +48,7 @@ public class BaseApplication extends MultiDexApplication {
             appContext = this;
             //注册容云组件
             initRong();
+            //路由初始化
             Router.initialize(this);
         }
     }

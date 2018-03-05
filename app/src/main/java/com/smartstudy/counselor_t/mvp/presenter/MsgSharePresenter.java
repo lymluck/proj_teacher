@@ -41,7 +41,6 @@ public class MsgSharePresenter extends BasePresenterImpl<MsgShareContract.View> 
                     info = null;
                 }
                 view.showUsers(datas);
-                datas = null;
             }
 
             @Override

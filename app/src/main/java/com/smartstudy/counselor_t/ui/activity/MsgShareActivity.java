@@ -1,6 +1,7 @@
 package com.smartstudy.counselor_t.ui.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,9 +30,11 @@ import com.smartstudy.counselor_t.ui.dialog.DialogCreator;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
 import com.smartstudy.counselor_t.util.ParameterUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.rong.imageloader.core.ImageLoader;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.IRongCallback;
 import io.rong.imlib.RongIMClient;
@@ -40,6 +43,7 @@ import io.rong.imlib.model.Message;
 import io.rong.imlib.model.MessageContent;
 import io.rong.message.ImageMessage;
 import io.rong.message.TextMessage;
+
 @Route("MsgShareActivity")
 public class MsgShareActivity extends BaseActivity<MsgShareContract.Presenter> implements MsgShareContract.View {
 
@@ -150,17 +154,22 @@ public class MsgShareActivity extends BaseActivity<MsgShareContract.Presenter> i
                         });
                     } else if (ImageMessage.class.isAssignableFrom(messageContent.getClass())) {
                         final ImageMessage imageMessage = (ImageMessage) messageContent;
-                        DialogCreator.createSendImgMsgDialog(MsgShareActivity.this, chatUserInfo.getAvatar(), chatUserInfo.getName(), imageMessage.getLocalUri().toString(), new OnSendMsgDialogClickListener() {
-                            @Override
-                            public void onPositive(String word) {
-                                //转发内容
-                                sendImgMsg(chatUserInfo.getId(), imageMessage, word);
-                            }
+                        DialogCreator.createSendImgMsgDialog(MsgShareActivity.this, chatUserInfo.getAvatar(), chatUserInfo.getName(),
+                                imageMessage.getLocalPath() != null ? imageMessage.getLocalPath().toString() : imageMessage.getRemoteUri().toString(), new OnSendMsgDialogClickListener() {
+                                    @Override
+                                    public void onPositive(String word) {
+                                        //转发内容
+                                        handleMsg(chatUserInfo.getId(), imageMessage, imageMessage.isFull());
+                                        if (!TextUtils.isEmpty(word)) {
+                                            //转发留言
+                                            sendTextMsg(chatUserInfo.getId(), word);
+                                        }
+                                    }
 
-                            @Override
-                            public void onNegative() {
-                            }
-                        });
+                                    @Override
+                                    public void onNegative() {
+                                    }
+                                });
                     }
                 }
             }
@@ -206,41 +215,37 @@ public class MsgShareActivity extends BaseActivity<MsgShareContract.Presenter> i
             public void onError(Message message, RongIMClient.ErrorCode errorCode) {
                 //消息发送失败的回调
                 showTip("消息发送失败！");
+                finish();
             }
         });
     }
 
-    private void sendImgMsg(final String userId, ImageMessage imageMessage, final String word) {
-        ImageMessage imgMsg = ImageMessage.obtain(imageMessage.getThumUri(), imageMessage.getLocalUri(), true);
-        RongIM.getInstance().sendImageMessage(Conversation.ConversationType.PRIVATE, userId, imgMsg, null, null, new RongIMClient.SendImageMessageCallback() {
-
-            @Override
-            public void onAttached(Message message) {
-                //保存数据库成功
-            }
-
-            @Override
-            public void onError(Message message, RongIMClient.ErrorCode code) {
-                //发送失败
-                showTip("消息发送失败！");
-            }
-
-            @Override
-            public void onSuccess(Message message) {
-                //发送成功
-                if (!TextUtils.isEmpty(word)) {
-                    //转发留言
-                    sendTextMsg(userId, word);
-                } else {
-                    showTip("已发送");
-                    finish();
+    private void handleMsg(final String userId, final ImageMessage msg, final boolean isFull) {
+        if (msg.getLocalPath() != null) {
+            if (msg.getLocalPath().toString().startsWith("file")) {
+                sendImageMsg(userId, msg.getThumUri(), msg.getLocalPath(), isFull);
+            } else {
+                File file = ImageLoader.getInstance().getDiskCache().get(msg.getLocalPath().toString());
+                if (file.exists()) {
+                    Uri uri = Uri.parse("file://" + file.getAbsolutePath());
+                    sendImageMsg(userId, msg.getThumUri(), uri, isFull);
                 }
             }
-
-            @Override
-            public void onProgress(Message message, int progress) {
-                //发送进度
+        } else {
+            if (msg.getRemoteUri() != null) {
+                File file = ImageLoader.getInstance().getDiskCache().get(msg.getRemoteUri().toString());
+                if (file.exists()) {
+                    Uri uri = Uri.parse("file://" + file.getAbsolutePath());
+                    sendImageMsg(userId, msg.getThumUri(), uri, isFull);
+                }
             }
-        });
+        }
+    }
+
+    private void sendImageMsg(String userId, Uri thumUri, Uri localUri, boolean isFull) {
+        ImageMessage sendImgMsg = ImageMessage.obtain(thumUri, localUri, isFull);
+        RongIM.getInstance().sendImageMessage(Conversation.ConversationType.PRIVATE, userId, sendImgMsg, null, null, null);
+        showTip("消息已发送");
+        finish();
     }
 }

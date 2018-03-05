@@ -1,9 +1,13 @@
 package me.kareluo.imaging;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.smartstudy.router.Router;
@@ -31,7 +35,7 @@ public class IMGEditActivity extends IMGEditBaseActivity {
 
     private static final int MAX_HEIGHT = 1024;
 
-    private String[] items = {"发送给朋友", "保存"};
+    private String[] items = {"发送给朋友", "保存图片"};
 
     private File mImageFile = null;
 
@@ -47,7 +51,6 @@ public class IMGEditActivity extends IMGEditBaseActivity {
     @Override
     public Bitmap getBitmap() {
         message = getIntent().getParcelableExtra("msg");
-
         if (message != null) {
             imageMessage = (ImageMessage) message.getContent();
         }

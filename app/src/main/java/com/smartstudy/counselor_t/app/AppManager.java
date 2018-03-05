@@ -10,6 +10,7 @@ import com.smartstudy.counselor_t.ui.activity.LoginActivity;
 import com.smartstudy.counselor_t.ui.activity.MsgShareActivity;
 import com.smartstudy.counselor_t.ui.activity.StudentInfoActivity;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
+import com.smartstudy.counselor_t.util.ToastUtils;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ import io.rong.imkit.widget.provider.MessageItemLongClickAction;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
+import io.rong.imlib.model.MessageContent;
 import io.rong.imlib.model.UserInfo;
 import io.rong.message.ImageMessage;
 import io.rong.message.TextMessage;
@@ -134,13 +136,19 @@ public class AppManager implements RongIMClient.ConnectionStatusListener, RongIM
                 imgAction = clickAction;
             }
         }
-        Class clazz = msg.getContent().getClass();
+        final MessageContent msgContent = msg.getContent();
         if (shareAction == null) {
-            if (ImageMessage.class.isAssignableFrom(clazz) || TextMessage.class.isAssignableFrom(clazz)) {
+            if (ImageMessage.class.isAssignableFrom(msgContent.getClass()) || TextMessage.class.isAssignableFrom(msgContent.getClass())) {
                 shareAction = (new MessageItemLongClickAction.Builder()).titleResId(io.rong.imkit.R.string.rc_dialog_item_message_share).actionListener(new MessageItemLongClickAction.MessageItemLongClickListener() {
                     @Override
                     public boolean onMessageItemLongClick(Context context, UIMessage message) {
                         //转发消息
+                        if (ImageMessage.class.isAssignableFrom(msgContent.getClass())) {
+                            if (((ImageMessage) msgContent).getLocalPath() == null && ((ImageMessage) msgContent).getRemoteUri() == null) {
+                                ToastUtils.shortToast(mContext, "图片已被清理");
+                                return true;
+                            }
+                        }
                         context.startActivity(new Intent(context, MsgShareActivity.class).putExtra("msg", msg));
                         return true;
                     }
@@ -148,25 +156,28 @@ public class AppManager implements RongIMClient.ConnectionStatusListener, RongIM
                 RongMessageItemLongClickActionManager.getInstance().addMessageItemLongClickAction(shareAction, 0);
             }
         } else {
-            if (!ImageMessage.class.isAssignableFrom(clazz) && !TextMessage.class.isAssignableFrom(clazz)) {
+            if (!ImageMessage.class.isAssignableFrom(msgContent.getClass()) && !TextMessage.class.isAssignableFrom(msgContent.getClass())) {
                 RongMessageItemLongClickActionManager.getInstance().removeMessageItemLongClickAction(shareAction);
             }
         }
-
         if (imgAction == null) {
-            if (ImageMessage.class.isAssignableFrom(clazz)) {
+            if (ImageMessage.class.isAssignableFrom(msgContent.getClass())) {
                 imgAction = (new MessageItemLongClickAction.Builder()).titleResId(io.rong.imkit.R.string.rc_dialog_item_message_edit).actionListener(new MessageItemLongClickAction.MessageItemLongClickListener() {
                     @Override
                     public boolean onMessageItemLongClick(Context context, UIMessage message) {
                         //编辑图片
-                        context.startActivity(new Intent(context, IMGEditActivity.class).putExtra("msg", msg));
+                        if (((ImageMessage) msgContent).getLocalPath() == null && ((ImageMessage) msgContent).getRemoteUri() == null) {
+                            ToastUtils.shortToast(mContext, "图片已被清理");
+                        } else {
+                            context.startActivity(new Intent(context, IMGEditActivity.class).putExtra("msg", msg));
+                        }
                         return true;
                     }
                 }).build();
                 RongMessageItemLongClickActionManager.getInstance().addMessageItemLongClickAction(imgAction, 1);
             }
         } else {
-            if (!ImageMessage.class.isAssignableFrom(clazz)) {
+            if (!ImageMessage.class.isAssignableFrom(msgContent.getClass())) {
                 RongMessageItemLongClickActionManager.getInstance().removeMessageItemLongClickAction(imgAction);
             }
         }

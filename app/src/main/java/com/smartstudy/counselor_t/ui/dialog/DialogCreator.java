@@ -107,7 +107,7 @@ public class DialogCreator {
                                               final OnSendMsgDialogClickListener onClickListener) {
         final AppBasicDialog dialog = new AppBasicDialog(context, R.style.appBasicDialog);
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.dialog_send_img, null);
+        final View view = inflater.inflate(R.layout.dialog_send_img, null);
         dialog.setContentView(view);
         DisplayImageUtils.displayPersonImage(context, avatar, (ImageView) view.findViewById(R.id.iv_avatar));
         ((TextView) view.findViewById(R.id.tv_name)).setText(name);

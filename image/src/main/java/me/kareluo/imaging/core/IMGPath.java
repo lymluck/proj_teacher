@@ -22,7 +22,7 @@ public class IMGPath {
 
     public static final float BASE_DOODLE_WIDTH = 10f;
 
-    public static final float BASE_MOSAIC_WIDTH = 45f;
+    public static final float BASE_MOSAIC_WIDTH = 35f;
 
     public IMGPath() {
         this(new Path());
