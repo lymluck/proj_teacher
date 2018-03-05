@@ -18,6 +18,7 @@ import com.smartstudy.counselor_t.entity.SchoolInfo;
 import com.smartstudy.counselor_t.handler.WeakHandler;
 import com.smartstudy.counselor_t.mvp.contract.QaListContract;
 import com.smartstudy.counselor_t.mvp.presenter.QuestionsPresenter;
+import com.smartstudy.counselor_t.ui.activity.QaDetailActivity;
 import com.smartstudy.counselor_t.ui.adapter.CommonAdapter;
 import com.smartstudy.counselor_t.ui.adapter.base.ViewHolder;
 import com.smartstudy.counselor_t.ui.adapter.wrapper.EmptyWrapper;
@@ -192,11 +193,11 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
         mAdapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-//                QuestionInfo info = questionInfoList.get(position);
-//                Intent toMoreDetails = new Intent(mActivity, QaDetailActivity.class);
+                QuestionInfo info = questionInfoList.get(position);
+                Intent toMoreDetails = new Intent(mActivity, QaDetailActivity.class);
 //                toMoreDetails.putExtra("id", info.getId() + "");
-//                startActivity(toMoreDetails);
-//                info = null;
+                startActivity(toMoreDetails);
+                info = null;
             }
 
             @Override

@@ -139,7 +139,7 @@ public class Answerer {
         this.comments = comments;
     }
 
-    public class Comments {
+    public static class Comments {
         private String id;
         private String commenterId;
         private String commenterRole;
@@ -147,7 +147,7 @@ public class Answerer {
         private String atCommentId;
         private String createTime;
         private String content;
-        private String voiceUrl;
+        private Uri voiceUrl;
         private String questionId;
         private int likedCount;
         private int collectedCount;
@@ -210,11 +210,11 @@ public class Answerer {
             this.content = content;
         }
 
-        public String getVoiceUrl() {
+        public Uri getVoiceUrl() {
             return voiceUrl;
         }
 
-        public void setVoiceUrl(String voiceUrl) {
+        public void setVoiceUrl(Uri voiceUrl) {
             this.voiceUrl = voiceUrl;
         }
 
@@ -251,7 +251,7 @@ public class Answerer {
         }
     }
 
-    public class Commenter extends Asker {
+    public static class Commenter extends Asker {
 
     }
 

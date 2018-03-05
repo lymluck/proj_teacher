@@ -2,6 +2,7 @@ package com.smartstudy.counselor_t.app;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 
 import com.smartstudy.counselor_t.R;
@@ -50,6 +51,7 @@ public class AppManager implements RongIMClient.ConnectionStatusListener, RongIM
         RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
             @Override
             public UserInfo getUserInfo(String s) {
+                Log.w("kim","id+---->"+s);
                 UserInfo info = RongUserInfoManager.getInstance().getUserInfo(s);
                 if (info == null) {
                     StudentInfoManager.getInstance().getStudentInfo(s);

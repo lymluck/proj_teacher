@@ -17,8 +17,8 @@ public class HttpUrlUtils {
     public static final String URL_RANKS_TYPE = "/rank/categories/index";
     public static final String URL_RANKS_SEARCH = "/rank/categories"; //排名搜索
     public static final String URL_RANKS_HOT = "/rank/categories/hottest"; //热门排行榜
-    public static final String URL_QUESTS = "/questions"; //问答列表
-    public static final String URL_QUESTS_LINK = "/question/%1$s"; //问答列表
+    public static final String URL_QUESTS = "/questions/list"; //问答列表
+    public static final String URL_QUESTS_LINK = "/questions/1"; //问答详情
 
     public static final String URL_GLOBLE_LIST = "/lov/data/DATA_WORLD_MAJOR_RANKINGS/value"; //世界专业排名列表
     public static final String URL_USA_LIST = "/lov/data/DATA_USA_MAJOR_RANKINGS/value"; //美国专业排名列表

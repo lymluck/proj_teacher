@@ -2,6 +2,7 @@ package com.smartstudy.counselor_t.manager;
 
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.smartstudy.counselor_t.server.api.ApiManager;

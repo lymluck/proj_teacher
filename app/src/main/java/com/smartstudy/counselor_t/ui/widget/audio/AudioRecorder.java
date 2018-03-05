@@ -1,7 +1,9 @@
 package com.smartstudy.counselor_t.ui.widget.audio;
 
+import android.content.Context;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
@@ -26,6 +28,8 @@ public class AudioRecorder implements RecordStrategy {
     private MediaPlayer mPlayer;
 
     private boolean isRecording = false;
+
+    private boolean isPlaying = false;
 
     @Override
     public void ready() {
@@ -83,6 +87,23 @@ public class AudioRecorder implements RecordStrategy {
     }
 
     @Override
+    public void playByUri(Context context, Uri uri) {
+        if (mPlayer == null) {
+            mPlayer = new MediaPlayer();
+        }
+
+        try {
+            mPlayer.setDataSource(context, uri);
+            mPlayer.prepare();
+            mPlayer.start();
+            isPlaying = true;
+        } catch (IOException e) {
+            Log.e("kim", "prepare() failed");
+        }
+
+    }
+
+    @Override
     public double getAmplitude() {
         if (!isRecording) {
             return 0;
@@ -97,7 +118,9 @@ public class AudioRecorder implements RecordStrategy {
 
     @Override
     public void play(String path) {
-        mPlayer = new MediaPlayer();
+        if (mPlayer == null) {
+            mPlayer = new MediaPlayer();
+        }
 
         try {
             mPlayer.setDataSource(path);
@@ -113,6 +136,7 @@ public class AudioRecorder implements RecordStrategy {
         if (mPlayer != null) {
             mPlayer.release();
             mPlayer = null;
+            isPlaying = false;
         }
     }
 
@@ -124,13 +148,31 @@ public class AudioRecorder implements RecordStrategy {
                 public void onCompletion(MediaPlayer mp) {
                     mp.release();
                     playComplete.playComplete();
+                    isPlaying = false;
                 }
             });
         }
     }
 
+    @Override
+    public void playReset() {
+        if (mPlayer != null) {
+            mPlayer.reset();
+            isPlaying = false;
+        }
+    }
+
     public interface PlayComplete {
         void playComplete();
+    }
+
+
+    public boolean isPlaying() {
+        return isPlaying;
+    }
+
+    public void setPlaying(boolean playing) {
+        isPlaying = playing;
     }
 }
 

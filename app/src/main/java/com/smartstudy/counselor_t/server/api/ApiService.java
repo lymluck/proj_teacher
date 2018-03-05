@@ -129,11 +129,6 @@ public interface ApiService {
     @GET(HttpUrlUtils.URL_QUESTS_LINK)
     Observable<ResponseInfo> getQaDetail(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
-    @GET(HttpUrlUtils.URL_FAVORITE)
-    Observable<ResponseInfo> checkFavorite(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
-
-    @POST(HttpUrlUtils.URL_FAVORITE)
-    Observable<ResponseInfo> addFavorite(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
     @POST(HttpUrlUtils.URL_POST_QUESTION)
     Observable<ResponseInfo> postQuestion(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);

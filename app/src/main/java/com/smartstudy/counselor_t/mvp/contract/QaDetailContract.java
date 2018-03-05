@@ -17,20 +17,12 @@ public interface QaDetailContract {
 
         void getQaDetails(QaDetailInfo data);
 
-        void checkFavorite(boolean checkResult);
-
-        void addFavorite(boolean checkResult);
-
         void postQuestionSuccess();
     }
 
     interface Presenter extends BasePresenter {
 
-        void getQaDetails(String id, int request_state);
-
-        void checkFavorite(String id);
-
-        void addFavorite(String id);
+        void getQaDetails(String id);
 
         void postQuestion(String id, String question);
     }

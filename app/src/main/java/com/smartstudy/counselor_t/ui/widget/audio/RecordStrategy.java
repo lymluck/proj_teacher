@@ -1,5 +1,8 @@
 package com.smartstudy.counselor_t.ui.widget.audio;
 
+import android.content.Context;
+import android.net.Uri;
+
 /**
  * @author yqy
  * @date on 2018/2/7
@@ -27,6 +30,9 @@ public interface RecordStrategy {
      * 录音失败时删除原来的旧文件
      */
     public void deleteOldFile();
+
+
+    public void playByUri(Context context, Uri uri);
 
     /**
      * 获取录音音量的大小
@@ -59,4 +65,7 @@ public interface RecordStrategy {
      * 播放完成
      */
     public void playComplete(final AudioRecorder.PlayComplete playComplete);
+
+
+    public void playReset();
 }

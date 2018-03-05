@@ -21,23 +21,6 @@ public class QaDetailModel extends BaseModel {
         apiSubscribe(ApiManager.getApiService().getQaDetail(getHeadersMap(), params), listener);
     }
 
-    //检查是否点赞
-    public void checkFavorite( final String id, ObserverListener listener) {
-
-        Map<String, String> params = new HashMap<>();
-        params.put("id", id + "");
-        apiSubscribe(ApiManager.getApiService().checkFavorite(getHeadersMap(), params), listener);
-    }
-
-
-    //点赞
-
-
-    public void addFavorite(final String id, ObserverListener listener) {
-        Map<String, String> params = new HashMap<>();
-        params.put("id", id + "");
-        apiSubscribe(ApiManager.getApiService().addFavorite(getHeadersMap(), params), listener);
-    }
 
 
     public void postQuestion(final String id, final String question, ObserverListener listener) {
