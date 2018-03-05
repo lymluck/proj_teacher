@@ -201,110 +201,110 @@
 //        }
 ////    }
 //
-//    @Override
-//    public void getQaDetails(QaDetailInfo data) {
-//        if (qaDetailInfo != null) {
-//            qaDetailInfo = null;
-//        }
-//        footView.setVisibility(View.VISIBLE);
-//        qaDetailInfo = data;
-//        if (data.getAsker() != null) {
-//            DisplayImageUtils.displayCircleImage(getApplicationContext(), data.getAsker().getAvatar(), ivAsker);
-//            tvAskerName.setText(data.getAsker().getName());
-//        }
-//
-//        if (data.isLiked()) {
-//            ivGoods.setImageResource(R.drawable.goodpress);
-//        } else {
-//            ivGoods.setImageResource(R.drawable.good);
-//        }
-//
-//
-//        tvCount.setText(data.getLikedCount() + "");
-//
-//        if (!TextUtils.isEmpty(data.getQuestion())) {
-//            tvQuestion.setText(data.getQuestion());
-//            tvAskerTime.setText(data.getAskTime());
-//        }
-//
-//
-//        if (!TextUtils.isEmpty(data.getAnswer())) {
-//            tvAnswer.setText(data.getAnswer());
-//        }
-//
-//        if (data.getAnswerer() != null) {
-//            relativeLayout.setVisibility(View.VISIBLE);
-//            tvAnswerBody.setVisibility(View.VISIBLE);
-//            vAnswer.setVisibility(View.VISIBLE);
-//            DisplayImageUtils.displayCircleImage(getApplicationContext(), data.getAnswerer().getAvatarUrl(), ivAssignee);
-//            tvAssignee.setText(data.getAnswerer().getName());
-//        } else {
-//            relativeLayout.setVisibility(View.GONE);
-//            vAnswer.setVisibility(View.GONE);
-//            tvAnswerBody.setText("选校帝留学服务老师正在解答中,请稍后...");
-//        }
-//
-//
-//        if (data.getQuestionsAfter() != null && data.getQuestionsAfter().size() > 0) {
-//            if (questionsAfters != null) {
-//                questionsAfters.clear();
-//                questionsAfters.addAll(data.getQuestionsAfter());
-//                mHeader.notifyDataSetChanged();
+//        @Override
+//        public void getQaDetails (QaDetailInfo data){
+//            if (qaDetailInfo != null) {
+//                qaDetailInfo = null;
 //            }
-//        }
-//        askPosition = getAskPosition();
-//        if (qaDetailInfo.getAsker() != null && qaDetailInfo.getAsker().getId().equals(SPCacheUtils.get("user_id", ""))) {
-//            if (askPosition == 0) {
-//                tvAsk.setVisibility(View.VISIBLE);
+//            footView.setVisibility(View.VISIBLE);
+//            qaDetailInfo = data;
+//            if (data.getAsker() != null) {
+//                DisplayImageUtils.displayCircleImage(getApplicationContext(), data.getAsker().getAvatar(), ivAsker);
+//                tvAskerName.setText(data.getAsker().getName());
+//            }
+//
+//            if (data.isLiked()) {
+//                ivGoods.setImageResource(R.drawable.goodpress);
+//            } else {
+//                ivGoods.setImageResource(R.drawable.good);
+//            }
+//
+//
+//            tvCount.setText(data.getLikedCount() + "");
+//
+//            if (!TextUtils.isEmpty(data.getQuestion())) {
+//                tvQuestion.setText(data.getQuestion());
+//                tvAskerTime.setText(data.getAskTime());
+//            }
+//
+//
+//            if (!TextUtils.isEmpty(data.getAnswer())) {
+//                tvAnswer.setText(data.getAnswer());
+//            }
+//
+//            if (data.getAnswerer() != null) {
+//                relativeLayout.setVisibility(View.VISIBLE);
+//                tvAnswerBody.setVisibility(View.VISIBLE);
+//                vAnswer.setVisibility(View.VISIBLE);
+//                DisplayImageUtils.displayCircleImage(getApplicationContext(), data.getAnswerer().getAvatarUrl(), ivAssignee);
+//                tvAssignee.setText(data.getAnswerer().getName());
+//            } else {
+//                relativeLayout.setVisibility(View.GONE);
+//                vAnswer.setVisibility(View.GONE);
+//                tvAnswerBody.setText("选校帝留学服务老师正在解答中,请稍后...");
+//            }
+//
+//
+//            if (data.getQuestionsAfter() != null && data.getQuestionsAfter().size() > 0) {
+//                if (questionsAfters != null) {
+//                    questionsAfters.clear();
+//                    questionsAfters.addAll(data.getQuestionsAfter());
+//                    mHeader.notifyDataSetChanged();
+//                }
+//            }
+//            askPosition = getAskPosition();
+//            if (qaDetailInfo.getAsker() != null && qaDetailInfo.getAsker().getId().equals(SPCacheUtils.get("user_id", ""))) {
+//                if (askPosition == 0) {
+//                    tvAsk.setVisibility(View.VISIBLE);
+//                } else {
+//                    tvAsk.setVisibility(View.GONE);
+//                }
 //            } else {
 //                tvAsk.setVisibility(View.GONE);
 //            }
-//        } else {
-//            tvAsk.setVisibility(View.GONE);
-//        }
 //
-//        if (data.getTagsData() != null) {
-//            showTab();
-//        }
-//
-//        data = null;
-//    }
-//
-//
-//    @Override
-//    public void checkFavorite(boolean checkResult) {
-//        if (checkResult) {
-//            ToastUtils.shortToast(this, "不能重复点赞");
-//        } else {
-////            presenter.addFavorite(id);
-//        }
-//    }
-//
-//    @Override
-//    public void addFavorite(boolean checkResult) {
-//        if (checkResult) {
-//            if ("header".equals(type)) {
-//                ivGoods.setImageResource(R.drawable.goodpress);
-//                tvCount.setText((Integer.parseInt(tvCount.getText().toString().trim()) + 1) + "");
-//            } else {
-//                QaDetailInfo.QuestionsAfter questionsAfter = questionsAfters.get(positionBody - 1);
-//                questionsAfter.setLikedCount(questionsAfter.getLikedCount() + 1);
-//                questionsAfter.setLiked(true);
-//                mHeader.notifyItemChanged(positionBody, questionsAfter);
-//                questionsAfter = null;
+//            if (data.getTagsData() != null) {
+//                showTab();
 //            }
-//        } else {
-//            ToastUtils.shortToast(this, "点赞失败");
+//
+//            data = null;
 //        }
-//    }
 //
-//    @Override
-//    public void postQuestionSuccess() {
 //
-//        rlPost.setVisibility(View.GONE);
-//        hideWindowSoft();
-//        presenter.getQaDetails(questionId, ParameterUtils.PULL_DOWN);
-//    }
+//        @Override
+//        public void checkFavorite ( boolean checkResult){
+//            if (checkResult) {
+//                ToastUtils.shortToast(this, "不能重复点赞");
+//            } else {
+////            presenter.addFavorite(id);
+//            }
+//        }
+//
+//        @Override
+//        public void addFavorite ( boolean checkResult){
+//            if (checkResult) {
+//                if ("header".equals(type)) {
+//                    ivGoods.setImageResource(R.drawable.goodpress);
+//                    tvCount.setText((Integer.parseInt(tvCount.getText().toString().trim()) + 1) + "");
+//                } else {
+//                    QaDetailInfo.QuestionsAfter questionsAfter = questionsAfters.get(positionBody - 1);
+//                    questionsAfter.setLikedCount(questionsAfter.getLikedCount() + 1);
+//                    questionsAfter.setLiked(true);
+//                    mHeader.notifyItemChanged(positionBody, questionsAfter);
+//                    questionsAfter = null;
+//                }
+//            } else {
+//                ToastUtils.shortToast(this, "点赞失败");
+//            }
+//        }
+//
+//        @Override
+//        public void postQuestionSuccess () {
+//
+//            rlPost.setVisibility(View.GONE);
+//            hideWindowSoft();
+//            presenter.getQaDetails(questionId, ParameterUtils.PULL_DOWN);
+//        }
 //
 //
 //    private void initAdapter() {
