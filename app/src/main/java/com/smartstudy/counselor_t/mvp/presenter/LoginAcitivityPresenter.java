@@ -7,6 +7,8 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.smartstudy.counselor_t.R;
+import com.smartstudy.counselor_t.app.BaseApplication;
 import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
 import com.smartstudy.counselor_t.mvp.contract.LoginActivityContract;
@@ -82,9 +84,16 @@ public class LoginAcitivityPresenter extends BasePresenterImpl<LoginActivityCont
                     SPCacheUtils.put("school", data.getString("school"));
                     SPCacheUtils.put("year", data.getString("yearsOfWorking"));
                     SPCacheUtils.put("imToken", imToken);
-                    view.phoneCodeLoginSuccess(data.getIntValue("status"));
-                    //登录融云
-                    loginRongIM(imToken, name, avatar);
+                    int status = data.getIntValue("status");
+                    if (status == 4) {
+                        view.showTip(BaseApplication.appContext.getString(R.string.blocked_msg));
+                    } else if (status == 2) {
+                        view.phoneCodeLoginSuccess(status);
+                        //登录融云
+                        loginRongIM(imToken, name, avatar);
+                    } else {
+                        view.toFillInfo();
+                    }
                 }
             }
 

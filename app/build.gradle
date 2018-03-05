@@ -55,6 +55,7 @@ dependencies {
     compile project(':IMKit')
     compile project(':IMLib')
     compile project(':image')
+    compile project(':qrcode')
     compile 'com.squareup.retrofit2:retrofit:+'
     compile 'io.reactivex.rxjava2:rxandroid:+'
     compile 'io.reactivex.rxjava2:rxjava:+'

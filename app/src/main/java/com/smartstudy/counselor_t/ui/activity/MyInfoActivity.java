@@ -283,7 +283,6 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
     @Override
     public void getLogOutSuccess() {
         RongIM.getInstance().logout();
-        SPCacheUtils.put("phone", ParameterUtils.CACHE_NULL);
         SPCacheUtils.put("name", ParameterUtils.CACHE_NULL);
         SPCacheUtils.put("avatar", ParameterUtils.CACHE_NULL);
         SPCacheUtils.put("ticket", ParameterUtils.CACHE_NULL);

@@ -109,7 +109,7 @@ public interface ApiService {
 
 
     /**
-     *
+     * 登出
      */
     @POST(HttpUrlUtils.URL_USER_LOGOUT)
     Observable<ResponseInfo> getLogOut(@HeaderMap Map<String, String> header);

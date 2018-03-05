@@ -242,7 +242,7 @@ public class MsgShareActivity extends BaseActivity<MsgShareContract.Presenter> i
                         public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                             String savePath = SDCardUtils.getFileDirPath("Xxd_im" + File.separator + "pictures").getAbsolutePath();
                             String fileName = "im_" + System.currentTimeMillis() + ".png";
-                            if (BitmapUtils.saveBitmap(resource, fileName, savePath, getApplicationContext())) {
+                            if (BitmapUtils.saveBitmap(resource, fileName, savePath)) {
                                 Uri uri = Uri.parse("file://" + savePath + File.separator + fileName);
                                 sendImageMsg(userId, msg.getThumUri(), uri, isFull, savePath + File.separator + fileName);
                             } else {
@@ -265,7 +265,7 @@ public class MsgShareActivity extends BaseActivity<MsgShareContract.Presenter> i
                             String savePath = SDCardUtils.getFileDirPath("Xxd_im" + File.separator + "pictures").getAbsolutePath();
                             String fileName = "im_" + System.currentTimeMillis() + ".png";
                             //临时存储文件
-                            if (BitmapUtils.saveBitmap(resource, fileName, savePath, getApplicationContext())) {
+                            if (BitmapUtils.saveBitmap(resource, fileName, savePath)) {
                                 Uri uri = Uri.parse("file://" + savePath + File.separator + fileName);
                                 sendImageMsg(userId, msg.getThumUri(), uri, isFull, savePath + File.separator + fileName);
                             } else {

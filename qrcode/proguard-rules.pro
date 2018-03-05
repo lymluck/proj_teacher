@@ -19,7 +19,9 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--keep class net.sourceforge.net.sourceforge.zbar.ImageScanner { *; }
--keep class net.sourceforge.net.sourceforge.zbar.Image { *; }
--keep class net.sourceforge.net.sourceforge.zbar.SymbolSet { *; }
--keep class net.sourceforge.net.sourceforge.zbar.Symbol { *; }
+-keep class net.sourceforge.zbar.ImageScanner { *; }
+-keep class net.sourceforge.zbar.Image { *; }
+-keep class net.sourceforge.zbar.SymbolSet { *; }
+-keep class net.sourceforge.zbar.Symbol { *; }
+-keep class com.smartstudy.zbar.QRCodeView { *; }
+-keep class com.smartstudy.zbar.** {*;}

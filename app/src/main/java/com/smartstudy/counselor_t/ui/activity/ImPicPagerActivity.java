@@ -1,6 +1,7 @@
 package com.smartstudy.counselor_t.ui.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -20,6 +21,7 @@ import java.lang.ref.WeakReference;
 import io.rong.common.FileUtils;
 import io.rong.imageloader.core.ImageLoader;
 import io.rong.imkit.activity.PicturePagerActivity;
+import io.rong.imkit.tools.RongWebviewActivity;
 import io.rong.imkit.utilities.OptionsPopupDialog;
 
 /**
@@ -98,10 +100,9 @@ public class ImPicPagerActivity extends PicturePagerActivity {
         }
 
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(final String result) {
             if (!TextUtils.isEmpty(result)) {
                 if (mDialog != null && mDialog.isShowing()) {
-                    mDialog.dismiss();
                     String[] items = new String[]{weakAty.get().getString(io.rong.imkit.R.string.rc_save_picture), weakAty.get().getString(R.string.open_qrcode)};
                     OptionsPopupDialog.newInstance(weakAty.get(), items).setOptionsPopupDialogListener(new OptionsPopupDialog.OnOptionsItemClickedListener() {
                         @Override
@@ -112,12 +113,15 @@ public class ImPicPagerActivity extends PicturePagerActivity {
                                     break;
                                 case 1:
                                     //跳转到result这个url
+                                    weakAty.get().startActivity(new Intent(weakAty.get(), RongWebviewActivity.class)
+                                            .putExtra("url", result));
                                     break;
                                 default:
                                     break;
                             }
                         }
                     }).show();
+                    mDialog.dismiss();
                 }
             }
         }
