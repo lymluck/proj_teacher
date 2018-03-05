@@ -18,6 +18,7 @@
 //import android.widget.TextView;
 //
 //import com.smartstudy.counselor_t.R;
+//import com.smartstudy.counselor_t.entity.Answerer;
 //import com.smartstudy.counselor_t.entity.QaDetailInfo;
 //import com.smartstudy.counselor_t.mvp.contract.QaDetailContract;
 //import com.smartstudy.counselor_t.mvp.presenter.QaDetailPresenter;
@@ -51,9 +52,9 @@
 //
 //    private RecyclerView recyclerView;
 //
-//    private CommonAdapter<QaDetailInfo.QuestionsAfter> mAdapter;
+//    private CommonAdapter<Answerer> mAdapter;
 //
-//    private List<QaDetailInfo.QuestionsAfter> questionsAfters;
+//    private List<Answerer> answerers;
 //
 //    private EmptyWrapper<QaDetailInfo> emptyWrapper;
 //
@@ -149,12 +150,8 @@
 //
 //    @Override
 //    public void initView() {
-//        TextView titleView = (TextView) findViewById(R.id.topdefault_centertitle);
-//
-//        findViewById(R.id.topdefault_leftbutton).setOnClickListener(this);
-//
 //        Intent data = getIntent();
-//        titleView.setText("问题详情");
+//        setTitle("问题详情");
 //        questionId = data.getStringExtra("id");
 //        if (!TextUtils.isEmpty(questionId) && data.getExtras() != null) {
 //            questionId = data.getExtras().getString("id");
@@ -174,8 +171,6 @@
 //        initAdapter();
 //        initHeaderAndFooter();
 //        RelativeLayout rlAll = findViewById(R.id.rl_all);
-//        new QaDetailPresenter(this);
-//
 ////        emptyView = this.getLayoutInflater().inflate(R.layout.layout_empty, rlAll, false);
 ////        presenter.showLoading(this, emptyView);
 //
@@ -204,7 +199,7 @@
 //                break;
 //
 //        }
-//    }
+////    }
 //
 //    @Override
 //    public void getQaDetails(QaDetailInfo data) {
