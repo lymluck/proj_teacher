@@ -116,21 +116,33 @@ public interface ApiService {
 
 
     /**
-     *
+     *问题列表
      */
     @GET(HttpUrlUtils.URL_QUESTS)
-    Observable<ResponseInfo> getQuestions(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+    Observable<ResponseInfo> getQuestions(@HeaderMap Map<String, String> header,@QueryMap Map<String, String> params);
+
+    /**
+     * 问答详情
+     * @param header
+     * @param url
+     * @param params
+     * @return
+     */
+    @GET()
+    Observable<ResponseInfo> getQaDetail(@HeaderMap Map<String, String> header, @Url() String url,@QueryMap Map<String, String> params);
 
 
-    @GET(HttpUrlUtils.URL_MYQA)
-    Observable<ResponseInfo> getMyQuestions(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+    /**
+     * 文本消息提交
+     * @param header
+     * @param params
+     * @return
+     */
+    @POST()
+    Observable<ResponseInfo> postQuestion(@HeaderMap Map<String, String> header,@Url() String url, @QueryMap Map<String, String> params);
 
 
-    @GET(HttpUrlUtils.URL_QUESTS_LINK)
-    Observable<ResponseInfo> getQaDetail(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
-
-
-    @POST(HttpUrlUtils.URL_POST_QUESTION)
-    Observable<ResponseInfo> postQuestion(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+    @POST()
+    Observable<ResponseInfo> postAnswerVoice(@HeaderMap Map<String, String> header,@Url() String url, @Body RequestBody Body);
 
 }

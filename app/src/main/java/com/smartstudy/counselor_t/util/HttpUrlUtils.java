@@ -104,6 +104,7 @@ public class HttpUrlUtils {
     public static final String URL_COURSE_SHARE = "/course-%1$s/outline?sectionId=%2$s";  //课程分享
     public static final String URL_FAVORITE = "/favorite/question/%1$s";//点赞功能
     public static final String URL_POST_QUESTION = "/question/%1$s/append";//提交追问
+    public static final String URL_POST_ANSWER = "/questions/%1$s/answer";//提交追问
 
     /*********获取api接口url***********/
     public static String getBaseUrl() {
@@ -141,7 +142,6 @@ public class HttpUrlUtils {
                 break;
             case "dev":
                 WEB_SERVER = "http://yongle.smartstudy.com:3100/";
-//                WEB_SERVER = "http://xiaowei.hz.beikaodi.com:3100";
                 break;
         }
         return WEB_SERVER + url + "?_from=app_android_" + AppUtils.getVersionName();

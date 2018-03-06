@@ -120,7 +120,7 @@ public class AudioRecordView extends LinearLayout {
             public void onClick(View v) {
                 //发送
                 if (listener != null) {
-                    listener.sendOnClick();
+                    listener.sendOnClick(mAudioRecorder.getFilePath());
                 }
             }
         });
@@ -141,8 +141,8 @@ public class AudioRecordView extends LinearLayout {
     }
 
 
-    interface SendOnClickListener {
-        void sendOnClick();
+    public interface SendOnClickListener {
+        void sendOnClick(String path);
     }
 
 

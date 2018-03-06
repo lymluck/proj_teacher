@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +40,12 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
 
     private Uri isPlayingUri;
 
-    public void setComments(List<Answerer.Comments> comments) {
+    private String answerName;
+
+    private String askName;
+
+
+    public void setComments(List<Answerer.Comments> comments, String answerName, String askName) {
         if (this.mDatas != null) {
             this.mDatas.clear();
         }
@@ -54,6 +60,8 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
                 }
             }
         });
+        this.answerName = answerName;
+        this.askName = askName;
         this.notifyDataSetChanged();
     }
 
@@ -74,15 +82,19 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
     public void onBindViewHolder(@NonNull final QadetailAnswerItemAdapter.MyViewHolder holder, int position) {
         final Answerer.Comments comments = mDatas.get(position);
         if (comments.getCommentType().equals("subQuestion")) {
-            String question = "<font color='#FF9C08'>" + "追问 @" + comments.getCommenter().getName() + "</font>" + ": " + comments.getContent().trim();
+            String question = "<font color='#FF9C08'>" + "追问 @" + answerName + "</font>" + ": " + comments.getContent().trim();
             holder.tv_detail_answer.setText(Html.fromHtml(question));
             holder.ll_voice.setVisibility(View.GONE);
         } else {
             if (comments.getVoiceUrl() != null) {
-                String answer = "回复<font color='#078CF1'>" + " @" + comments.getCommenter().getName() + "</font>" + ": " + comments.getContent().trim();
+                String answer = "回复<font color='#078CF1'>" + " @" + askName + "</font>" + ": " + comments.getContent().trim();
                 holder.tv_detail_answer.setText(Html.fromHtml(answer));
                 holder.ll_voice.setVisibility(View.VISIBLE);
                 holder.tv_voice_time.setText("1'33");
+            } else {
+                String answer = "回复<font color='#078CF1'>" + " @" + askName + "</font>" + ": " + comments.getContent().trim();
+                holder.tv_detail_answer.setText(Html.fromHtml(answer));
+                holder.ll_voice.setVisibility(View.GONE);
             }
         }
         holder.tv_time.setText(comments.getCreateTime());
@@ -93,30 +105,32 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
             public void onClick(View v) {
                 if (isPlayingUri == null) {
                     animationDrawable = (AnimationDrawable) mContext.getResources().getDrawable(io.rong.imkit.R.drawable.rc_an_voice_receive);
-                    holder.iv_voice.setImageDrawable(animationDrawable);
                     if (audioRecorder != null) {
                         if (animationDrawable != null && !audioRecorder.isPlaying()) {
                             animationDrawable.start();
                             audioRecorder.playByUri(mContext, comments.getVoiceUrl());
+                            holder.iv_voice.setImageDrawable(animationDrawable);
                         } else {
                             animationDrawable.stop();
                             audioRecorder.playReset();
-//                            holder.iv_voice.setImageDrawable(null);
                             holder.iv_voice.setImageResource(R.drawable.sound_icon);
                         }
                     }
                 } else {
                     if (isPlayingUri.compareTo(comments.getVoiceUrl()) == 0) {
-                        if(audioRecorder.isPlaying()) {
+                        if (audioRecorder.isPlaying()) {
                             animationDrawable.stop();
                             audioRecorder.playReset();
-                        }else{
-                            animationDrawable.start();
+                            holder.iv_voice.setImageResource(R.drawable.sound_icon);
+                        } else {
                             audioRecorder.playByUri(mContext, comments.getVoiceUrl());
+                            holder.iv_voice.setImageDrawable(animationDrawable);
+                            animationDrawable.start();
                         }
-                    }else{
+                    } else {
                         animationDrawable.stop();
                         audioRecorder.playReset();
+                        holder.iv_voice.clearAnimation();
                         holder.iv_voice.setImageDrawable(animationDrawable);
                         animationDrawable.start();
                         audioRecorder.playByUri(mContext, comments.getVoiceUrl());

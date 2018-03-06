@@ -31,11 +31,14 @@ public class QaDetailAdapter extends RecyclerView.Adapter<QaDetailAdapter.MyView
 
     private List<Answerer> answerers;
 
-    public void setAnswers(List<Answerer> answerers) {
+    private String askName;
+
+    public void setAnswers(List<Answerer> answerers, String askName) {
         if (this.answerers != null) {
             this.answerers.clear();
         }
         this.answerers = answerers;
+        this.askName = askName;
         this.notifyDataSetChanged();
     }
 
@@ -72,7 +75,9 @@ public class QaDetailAdapter extends RecyclerView.Adapter<QaDetailAdapter.MyView
 //                .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.bg_recent_user).margin(DensityUtils.dip2px(64),0).build());
 
         holder.rvDetailAnswer.setAdapter(qadetailAnswerItemAdapter);
-        qadetailAnswerItemAdapter.setComments(entity.getComments());
+        if (entity.getComments() != null) {
+            qadetailAnswerItemAdapter.setComments(entity.getComments(), entity.getCommenter().getName(), askName);
+        }
         holder.rvDetailAnswer.setVisibility(View.VISIBLE);
         /////////////////////////////////////////////////////
 

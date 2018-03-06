@@ -1,5 +1,7 @@
 package com.smartstudy.counselor_t.mvp.presenter;
 
+import android.util.Log;
+
 import com.alibaba.fastjson.JSON;
 import com.smartstudy.counselor_t.entity.Answerer;
 import com.smartstudy.counselor_t.entity.Asker;
@@ -9,6 +11,7 @@ import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
 import com.smartstudy.counselor_t.mvp.contract.QaDetailContract;
 import com.smartstudy.counselor_t.mvp.model.QaDetailModel;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,33 +47,6 @@ public class QaDetailPresenter extends BasePresenterImpl<QaDetailContract.View> 
             @Override
             public void onNext(String result) {
                 QaDetailInfo qaDetailInfo = JSON.parseObject(result, QaDetailInfo.class);
-                if (qaDetailInfo == null) {
-                    qaDetailInfo = new QaDetailInfo();
-                    qaDetailInfo.setCreateTime("2018-05");
-                    qaDetailInfo.setContent("我是中国人");
-                    Asker asker = new Asker();
-                    asker.setName("linkang");
-                    asker.setAvatar("https://bkd-media.smartstudy.com/user/avatar/default/c1/96/c196d8a6bc7b1685bef28f7c8bb140984692.jpg");
-                    qaDetailInfo.setAsker(asker);
-
-                    List<Answerer> answers = new ArrayList<>();
-                    Answerer answerer = new Answerer();
-                    answerer.setContent("哈哈哈哈哈");
-                    answerer.setCreateTime("2017-03");
-                    Answerer.Commenter asker2 = new Answerer.Commenter();
-                    asker.setName("yeqingyu");
-                    asker.setAvatar("https://bkd-media.smartstudy.com/user/avatar/default/c1/96/c196d8a6bc7b1685bef28f7c8bb140984692.jpg");
-                    answerer.setCommenter(asker2);
-                    List<Answerer.Comments> comments=new ArrayList<>();
-                    Answerer.Comments comment=new Answerer.Comments();
-                    comment.setContent("222222");
-                    comments.add(comment);
-                    Answerer.Comments comment2=new Answerer.Comments();
-                    comment.setContent("3333");
-                    comments.add(comment2);
-                    answerer.setComments(comments);
-                    answers.add(answerer);
-                }
                 if (qaDetailInfo != null) {
                     view.getQaDetails(qaDetailInfo);
                 }
@@ -84,10 +60,9 @@ public class QaDetailPresenter extends BasePresenterImpl<QaDetailContract.View> 
         });
     }
 
-
     @Override
-    public void postQuestion(String id, String question) {
-        qaDetailModel.postQuestion(id, question, new ObserverListener<String>() {
+    public void postAnswerText(String id, String answer) {
+        qaDetailModel.postAnswerText(id, answer, new ObserverListener<String>() {
             @Override
             public void onSubscribe(Disposable disposable) {
                 addDisposable(disposable);
@@ -95,7 +70,28 @@ public class QaDetailPresenter extends BasePresenterImpl<QaDetailContract.View> 
 
             @Override
             public void onNext(String result) {
-                view.postQuestionSuccess();
+                view.postAnswerSuccess();
+            }
+
+            @Override
+            public void onError(String msg) {
+                view.showTip(msg);
+            }
+        });
+    }
+
+    @Override
+    public void postAnswerVoice(String id, File voice) {
+
+        qaDetailModel.postAnswerVoice(id, voice, new ObserverListener<String>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                addDisposable(disposable);
+            }
+
+            @Override
+            public void onNext(String result) {
+                view.postAnswerSuccess();
             }
 
             @Override

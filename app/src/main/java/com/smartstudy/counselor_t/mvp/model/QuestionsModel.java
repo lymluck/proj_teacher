@@ -32,7 +32,7 @@ public class QuestionsModel extends BaseModel {
     public void getMyQuestions(final int page, ObserverListener listener) {
         Map<String, String> params = new HashMap<>();
         params.put("page", page + "");
-        apiSubscribe(ApiManager.getApiService().getMyQuestions(getHeadersMap(), params), listener);
+//        apiSubscribe(ApiManager.getApiService().getMyQuestions(getHeadersMap(), params), listener);
     }
 
     public void getSchoolQa(final String schoolId, final int page, ObserverListener listener) {

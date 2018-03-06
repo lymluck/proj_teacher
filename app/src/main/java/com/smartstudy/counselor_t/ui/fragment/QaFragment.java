@@ -166,7 +166,7 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
                         answerCounnt.setTextColor(Color.parseColor("#078CF1"));
                     } else {
                         if (questionInfo.getSubQuestionCount() != 0) {
-                            answerCounnt.setText("对你有 " + questionInfo.getAnswerCount() + " 追问");
+                            answerCounnt.setText("对你有 " + questionInfo.getSubQuestionCount() + " 追问");
                             answerCounnt.setTextColor(Color.parseColor("#F6611D"));
                         } else {
                             answerCounnt.setText(questionInfo.getAnswerCount() + " 回答");
@@ -195,7 +195,7 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 QuestionInfo info = questionInfoList.get(position);
                 Intent toMoreDetails = new Intent(mActivity, QaDetailActivity.class);
-//                toMoreDetails.putExtra("id", info.getId() + "");
+                toMoreDetails.putExtra("id", info.getId() + "");
                 startActivity(toMoreDetails);
                 info = null;
             }

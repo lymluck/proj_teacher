@@ -2,6 +2,7 @@ package com.smartstudy.counselor_t.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +13,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.smartstudy.counselor_t.R;
@@ -20,14 +20,15 @@ import com.smartstudy.counselor_t.entity.Answerer;
 import com.smartstudy.counselor_t.entity.QaDetailInfo;
 import com.smartstudy.counselor_t.mvp.contract.QaDetailContract;
 import com.smartstudy.counselor_t.mvp.presenter.QaDetailPresenter;
-import com.smartstudy.counselor_t.ui.adapter.CommonAdapter;
 import com.smartstudy.counselor_t.ui.adapter.QaDetailAdapter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
-import com.smartstudy.counselor_t.ui.widget.HorizontalDividerItemDecoration;
+import com.smartstudy.counselor_t.ui.widget.AudioRecordView;
 import com.smartstudy.counselor_t.ui.widget.NoScrollLinearLayoutManager;
-import com.smartstudy.counselor_t.util.DensityUtils;
+import com.smartstudy.counselor_t.ui.widget.audio.AudioRecorder;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
+import com.smartstudy.counselor_t.util.ToastUtils;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -43,7 +44,6 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
     private List<Answerer> answerers;
 
-
     private ImageView ivAsker;
 
     private TextView tvAskerName;
@@ -54,13 +54,13 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
     private QaDetailAdapter qaDetailAdapter;
 
-
-    private RelativeLayout rlPost;
-
-
     private TextView tvPost;
 
     private EditText etAnswer;
+
+    private ImageView iv_speak;
+
+    private AudioRecordView audioRecordView;
 
 
     @Override
@@ -86,17 +86,54 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
             @Override
             public void afterTextChanged(Editable s) {
                 if (!TextUtils.isEmpty(s.toString())) {
-                    tvPost.setBackgroundResource(R.drawable.bg_qa_posted_blue);
-                    tvPost.setTextColor(getResources().getColor(R.color.white));
+                    tvPost.setTextColor(Color.parseColor("#078CF1"));
                     tvPost.setOnClickListener(QaDetailActivity.this);
                 } else {
-                    tvPost.setBackgroundResource(R.drawable.bg_qa_posted_grey);
-                    tvPost.setTextColor(getResources().getColor(R.color.qa_post_clor));
+                    tvPost.setTextColor(Color.parseColor("#949BA1"));
                     tvPost.setOnClickListener(null);
                 }
             }
         });
 
+
+        iv_speak.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Integer integer = (Integer) iv_speak.getTag();
+                integer = integer == null ? 0 : integer;
+                switch (integer) {
+                    case R.drawable.rc_audio_toggle:
+                        iv_speak.setImageResource(R.drawable.rc_keyboard);
+                        iv_speak.setTag(R.drawable.rc_keyboard);
+                        hideWindowSoft();
+                        audioRecordView.setVisibility(View.VISIBLE);
+                        break;
+                    case R.drawable.rc_keyboard:
+                        iv_speak.setImageResource(R.drawable.rc_audio_toggle);
+                        iv_speak.setTag(R.drawable.rc_audio_toggle);
+                        showWindowSoft();
+                        audioRecordView.setVisibility(View.GONE);
+                        break;
+                    default:
+                        iv_speak.setImageResource(R.drawable.rc_keyboard);
+                        iv_speak.setTag(R.drawable.rc_keyboard);
+                        hideWindowSoft();
+                        audioRecordView.setVisibility(View.VISIBLE);
+                        break;
+                }
+            }
+        });
+
+
+        audioRecordView.setsendOnClickListener(new AudioRecordView.SendOnClickListener() {
+            @Override
+            public void sendOnClick(String path) {
+                File file = new File(path);
+                if (file.exists()) {
+                    presenter.postAnswerVoice(questionId, file);
+                }
+            }
+        });
 
     }
 
@@ -112,8 +149,8 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         questionId = data.getStringExtra("id");
 
         recyclerView = findViewById(R.id.rv_qa);
-        rlPost = findViewById(R.id.rl_post);
         tvPost = findViewById(R.id.tv_post);
+
         etAnswer = findViewById(R.id.et_answer);
         recyclerView.setHasFixedSize(true);
         mLayoutManager = new NoScrollLinearLayoutManager(this);
@@ -131,10 +168,18 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
         tvAskerTime = findViewById(R.id.tv_ask_time);
 
+        iv_speak = findViewById(R.id.iv_speak);
+
+        audioRecordView = findViewById(R.id.arv);
+
+        audioRecordView.setAudioRecord(new AudioRecorder());
+
         initAdapter();
 
-        presenter.getQaDetails("1");
+        if (!TextUtils.isEmpty(questionId)) {
+            presenter.getQaDetails(questionId);
 
+        }
     }
 
 
@@ -142,11 +187,11 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_post:
-//                if (askPosition == 0) {
-//                    presenter.postQuestion(qaDetailInfo.getId(), etAnswer.getText().toString().trim());
-//                } else {
-//                    presenter.postQuestion(questionsAfters.get(askPosition - 1).getId(), etAnswer.getText().toString().trim());
-//                }
+                if (TextUtils.isEmpty(etAnswer.getText().toString().trim())) {
+                    ToastUtils.shortToast(this, "发送消息不能为空");
+                    return;
+                }
+                presenter.postAnswerText(questionId, etAnswer.getText().toString().trim());
                 break;
 
             case R.id.topdefault_leftbutton:
@@ -165,18 +210,18 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
             tvAskerName.setText(data.getAsker().getName());
             tvAskerTime.setText(data.getCreateTime());
             tvQuestion.setText(data.getContent());
+            etAnswer.setHint("回复 @" + data.getAsker().getName());
         }
 
         if (data.getAnswers() != null && data.getAnswers().size() > 0) {
-            qaDetailAdapter.setAnswers(data.getAnswers());
+            qaDetailAdapter.setAnswers(data.getAnswers(), data.getAsker().getName());
         }
         data = null;
     }
 
 
     @Override
-    public void postQuestionSuccess() {
-        rlPost.setVisibility(View.GONE);
+    public void postAnswerSuccess() {
         hideWindowSoft();
         presenter.getQaDetails(questionId);
     }

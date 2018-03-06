@@ -5,6 +5,7 @@ import com.smartstudy.counselor_t.entity.QaDetailInfo;
 import com.smartstudy.counselor_t.mvp.base.BasePresenter;
 import com.smartstudy.counselor_t.mvp.base.BaseView;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -17,13 +18,15 @@ public interface QaDetailContract {
 
         void getQaDetails(QaDetailInfo data);
 
-        void postQuestionSuccess();
+        void postAnswerSuccess();
     }
 
     interface Presenter extends BasePresenter {
 
         void getQaDetails(String id);
 
-        void postQuestion(String id, String question);
+        void postAnswerText(String id, String answer);
+
+        void postAnswerVoice(String id,File voice);
     }
 }
