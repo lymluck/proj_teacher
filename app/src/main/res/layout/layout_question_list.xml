@@ -31,8 +31,8 @@
 
                 <ImageView
                     android:id="@+id/iv_asker"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp" />
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
 
                 <TextView
                     android:id="@+id/tv_asker_name"
@@ -74,7 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingLeft="40dp"
+                android:paddingLeft="48dp"
                 android:paddingTop="20dp">
 
                 <TextView

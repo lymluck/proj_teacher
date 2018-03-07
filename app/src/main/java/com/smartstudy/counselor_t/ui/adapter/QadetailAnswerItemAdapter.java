@@ -90,17 +90,17 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
                 String answer = "回复<font color='#078CF1'>" + " @" + askName + "</font>" + ": " + comments.getContent().trim();
                 holder.tv_detail_answer.setText(Html.fromHtml(answer));
                 holder.ll_voice.setVisibility(View.VISIBLE);
-                holder.tv_voice_time.setText("1'33");
+                holder.tv_voice_time.setText(comments.getVoiceDuration());
             } else {
                 String answer = "回复<font color='#078CF1'>" + " @" + askName + "</font>" + ": " + comments.getContent().trim();
                 holder.tv_detail_answer.setText(Html.fromHtml(answer));
                 holder.ll_voice.setVisibility(View.GONE);
             }
         }
-        holder.tv_time.setText(comments.getCreateTime());
+        holder.tv_time.setText(comments.getCreateTimeText());
 
 
-        holder.iv_voice.setOnClickListener(new View.OnClickListener() {
+        holder.ll_voice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isPlayingUri == null) {
@@ -130,6 +130,7 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
                     } else {
                         animationDrawable.stop();
                         audioRecorder.playReset();
+                        holder.iv_voice.setImageResource(R.drawable.sound_icon);
                         holder.iv_voice.clearAnimation();
                         holder.iv_voice.setImageDrawable(animationDrawable);
                         animationDrawable.start();

@@ -31,6 +31,8 @@ public class QaDetailInfo {
 
     private int likedCount;
 
+    private String createTimeText;
+
     private int collectedCount;
 
     private List<Answerer> answers;
@@ -145,5 +147,13 @@ public class QaDetailInfo {
 
     public void setAnswers(List<Answerer> answers) {
         this.answers = answers;
+    }
+
+    public String getCreateTimeText() {
+        return createTimeText;
+    }
+
+    public void setCreateTimeText(String createTimeText) {
+        this.createTimeText = createTimeText;
     }
 }

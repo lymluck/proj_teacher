@@ -23,8 +23,10 @@ import com.smartstudy.counselor_t.mvp.presenter.QaDetailPresenter;
 import com.smartstudy.counselor_t.ui.adapter.QaDetailAdapter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.ui.widget.AudioRecordView;
+import com.smartstudy.counselor_t.ui.widget.HorizontalDividerItemDecoration;
 import com.smartstudy.counselor_t.ui.widget.NoScrollLinearLayoutManager;
 import com.smartstudy.counselor_t.ui.widget.audio.AudioRecorder;
+import com.smartstudy.counselor_t.util.DensityUtils;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
 import com.smartstudy.counselor_t.util.ToastUtils;
 
@@ -157,8 +159,8 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         mLayoutManager.setScrollEnabled(true);
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(mLayoutManager);
-//        recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
-//                .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.bg_recent_user).build());
+        recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
+                .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.bg_recent_user).build());
 
         ivAsker = findViewById(R.id.iv_asker);
 
@@ -208,7 +210,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         if (data.getAsker() != null) {
             DisplayImageUtils.displayCircleImage(getApplicationContext(), data.getAsker().getAvatar(), ivAsker);
             tvAskerName.setText(data.getAsker().getName());
-            tvAskerTime.setText(data.getCreateTime());
+            tvAskerTime.setText(data.getCreateTimeText());
             tvQuestion.setText(data.getContent());
             etAnswer.setHint("回复 @" + data.getAsker().getName());
         }

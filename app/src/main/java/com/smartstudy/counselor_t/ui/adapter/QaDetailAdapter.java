@@ -57,8 +57,7 @@ public class QaDetailAdapter extends RecyclerView.Adapter<QaDetailAdapter.MyView
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         final Answerer entity = (Answerer) answerers.get(position);
-
-        holder.tv_answer_time.setText(entity.getCreateTime());
+        holder.tv_answer_time.setText(entity.getCreateTimeText());
         DisplayImageUtils.displayCircleImage(mContext, entity.getCommenter().getAvatar(), holder.ivAssignee);
         holder.tv_assignee.setText(entity.getCommenter().getName());
         holder.tvAnswer.setText(entity.getContent());
@@ -71,8 +70,8 @@ public class QaDetailAdapter extends RecyclerView.Adapter<QaDetailAdapter.MyView
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         holder.rvDetailAnswer.setLayoutManager(linearLayoutManager);
 
-//        holder.rvDetailAnswer.addItemDecoration(new HorizontalDividerItemDecoration.Builder(mContext)
-//                .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.bg_recent_user).margin(DensityUtils.dip2px(64),0).build());
+        holder.rvDetailAnswer.addItemDecoration(new HorizontalDividerItemDecoration.Builder(mContext)
+                .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.bg_recent_user).margin(DensityUtils.dip2px(64),0).build());
 
         holder.rvDetailAnswer.setAdapter(qadetailAnswerItemAdapter);
         if (entity.getComments() != null) {

@@ -17,6 +17,7 @@ public class QuestionInfo {
     private String collectedCount;
     private int subQuestionCount;
     private Asker asker;
+    private String createTimeText;
 
     public static class Asker {
         private String id;
@@ -47,6 +48,14 @@ public class QuestionInfo {
             this.avatar = avatar;
         }
 
+    }
+
+    public String getCreateTimeText() {
+        return createTimeText;
+    }
+
+    public void setCreateTimeText(String createTimeText) {
+        this.createTimeText = createTimeText;
     }
 
     public Asker getAsker() {

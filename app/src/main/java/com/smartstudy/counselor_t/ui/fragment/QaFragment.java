@@ -121,7 +121,6 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
     @Override
     protected void initView(View rootView) {
         rclv_qa = (LoadMoreRecyclerView) rootView.findViewById(R.id.rclv_qa);
-        data_tag = "list";
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.srlt_qa);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.app_main_color));
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -153,28 +152,27 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
         mAdapter = new CommonAdapter<QuestionInfo>(mActivity, R.layout.item_question_list, questionInfoList) {
             @Override
             protected void convert(ViewHolder holder, QuestionInfo questionInfo, int position) {
-                if ("list".equals(data_tag)) {
-                    holder.setText(R.id.tv_create_time, questionInfo.getCreateTime());
-                    String avatar = questionInfo.getAsker().getAvatar();
-                    String askName = questionInfo.getAsker().getName();
-                    holder.setPersonImageUrl(R.id.iv_asker, avatar, true);
-                    holder.setText(R.id.tv_qa_name, askName);
-                    holder.setText(R.id.tv_qa, questionInfo.getContent());
-                    TextView answerCounnt = holder.getView(R.id.tv_answer_count);
-                    if (questionInfo.getAnswerCount() == 0) {
-                        answerCounnt.setText("暂无人回答");
-                        answerCounnt.setTextColor(Color.parseColor("#078CF1"));
+                holder.setText(R.id.tv_create_time, questionInfo.getCreateTimeText());
+                String avatar = questionInfo.getAsker().getAvatar();
+                String askName = questionInfo.getAsker().getName();
+                holder.setPersonImageUrl(R.id.iv_asker, avatar, true);
+                holder.setText(R.id.tv_qa_name, askName);
+                holder.setText(R.id.tv_qa, questionInfo.getContent());
+                TextView answerCounnt = holder.getView(R.id.tv_answer_count);
+                if (questionInfo.getAnswerCount() == 0) {
+                    answerCounnt.setText("暂无人回答");
+                    answerCounnt.setTextColor(Color.parseColor("#078CF1"));
+                } else {
+                    if (questionInfo.getSubQuestionCount() != 0) {
+                        answerCounnt.setText("对你有 " + questionInfo.getSubQuestionCount() + " 追问");
+                        answerCounnt.setTextColor(Color.parseColor("#F6611D"));
                     } else {
-                        if (questionInfo.getSubQuestionCount() != 0) {
-                            answerCounnt.setText("对你有 " + questionInfo.getSubQuestionCount() + " 追问");
-                            answerCounnt.setTextColor(Color.parseColor("#F6611D"));
-                        } else {
-                            answerCounnt.setText(questionInfo.getAnswerCount() + " 回答");
-                            answerCounnt.setTextColor(Color.parseColor("#949BA1"));
-                        }
+                        answerCounnt.setText(questionInfo.getAnswerCount() + " 回答");
+                        answerCounnt.setTextColor(Color.parseColor("#949BA1"));
                     }
                 }
             }
+
         };
         emptyWrapper = new EmptyWrapper<>(mAdapter);
         loadMoreWrapper = new LoadMoreWrapper<>(emptyWrapper);
@@ -208,14 +206,7 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
     }
 
     private void getQa(int pullAction) {
-        if ("list".equals(data_tag)) {
-            presenter.getQuestions(true, mPage, pullAction);
-        } else if ("my".equals(data_tag)) {
-            presenter.getMyQuestions(mPage, pullAction);
-        } else if ("school".equals(data_tag)) {
-            String schoolId = getArguments().getString("schoolId");
-            presenter.getSchoolQa(schoolId, mPage, pullAction);
-        }
+        presenter.getQuestions(true, mPage, pullAction);
     }
 
     @Override
@@ -274,11 +265,7 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
     @Override
     public void showTip(String message) {
         if (presenter != null) {
-            if (!"list".equals(data_tag)) {
-//                if (ParameterUtils.RESPONSE_CODE_NOLOGIN.equals(errCode)) {
-//                    DialogCreator.createLoginDialog(mActivity);
-//                }
-            }
+
             swipeRefreshLayout.setRefreshing(false);
             rclv_qa.loadComplete(true);
             ToastUtils.shortToast(mActivity, message);
