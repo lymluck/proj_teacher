@@ -71,7 +71,7 @@ public class QaDetailAdapter extends RecyclerView.Adapter<QaDetailAdapter.MyView
         holder.rvDetailAnswer.setLayoutManager(linearLayoutManager);
 
         holder.rvDetailAnswer.addItemDecoration(new HorizontalDividerItemDecoration.Builder(mContext)
-                .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.bg_recent_user).margin(DensityUtils.dip2px(64),0).build());
+                .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.bg_home_search).margin(DensityUtils.dip2px(64),0).build());
 
         holder.rvDetailAnswer.setAdapter(qadetailAnswerItemAdapter);
         if (entity.getComments() != null) {

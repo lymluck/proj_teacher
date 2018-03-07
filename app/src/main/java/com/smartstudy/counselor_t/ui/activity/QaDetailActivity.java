@@ -160,7 +160,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
-                .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.bg_recent_user).build());
+                .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.bg_home_search).build());
 
         ivAsker = findViewById(R.id.iv_asker);
 

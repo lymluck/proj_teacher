@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import android.widget.TextView;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.Answerer;
 import com.smartstudy.counselor_t.ui.widget.audio.AudioRecorder;
-import com.smartstudy.counselor_t.util.ToastUtils;
 
 import java.util.List;
 
