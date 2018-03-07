@@ -13,6 +13,7 @@ import com.bumptech.glide.load.engine.cache.DiskLruCacheFactory;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.module.AppGlideModule;
 import com.smartstudy.counselor_t.base.config.https.OkHttpUrlLoader;
+import com.smartstudy.counselor_t.listener.GlideProgressListener;
 import com.smartstudy.counselor_t.util.SDCardUtils;
 
 import java.io.File;
@@ -31,7 +32,7 @@ public class GlideConfiguration extends AppGlideModule {
 
     @Override
     public void applyOptions(Context context, GlideBuilder builder) {
-        File cache_file = SDCardUtils.getFileDirPath("Xxd" + File.separator + "cache");
+        File cache_file = SDCardUtils.getFileDirPath("Xxd_im" + File.separator + "cache");
         if (cache_file != null) {
             //100M
             builder.setDiskCache(new DiskLruCacheFactory(cache_file.getAbsolutePath(), 100 * 1024 * 1024));
@@ -48,19 +49,8 @@ public class GlideConfiguration extends AppGlideModule {
         DispatchingProgressListener.forget(url);
     }
 
-    public static void expect(String url, UIProgressListener listener) {
+    public static void expect(String url, GlideProgressListener listener) {
         DispatchingProgressListener.expect(url, listener);
-    }
-
-    public interface UIProgressListener {
-        void onProgress(long bytesRead, long expectedLength);
-
-        /**
-         * Control how often the listener needs an update. 0% and 100% will always be dispatched.
-         *
-         * @return in percentage (0.2 = call {@link #onProgress} around every 0.2 percent of progress)
-         */
-        float getGranularityPercentage();
     }
 
     private interface ResponseProgressListener {
@@ -68,7 +58,7 @@ public class GlideConfiguration extends AppGlideModule {
     }
 
     private static class DispatchingProgressListener implements ResponseProgressListener {
-        private static final Map<String, UIProgressListener> LISTENERS = new HashMap<>();
+        private static final Map<String, GlideProgressListener> LISTENERS = new HashMap<>();
         private static final Map<String, Long> PROGRESSES = new HashMap<>();
 
         private final Handler handler;
@@ -82,7 +72,7 @@ public class GlideConfiguration extends AppGlideModule {
             PROGRESSES.remove(url);
         }
 
-        static void expect(String url, UIProgressListener listener) {
+        static void expect(String url, GlideProgressListener listener) {
             LISTENERS.put(url, listener);
         }
 
@@ -90,7 +80,7 @@ public class GlideConfiguration extends AppGlideModule {
         public void update(HttpUrl url, final long bytesRead, final long contentLength) {
             //System.out.printf("%s: %d/%d = %.2f%%%n", url, bytesRead, contentLength, (100f * bytesRead) / contentLength);
             String key = url.toString();
-            final UIProgressListener listener = LISTENERS.get(key);
+            final GlideProgressListener listener = LISTENERS.get(key);
             if (listener == null) {
                 return;
             }

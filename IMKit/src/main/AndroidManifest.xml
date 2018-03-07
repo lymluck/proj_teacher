@@ -69,9 +69,9 @@
         <activity-alias
             android:name="io.rong.imkit.plugin.image.PicturePreviewActivity"
             android:screenOrientation="portrait"
-            android:targetActivity=".ui.activity.ImPicPreviewActivity" />
+            android:targetActivity="io.rong.imkit.plugin.image.ImPicPreviewActivity" />
         <activity
-            android:name=".ui.activity.ImPicPreviewActivity"
+            android:name=".plugin.image.ImPicPreviewActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing|stateHidden" />
     </application>

@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.smartstudy.router.Router;
@@ -23,6 +22,8 @@ import me.kareluo.imaging.file.IMGDecoder;
 import me.kareluo.imaging.file.IMGFileDecoder;
 import me.kareluo.imaging.util.ImgUtils;
 import me.kareluo.imaging.view.OptionsPopupDialog;
+
+import static android.os.Environment.DIRECTORY_PICTURES;
 
 public class IMGEditActivity extends IMGEditBaseActivity {
 
@@ -47,13 +48,16 @@ public class IMGEditActivity extends IMGEditBaseActivity {
         }
         Uri uri = intent.getParcelableExtra("uri");
         String filePath = intent.getStringExtra("path");
-        if (uri == null) {
+        if (uri == null && TextUtils.isEmpty(filePath)) {
             return null;
         } else {
             if (!TextUtils.isEmpty(filePath)) {
                 mImageFile = new File(filePath);
             } else {
-                mImageFile = new File(this.getFilesDir(), System.currentTimeMillis() + ".png");
+                mImageFile = new File(this.getExternalFilesDir(DIRECTORY_PICTURES), System.currentTimeMillis() + ".png");
+            }
+            if (uri == null) {
+                uri = Uri.fromFile(mImageFile);
             }
         }
 
@@ -138,7 +142,15 @@ public class IMGEditActivity extends IMGEditBaseActivity {
 
     @Override
     public void onDoneClick() {
-        showOptDialog();
+        if (getIntent().getBooleanExtra("showDialog", true)) {
+            showOptDialog();
+        } else {
+            writeToFile();
+            if (mImageFile != null) {
+                setResult(RESULT_OK, new Intent().putExtra("path", mImageFile.getAbsolutePath()));
+                finish();
+            }
+        }
     }
 
     @Override
@@ -173,28 +185,7 @@ public class IMGEditActivity extends IMGEditBaseActivity {
         OptionsPopupDialog dialog = OptionsPopupDialog.newInstance(this, items).setOptionsPopupDialogListener(new OptionsPopupDialog.OnOptionsItemClickedListener() {
             @Override
             public void onOptionsItemClicked(int var1) {
-                String path = mImageFile.getAbsolutePath();
-                if (!TextUtils.isEmpty(path)) {
-                    Bitmap bitmap = mImgView.saveBitmap();
-                    if (bitmap != null) {
-                        FileOutputStream fout = null;
-                        try {
-                            fout = new FileOutputStream(path);
-                            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, fout);
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        } finally {
-                            if (fout != null) {
-                                try {
-                                    fout.close();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-                    }
-                }
-
+                writeToFile();
                 if (mImageFile != null) {
                     if (items[var1].equals("发送给朋友")) {
                         Router.build("MsgShareActivity")
@@ -217,6 +208,29 @@ public class IMGEditActivity extends IMGEditBaseActivity {
         dialog.show();
     }
 
+    private void writeToFile() {
+        String path = mImageFile.getAbsolutePath();
+        if (!TextUtils.isEmpty(path)) {
+            Bitmap bitmap = mImgView.saveBitmap();
+            if (bitmap != null) {
+                FileOutputStream fout = null;
+                try {
+                    fout = new FileOutputStream(path);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 80, fout);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (fout != null) {
+                        try {
+                            fout.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
