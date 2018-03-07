@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.smartstudy.router.Router;
@@ -14,8 +15,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import io.rong.imlib.model.Message;
-import io.rong.message.ImageMessage;
 import me.kareluo.imaging.core.IMGMode;
 import me.kareluo.imaging.core.IMGText;
 import me.kareluo.imaging.core.util.IMGUtils;
@@ -25,18 +24,15 @@ import me.kareluo.imaging.file.IMGFileDecoder;
 import me.kareluo.imaging.util.ImgUtils;
 import me.kareluo.imaging.view.OptionsPopupDialog;
 
-import static android.os.Environment.DIRECTORY_PICTURES;
-
 public class IMGEditActivity extends IMGEditBaseActivity {
 
     private static final int MAX_WIDTH = 1024;
     private static final int MAX_HEIGHT = 1024;
 
     private String[] items = {"发送给朋友", "保存图片"};
-
     private File mImageFile = null;
-
-    Message message;
+    public static final int REQUEST_SHARE = 10;
+    public static final int REQUEST_EDIT = 11;
 
     @Override
     public void onCreated() {
@@ -49,11 +45,16 @@ public class IMGEditActivity extends IMGEditBaseActivity {
         if (intent == null) {
             return null;
         }
-        message = intent.getParcelableExtra("msg");
         Uri uri = intent.getParcelableExtra("uri");
         String filePath = intent.getStringExtra("path");
         if (uri == null) {
             return null;
+        } else {
+            if (!TextUtils.isEmpty(filePath)) {
+                mImageFile = new File(filePath);
+            } else {
+                mImageFile = new File(this.getFilesDir(), System.currentTimeMillis() + ".png");
+            }
         }
 
         IMGDecoder decoder = null;
@@ -74,12 +75,6 @@ public class IMGEditActivity extends IMGEditBaseActivity {
 
         if (decoder == null) {
             return null;
-        } else {
-            if (!TextUtils.isEmpty(filePath)) {
-                mImageFile = new File(filePath);
-            } else {
-                mImageFile = new File(this.getExternalFilesDir(DIRECTORY_PICTURES).getAbsolutePath(), System.currentTimeMillis() + ".png");
-            }
         }
 
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -175,7 +170,7 @@ public class IMGEditActivity extends IMGEditBaseActivity {
 
 
     public void showOptDialog() {
-        OptionsPopupDialog dialog = new OptionsPopupDialog(this, items).setOptionsPopupDialogListener(new OptionsPopupDialog.OnOptionsItemClickedListener() {
+        OptionsPopupDialog dialog = OptionsPopupDialog.newInstance(this, items).setOptionsPopupDialogListener(new OptionsPopupDialog.OnOptionsItemClickedListener() {
             @Override
             public void onOptionsItemClicked(int var1) {
                 String path = mImageFile.getAbsolutePath();
@@ -202,11 +197,9 @@ public class IMGEditActivity extends IMGEditBaseActivity {
 
                 if (mImageFile != null) {
                     if (items[var1].equals("发送给朋友")) {
-                        if (Uri.fromFile(mImageFile) != null) {
-                            ((ImageMessage) message.getContent()).setThumUri(Uri.fromFile(mImageFile));
-                            ((ImageMessage) message.getContent()).setLocalUri(Uri.fromFile(mImageFile));
-                        }
-                        Router.build("MsgShareActivity").with("msg", message).go(IMGEditActivity.this);
+                        Router.build("MsgShareActivity")
+                                .with("type", "image")
+                                .with("uri", Uri.fromFile(mImageFile)).requestCode(REQUEST_SHARE).go(IMGEditActivity.this);
                     } else {
                         Bitmap bitmap = BitmapFactory.decodeFile(mImageFile.getPath());
                         boolean isSaveSuccess = ImgUtils.saveImageToGallery(IMGEditActivity.this, bitmap);
@@ -218,12 +211,26 @@ public class IMGEditActivity extends IMGEditBaseActivity {
                         }
                     }
                 }
-                setResult(RESULT_CANCELED);
-                finish();
             }
 
         });
         dialog.show();
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+        switch (requestCode) {
+            case REQUEST_SHARE:
+                setResult(RESULT_OK, data);
+                finish();
+                break;
+            default:
+                break;
+        }
+    }
 }
