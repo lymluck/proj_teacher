@@ -23,8 +23,6 @@ import me.kareluo.imaging.file.IMGFileDecoder;
 import me.kareluo.imaging.util.ImgUtils;
 import me.kareluo.imaging.view.OptionsPopupDialog;
 
-import static android.os.Environment.DIRECTORY_PICTURES;
-
 public class IMGEditActivity extends IMGEditBaseActivity {
 
     private static final int MAX_WIDTH = 1024;
@@ -48,16 +46,14 @@ public class IMGEditActivity extends IMGEditBaseActivity {
         }
         Uri uri = intent.getParcelableExtra("uri");
         String filePath = intent.getStringExtra("path");
-        if (uri == null && TextUtils.isEmpty(filePath)) {
+        if (uri == null) {
             return null;
         } else {
             if (!TextUtils.isEmpty(filePath)) {
                 mImageFile = new File(filePath);
             } else {
-                mImageFile = new File(this.getExternalFilesDir(DIRECTORY_PICTURES), System.currentTimeMillis() + ".png");
-            }
-            if (uri == null) {
-                uri = Uri.fromFile(mImageFile);
+                mImageFile = new File(ImgUtils.getFileDirPath(this, "Xxd_im" + File.separator + "pictures").getAbsolutePath(),
+                        System.currentTimeMillis() + ".png");
             }
         }
 

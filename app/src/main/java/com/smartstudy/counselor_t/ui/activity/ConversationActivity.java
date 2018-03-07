@@ -457,8 +457,8 @@ public class ConversationActivity extends BaseActivity implements
             @Override
             public void onSuccess(Message message) {
                 //消息通过网络发送成功的回调
-                String myId = (String) SPCacheUtils.get("imUserId", "");
-                if (!userId.equals(myId)) {
+                String targetId = getIntent().getData().getQueryParameter("targetId");
+                if (!userId.equals(targetId)) {
                     showTip("已发送");
                 }
             }
@@ -466,8 +466,8 @@ public class ConversationActivity extends BaseActivity implements
             @Override
             public void onError(Message message, RongIMClient.ErrorCode errorCode) {
                 //消息发送失败的回调
-                String myId = (String) SPCacheUtils.get("imUserId", "");
-                if (!userId.equals(myId)) {
+                String targetId = getIntent().getData().getQueryParameter("targetId");
+                if (!userId.equals(targetId)) {
                     showTip("消息发送失败！");
                 }
             }
@@ -484,8 +484,8 @@ public class ConversationActivity extends BaseActivity implements
 
             @Override
             public void onError(Message message, RongIMClient.ErrorCode errorCode) {
-                String myId = (String) SPCacheUtils.get("imUserId", "");
-                if (!userId.equals(myId)) {
+                String targetId = getIntent().getData().getQueryParameter("targetId");
+                if (!userId.equals(targetId)) {
                     showTip("消息发送失败！");
                 }
             }
@@ -495,8 +495,8 @@ public class ConversationActivity extends BaseActivity implements
                 if (!TextUtils.isEmpty(filePath)) {
                     BitmapUtils.deleteFile(filePath);
                 }
-                String myId = (String) SPCacheUtils.get("imUserId", "");
-                if (!userId.equals(myId)) {
+                String targetId = getIntent().getData().getQueryParameter("targetId");
+                if (!userId.equals(targetId)) {
                     showTip("消息已发送");
                 }
             }

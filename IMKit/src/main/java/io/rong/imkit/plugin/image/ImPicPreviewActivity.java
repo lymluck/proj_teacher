@@ -1,6 +1,7 @@
 package io.rong.imkit.plugin.image;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -30,6 +31,10 @@ public class ImPicPreviewActivity extends PicturePreviewActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initView();
+    }
+
+    private void initView() {
         this.mViewPager = findViewById(R.id.viewpager);
         TextView tv_edit = findViewById(R.id.tv_edit);
         tv_edit.setOnClickListener(new View.OnClickListener() {
@@ -39,12 +44,15 @@ public class ImPicPreviewActivity extends PicturePreviewActivity {
             }
         });
         this.mCurrentIndex = this.getIntent().getIntExtra("index", 0);
+        if (this.mItemList == null) {
+            this.mItemList = PictureSelectorActivity.PicItemHolder.itemList;
+        }
     }
 
     private void toEditImg() {
         startActivityForResult(new Intent(this, IMGEditActivity.class)
                 .putExtra("showDialog", false)
-                .putExtra("path", PictureSelectorActivity.PicItemHolder.itemList.get(mCurrentIndex).uri), REQUEST_EDIT);
+                .putExtra("uri", Uri.parse("file://" + PictureSelectorActivity.PicItemHolder.itemList.get(mCurrentIndex).uri)), REQUEST_EDIT);
     }
 
     @Override
@@ -56,10 +64,9 @@ public class ImPicPreviewActivity extends PicturePreviewActivity {
         switch (requestCode) {
             case REQUEST_EDIT:
                 PictureSelectorActivity.PicItemHolder.itemList.get(mCurrentIndex).uri = data.getStringExtra("path");
-                if (this.mItemList == null) {
-                    this.mItemList = PictureSelectorActivity.PicItemHolder.itemList;
-                }
+                mItemList.get(mCurrentIndex).uri = data.getStringExtra("path");
                 mViewPager.setAdapter(mViewPager.getAdapter());
+                mViewPager.getAdapter().notifyDataSetChanged();
                 mViewPager.setCurrentItem(mCurrentIndex);
                 break;
             default:

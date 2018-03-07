@@ -509,12 +509,12 @@ public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implement
                 if (getIntent().getBooleanExtra("singlePic", true)) {
                     photoSaveName = System.currentTimeMillis() + ".png";
                     // 存放照片的文件夹
-                    photoSaveFile = SDCardUtils.getFileDirPath("Xxd" + File.separator + "pictures");
+                    photoSaveFile = SDCardUtils.getFileDirPath("Xxd_im" + File.separator + "pictures");
                     Utils.startActionCapture(SelectMyPhotoActivity.this, new File(photoSaveFile.getAbsolutePath(), photoSaveName), ParameterUtils.REQUEST_CODE_CAMERA);
                 } else {
                     photoSaveName = System.currentTimeMillis() + ".png";
                     // 存放照片的文件夹
-                    photoSaveFile = SDCardUtils.getFileDirPath("Xxd" + File.separator + "pictures");
+                    photoSaveFile = SDCardUtils.getFileDirPath("Xxd_im" + File.separator + "pictures");
                     Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     if (photoSaveFile != null) {
                         imageUri = Uri.fromFile(new File(photoSaveFile.getAbsolutePath(), photoSaveName));
