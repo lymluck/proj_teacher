@@ -66,6 +66,12 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+    }
+
+    @Override
     public LoginActivityContract.Presenter initPresenter() {
         return new LoginAcitivityPresenter(this);
     }
@@ -306,14 +312,16 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
 
     @Override
     public void phoneCodeLoginSuccess(int status) {
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
+
+    @Override
+    public void toFillInfo() {
         KeyBoardUtils.closeKeybord(etc_yzm, this);
-        if (status == 2) {
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        } else {
-            startActivity(new Intent(this, FillPersonActivity.class));
-            finish();
-        }
+        showTip(getString(R.string.refused_msg));
+        startActivity(new Intent(this, FillPersonActivity.class));
+        finish();
     }
 
     protected void startTimer() {

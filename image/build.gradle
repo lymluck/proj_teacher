@@ -32,5 +32,6 @@ dependencies {
     compile 'com.facebook.fresco:fresco:1.7.1'
     compile project(':xxdRouter')
     compile project(':xxdAnnotation')
-    compile project(':IMLib')
+    compile project(':IMKit')
+    compile project(':qrcode')
 }

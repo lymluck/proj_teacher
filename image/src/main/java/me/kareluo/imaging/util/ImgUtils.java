@@ -21,7 +21,7 @@ public class ImgUtils {
     //保存文件到指定路径
     public static boolean saveImageToGallery(Context context, Bitmap bmp) {
         // 首先保存图片
-        String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "xxd-im";
+        String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "xxd_im";
         File appDir = new File(storePath);
         if (!appDir.exists()) {
             appDir.mkdir();

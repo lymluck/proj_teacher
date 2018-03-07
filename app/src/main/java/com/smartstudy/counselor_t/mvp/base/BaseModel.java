@@ -15,6 +15,7 @@ import com.smartstudy.counselor_t.util.SPCacheUtils;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.jpush.android.api.JPushInterface;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -67,6 +68,7 @@ public class BaseModel {
         Map<String, String> params = new HashMap<>();
         params.put("User-Agent", AppUtils.getUserAgent(AppUtils.getAndroidUserAgent(BaseApplication.getInstance())) + " Store/"
                 + "xxd");
+        params.put("X-xxd-push-reg-id", JPushInterface.getRegistrationID(BaseApplication.appContext));
         params.put("X-xxd-uid", DeviceUtils.getIdentifier() + "c");
         String ticket = (String) SPCacheUtils.get("ticket", ConstantUtils.CACHE_NULL);
         if (!TextUtils.isEmpty(ticket) && !ConstantUtils.CACHE_NULL.equals(ticket)) {
@@ -74,4 +76,5 @@ public class BaseModel {
         }
         return params;
     }
+
 }

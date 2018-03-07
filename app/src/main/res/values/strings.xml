@@ -29,6 +29,12 @@
     <string name="login_now">您还未登录，立即登录？</string>
     <string name="send_to">发送给：</string>
     <string name="send">发送</string>
+    <string name="open_qrcode">识别图中二维码</string>
+    <string name="relogin">重新登录</string>
+    <string name="logout_notify">下线通知</string>
+    <string name="loginout_msg">你的账号已在其他设备上登录，是否重新登录？</string>
+    <string name="blocked_msg">你的账号已被禁用，如有疑问请联系管理员！</string>
+    <string name="refused_msg">你的信息审核未通过！</string>
     <string name="page_empty_tip">抱歉，没有相关数据哦～</string>
     <string name="search">搜索</string>
     <string name="no_net_tip">连接不上网络啦～</string>

@@ -1,4 +1,4 @@
-package me.kareluo.imaging.core.file;
+package me.kareluo.imaging.file;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

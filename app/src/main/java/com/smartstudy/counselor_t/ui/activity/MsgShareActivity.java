@@ -1,10 +1,13 @@
 package com.smartstudy.counselor_t.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +17,8 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.smartstudy.annotation.Route;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.ChatUserInfo;
@@ -27,8 +32,10 @@ import com.smartstudy.counselor_t.ui.adapter.base.ViewHolder;
 import com.smartstudy.counselor_t.ui.adapter.wrapper.HeaderAndFooterWrapper;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.ui.dialog.DialogCreator;
+import com.smartstudy.counselor_t.util.BitmapUtils;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
 import com.smartstudy.counselor_t.util.ParameterUtils;
+import com.smartstudy.counselor_t.util.SDCardUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -223,29 +230,82 @@ public class MsgShareActivity extends BaseActivity<MsgShareContract.Presenter> i
     private void handleMsg(final String userId, final ImageMessage msg, final boolean isFull) {
         if (msg.getLocalPath() != null) {
             if (msg.getLocalPath().toString().startsWith("file")) {
-                sendImageMsg(userId, msg.getThumUri(), msg.getLocalPath(), isFull);
+                sendImageMsg(userId, msg.getThumUri(), msg.getLocalPath(), isFull, null);
             } else {
                 File file = ImageLoader.getInstance().getDiskCache().get(msg.getLocalPath().toString());
-                if (file.exists()) {
+                if (file != null && file.exists()) {
                     Uri uri = Uri.parse("file://" + file.getAbsolutePath());
-                    sendImageMsg(userId, msg.getThumUri(), uri, isFull);
+                    sendImageMsg(userId, msg.getThumUri(), uri, isFull, null);
+                } else {
+                    DisplayImageUtils.displayImage(this, msg.getLocalPath().toString(), new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                            String savePath = SDCardUtils.getFileDirPath("Xxd_im" + File.separator + "pictures").getAbsolutePath();
+                            String fileName = "im_" + System.currentTimeMillis() + ".png";
+                            if (BitmapUtils.saveBitmap(resource, fileName, savePath)) {
+                                Uri uri = Uri.parse("file://" + savePath + File.separator + fileName);
+                                sendImageMsg(userId, msg.getThumUri(), uri, isFull, savePath + File.separator + fileName);
+                            } else {
+                                showTip("消息已发送失败！");
+                            }
+                        }
+                    });
                 }
             }
         } else {
             if (msg.getRemoteUri() != null) {
                 File file = ImageLoader.getInstance().getDiskCache().get(msg.getRemoteUri().toString());
-                if (file.exists()) {
+                if (file != null && file.exists()) {
                     Uri uri = Uri.parse("file://" + file.getAbsolutePath());
-                    sendImageMsg(userId, msg.getThumUri(), uri, isFull);
+                    sendImageMsg(userId, msg.getThumUri(), uri, isFull, null);
+                } else {
+                    DisplayImageUtils.displayImage(this, msg.getRemoteUri().toString(), new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                            String savePath = SDCardUtils.getFileDirPath("Xxd_im" + File.separator + "pictures").getAbsolutePath();
+                            String fileName = "im_" + System.currentTimeMillis() + ".png";
+                            //临时存储文件
+                            if (BitmapUtils.saveBitmap(resource, fileName, savePath)) {
+                                Uri uri = Uri.parse("file://" + savePath + File.separator + fileName);
+                                sendImageMsg(userId, msg.getThumUri(), uri, isFull, savePath + File.separator + fileName);
+                            } else {
+                                showTip("消息已发送失败！");
+                            }
+                        }
+                    });
                 }
             }
         }
     }
 
-    private void sendImageMsg(String userId, Uri thumUri, Uri localUri, boolean isFull) {
+    private void sendImageMsg(String userId, Uri thumUri, Uri localUri, boolean isFull, final String filePath) {
         ImageMessage sendImgMsg = ImageMessage.obtain(thumUri, localUri, isFull);
-        RongIM.getInstance().sendImageMessage(Conversation.ConversationType.PRIVATE, userId, sendImgMsg, null, null, null);
-        showTip("消息已发送");
-        finish();
+        RongIM.getInstance().sendImageMessage(Conversation.ConversationType.PRIVATE, userId, sendImgMsg, null, null, new RongIMClient.SendImageMessageCallback() {
+            @Override
+            public void onAttached(Message message) {
+
+            }
+
+            @Override
+            public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+                showTip("消息发送失败！");
+                finish();
+            }
+
+            @Override
+            public void onSuccess(Message message) {
+                if (filePath != null) {
+                    BitmapUtils.deleteFile(filePath);
+                }
+                showTip("消息已发送");
+                finish();
+            }
+
+            @Override
+            public void onProgress(Message message, int i) {
+
+            }
+        });
+
     }
 }

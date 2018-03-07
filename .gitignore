@@ -82,3 +82,5 @@ freeline_project_description.json
 /xxdRouter/build/
 /xxdRouter/xxdRouter.iml
 /xxdCompiler/xxdCompiler.iml
+/qrcode/build/
+/qrcode/qrcode.iml
