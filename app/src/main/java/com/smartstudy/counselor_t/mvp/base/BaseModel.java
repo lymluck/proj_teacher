@@ -68,8 +68,8 @@ public class BaseModel {
         Map<String, String> params = new HashMap<>();
         params.put("User-Agent", AppUtils.getUserAgent(AppUtils.getAndroidUserAgent(BaseApplication.getInstance())) + " Store/"
                 + "xxd");
-        params.put("X-xxd-uid", DeviceUtils.getIdentifier());
-        params.put("X-xxd-push-reg-id", JPushInterface.getRegistrationID(BaseApplication.appContext));
+        params.put("x-smartsa-uid", DeviceUtils.getIdentifier());
+        params.put("x-smartsa-push-reg-id", JPushInterface.getRegistrationID(BaseApplication.appContext));
         String ticket = (String) SPCacheUtils.get("ticket", ConstantUtils.CACHE_NULL);
         if (!TextUtils.isEmpty(ticket) && !ConstantUtils.CACHE_NULL.equals(ticket)) {
             params.put("x-smartsa-counsellor-ticket", ticket);
