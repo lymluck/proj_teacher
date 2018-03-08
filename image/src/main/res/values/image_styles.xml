@@ -38,7 +38,7 @@
 
     </style>
 
-    <style name="ImageGalleryTheme" parent="Theme.AppCompat">
+    <style name="ImageGalleryTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="image_gallery_span_count">4</item>
         <item name="image_gallery_select_shade">#90FFFFFF</item>
     </style>

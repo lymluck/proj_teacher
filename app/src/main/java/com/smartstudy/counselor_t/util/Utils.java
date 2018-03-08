@@ -228,7 +228,7 @@ public class Utils {
             intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
         } else {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setDataAndType(Uri.parse("file://" + apkfile.toString()), "application/vnd.android.package-archive");
+            intent.setDataAndType(Uri.fromFile(apkfile), "application/vnd.android.package-archive");
         }
         context.startActivity(intent);
     }

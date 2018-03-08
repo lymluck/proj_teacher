@@ -292,7 +292,7 @@ public class ConversationActivity extends BaseActivity implements
         final MessageContent msgContent = clickMsg.getContent();
         if (shareAction == null) {
             if (ImageMessage.class.isAssignableFrom(msgContent.getClass()) || TextMessage.class.isAssignableFrom(msgContent.getClass())) {
-                shareAction = textLongClickAction(msgContent);
+                shareAction = textAndImageLongClickAction(msgContent);
                 RongMessageItemLongClickActionManager.getInstance().addMessageItemLongClickAction(shareAction, 0);
             }
         } else {
@@ -312,7 +312,7 @@ public class ConversationActivity extends BaseActivity implements
         }
     }
 
-    private MessageItemLongClickAction textLongClickAction(final MessageContent msgContent) {
+    private MessageItemLongClickAction textAndImageLongClickAction(final MessageContent msgContent) {
         return (new MessageItemLongClickAction.Builder()).titleResId(io.rong.imkit.R.string.rc_dialog_item_message_share).actionListener(new MessageItemLongClickAction.MessageItemLongClickListener() {
             @Override
             public boolean onMessageItemLongClick(Context context, UIMessage message) {
@@ -374,7 +374,7 @@ public class ConversationActivity extends BaseActivity implements
     private void handleRemoteUrl(String url, final String action) {
         File file = ImageLoader.getInstance().getDiskCache().get(url);
         if (file != null && file.exists()) {
-            Uri uri = Uri.parse("file://" + file.getAbsolutePath());
+            Uri uri = Uri.fromFile(file);
             if ("share".equals(action)) {
                 startActivityForResult(new Intent(this, MsgShareActivity.class)
                         .putExtra("uri", uri)
@@ -479,7 +479,6 @@ public class ConversationActivity extends BaseActivity implements
         RongIM.getInstance().sendImageMessage(Conversation.ConversationType.PRIVATE, userId, sendImgMsg, null, null, new RongIMClient.SendImageMessageCallback() {
             @Override
             public void onAttached(Message message) {
-
             }
 
             @Override
@@ -505,6 +504,5 @@ public class ConversationActivity extends BaseActivity implements
             public void onProgress(Message message, int i) {
             }
         });
-
     }
 }
