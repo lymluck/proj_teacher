@@ -49,15 +49,6 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
         }
         this.mDatas = comments;
         audioRecorder = new AudioRecorder();
-        audioRecorder.playComplete(new AudioRecorder.PlayComplete() {
-            @Override
-            public void playComplete() {
-                if (audioRecorder != null) {
-                    animationDrawable.stop();
-                    audioRecorder.playReset();
-                }
-            }
-        });
         this.answerName = answerName;
         this.askName = askName;
         this.notifyDataSetChanged();
@@ -98,11 +89,22 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
         holder.tv_time.setText(comments.getCreateTimeText());
 
 
+        audioRecorder.playComplete(new AudioRecorder.PlayComplete() {
+            @Override
+            public void playComplete() {
+                if (audioRecorder != null) {
+                    animationDrawable.stop();
+                    audioRecorder.playReset();
+                }
+            }
+        });
+
+
         holder.ll_voice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isPlayingUri == null) {
-                    animationDrawable = (AnimationDrawable) mContext.getResources().getDrawable(io.rong.imkit.R.drawable.rc_an_voice_receive);
+                    animationDrawable = (AnimationDrawable) mContext.getResources().getDrawable(R.drawable.bg_voice_receive);
                     if (audioRecorder != null) {
                         if (animationDrawable != null && !audioRecorder.isPlaying()) {
                             animationDrawable.start();

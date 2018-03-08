@@ -13,9 +13,8 @@ import java.util.Map;
 
 public class QuestionsModel extends BaseModel {
 
-    public void getQuestions(boolean answered, int page, ObserverListener listener) {
+    public void getQuestions(int page, ObserverListener listener) {
         Map<String, String> params = new HashMap<>();
-        params.put("answered", answered + "");
         params.put("page", page + "");
         apiSubscribe(ApiManager.getApiService().getQuestions(getHeadersMap(), params), listener);
     }

@@ -9,6 +9,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:orientation="vertical">
 
         <ScrollView
@@ -44,6 +46,12 @@
             android:layout_alignParentBottom="true"
             android:layout_weight="0">
 
+            <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0.5dp"-->
+                <!--android:layout_above="@+id/ll_post"-->
+                <!--android:background="#E4E5E6" />-->
+
             <LinearLayout
                 android:id="@+id/ll_post"
                 android:layout_width="match_parent"
@@ -57,8 +65,8 @@
 
                 <ImageView
                     android:id="@+id/iv_speak"
-                    android:layout_width="20dp"
-                    android:layout_height="25dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:paddingBottom="5dp"
                     android:src="@drawable/rc_audio_toggle" />
@@ -75,6 +83,7 @@
                     android:maxLines="5"
                     android:minHeight="35dp"
                     android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
                     android:textColor="@color/app_text_color2"
                     android:textColorHint="#C4C9CC"
                     android:textCursorDrawable="@drawable/edit_cursor_color"
@@ -86,7 +95,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:paddingBottom="5dp"
+                    android:paddingBottom="6dp"
                     android:text="发送"
                     android:textColor="#949BA1"
                     android:textSize="15sp" />
@@ -97,8 +106,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ll_post"
-                android:visibility="gone">
-            </com.smartstudy.counselor_t.ui.widget.AudioRecordView>
+                android:visibility="gone"></com.smartstudy.counselor_t.ui.widget.AudioRecordView>
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

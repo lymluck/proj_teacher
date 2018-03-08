@@ -41,8 +41,8 @@ public class QuestionsPresenter extends BasePresenterImpl<QaListContract.View> i
     }
 
     @Override
-    public void getQuestions(boolean answered, int page, final int request_state) {
-        questionsModel.getQuestions(answered, page, new ObserverListener<String>() {
+    public void getQuestions( int page, final int request_state) {
+        questionsModel.getQuestions(page, new ObserverListener<String>() {
             @Override
             public void onSubscribe(Disposable disposable) {
                 addDisposable(disposable);

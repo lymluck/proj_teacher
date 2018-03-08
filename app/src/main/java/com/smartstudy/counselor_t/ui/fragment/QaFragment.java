@@ -48,7 +48,6 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
 
     private List<QuestionInfo> questionInfoList;
     private int mPage = 1;
-    private String data_tag;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -162,13 +161,16 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
                 if (questionInfo.getAnswerCount() == 0) {
                     answerCounnt.setText("暂无人回答");
                     answerCounnt.setTextColor(Color.parseColor("#078CF1"));
+                    holder.getView(R.id.v_cricle).setVisibility(View.GONE);
                 } else {
                     if (questionInfo.getSubQuestionCount() != 0) {
                         answerCounnt.setText("对你有 " + questionInfo.getSubQuestionCount() + " 追问");
                         answerCounnt.setTextColor(Color.parseColor("#F6611D"));
+                        holder.getView(R.id.v_cricle).setVisibility(View.VISIBLE);
                     } else {
                         answerCounnt.setText(questionInfo.getAnswerCount() + " 回答");
                         answerCounnt.setTextColor(Color.parseColor("#949BA1"));
+                        holder.getView(R.id.v_cricle).setVisibility(View.GONE);
                     }
                 }
             }
@@ -206,7 +208,7 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
     }
 
     private void getQa(int pullAction) {
-        presenter.getQuestions(true, mPage, pullAction);
+        presenter.getQuestions( mPage, pullAction);
     }
 
     @Override
@@ -223,7 +225,6 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
     @Override
     public void getQuestionsSuccess(List<QuestionInfo> data, int request_state) {
         if (presenter != null) {
-            presenter.setEmptyView(mActivity, emptyView, data_tag);
             mLayoutManager.setScrollEnabled(true);
             int len = data.size();
             if (request_state == ParameterUtils.PULL_DOWN) {

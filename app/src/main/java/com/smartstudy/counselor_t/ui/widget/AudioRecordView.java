@@ -184,6 +184,8 @@ public class AudioRecordView extends LinearLayout {
                     stopTime();
                     recordState = RECORD_COMPLETE;
                     tv_title.setText("");
+                    tv_again_audio.setVisibility(VISIBLE);
+                    tv_send.setVisibility(VISIBLE);
                     iv_audio.setImageResource(R.drawable.icon_audio_play);
                     break;
             }

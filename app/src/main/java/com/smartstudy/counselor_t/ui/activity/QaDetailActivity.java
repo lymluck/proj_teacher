@@ -3,6 +3,7 @@ package com.smartstudy.counselor_t.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.smartstudy.counselor_t.R;
@@ -54,6 +56,8 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
     private TextView tvAskerTime;
 
+    private TextView answer;
+
     private QaDetailAdapter qaDetailAdapter;
 
     private TextView tvPost;
@@ -64,11 +68,14 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
     private AudioRecordView audioRecordView;
 
+    private RelativeLayout rl_post;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qa_detail_list);
+        setTopLineVisibility(View.VISIBLE);
     }
 
 
@@ -137,6 +144,24 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
             }
         });
 
+
+        etAnswer.setOnFocusChangeListener(new android.view.View.
+                OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    // 此处为得到焦点时的处理内容
+                    iv_speak.setImageResource(R.drawable.rc_audio_toggle);
+                    iv_speak.setTag(R.drawable.rc_audio_toggle);
+                    audioRecordView.setVisibility(View.GONE);
+                } else {
+                    // 此处为失去焦点时的处理内容
+                }
+            }
+        });
+
+        topdefaultLeftbutton.setOnClickListener(this);
+
     }
 
     @Override
@@ -161,6 +186,10 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
                 .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.bg_home_search).build());
+
+        answer = findViewById(R.id.answer);
+
+        rl_post = findViewById(R.id.rl_post);
 
         ivAsker = findViewById(R.id.iv_asker);
 
@@ -217,6 +246,9 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
         if (data.getAnswers() != null && data.getAnswers().size() > 0) {
             qaDetailAdapter.setAnswers(data.getAnswers(), data.getAsker().getName());
+        } else {
+            answer.setText("暂时还没有人回答哦，快来抢答吧！");
+            rl_post.setVisibility(View.GONE);
         }
         data = null;
     }

@@ -15,7 +15,6 @@ import com.bumptech.glide.request.transition.Transition;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.manager.StudentInfoManager;
 import com.smartstudy.counselor_t.ui.activity.MsgShareActivity;
-import com.smartstudy.counselor_t.ui.activity.MyInfoActivity;
 import com.smartstudy.counselor_t.ui.activity.ReloginActivity;
 import com.smartstudy.counselor_t.ui.activity.StudentInfoActivity;
 import com.smartstudy.counselor_t.util.BitmapUtils;
@@ -57,6 +56,8 @@ public class AppManager implements RongIMClient.ConnectionStatusListener, RongIM
     private static AppManager mInstance;
     //application context
     private Context mContext;
+
+    private Message msg;
 
     public AppManager(Context mContext) {
         this.mContext = mContext;
@@ -158,7 +159,7 @@ public class AppManager implements RongIMClient.ConnectionStatusListener, RongIM
                 imgAction = clickAction;
             }
         }
-        final MessageContent msgContent = clickMsg.getContent();
+        final MessageContent msgContent = msg.getContent();
         if (shareAction == null) {
             if (ImageMessage.class.isAssignableFrom(msgContent.getClass()) || TextMessage.class.isAssignableFrom(msgContent.getClass())) {
                 shareAction = (new MessageItemLongClickAction.Builder()).titleResId(io.rong.imkit.R.string.rc_dialog_item_message_share).actionListener(new MessageItemLongClickAction.MessageItemLongClickListener() {

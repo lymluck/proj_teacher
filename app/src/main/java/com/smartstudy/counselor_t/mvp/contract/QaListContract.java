@@ -23,7 +23,7 @@ public interface QaListContract {
 
     interface Presenter extends BasePresenter {
 
-        void getQuestions( boolean answered, int page, int request_state);
+        void getQuestions(int page, int request_state);
 
         void getMyQuestions(int page, int request_state);
 

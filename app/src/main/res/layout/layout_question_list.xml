@@ -81,8 +81,8 @@
                     android:id="@+id/tv_ask_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/app_text_color"
-                    android:textSize="11sp" />
+                    android:textColor="#C4C9CC"
+                    android:textSize="12sp" />
 
             </LinearLayout>
         </LinearLayout>
@@ -98,7 +98,7 @@
             android:id="@+id/answer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="15dp"
+            android:paddingBottom="6dp"
             android:paddingLeft="16dp"
             android:paddingTop="14dp"
             android:text="回复"
