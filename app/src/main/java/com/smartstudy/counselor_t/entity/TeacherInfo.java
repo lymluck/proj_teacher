@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */
-public class TeacherInfo implements Serializable{
+public class TeacherInfo implements Serializable {
 
     /**
      * createTime : 2018-01-11T08:32:32.240Z
@@ -198,7 +198,7 @@ public class TeacherInfo implements Serializable{
         return visible;
     }
 
-    public static class OrganizationEntity {
+    public static class OrganizationEntity implements Serializable {
         /**
          * id : 1
          * introduction : 智课网是智课教育旗下的在线学习平台，以翻转课堂为核心，致力于打造 “学、练、改、管、测” 一站式学习服务。智课网汇聚了出国考试、考研全科、四六级、语言学习等各科首席教学专家，以及遍布全球的外教专家，他们为学员提供名师课程、真题精讲、写作批改、口语诊断、学习督导等专业服务。智课网同时为学员提供模考、练习、抢考位、院校库、备考资料等一系列免费学习工具。

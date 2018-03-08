@@ -33,7 +33,7 @@ public class VoiceFragment extends UIFragment {
     @Override
     protected void initView(View rootView) {
         audioRecordView = rootView.findViewById(R.id.ar);
-        audioRecordView.setAudioRecord(new AudioRecorder());
+//        audioRecordView.setAudioRecord(new AudioRecorder());
         imageView = rootView.findViewById(R.id.iv_voice);
 
         imageView.setOnClickListener(new View.OnClickListener() {

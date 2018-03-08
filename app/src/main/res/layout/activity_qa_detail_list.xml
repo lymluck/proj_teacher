@@ -6,16 +6,15 @@
     android:clipToPadding="true"
     android:fitsSystemWindows="true">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:orientation="vertical">
+        android:focusableInTouchMode="true">
 
         <ScrollView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1">
 
             <LinearLayout
@@ -33,7 +32,7 @@
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rv_qa"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="match_parent" />
 
                 </RelativeLayout>
             </LinearLayout>
@@ -43,7 +42,7 @@
             android:id="@+id/rl_post"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
+            android:gravity="bottom"
             android:layout_weight="0">
 
             <!--<View-->
@@ -108,5 +107,5 @@
                 android:layout_below="@+id/ll_post"
                 android:visibility="gone"></com.smartstudy.counselor_t.ui.widget.AudioRecordView>
         </RelativeLayout>
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

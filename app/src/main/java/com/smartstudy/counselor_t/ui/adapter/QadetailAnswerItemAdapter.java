@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +49,7 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
             this.mDatas.clear();
         }
         this.mDatas = comments;
-        audioRecorder = new AudioRecorder();
+        audioRecorder = AudioRecorder.getInstance();
         this.answerName = answerName;
         this.askName = askName;
         this.notifyDataSetChanged();
@@ -89,25 +90,16 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
         holder.tv_time.setText(comments.getCreateTimeText());
 
 
-        audioRecorder.playComplete(new AudioRecorder.PlayComplete() {
-            @Override
-            public void playComplete() {
-                if (audioRecorder != null) {
-                    animationDrawable.stop();
-                    audioRecorder.playReset();
-                }
-            }
-        });
-
-
         holder.ll_voice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isPlayingUri == null) {
                     animationDrawable = (AnimationDrawable) mContext.getResources().getDrawable(R.drawable.bg_voice_receive);
+                    animationDrawable.setFilterBitmap(false);
                     if (audioRecorder != null) {
                         if (animationDrawable != null && !audioRecorder.isPlaying()) {
                             animationDrawable.start();
+
                             audioRecorder.playByUri(mContext, comments.getVoiceUrl());
                             holder.iv_voice.setImageDrawable(animationDrawable);
                         } else {
@@ -137,6 +129,15 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
                         audioRecorder.playByUri(mContext, comments.getVoiceUrl());
                     }
                 }
+                audioRecorder.playComplete(new AudioRecorder.PlayComplete() {
+                    @Override
+                    public void playComplete() {
+                        Log.w("kim","快进来啊");
+                        if (audioRecorder != null) {
+                            animationDrawable.stop();
+                        }
+                    }
+                });
                 isPlayingUri = comments.getVoiceUrl();
             }
         });

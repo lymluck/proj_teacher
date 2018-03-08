@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
+import com.smartstudy.counselor_t.manager.StudentInfoManager;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -19,7 +21,7 @@ import java.util.Date;
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */
-public class AudioRecorder implements RecordStrategy {
+public class AudioRecorder {
 
     private MediaRecorder recorder;
     private String fileName;
@@ -31,7 +33,21 @@ public class AudioRecorder implements RecordStrategy {
 
     private boolean isPlaying = false;
 
-    @Override
+
+    private static AudioRecorder instance;
+
+    public static AudioRecorder getInstance() {
+        if (null == instance) {
+            synchronized (AudioRecorder.class) {
+                if (null == instance) {
+                    instance = new AudioRecorder();
+                }
+            }
+        }
+        return instance;
+    }
+
+
     public void ready() {
         File file = new File(fileFolder);
         if (!file.exists()) {
@@ -53,7 +69,6 @@ public class AudioRecorder implements RecordStrategy {
         return str;
     }
 
-    @Override
     public void start() {
         if (!isRecording) {
             try {
@@ -70,7 +85,6 @@ public class AudioRecorder implements RecordStrategy {
 
     }
 
-    @Override
     public void stop() {
         if (isRecording) {
             recorder.stop();
@@ -80,13 +94,11 @@ public class AudioRecorder implements RecordStrategy {
 
     }
 
-    @Override
     public void deleteOldFile() {
         File file = new File(fileFolder + "/" + fileName + ".amr");
         file.deleteOnExit();
     }
 
-    @Override
     public void playByUri(Context context, Uri uri) {
         if (mPlayer == null) {
             mPlayer = new MediaPlayer();
@@ -103,7 +115,6 @@ public class AudioRecorder implements RecordStrategy {
 
     }
 
-    @Override
     public double getAmplitude() {
         if (!isRecording) {
             return 0;
@@ -111,12 +122,10 @@ public class AudioRecorder implements RecordStrategy {
         return recorder.getMaxAmplitude();
     }
 
-    @Override
     public String getFilePath() {
         return fileFolder + "/" + fileName + ".amr";
     }
 
-    @Override
     public void play(String path) {
         if (mPlayer == null) {
             mPlayer = new MediaPlayer();
@@ -126,12 +135,12 @@ public class AudioRecorder implements RecordStrategy {
             mPlayer.setDataSource(path);
             mPlayer.prepare();
             mPlayer.start();
+            isPlaying = true;
         } catch (IOException e) {
             Log.e("kim", "prepare() failed");
         }
     }
 
-    @Override
     public void playStop() {
         if (mPlayer != null) {
             mPlayer.release();
@@ -140,7 +149,6 @@ public class AudioRecorder implements RecordStrategy {
         }
     }
 
-    @Override
     public void playComplete(final PlayComplete playComplete) {
         if (mPlayer != null) {
             mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -154,12 +162,15 @@ public class AudioRecorder implements RecordStrategy {
         }
     }
 
-    @Override
     public void playReset() {
         if (mPlayer != null) {
             mPlayer.reset();
             isPlaying = false;
         }
+    }
+
+    public void setReset() {
+        instance = null;
     }
 
     public interface PlayComplete {

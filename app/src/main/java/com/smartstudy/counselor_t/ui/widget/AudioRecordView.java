@@ -35,7 +35,7 @@ public class AudioRecordView extends LinearLayout {
     private TextView tv_send;
     private long lastClickTime;
     private SendOnClickListener listener;
-    private RecordStrategy mAudioRecorder;
+    private AudioRecorder mAudioRecorder;
     private static final int RECORD_OFF = 0; // 不在录音
     private static final int RECORD_ON = 1; // 正在录音
     private static final int RECORD_COMPLETE = 2;//录完的状态
@@ -59,6 +59,7 @@ public class AudioRecordView extends LinearLayout {
         tv_send = view.findViewById(R.id.tv_send);
         tv_again_audio.setVisibility(GONE);
         tv_send.setVisibility(GONE);
+        mAudioRecorder = AudioRecorder.getInstance();
         iv_audio.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,6 +77,9 @@ public class AudioRecordView extends LinearLayout {
                     tv_send.setVisibility(VISIBLE);
                     iv_audio.setImageResource(R.drawable.icon_audio_play);
                 } else if (recordState == RECORD_COMPLETE) {
+                    if(mAudioRecorder.isPlaying()){
+                        mAudioRecorder.playStop();
+                    }
                     mAudioRecorder.play(mAudioRecorder.getFilePath());
                     recordState = RECORD_PLAY;
                     i = 0;
@@ -146,9 +150,9 @@ public class AudioRecordView extends LinearLayout {
     }
 
 
-    public void setAudioRecord(RecordStrategy record) {
-        this.mAudioRecorder = record;
-    }
+//    public void setAudioRecord(RecordStrategy record) {
+//        this.mAudioRecorder = record;
+//    }
 
 
     private void startRecord() {
@@ -252,7 +256,7 @@ public class AudioRecordView extends LinearLayout {
     public boolean isFastDoubleClick() {
         long time = System.currentTimeMillis();
         long timeD = time - lastClickTime;
-        if (0 < timeD && timeD < 1000) {       //1000毫秒内按钮无效，这样可以控制快速点击，自己调整频率
+        if (0 < timeD && timeD < 2000) {       //1000毫秒内按钮无效，这样可以控制快速点击，自己调整频率
             return true;
         }
         lastClickTime = time;

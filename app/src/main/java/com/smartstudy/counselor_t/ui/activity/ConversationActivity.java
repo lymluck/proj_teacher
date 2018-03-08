@@ -247,7 +247,7 @@ public class ConversationActivity extends BaseActivity implements
         String userId = userInfo.getUserId();
         Intent intent = new Intent();
         if (userId.equals(myId)) {
-            intent.setClass(context, MyInfoActivity.class);
+//            intent.setClass(context, MyInfoActivity.class);
         } else {
             intent.putExtra("ids", s);
             intent.setClass(context, StudentInfoActivity.class);

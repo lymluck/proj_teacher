@@ -3,16 +3,21 @@ package com.smartstudy.counselor_t.app;
 
 import android.app.ActivityManager;
 import android.content.Context;
+import android.os.Build;
+import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 
+import com.smartstudy.counselor_t.base.manager.CrashHandler;
 import com.smartstudy.counselor_t.ui.provider.MyConversationListProvider;
 import com.smartstudy.counselor_t.ui.provider.MyTextMessageItemProvider;
+import com.smartstudy.counselor_t.util.Utils;
 import com.smartstudy.router.Router;
 
 import java.util.List;
 
+import cn.jpush.android.api.JPushInterface;
 import io.rong.imkit.RongIM;
 import io.rong.push.RongPushClient;
 
@@ -45,6 +50,8 @@ public class BaseApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         if (getProcessName(this).equals(getPackageName())) {
+
+            CrashHandler.getInstance().init(this);
             appContext = this;
             //注册容云组件
             initRong();

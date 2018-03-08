@@ -1,5 +1,6 @@
 package com.smartstudy.counselor_t.ui.activity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -70,6 +71,8 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
     private RelativeLayout rl_post;
 
+    ProgressDialog pdDialog;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -139,6 +142,10 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
             public void sendOnClick(String path) {
                 File file = new File(path);
                 if (file.exists()) {
+                    pdDialog = new ProgressDialog(QaDetailActivity.this);
+                    pdDialog.setMessage("正在加载中");
+                    pdDialog.show();
+                    ToastUtils.shortToast(QaDetailActivity.this, "发送成功");
                     presenter.postAnswerVoice(questionId, file);
                 }
             }
@@ -203,7 +210,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
         audioRecordView = findViewById(R.id.arv);
 
-        audioRecordView.setAudioRecord(new AudioRecorder());
+//        audioRecordView.setAudioRecord(new AudioRecorder());
 
         initAdapter();
 
@@ -222,7 +229,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
                     ToastUtils.shortToast(this, "发送消息不能为空");
                     return;
                 }
-                presenter.postAnswerText(questionId, etAnswer.getText().toString().trim());
+                presenter.postAnswerText(questionId, etAnswer.getText().toString());
                 break;
 
             case R.id.topdefault_leftbutton:
@@ -246,9 +253,9 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
         if (data.getAnswers() != null && data.getAnswers().size() > 0) {
             qaDetailAdapter.setAnswers(data.getAnswers(), data.getAsker().getName());
+            answer.setText("回复");
         } else {
             answer.setText("暂时还没有人回答哦，快来抢答吧！");
-            rl_post.setVisibility(View.GONE);
         }
         data = null;
     }
@@ -256,7 +263,11 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
     @Override
     public void postAnswerSuccess() {
+        if (pdDialog != null && pdDialog.isShowing()) {
+            pdDialog.dismiss();
+        }
         hideWindowSoft();
+        hideAudioView();
         presenter.getQaDetails(questionId);
     }
 
@@ -284,6 +295,13 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
     }
 
 
+    private void hideAudioView() {
+        etAnswer.setText("");
+        etAnswer.clearFocus();
+        audioRecordView.setVisibility(View.GONE);
+    }
+
+
     @Override
     protected void onDestroy() {
         if (recyclerView != null) {
@@ -297,6 +315,12 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         if (presenter != null) {
             presenter = null;
         }
+
+        if (AudioRecorder.getInstance() != null) {
+            AudioRecorder.getInstance().playReset();
+            AudioRecorder.getInstance().setReset();
+        }
+
         super.onDestroy();
     }
 
