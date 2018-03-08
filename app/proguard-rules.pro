@@ -27,6 +27,7 @@
   **[] $VALUES;
   public *;
 }
+-dontwarn com.bumptech.glide.load.resource.bitmap.VideoDecoder
 
 # RongCloud SDK
 -keep class io.rong.** {*;}

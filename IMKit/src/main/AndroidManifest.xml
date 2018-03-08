@@ -34,10 +34,6 @@
 
         <activity android:name="io.rong.imkit.plugin.image.PictureSelectorActivity" />
 
-        <activity
-            android:name="io.rong.imkit.plugin.image.PicturePreviewActivity"
-            android:screenOrientation="portrait" />
-
         <!-- 开发者可以修改 RongBaseActivity 的 rc_base_activity_layout 布局文件调整 actionbar-->
         <activity
             android:name="io.rong.imkit.tools.RongWebviewActivity"
@@ -70,6 +66,14 @@
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
 
+        <activity-alias
+            android:name="io.rong.imkit.plugin.image.PicturePreviewActivity"
+            android:screenOrientation="portrait"
+            android:targetActivity="io.rong.imkit.plugin.image.ImPicPreviewActivity" />
+        <activity
+            android:name=".plugin.image.ImPicPreviewActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing|stateHidden" />
     </application>
 
 </manifest>

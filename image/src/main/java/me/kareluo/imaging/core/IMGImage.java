@@ -12,14 +12,14 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import me.kareluo.imaging.core.clip.IMGClip;
 import me.kareluo.imaging.core.clip.IMGClipWindow;
 import me.kareluo.imaging.core.homing.IMGHoming;
 import me.kareluo.imaging.core.sticker.IMGSticker;
 import me.kareluo.imaging.core.util.IMGUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by felix on 2017/11/21 下午10:03.
@@ -386,7 +386,9 @@ public class IMGImage {
     }
 
     public void addPath(IMGPath path, float sx, float sy) {
-        if (path == null) return;
+        if (path == null) {
+            return;
+        }
 
         float scale = 1f / getScale();
 

@@ -10,13 +10,6 @@ android {
         versionName rootProject.ext.android.versionName
     }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-
     sourceSets {
         main {
             manifest.srcFile 'src/main/AndroidManifest.xml'
@@ -33,4 +26,5 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'src/main/libs')
     compile project(':IMLib')
+    compile project(':image')
 }

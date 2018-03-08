@@ -51,4 +51,52 @@ public class ImgUtils {
         }
         return false;
     }
+
+    //创建用于长期保存的临时存储目录
+    private static String getRootFileDirPath(Context context, String filePathName) {
+        String DefaultPath = "";
+        DefaultPath = context.getFilesDir().getAbsolutePath();
+
+        // 然后再获得一个绝对目录替换为保存目录
+        if (DefaultPath.endsWith(File.separator)) {
+            DefaultPath = DefaultPath + filePathName;
+        } else {
+            DefaultPath = DefaultPath + File.separator + filePathName;
+        }
+        return DefaultPath;
+    }
+
+    //创建本地文件目录
+    public static File getFileDirPath(Context context, String fileName) {
+        String dirPath;
+        if (!isSDCardEnable()) {
+            dirPath = getRootFileDirPath(context, fileName);
+        } else {
+            dirPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + fileName;
+        }
+        if (dirPath != null) {
+            File mFile = new File(dirPath);
+            try {
+                if (!mFile.exists()) {
+                    mFile.mkdirs();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return mFile;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 判断SDCard是否可用
+     *
+     * @return
+     */
+    public static boolean isSDCardEnable() {
+        return Environment.getExternalStorageState().equals(
+                Environment.MEDIA_MOUNTED);
+
+    }
 }

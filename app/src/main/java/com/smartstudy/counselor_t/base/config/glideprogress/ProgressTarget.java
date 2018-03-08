@@ -7,13 +7,14 @@ import android.support.annotation.Nullable;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 import com.smartstudy.counselor_t.base.config.GlideConfiguration;
+import com.smartstudy.counselor_t.listener.GlideProgressListener;
 import com.smartstudy.counselor_t.ui.widget.ImageLoader;
 
 
 /**
  * Created by louis on 2017/3/1.
  */
-public abstract class ProgressTarget<T, Z> extends WrappingTarget<Z> implements GlideConfiguration.UIProgressListener {
+public abstract class ProgressTarget<T, Z> extends WrappingTarget<Z> implements GlideProgressListener {
     private T model;
     private boolean ignoreProgress = true;
     private boolean first = true;

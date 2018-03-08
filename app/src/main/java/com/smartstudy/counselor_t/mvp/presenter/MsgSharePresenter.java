@@ -1,5 +1,7 @@
 package com.smartstudy.counselor_t.mvp.presenter;
 
+import android.text.TextUtils;
+
 import com.smartstudy.counselor_t.entity.ChatUserInfo;
 import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
 import com.smartstudy.counselor_t.mvp.contract.MsgShareContract;
@@ -35,7 +37,7 @@ public class MsgSharePresenter extends BasePresenterImpl<MsgShareContract.View> 
                 for (Conversation conversation : conversations) {
                     info = new ChatUserInfo();
                     info.setId(conversation.getTargetId());
-                    info.setName(conversation.getConversationTitle());
+                    info.setName(TextUtils.isEmpty(conversation.getConversationTitle()) ? conversation.getTargetId() : conversation.getConversationTitle());
                     info.setAvatar(conversation.getPortraitUrl().toString());
                     datas.add(info);
                     info = null;
