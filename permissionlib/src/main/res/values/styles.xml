@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="PermissionsLib" parent="Theme.AppCompat.Light.DarkActionBar" />
+    <style name="PermissionsLib" parent="Theme.AppCompat.Light.NoActionBar" />
 
     <style name="PermissionsLib.Transparent" parent="PermissionsLib">
         <item name="android:windowIsTranslucent">true</item>
