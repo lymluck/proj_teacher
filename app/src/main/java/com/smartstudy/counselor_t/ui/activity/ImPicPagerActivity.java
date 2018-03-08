@@ -79,7 +79,7 @@ public class ImPicPagerActivity extends PicturePagerActivity {
                         break;
                     case 2:
                         startActivityForResult(new Intent(ImPicPagerActivity.this, IMGEditActivity.class)
-                                .putExtra("uri", Uri.parse("file://" + file.getAbsolutePath())), REQUEST_EDIT);
+                                .putExtra("uri", Uri.fromFile(file)), REQUEST_EDIT);
                         break;
                     default:
                         break;

@@ -91,7 +91,6 @@ public class MsgShareActivity extends BaseActivity<MsgShareContract.Presenter> i
                     case ParameterUtils.MSG_WHAT_REFRESH:
                         rclv_recent.scrollBy(0, searchView.getHeight());
                         break;
-
                     default:
                         break;
                 }
