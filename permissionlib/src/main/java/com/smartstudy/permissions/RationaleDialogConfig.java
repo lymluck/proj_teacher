@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
@@ -66,7 +65,7 @@ class RationaleDialogConfig {
                 .setTitle(R.string.title_settings_dialog)
                 .setPositiveButton(positiveButton, listener)
                 .setNegativeButton(negativeButton, listener)
-                .setMessage(String.format(context.getString(R.string.rationale_ask_permission), rationaleMsg)).create();
+                .setMessage(rationaleMsg).create();
         WindowManager wm = (WindowManager) context
                 .getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics outMetrics = new DisplayMetrics();

@@ -20,10 +20,12 @@ import com.smartstudy.counselor_t.mvp.base.BaseView;
 import com.smartstudy.counselor_t.util.ParameterUtils;
 import com.smartstudy.counselor_t.util.StringUtis;
 import com.smartstudy.counselor_t.util.ToastUtils;
+import com.smartstudy.permissions.AfterPermissionGranted;
 import com.smartstudy.permissions.AppSettingsDialog;
 import com.smartstudy.permissions.Permission;
 import com.smartstudy.permissions.PermissionUtil;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -46,7 +48,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     private View topLine;
     protected boolean hasBasePer = false;
     protected P presenter;
-    private static String[] REQUEST_PERMISSIONS = StringUtis.concatAll(
+    private static String[] mDenyPerms = StringUtis.concatAll(
             Permission.STORAGE, Permission.PHONE, Permission.MICROPHONE);
 
     @Override
@@ -59,19 +61,20 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
     @Override
     protected void onResume() {
-        requestPermissions(getString(R.string.permission_external) + "，" + getString(R.string.permission_phone)
-                + "，" + getString(R.string.permission_voice) + "，" + getString(R.string.permission_access_fine_location));
+        requestPermissions();
         super.onResume();
     }
 
-    public void requestPermissions(String permStr) {
-        if (!PermissionUtil.hasPermissions(this, REQUEST_PERMISSIONS)) {
+    @AfterPermissionGranted(ParameterUtils.REQUEST_CODE_PERMISSIONS)
+    public void requestPermissions() {
+        if (!PermissionUtil.hasPermissions(this, mDenyPerms)) {
             hasBasePer = false;
             //申请基本的权限
-            PermissionUtil.requestPermissions(this, permStr,
-                    ParameterUtils.REQUEST_CODE_PERMISSIONS, REQUEST_PERMISSIONS);
+            PermissionUtil.requestPermissions(this, Permission.getPermissionContent(Arrays.asList(mDenyPerms)),
+                    ParameterUtils.REQUEST_CODE_PERMISSIONS, mDenyPerms);
         } else {
             hasBasePer = true;
+            hasRequestPermission();
         }
     }
 
@@ -155,6 +158,10 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
     public abstract void initView();
 
+    //获取了100%的基本权限
+    public void hasRequestPermission() {
+    }
+
     public void setTitleLineVisible(int visible) {
         findViewById(R.id.title_line).setVisibility(visible);
     }
@@ -207,19 +214,25 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     }
 
     @Override
-    public void onPermissionsDenied(int requestCode, List<String> perms) {
-        verifyPermission(perms, "", REQUEST_PERMISSIONS);
+    public void onPermissionsDenied(int requestCode, List<String> denyPerms) {
+        String[] perms = new String[denyPerms.size()];
+        mDenyPerms = denyPerms.toArray(perms);
+        if (PermissionUtil.shouldShowRationale(this, mDenyPerms)) {
+            //继续申请被拒绝了的基本权限
+            PermissionUtil.requestPermissions(this, Permission.getPermissionContent(denyPerms),
+                    requestCode, mDenyPerms);
+        } else {
+            verifyPermission(denyPerms);
+        }
     }
 
-    public void verifyPermission(List<String> Denyperms, String tips, String... requestPerms) {
-        if (!PermissionUtil.hasPermissions(this, requestPerms)) {
-            if (PermissionUtil.somePermissionPermanentlyDenied(this, Denyperms)) {
-                if (permissionDialog == null) {
-                    permissionDialog = new AppSettingsDialog.Builder(this).build(tips);
-                }
+    public void verifyPermission(List<String> denyPerms) {
+        if (denyPerms != null && denyPerms.size() > 0) {
+            if (permissionDialog != null && permissionDialog.isShowing()) {
                 permissionDialog.dialogDismiss();
-                permissionDialog.show();
             }
+            permissionDialog = new AppSettingsDialog.Builder(this).build(denyPerms);
+            permissionDialog.show();
         }
     }
 }

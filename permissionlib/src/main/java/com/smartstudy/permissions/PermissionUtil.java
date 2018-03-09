@@ -72,6 +72,7 @@ public class PermissionUtil {
             // DANGER ZONE!!! Changing this will break the library.
             return true;
         }
+
         if (context == null) {
             throw new IllegalArgumentException("Can't check permissions for null context");
         }
@@ -292,6 +293,7 @@ public class PermissionUtil {
                 denied.add(perm);
             }
         }
+
         // iterate through all receivers
         for (Object object : receivers) {
             // Report granted permissions, if any.
@@ -419,7 +421,7 @@ public class PermissionUtil {
      * @return true if the user has previously denied any of the {@code perms} and we should show a
      * rationale, false otherwise.
      */
-    private static boolean shouldShowRationale(@NonNull Object object, @NonNull String[] perms) {
+    public static boolean shouldShowRationale(@NonNull Object object, @NonNull String[] perms) {
         boolean shouldShowRationale = false;
         for (String perm : perms) {
             shouldShowRationale =

@@ -238,7 +238,8 @@ public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implement
                             if (PermissionUtil.hasPermissions(SelectMyPhotoActivity.this, Permission.CAMERA)) {
                                 toCamera();
                             } else {
-                                PermissionUtil.requestPermissions(SelectMyPhotoActivity.this, getString(R.string.permission_camera), ParameterUtils.REQUEST_CODE_CAMERA, Permission.CAMERA);
+                                PermissionUtil.requestPermissions(SelectMyPhotoActivity.this, Permission.getPermissionContent(Arrays.asList(Permission.CAMERA)),
+                                        ParameterUtils.REQUEST_CODE_CAMERA, Permission.CAMERA);
                             }
                         } else {
                             String photo_path = mImgs.get(position);
@@ -276,7 +277,8 @@ public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implement
                             if (PermissionUtil.hasPermissions(SelectMyPhotoActivity.this, Permission.CAMERA)) {
                                 toCamera();
                             } else {
-                                PermissionUtil.requestPermissions(SelectMyPhotoActivity.this, getString(R.string.permission_camera), ParameterUtils.REQUEST_CODE_CAMERA, Permission.CAMERA);
+                                PermissionUtil.requestPermissions(SelectMyPhotoActivity.this, Permission.getPermissionContent(Arrays.asList(Permission.CAMERA)),
+                                        ParameterUtils.REQUEST_CODE_CAMERA, Permission.CAMERA);
                             }
                         }
                     }
@@ -522,7 +524,7 @@ public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implement
 
     @Override
     public void onPermissionsDenied(int requestCode, List<String> perms) {
-        verifyPermission(perms, getString(R.string.permission_camera), Permission.CAMERA);
+        verifyPermission(perms);
     }
 
     private void toCamera() {
