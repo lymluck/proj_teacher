@@ -347,7 +347,7 @@
             android:name=".ui.activity.MsgShareActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-        <!-- AppDialogActivityTheme不可与screenOrientation同时设置 -->
+        <!-- windowIsTranslucent不可与screenOrientation同时设置 -->
         <activity
             android:name=".ui.activity.CommonSearchActivity"
             android:theme="@style/AppDialogActivityTheme"
@@ -371,6 +371,7 @@
             android:name=".ui.activity.QRCodeScanActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
+        <!-- windowIsTranslucent不可与screenOrientation同时设置 -->
         <activity
             android:name=".ui.activity.ReloginActivity"
             android:launchMode="singleTask"
