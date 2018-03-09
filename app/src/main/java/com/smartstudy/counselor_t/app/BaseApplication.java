@@ -13,6 +13,7 @@ import com.smartstudy.router.Router;
 
 import java.util.List;
 
+import cn.jpush.android.api.JPushInterface;
 import io.rong.imkit.RongIM;
 import io.rong.push.RongPushClient;
 
@@ -50,6 +51,8 @@ public class BaseApplication extends MultiDexApplication {
             initRong();
             //路由初始化
             Router.initialize(this);
+            //初始化极光
+            JPushInterface.init(this);
         }
     }
 
