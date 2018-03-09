@@ -59,6 +59,7 @@ public class BaseApplication extends MultiDexApplication {
             Router.initialize(this);
             //初始化极光
             JPushInterface.init(this);
+            JPushInterface.setDebugMode(true);
         }
     }
 
