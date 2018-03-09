@@ -235,7 +235,11 @@ public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implement
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                     if (ParameterUtils.ALL_PICS.equals(mChooseDir.getText().toString())) {
                         if (position == 0 && "".equals(mImgs.get(position))) {
-                            PermissionUtil.requestPermissions(SelectMyPhotoActivity.this, getString(R.string.permission_camera), ParameterUtils.REQUEST_CODE_CAMERA, Permission.CAMERA);
+                            if (PermissionUtil.hasPermissions(SelectMyPhotoActivity.this, Permission.CAMERA)) {
+                                toCamera();
+                            } else {
+                                PermissionUtil.requestPermissions(SelectMyPhotoActivity.this, getString(R.string.permission_camera), ParameterUtils.REQUEST_CODE_CAMERA, Permission.CAMERA);
+                            }
                         } else {
                             String photo_path = mImgs.get(position);
                             if (!TextUtils.isEmpty(photo_path)) {
@@ -249,11 +253,10 @@ public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implement
                         }
                     } else {
                         String photo_path = mDirImgs.get(position);
-                        Intent toClipImage = new Intent();
+                        Intent toClipImage = new Intent(SelectMyPhotoActivity.this, ClipPictureActivity.class);
                         toClipImage.putExtra("path", photo_path);
-                        toClipImage.putExtra("flag_from", "from_album");
-                        setResult(RESULT_OK, toClipImage);
-                        finish();
+                        toClipImage.putExtra("clipType", ClipImageLayout.SQUARE);
+                        startActivityForResult(toClipImage, ParameterUtils.REQUEST_CODE_CLIP_OVER);
                     }
                 }
 
@@ -270,7 +273,11 @@ public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implement
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                     if (ParameterUtils.ALL_PICS.equals(mChooseDir.getText().toString())) {
                         if (position == 0 && "".equals(mImgs.get(position))) {
-                            PermissionUtil.requestPermissions(SelectMyPhotoActivity.this, getString(R.string.permission_camera), ParameterUtils.REQUEST_CODE_CAMERA, Permission.CAMERA);
+                            if (PermissionUtil.hasPermissions(SelectMyPhotoActivity.this, Permission.CAMERA)) {
+                                toCamera();
+                            } else {
+                                PermissionUtil.requestPermissions(SelectMyPhotoActivity.this, getString(R.string.permission_camera), ParameterUtils.REQUEST_CODE_CAMERA, Permission.CAMERA);
+                            }
                         }
                     }
                 }
@@ -506,23 +513,7 @@ public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implement
     public void onPermissionsGranted(int requestCode, List<String> perms) {
         switch (requestCode) {
             case ParameterUtils.REQUEST_CODE_CAMERA:
-                if (getIntent().getBooleanExtra("singlePic", true)) {
-                    photoSaveName = System.currentTimeMillis() + ".png";
-                    // 存放照片的文件夹
-                    photoSaveFile = SDCardUtils.getFileDirPath("Xxd_im" + File.separator + "pictures");
-                    Utils.startActionCapture(SelectMyPhotoActivity.this, new File(photoSaveFile.getAbsolutePath(), photoSaveName), ParameterUtils.REQUEST_CODE_CAMERA);
-                } else {
-                    photoSaveName = System.currentTimeMillis() + ".png";
-                    // 存放照片的文件夹
-                    photoSaveFile = SDCardUtils.getFileDirPath("Xxd_im" + File.separator + "pictures");
-                    Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    if (photoSaveFile != null) {
-                        imageUri = Uri.fromFile(new File(photoSaveFile.getAbsolutePath(), photoSaveName));
-                    }
-                    openCameraIntent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
-                    openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                    startActivityForResult(openCameraIntent, ParameterUtils.REQUEST_CODE_CAMERA);
-                }
+                toCamera();
                 break;
             default:
                 break;
@@ -534,4 +525,23 @@ public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implement
         verifyPermission(perms, getString(R.string.permission_camera), Permission.CAMERA);
     }
 
+    private void toCamera() {
+        if (getIntent().getBooleanExtra("singlePic", true)) {
+            photoSaveName = System.currentTimeMillis() + ".png";
+            // 存放照片的文件夹
+            photoSaveFile = SDCardUtils.getFileDirPath("Xxd_im" + File.separator + "pictures");
+            Utils.startActionCapture(SelectMyPhotoActivity.this, new File(photoSaveFile.getAbsolutePath(), photoSaveName), ParameterUtils.REQUEST_CODE_CAMERA);
+        } else {
+            photoSaveName = System.currentTimeMillis() + ".png";
+            // 存放照片的文件夹
+            photoSaveFile = SDCardUtils.getFileDirPath("Xxd_im" + File.separator + "pictures");
+            Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (photoSaveFile != null) {
+                imageUri = Uri.fromFile(new File(photoSaveFile.getAbsolutePath(), photoSaveName));
+            }
+            openCameraIntent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
+            openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+            startActivityForResult(openCameraIntent, ParameterUtils.REQUEST_CODE_CAMERA);
+        }
+    }
 }

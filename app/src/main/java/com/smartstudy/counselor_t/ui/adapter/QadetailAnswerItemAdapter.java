@@ -95,16 +95,15 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
             public void onClick(View v) {
                 if (isPlayingUri == null) {
                     animationDrawable = (AnimationDrawable) mContext.getResources().getDrawable(R.drawable.bg_voice_receive);
-                    animationDrawable.setFilterBitmap(false);
                     if (audioRecorder != null) {
                         if (animationDrawable != null && !audioRecorder.isPlaying()) {
-                            animationDrawable.start();
-
-                            audioRecorder.playByUri(mContext, comments.getVoiceUrl());
                             holder.iv_voice.setImageDrawable(animationDrawable);
+                            animationDrawable.start();
+                            audioRecorder.playByUri(mContext, comments.getVoiceUrl());
+
                         } else {
                             animationDrawable.stop();
-                            audioRecorder.playReset();
+                            audioRecorder.playStop();
                             holder.iv_voice.setImageResource(R.drawable.sound_icon);
                         }
                     }
@@ -112,7 +111,7 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
                     if (isPlayingUri.compareTo(comments.getVoiceUrl()) == 0) {
                         if (audioRecorder.isPlaying()) {
                             animationDrawable.stop();
-                            audioRecorder.playReset();
+                            audioRecorder.playStop();
                             holder.iv_voice.setImageResource(R.drawable.sound_icon);
                         } else {
                             audioRecorder.playByUri(mContext, comments.getVoiceUrl());
@@ -121,7 +120,7 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
                         }
                     } else {
                         animationDrawable.stop();
-                        audioRecorder.playReset();
+                        audioRecorder.playStop();
                         holder.iv_voice.setImageResource(R.drawable.sound_icon);
                         holder.iv_voice.clearAnimation();
                         holder.iv_voice.setImageDrawable(animationDrawable);
@@ -129,12 +128,14 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
                         audioRecorder.playByUri(mContext, comments.getVoiceUrl());
                     }
                 }
+
                 audioRecorder.playComplete(new AudioRecorder.PlayComplete() {
                     @Override
                     public void playComplete() {
-                        Log.w("kim","快进来啊");
                         if (audioRecorder != null) {
                             animationDrawable.stop();
+                            audioRecorder.playStop();
+                            holder.iv_voice.setImageResource(R.drawable.sound_icon);
                         }
                     }
                 });

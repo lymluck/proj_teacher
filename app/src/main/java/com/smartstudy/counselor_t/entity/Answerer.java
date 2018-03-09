@@ -39,6 +39,38 @@ public class Answerer {
 
     private List<Comments> comments;
 
+    private String voiceDuration;
+
+    public String getVoiceDuration() {
+        if (!TextUtils.isEmpty(voiceDuration)) {
+            if (voiceDuration.contains(".")) {
+                String[] time = voiceDuration.split("\\.");
+                if (time.length > 0) {
+                    int second = Integer.parseInt(time[0]);
+                    if (0 < second && second < 60) {
+                        return second + "''";
+                    } else if (second == 60) {
+                        return 1 + "'";
+                    } else if (60 < second && second < 120) {
+                        return 1 + "'" + (second - 60) + "''";
+                    } else if (second == 120) {
+                        return 2 + "'" + "00''";
+                    } else if (120 < second && second < 180) {
+                        return 2 + "'" + (second - 120) + "''";
+                    } else {
+                        return 3 + "'" + "00''";
+                    }
+                }
+
+            }
+        }
+        return 1 + "'00''";
+    }
+
+    public void setVoiceDuration(String voiceDuration) {
+        this.voiceDuration = voiceDuration;
+    }
+
     public String getCreateTimeText() {
         return createTimeText;
     }

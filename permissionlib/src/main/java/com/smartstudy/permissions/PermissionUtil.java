@@ -72,11 +72,12 @@ public class PermissionUtil {
             // DANGER ZONE!!! Changing this will break the library.
             return true;
         }
-
+        if (context == null) {
+            throw new IllegalArgumentException("Can't check permissions for null context");
+        }
         for (String perm : perms) {
-            boolean hasPerm = (ContextCompat.checkSelfPermission(context, perm) ==
-                    PackageManager.PERMISSION_GRANTED);
-            if (!hasPerm) {
+            if (ContextCompat.checkSelfPermission(context, perm)
+                    != PackageManager.PERMISSION_GRANTED) {
                 return false;
             }
         }

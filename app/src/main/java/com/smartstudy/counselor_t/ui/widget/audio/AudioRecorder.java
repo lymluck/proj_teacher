@@ -105,6 +105,7 @@ public class AudioRecorder {
         }
 
         try {
+            mPlayer.reset();
             mPlayer.setDataSource(context, uri);
             mPlayer.prepare();
             mPlayer.start();
@@ -132,6 +133,7 @@ public class AudioRecorder {
         }
 
         try {
+            mPlayer.reset();
             mPlayer.setDataSource(path);
             mPlayer.prepare();
             mPlayer.start();
@@ -162,14 +164,9 @@ public class AudioRecorder {
         }
     }
 
-    public void playReset() {
-        if (mPlayer != null) {
-            mPlayer.reset();
-            isPlaying = false;
-        }
-    }
 
     public void setReset() {
+        playStop();
         instance = null;
     }
 

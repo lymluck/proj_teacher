@@ -52,8 +52,8 @@ dependencies {
     compile rootProject.ext.dependencies.support
     compile rootProject.ext.dependencies.glide
     annotationProcessor rootProject.ext.dependencies.glideprocessor
-    compile project(':IMKit')
-    compile project(':IMLib')
+    compile project(':imkit')
+    compile project(':imlib')
     compile project(':image')
     compile project(':qrcode')
     compile 'com.squareup.retrofit2:retrofit:+'
