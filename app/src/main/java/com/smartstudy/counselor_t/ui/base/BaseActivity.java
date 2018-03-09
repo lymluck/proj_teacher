@@ -197,6 +197,8 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         topLine.setVisibility(visible);
     }
 
+    public View getHeadView(){return  rlytTop;}
+
     public void setTopdefaultLefttextVisible(int visible) {
         topdefaultLefttext.setVisibility(visible);
     }

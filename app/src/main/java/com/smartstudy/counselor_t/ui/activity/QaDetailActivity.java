@@ -1,24 +1,27 @@
 package com.smartstudy.counselor_t.ui.activity;
 
-import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -71,20 +74,21 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
     private ImageView iv_speak;
 
-    FrameLayout frameLayout;
-
     private AudioRecordView audioRecordView;
 
     private RelativeLayout rl_post;
 
     ProgressDialog pdDialog;
 
+    FrameLayout frameLayout;
+
+    WindowManager wm;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qa_detail_list);
-        setTopLineVisibility(View.VISIBLE);
+        wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
     }
 
 
@@ -190,7 +194,6 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
         recyclerView = findViewById(R.id.rv_qa);
         tvPost = findViewById(R.id.tv_post);
-        frameLayout = findViewById(R.id.fl_container);
         etAnswer = findViewById(R.id.et_answer);
         recyclerView.setHasFixedSize(true);
         mLayoutManager = new NoScrollLinearLayoutManager(this);
@@ -199,7 +202,6 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
                 .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.bg_home_search).build());
-
         answer = findViewById(R.id.answer);
 
         rl_post = findViewById(R.id.rl_post);
@@ -216,10 +218,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
         audioRecordView = findViewById(R.id.arv);
 
-//        audioRecordView.setAudioRecord(new AudioRecorder());
-
         initAdapter();
-//        showLayout();
         if (!TextUtils.isEmpty(questionId)) {
             presenter.getQaDetails(questionId);
 
@@ -239,7 +238,8 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
                 break;
 
             case R.id.topdefault_leftbutton:
-                finish();
+//                finish();
+                startActivity(new Intent(this, ReloadQaActivity.class));
                 break;
             default:
                 break;
@@ -329,22 +329,4 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         super.onDestroy();
     }
 
-
-    public void showLayout() {
-        TextView textView = new TextView(this);
-
-        textView.setTextColor(Color.BLUE);
-        textView.setTextSize(20);
-        textView.setText("滚滚长江东逝水，浪花淘尽英雄。/n" +
-                "是非成败转头空，/n" +
-                "青山依旧在，几度夕阳红。/n" +
-                "白发渔樵江渚上，惯看秋月春风。 /n" +
-                "一壶浊酒喜相逢，/n" +
-                "古今多少事，都付笑谈中。");
-        textView.setGravity(Gravity.CENTER);
-        textView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,
-                ViewGroup.LayoutParams.FILL_PARENT));
-        textView.setBackgroundColor(Color.parseColor("#86222222"));
-        frameLayout.addView(textView);
-    }
 }

@@ -123,7 +123,7 @@ public class AppUtils {
         String regEx = "^(\\w+)/([\\d\\.]+)";
         Pattern p = Pattern.compile(regEx);
         Matcher m = p.matcher(sb.toString());
-        return m.replaceAll("xxd/" + AppUtils.getVersionName()).trim();
+        return m.replaceAll("counselor/" + AppUtils.getVersionName()).trim();
     }
 
     public static String getAndroidUserAgent(Context context) {
