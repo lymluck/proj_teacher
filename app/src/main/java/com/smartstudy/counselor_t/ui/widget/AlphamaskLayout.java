@@ -11,6 +11,8 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
+import com.smartstudy.counselor_t.R;
+
 import java.util.ArrayList;
 
 /**
@@ -20,7 +22,7 @@ import java.util.ArrayList;
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */
-public class AlphaMaskLayout extends FrameLayout {
+public class AlphamaskLayout extends FrameLayout {
     private static int DEFAULT_ALPHA_FROM = 0;
     private static int DEFAULT_ALPHA_TO = 0;
     private static int DEFAULT_DURATION = 0;
@@ -51,21 +53,21 @@ public class AlphaMaskLayout extends FrameLayout {
      */
     private ArrayList<ValueAnimator> animList = new ArrayList<>();
 
-    public AlphaMaskLayout(Context context) {
+    public AlphamaskLayout(Context context) {
         this(context, null);
     }
 
-    public AlphaMaskLayout(Context context, AttributeSet attrs) {
+    public AlphamaskLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public AlphaMaskLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    public AlphamaskLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         this(context, attrs, defStyleAttr, 0);
         getAttrs(context, attrs);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public AlphaMaskLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public AlphamaskLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         getAttrs(context, attrs);
     }
