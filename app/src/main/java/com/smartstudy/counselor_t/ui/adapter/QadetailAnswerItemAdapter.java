@@ -43,6 +43,7 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
 
     private String askName;
 
+    private VoiceItemOnclick voiceItemOnclick;
 
     public void setComments(List<Answerer.Comments> comments, String answerName, String askName) {
         if (this.mDatas != null) {
@@ -93,8 +94,12 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
         holder.ll_voice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (voiceItemOnclick != null) {
+                    voiceItemOnclick.voiceItemOnclick();
+                }
                 if (isPlayingUri == null) {
                     animationDrawable = (AnimationDrawable) mContext.getResources().getDrawable(R.drawable.bg_voice_receive);
+                    holder.iv_voice.clearAnimation();
                     if (audioRecorder != null) {
                         if (animationDrawable != null && !audioRecorder.isPlaying()) {
                             holder.iv_voice.setImageDrawable(animationDrawable);
@@ -122,7 +127,6 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
                         animationDrawable.stop();
                         audioRecorder.playStop();
                         holder.iv_voice.setImageResource(R.drawable.sound_icon);
-                        holder.iv_voice.clearAnimation();
                         holder.iv_voice.setImageDrawable(animationDrawable);
                         animationDrawable.start();
                         audioRecorder.playByUri(mContext, comments.getVoiceUrl());
@@ -169,5 +173,14 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
             tv_voice_time = itemView.findViewById(R.id.tv_voice_time);
             iv_voice = itemView.findViewById(R.id.iv_voice);
         }
+    }
+
+    public interface VoiceItemOnclick {
+        void voiceItemOnclick();
+    }
+
+
+    public void setVoiceItemOnclik(VoiceItemOnclick voiceItemOnclik) {
+        this.voiceItemOnclick = voiceItemOnclik;
     }
 }

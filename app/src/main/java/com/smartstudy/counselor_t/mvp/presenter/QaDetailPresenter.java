@@ -80,24 +80,4 @@ public class QaDetailPresenter extends BasePresenterImpl<QaDetailContract.View> 
         });
     }
 
-    @Override
-    public void postAnswerVoice(String id, File voice) {
-
-        qaDetailModel.postAnswerVoice(id, voice, new ObserverListener<String>() {
-            @Override
-            public void onSubscribe(Disposable disposable) {
-                addDisposable(disposable);
-            }
-
-            @Override
-            public void onNext(String result) {
-                view.postAnswerSuccess();
-            }
-
-            @Override
-            public void onError(String msg) {
-                view.showTip(msg);
-            }
-        });
-    }
 }

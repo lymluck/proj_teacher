@@ -167,6 +167,7 @@ public class AudioRecorder {
 
     public void setReset() {
         playStop();
+        stop();
         instance = null;
     }
 

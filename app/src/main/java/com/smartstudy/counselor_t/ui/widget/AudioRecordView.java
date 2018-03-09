@@ -77,7 +77,7 @@ public class AudioRecordView extends LinearLayout {
                     tv_send.setVisibility(VISIBLE);
                     iv_audio.setImageResource(R.drawable.icon_audio_play);
                 } else if (recordState == RECORD_COMPLETE) {
-                    if(mAudioRecorder.isPlaying()){
+                    if (mAudioRecorder.isPlaying()) {
                         mAudioRecorder.playStop();
                     }
                     mAudioRecorder.play(mAudioRecorder.getFilePath());
@@ -155,7 +155,7 @@ public class AudioRecordView extends LinearLayout {
 //    }
 
 
-    private void startRecord() {
+    public void startRecord() {
         recordState = RECORD_ON;
         iv_audio.setImageResource(R.drawable.icon_audio_stop);
         if (mAudioRecorder != null) {
@@ -218,7 +218,7 @@ public class AudioRecordView extends LinearLayout {
 
 
     /**
-     * 开始自动减时
+     * 开始自动计时
      */
     private void startTime() {
         timer = new Timer();
@@ -244,7 +244,7 @@ public class AudioRecordView extends LinearLayout {
     }
 
     /**
-     * 停止自动减时
+     * 停止自动计时
      */
     private void stopTime() {
         if (timer != null) {
@@ -256,7 +256,7 @@ public class AudioRecordView extends LinearLayout {
     public boolean isFastDoubleClick() {
         long time = System.currentTimeMillis();
         long timeD = time - lastClickTime;
-        if (0 < timeD && timeD < 2000) {       //1000毫秒内按钮无效，这样可以控制快速点击，自己调整频率
+        if (0 < timeD && timeD < 1000) {       //1000毫秒内按钮无效，这样可以控制快速点击，自己调整频率
             return true;
         }
         lastClickTime = time;

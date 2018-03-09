@@ -37,15 +37,4 @@ public class QaDetailModel extends BaseModel {
     }
 
 
-    public void postAnswerVoice(final String id, File voice, ObserverListener listener) {
-        MultipartBody.Builder builder = new MultipartBody.Builder();
-        builder.setType(MultipartBody.FORM);
-        if (voice != null) {
-            builder.addFormDataPart("voice", voice.getName(), RequestBody.create(MediaType.parse("image/*"), voice));
-        }
-        RequestBody requestBody = builder.build();
-        apiSubscribe(ApiManager.getApiService().postAnswerVoice(getHeadersMap(), String.format(HttpUrlUtils.URL_POST_ANSWER, id), requestBody), listener);
-
-    }
-
 }

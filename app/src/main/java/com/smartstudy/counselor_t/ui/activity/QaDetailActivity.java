@@ -1,6 +1,5 @@
 package com.smartstudy.counselor_t.ui.activity;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,18 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -32,7 +26,6 @@ import com.smartstudy.counselor_t.mvp.contract.QaDetailContract;
 import com.smartstudy.counselor_t.mvp.presenter.QaDetailPresenter;
 import com.smartstudy.counselor_t.ui.adapter.QaDetailAdapter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
-import com.smartstudy.counselor_t.ui.widget.AudioRecordView;
 import com.smartstudy.counselor_t.ui.widget.HorizontalDividerItemDecoration;
 import com.smartstudy.counselor_t.ui.widget.NoScrollLinearLayoutManager;
 import com.smartstudy.counselor_t.ui.widget.audio.AudioRecorder;
@@ -40,7 +33,6 @@ import com.smartstudy.counselor_t.util.DensityUtils;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
 import com.smartstudy.counselor_t.util.ToastUtils;
 
-import java.io.File;
 import java.util.List;
 
 /**
@@ -74,15 +66,20 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
     private ImageView iv_speak;
 
-    private AudioRecordView audioRecordView;
+    private ImageView iv_audio;
+
+//    private AudioRecordView audioRecordView;
+
+    private LinearLayout ll_speak;
 
     private RelativeLayout rl_post;
 
-    ProgressDialog pdDialog;
 
     FrameLayout frameLayout;
 
     WindowManager wm;
+
+    private long lastClickTime;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -94,6 +91,10 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
     @Override
     public void initEvent() {
+
+        iv_audio.setOnClickListener(this);
+
+
         etAnswer.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -128,35 +129,20 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
                         iv_speak.setImageResource(R.drawable.rc_keyboard);
                         iv_speak.setTag(R.drawable.rc_keyboard);
                         hideWindowSoft();
-                        audioRecordView.setVisibility(View.VISIBLE);
+                        ll_speak.setVisibility(View.VISIBLE);
                         break;
                     case R.drawable.rc_keyboard:
                         iv_speak.setImageResource(R.drawable.rc_audio_toggle);
                         iv_speak.setTag(R.drawable.rc_audio_toggle);
                         showWindowSoft();
-                        audioRecordView.setVisibility(View.GONE);
+                        ll_speak.setVisibility(View.GONE);
                         break;
                     default:
                         iv_speak.setImageResource(R.drawable.rc_keyboard);
                         iv_speak.setTag(R.drawable.rc_keyboard);
                         hideWindowSoft();
-                        audioRecordView.setVisibility(View.VISIBLE);
+                        ll_speak.setVisibility(View.VISIBLE);
                         break;
-                }
-            }
-        });
-
-
-        audioRecordView.setsendOnClickListener(new AudioRecordView.SendOnClickListener() {
-            @Override
-            public void sendOnClick(String path) {
-                File file = new File(path);
-                if (file.exists()) {
-                    pdDialog = new ProgressDialog(QaDetailActivity.this);
-                    pdDialog.setMessage("正在加载中");
-                    pdDialog.show();
-                    ToastUtils.shortToast(QaDetailActivity.this, "发送成功");
-                    presenter.postAnswerVoice(questionId, file);
                 }
             }
         });
@@ -181,6 +167,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
     }
 
+
     @Override
     public QaDetailContract.Presenter initPresenter() {
         return new QaDetailPresenter(this);
@@ -204,6 +191,10 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
                 .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.bg_home_search).build());
         answer = findViewById(R.id.answer);
 
+        iv_audio = findViewById(R.id.iv_audio);
+
+        ll_speak = findViewById(R.id.ll_speak);
+
         rl_post = findViewById(R.id.rl_post);
 
         ivAsker = findViewById(R.id.iv_asker);
@@ -216,7 +207,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
         iv_speak = findViewById(R.id.iv_speak);
 
-        audioRecordView = findViewById(R.id.arv);
+//        audioRecordView = findViewById(R.id.arv);
 
         initAdapter();
         if (!TextUtils.isEmpty(questionId)) {
@@ -238,12 +229,22 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
                 break;
 
             case R.id.topdefault_leftbutton:
-//                finish();
-                startActivity(new Intent(this, ReloadQaActivity.class));
+                finish();
+                break;
+
+            case R.id.iv_audio:
+                Intent intent = new Intent();
+                intent.putExtra("question_id", questionId);
+                intent.setClass(this, ReloadQaActivity.class);
+                startActivity(intent);
+
+                if (AudioRecorder.getInstance() != null) {
+                    AudioRecorder.getInstance().setReset();
+                }
+                overridePendingTransition(0, 0);
                 break;
             default:
                 break;
-
         }
     }
 
@@ -269,14 +270,17 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
     @Override
     public void postAnswerSuccess() {
-        if (pdDialog != null && pdDialog.isShowing()) {
-            pdDialog.dismiss();
-        }
         hideWindowSoft();
         hideAudioView();
         presenter.getQaDetails(questionId);
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.getQaDetails(questionId);
+    }
 
     private void initAdapter() {
         qaDetailAdapter = new QaDetailAdapter(this);
@@ -304,7 +308,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
     private void hideAudioView() {
         etAnswer.setText("");
         etAnswer.clearFocus();
-        audioRecordView.setVisibility(View.GONE);
+        ll_speak.setVisibility(View.GONE);
     }
 
 
