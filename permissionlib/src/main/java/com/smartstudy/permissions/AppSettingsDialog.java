@@ -20,6 +20,8 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
+import java.util.List;
+
 import pub.devrel.easypermissions.R;
 
 /**
@@ -137,6 +139,10 @@ public class AppSettingsDialog implements Parcelable, DialogInterface.OnClickLis
         }
     }
 
+    public boolean isShowing() {
+        return mDialog != null && mDialog.isShowing();
+    }
+
     /**
      * Show the dialog. {@link #show()} is a wrapper to ensure backwards compatibility
      */
@@ -194,7 +200,7 @@ public class AppSettingsDialog implements Parcelable, DialogInterface.OnClickLis
             DisplayMetrics outMetrics = new DisplayMetrics();
             wm.getDefaultDisplay().getMetrics(outMetrics);
             WindowManager.LayoutParams p = mDialog.getWindow().getAttributes();
-            p.width = (int) (outMetrics.widthPixels * 0.9);
+            p.width = (int) (outMetrics.widthPixels * 0.85);
             mDialog.getWindow().setAttributes(p);
         }
         context = null;
@@ -393,9 +399,8 @@ public class AppSettingsDialog implements Parcelable, DialogInterface.OnClickLis
          * Build the {@link AppSettingsDialog} from the specified options. Generally followed by a
          * call to {@link AppSettingsDialog#show()}.
          */
-        public AppSettingsDialog build(String per_name) {
-            mRationale = TextUtils.isEmpty(mRationale) ?
-                    String.format(mContext.getString(R.string.rationale_ask_permission), per_name) : mRationale;
+        public AppSettingsDialog build(List<String> Denyperms) {
+            mRationale = Permission.getPermissionContent(Denyperms);
             mTitle = TextUtils.isEmpty(mTitle) ?
                     mContext.getString(R.string.title_settings_dialog) : mTitle;
             mPositiveButton = TextUtils.isEmpty(mPositiveButton) ?

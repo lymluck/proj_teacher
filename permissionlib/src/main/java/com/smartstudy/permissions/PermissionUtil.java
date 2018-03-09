@@ -28,7 +28,7 @@ import android.support.annotation.StringRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.util.Log;
 
@@ -72,11 +72,12 @@ public class PermissionUtil {
             // DANGER ZONE!!! Changing this will break the library.
             return true;
         }
+
         if (context == null) {
             throw new IllegalArgumentException("Can't check permissions for null context");
         }
         for (String perm : perms) {
-            if (ContextCompat.checkSelfPermission(context, perm)
+            if (PermissionChecker.checkSelfPermission(context, perm)
                     != PackageManager.PERMISSION_GRANTED) {
                 return false;
             }
@@ -420,7 +421,7 @@ public class PermissionUtil {
      * @return true if the user has previously denied any of the {@code perms} and we should show a
      * rationale, false otherwise.
      */
-    private static boolean shouldShowRationale(@NonNull Object object, @NonNull String[] perms) {
+    public static boolean shouldShowRationale(@NonNull Object object, @NonNull String[] perms) {
         boolean shouldShowRationale = false;
         for (String perm : perms) {
             shouldShowRationale =

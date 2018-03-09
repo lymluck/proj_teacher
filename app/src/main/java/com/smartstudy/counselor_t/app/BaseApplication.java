@@ -57,6 +57,8 @@ public class BaseApplication extends MultiDexApplication {
             initRong();
             //路由初始化
             Router.initialize(this);
+            //初始化极光
+            JPushInterface.init(this);
         }
     }
 

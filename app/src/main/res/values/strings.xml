@@ -11,10 +11,6 @@
     <string name="sure">确定</string>
     <string name="cancle">取消</string>
     <string name="word">留言</string>
-    <string name="permission_camera">相机</string>
-    <string name="permission_phone">电话</string>
-    <string name="permission_voice">语音</string>
-    <string name="permission_access_fine_location">位置信息</string>
     <string name="permission_external">存储空间</string>
     <string name="no_external_storage">暂无外部存储</string>
     <string name="loading">正在加载...</string>

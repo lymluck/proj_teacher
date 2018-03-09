@@ -2,6 +2,10 @@ package com.smartstudy.permissions;
 
 import android.Manifest;
 import android.os.Build;
+import android.text.TextUtils;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author louis
@@ -76,5 +80,60 @@ public class Permission {
                     Manifest.permission.READ_EXTERNAL_STORAGE,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE};
         }
+    }
+
+    public static String getPermissionContent(List<String> perms) {
+        String content = "";
+        for (String perm : perms) {
+            if (Arrays.asList(CALENDAR).contains(perm)) {
+                if (!content.contains("日历")) {
+                    content += "，" + "日历";
+                }
+            }
+            if (Arrays.asList(CAMERA).contains(perm)) {
+                if (!content.contains("相机")) {
+                    content += "，" + "相机";
+                }
+            }
+            if (Arrays.asList(CONTACTS).contains(perm)) {
+                if (!content.contains("联系人")) {
+                    content += "，" + "联系人";
+                }
+            }
+            if (Arrays.asList(LOCATION).contains(perm)) {
+                if (!content.contains("位置")) {
+                    content += "，" + "位置";
+                }
+            }
+            if (Arrays.asList(MICROPHONE).contains(perm)) {
+                if (!content.contains("录音")) {
+                    content += "，" + "录音";
+                }
+            }
+            if (Arrays.asList(PHONE).contains(perm)) {
+                if (!content.contains("电话")) {
+                    content += "，" + "电话";
+                }
+            }
+            if (Arrays.asList(SENSORS).contains(perm)) {
+                if (!content.contains("传感器")) {
+                    content += "，" + "传感器";
+                }
+            }
+            if (Arrays.asList(SMS).contains(perm)) {
+                if (!content.contains("短信")) {
+                    content += "，" + "短信";
+                }
+            }
+            if (Arrays.asList(STORAGE).contains(perm)) {
+                if (!content.contains("存储空间")) {
+                    content += "，" + "存储空间";
+                }
+            }
+        }
+        if (!TextUtils.isEmpty(content)) {
+            content = "请在设置－应用－选校帝－权限管理中开启" + content.substring(1) + "权限，以正常使用选校帝功能服务";
+        }
+        return content;
     }
 }
