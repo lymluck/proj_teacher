@@ -277,7 +277,7 @@ public class ConversationActivity extends BaseActivity implements
         return false;
     }
 
-    private void addMsgAction(final Message clickMsg) {
+    private void addMsgAction(Message clickMsg) {
         List<MessageItemLongClickAction> messageItemLongClickActions = RongMessageItemLongClickActionManager.getInstance().getMessageItemLongClickActions();
         MessageItemLongClickAction shareAction = null;
         MessageItemLongClickAction imgAction = null;
@@ -289,42 +289,42 @@ public class ConversationActivity extends BaseActivity implements
                 imgAction = clickAction;
             }
         }
-        final MessageContent msgContent = clickMsg.getContent();
+        Class clazz = clickMsg.getContent().getClass();
         if (shareAction == null) {
-            if (ImageMessage.class.isAssignableFrom(msgContent.getClass()) || TextMessage.class.isAssignableFrom(msgContent.getClass())) {
-                shareAction = textAndImageLongClickAction(msgContent);
+            if (ImageMessage.class.isAssignableFrom(clazz) || TextMessage.class.isAssignableFrom(clazz)) {
+                shareAction = textAndImageLongClickAction();
                 RongMessageItemLongClickActionManager.getInstance().addMessageItemLongClickAction(shareAction, 0);
             }
         } else {
-            if (!ImageMessage.class.isAssignableFrom(msgContent.getClass()) && !TextMessage.class.isAssignableFrom(msgContent.getClass())) {
+            if (!ImageMessage.class.isAssignableFrom(clazz) && !TextMessage.class.isAssignableFrom(clazz)) {
                 RongMessageItemLongClickActionManager.getInstance().removeMessageItemLongClickAction(shareAction);
             }
         }
         if (imgAction == null) {
-            if (ImageMessage.class.isAssignableFrom(msgContent.getClass())) {
+            if (ImageMessage.class.isAssignableFrom(clazz)) {
                 imgAction = imageLongClickAction();
                 RongMessageItemLongClickActionManager.getInstance().addMessageItemLongClickAction(imgAction, 1);
             }
         } else {
-            if (!ImageMessage.class.isAssignableFrom(msgContent.getClass())) {
+            if (!ImageMessage.class.isAssignableFrom(clazz)) {
                 RongMessageItemLongClickActionManager.getInstance().removeMessageItemLongClickAction(imgAction);
             }
         }
     }
 
-    private MessageItemLongClickAction textAndImageLongClickAction(final MessageContent msgContent) {
+    private MessageItemLongClickAction textAndImageLongClickAction() {
         return (new MessageItemLongClickAction.Builder()).titleResId(io.rong.imkit.R.string.rc_dialog_item_message_share).actionListener(new MessageItemLongClickAction.MessageItemLongClickListener() {
             @Override
             public boolean onMessageItemLongClick(Context context, UIMessage message) {
                 //转发消息
-                if (ImageMessage.class.isAssignableFrom(msgContent.getClass())) {
-                    if (((ImageMessage) msgContent).getLocalPath() == null && ((ImageMessage) msgContent).getRemoteUri() == null) {
+                if (ImageMessage.class.isAssignableFrom(message.getContent().getClass())) {
+                    if (((ImageMessage) message.getContent()).getLocalPath() == null && ((ImageMessage) message.getContent()).getRemoteUri() == null) {
                         ToastUtils.shortToast(context, "图片已被清理");
                         return true;
                     } else {
                         handleUri(((ImageMessage) message.getContent()), "share");
                     }
-                } else if (TextMessage.class.isAssignableFrom(msgContent.getClass())) {
+                } else if (TextMessage.class.isAssignableFrom(message.getContent().getClass())) {
                     startActivityForResult(new Intent(context, MsgShareActivity.class)
                             .putExtra("content", ((TextMessage) message.getMessage().getContent()).getContent())
                             .putExtra("type", "text"), REQUEST_SHARE);
