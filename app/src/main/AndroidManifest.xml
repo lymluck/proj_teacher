@@ -386,7 +386,9 @@
 
         <activity
             android:name=".ui.activity.ReloadQaActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
+            android:theme="@style/AppDialogActivityTheme"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
     </application>
