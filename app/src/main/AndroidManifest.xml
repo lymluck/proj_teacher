@@ -317,7 +317,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.ConversationActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
@@ -347,9 +347,9 @@
             android:name=".ui.activity.MsgShareActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
+        <!-- AppDialogActivityTheme不可与screenOrientation同时设置 -->
         <activity
             android:name=".ui.activity.CommonSearchActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppDialogActivityTheme"
             android:windowSoftInputMode="adjustNothing" />
         <activity
@@ -374,7 +374,6 @@
         <activity
             android:name=".ui.activity.ReloginActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
             android:theme="@style/AppDialogActivityTheme"
             android:windowSoftInputMode="adjustNothing|stateHidden" />
     </application>
