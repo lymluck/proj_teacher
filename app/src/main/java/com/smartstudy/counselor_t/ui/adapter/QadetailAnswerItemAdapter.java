@@ -6,6 +6,9 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +19,13 @@ import android.widget.TextView;
 
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.Answerer;
+import com.smartstudy.counselor_t.entity.ItemOnClick;
 import com.smartstudy.counselor_t.ui.widget.audio.AudioRecorder;
+import com.smartstudy.counselor_t.util.TextBrHandle;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -43,7 +52,9 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
 
     private String askName;
 
-    private VoiceItemOnclick voiceItemOnclick;
+
+    private ImageView imageView;
+
 
     public void setComments(List<Answerer.Comments> comments, String answerName, String askName) {
         if (this.mDatas != null) {
@@ -57,6 +68,7 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
     }
 
     public QadetailAnswerItemAdapter(Context context) {
+        EventBus.getDefault().register(this);//订阅
         this.mContext = context;
     }
 
@@ -73,64 +85,52 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
     public void onBindViewHolder(@NonNull final QadetailAnswerItemAdapter.MyViewHolder holder, int position) {
         final Answerer.Comments comments = mDatas.get(position);
         if (comments.getCommentType().equals("subQuestion")) {
-            String question = "<font color='#FF9C08'>" + "追问 @" + answerName + "</font>" + ": " + comments.getContent().trim();
-            holder.tv_detail_answer.setText(Html.fromHtml(question));
+            String question = "<font color='#FF9C08'>" + "追问 @" + answerName + "</font>" + ": " + comments.getContent();
+            holder.tv_detail_answer.setText(Html.fromHtml(TextBrHandle.parseContent(question)));
             holder.ll_voice.setVisibility(View.GONE);
         } else {
             if (comments.getVoiceUrl() != null) {
-                String answer = "回复<font color='#078CF1'>" + " @" + askName + "</font>" + ": " + comments.getContent().trim();
-                holder.tv_detail_answer.setText(Html.fromHtml(answer));
+                String answer = "回复<font color='#078CF1'>" + " @" + askName + "</font>" + ": ";
+                holder.tv_detail_answer.setText(Html.fromHtml(TextBrHandle.parseContent(answer)));
                 holder.ll_voice.setVisibility(View.VISIBLE);
                 holder.tv_voice_time.setText(comments.getVoiceDuration());
             } else {
-                String answer = "回复<font color='#078CF1'>" + " @" + askName + "</font>" + ": " + comments.getContent().trim();
-                holder.tv_detail_answer.setText(Html.fromHtml(answer));
+                String answer = "回复<font color='#078CF1'>" + " @" + askName + "</font>" + ": "+comments.getContent();
+                holder.tv_detail_answer.setText(Html.fromHtml(TextBrHandle.parseContent(answer)));
                 holder.ll_voice.setVisibility(View.GONE);
             }
         }
         holder.tv_time.setText(comments.getCreateTimeText());
 
-
+        holder.iv_voice.setScaleType(ImageView.ScaleType.FIT_START);
         holder.ll_voice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (voiceItemOnclick != null) {
-                    voiceItemOnclick.voiceItemOnclick();
-                }
+                EventBus.getDefault().post(new ItemOnClick("secondItem"));
+                animationDrawable = (AnimationDrawable) mContext.getResources().getDrawable(R.drawable.bg_voice_receive);
+                holder.iv_voice.setImageDrawable(animationDrawable);
                 if (isPlayingUri == null) {
-                    animationDrawable = (AnimationDrawable) mContext.getResources().getDrawable(R.drawable.bg_voice_receive);
-                    holder.iv_voice.clearAnimation();
                     if (audioRecorder != null) {
                         if (animationDrawable != null && !audioRecorder.isPlaying()) {
-                            holder.iv_voice.setImageDrawable(animationDrawable);
                             animationDrawable.start();
                             audioRecorder.playByUri(mContext, comments.getVoiceUrl());
-
                         } else {
                             animationDrawable.stop();
                             audioRecorder.playStop();
-                            holder.iv_voice.setImageResource(R.drawable.sound_icon);
+                            if (imageView != null) {
+                                imageView.setImageResource(R.drawable.sound_icon);
+                            }
                         }
                     }
                 } else {
-                    if (isPlayingUri.compareTo(comments.getVoiceUrl()) == 0) {
-                        if (audioRecorder.isPlaying()) {
-                            animationDrawable.stop();
-                            audioRecorder.playStop();
-                            holder.iv_voice.setImageResource(R.drawable.sound_icon);
-                        } else {
-                            audioRecorder.playByUri(mContext, comments.getVoiceUrl());
-                            holder.iv_voice.setImageDrawable(animationDrawable);
-                            animationDrawable.start();
-                        }
-                    } else {
-                        animationDrawable.stop();
-                        audioRecorder.playStop();
-                        holder.iv_voice.setImageResource(R.drawable.sound_icon);
-                        holder.iv_voice.setImageDrawable(animationDrawable);
-                        animationDrawable.start();
-                        audioRecorder.playByUri(mContext, comments.getVoiceUrl());
+                    animationDrawable.stop();
+                    audioRecorder.playStop();
+                    if (imageView != null) {
+                        imageView.setImageResource(R.drawable.sound_icon);
                     }
+                    animationDrawable.start();
+                    audioRecorder.playByUri(mContext, comments.getVoiceUrl());
+
                 }
 
                 audioRecorder.playComplete(new AudioRecorder.PlayComplete() {
@@ -144,6 +144,7 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
                     }
                 });
                 isPlayingUri = comments.getVoiceUrl();
+                imageView = v.findViewById(R.id.iv_voice);
             }
         });
     }
@@ -175,12 +176,19 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
         }
     }
 
-    public interface VoiceItemOnclick {
-        void voiceItemOnclick();
+
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void onDataSynEvent(ItemOnClick event) {
+        if (event.getItemWhere().equals("firstItem") || event.getItemWhere().equals("Qa")) {
+            isPlayingUri = null;
+            if (animationDrawable != null) {
+                animationDrawable.stop();
+            }
+            audioRecorder.playStop();
+            if (imageView != null) {
+                imageView.setImageResource(R.drawable.sound_icon);
+            }
+        }
     }
 
-
-    public void setVoiceItemOnclik(VoiceItemOnclick voiceItemOnclik) {
-        this.voiceItemOnclick = voiceItemOnclik;
-    }
 }

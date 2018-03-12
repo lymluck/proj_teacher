@@ -36,7 +36,6 @@ public class ReloadQaActivity extends BaseActivity<ReloadQaContract.Presenter> i
         setContentView(R.layout.activity_reqa);
         setHeadVisible(View.GONE);
         questionId = getIntent().getStringExtra("question_id");
-        Log.w("kim", "questionId--->" + questionId);
     }
 
     @Override

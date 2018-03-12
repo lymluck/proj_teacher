@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.ui.widget.audio.AudioRecorder;
-import com.smartstudy.counselor_t.ui.widget.audio.RecordStrategy;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -241,6 +239,8 @@ public class AudioRecordView extends LinearLayout {
             }
         };
         timer.schedule(timerTask, 1000);//1000ms执行一次
+
+
     }
 
     /**

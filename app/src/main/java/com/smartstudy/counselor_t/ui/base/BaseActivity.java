@@ -1,6 +1,8 @@
 package com.smartstudy.counselor_t.ui.base;
 
+import android.annotation.TargetApi;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -9,6 +11,8 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -16,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.smartstudy.counselor_t.R;
+import com.smartstudy.counselor_t.base.tools.SystemBarTintManager;
 import com.smartstudy.counselor_t.mvp.base.BasePresenter;
 import com.smartstudy.counselor_t.mvp.base.BaseView;
 import com.smartstudy.counselor_t.util.ParameterUtils;
@@ -44,7 +49,10 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     protected TextView topdefaultRighttext;
     private AppSettingsDialog permissionDialog;
     protected LayoutInflater mInflater;
-
+    private boolean changeStatusTrans = false;
+    private SystemBarTintManager tintManager;
+    private boolean darkMode = true;
+    private int statusColor = R.color.app_top_color;
     private View mView;
     private View topLine;
     protected boolean hasBasePer = false;
@@ -58,6 +66,9 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         super.setContentView(R.layout.activity_base);
         presenter = initPresenter();
         mInflater = getLayoutInflater();
+        if (!changeStatusTrans) {
+            initSystemBar();
+        }
     }
 
     @Override
@@ -87,6 +98,10 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         }
         if (mInflater != null) {
             mInflater = null;
+        }
+
+        if (tintManager != null) {
+            tintManager = null;
         }
         if (permissionDialog != null) {
             permissionDialog.dialogDismiss();
@@ -142,6 +157,10 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
             default:
                 break;
         }
+    }
+
+    public void setDarkMode(boolean darkMode) {
+        this.darkMode = darkMode;
     }
 
     @Override
@@ -253,4 +272,49 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
             permissionDialog.show();
         }
     }
+
+
+    /**
+     * 沉浸式状态栏
+     */
+    public void initSystemBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            setTranslucentStatus(true);
+            if (tintManager == null) {
+                tintManager = new SystemBarTintManager(this);
+            }
+            if (darkMode) {
+                tintManager.setStatusBarLightMode(this, true);
+            }
+            tintManager.setStatusBarTintEnabled(true);
+            tintManager.setStatusBarTintResource(statusColor);
+        }
+    }
+
+    protected void setChangeStatusTrans(boolean changeStatusTrans) {
+        this.changeStatusTrans = changeStatusTrans;
+    }
+
+    protected void setStatusColor(int color) {
+        this.statusColor = color;
+    }
+    /**
+     * 透明状态栏
+     *
+     * @param on
+     */
+    @TargetApi(19)
+    protected void setTranslucentStatus(boolean on) {
+        Window win = getWindow();
+        WindowManager.LayoutParams winParams = win.getAttributes();
+        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+        if (on) {
+            winParams.flags |= bits;
+        } else {
+            winParams.flags &= ~bits;
+        }
+        win.setAttributes(winParams);
+    }
+
+
 }

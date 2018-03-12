@@ -16,8 +16,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="15dp"
+            android:paddingRight="16dp"
             android:textColor="@color/app_text_color2"
             android:textSize="15sp" />
+
 
         <LinearLayout
             android:id="@+id/ll_voice"

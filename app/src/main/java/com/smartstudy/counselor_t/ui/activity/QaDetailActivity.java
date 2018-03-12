@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.Answerer;
+import com.smartstudy.counselor_t.entity.ItemOnClick;
 import com.smartstudy.counselor_t.entity.QaDetailInfo;
 import com.smartstudy.counselor_t.mvp.contract.QaDetailContract;
 import com.smartstudy.counselor_t.mvp.presenter.QaDetailPresenter;
@@ -32,6 +33,8 @@ import com.smartstudy.counselor_t.ui.widget.audio.AudioRecorder;
 import com.smartstudy.counselor_t.util.DensityUtils;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
 import com.smartstudy.counselor_t.util.ToastUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -93,7 +96,6 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
     public void initEvent() {
 
         iv_audio.setOnClickListener(this);
-
 
         etAnswer.addTextChangedListener(new TextWatcher() {
             @Override
@@ -237,7 +239,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
                 intent.putExtra("question_id", questionId);
                 intent.setClass(this, ReloadQaActivity.class);
                 startActivity(intent);
-
+                EventBus.getDefault().post(new ItemOnClick("Qa"));
                 if (AudioRecorder.getInstance() != null) {
                     AudioRecorder.getInstance().setReset();
                 }
@@ -314,6 +316,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
     @Override
     protected void onDestroy() {
+        EventBus.getDefault().unregister(this);//解除订阅
         if (recyclerView != null) {
             recyclerView.removeAllViews();
             recyclerView = null;

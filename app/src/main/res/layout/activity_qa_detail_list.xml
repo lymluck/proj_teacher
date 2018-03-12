@@ -15,66 +15,69 @@
 
         <RelativeLayout
             android:id="@+id/rl_post"
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true">
 
             <LinearLayout
-                android:id="@+id/ll_post"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#FAFBFC"
-                android:orientation="horizontal"
-                android:paddingBottom="7dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="7dp">
+                android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/iv_speak"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:paddingBottom="5dp"
-                    android:src="@drawable/rc_audio_toggle" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#E4E5E6" />
 
-                <EditText
-                    android:id="@+id/et_answer"
+                <LinearLayout
+                    android:id="@+id/ll_post"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_answer_border6"
-                    android:maxLines="5"
-                    android:minHeight="35dp"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:textColor="@color/app_text_color2"
-                    android:textColorHint="#C4C9CC"
-                    android:textCursorDrawable="@drawable/edit_cursor_color"
-                    android:textSize="15sp" />
+                    android:background="#FAFBFC"
+                    android:orientation="horizontal"
+                    android:paddingBottom="7dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="7dp">
+
+                    <ImageView
+                        android:id="@+id/iv_speak"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:paddingBottom="5dp"
+                        android:src="@drawable/rc_audio_toggle" />
+
+                    <EditText
+                        android:id="@+id/et_answer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_answer_border6"
+                        android:maxLines="5"
+                        android:minHeight="35dp"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:textColor="@color/app_text_color2"
+                        android:textColorHint="#C4C9CC"
+                        android:textCursorDrawable="@drawable/edit_cursor_color"
+                        android:textSize="15sp" />
 
 
-                <TextView
-                    android:id="@+id/tv_post"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:paddingBottom="6dp"
-                    android:text="发送"
-                    android:textColor="#949BA1"
-                    android:textSize="15sp" />
+                    <TextView
+                        android:id="@+id/tv_post"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:paddingBottom="6dp"
+                        android:text="发送"
+                        android:textColor="#949BA1"
+                        android:textSize="15sp" />
+                </LinearLayout>
             </LinearLayout>
-
-            <!--<com.smartstudy.counselor_t.ui.widget.AudioRecordView-->
-            <!--android:id="@+id/arv"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_below="@+id/ll_post"-->
-            <!--android:visibility="gone"></com.smartstudy.counselor_t.ui.widget.AudioRecordView>-->
 
             <LinearLayout
                 android:id="@+id/ll_speak"
