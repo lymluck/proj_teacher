@@ -52,8 +52,11 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
 
     private String askName;
 
+    int positionOnclick = -1;
 
     private ImageView imageView;
+
+    private boolean isPlaying = false;
 
 
     public void setComments(List<Answerer.Comments> comments, String answerName, String askName) {
@@ -82,7 +85,7 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final QadetailAnswerItemAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final QadetailAnswerItemAdapter.MyViewHolder holder, final int position) {
         final Answerer.Comments comments = mDatas.get(position);
         if (comments.getCommentType().equals("subQuestion")) {
             String question = "<font color='#FF9C08'>" + "追问 @" + answerName + "</font>" + ": " + comments.getContent();
@@ -95,7 +98,7 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
                 holder.ll_voice.setVisibility(View.VISIBLE);
                 holder.tv_voice_time.setText(comments.getVoiceDuration());
             } else {
-                String answer = "回复<font color='#078CF1'>" + " @" + askName + "</font>" + ": "+comments.getContent();
+                String answer = "回复<font color='#078CF1'>" + " @" + askName + "</font>" + ": " + comments.getContent();
                 holder.tv_detail_answer.setText(Html.fromHtml(TextBrHandle.parseContent(answer)));
                 holder.ll_voice.setVisibility(View.GONE);
             }
@@ -110,11 +113,14 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
                 animationDrawable = (AnimationDrawable) mContext.getResources().getDrawable(R.drawable.bg_voice_receive);
                 holder.iv_voice.setImageDrawable(animationDrawable);
                 if (isPlayingUri == null) {
+                    isPlaying = true;
                     if (audioRecorder != null) {
+                        isPlaying = true;
                         if (animationDrawable != null && !audioRecorder.isPlaying()) {
                             animationDrawable.start();
                             audioRecorder.playByUri(mContext, comments.getVoiceUrl());
                         } else {
+                            isPlaying = false;
                             animationDrawable.stop();
                             audioRecorder.playStop();
                             if (imageView != null) {
@@ -123,17 +129,37 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
                         }
                     }
                 } else {
-                    animationDrawable.stop();
-                    audioRecorder.playStop();
-                    if (imageView != null) {
-                        imageView.setImageResource(R.drawable.sound_icon);
+                    if (positionOnclick == position) {
+                        if (isPlaying) {
+                            isPlaying = false;
+                            animationDrawable.stop();
+                            audioRecorder.playStop();
+                            if (imageView != null) {
+                                imageView.setImageResource(R.drawable.sound_icon);
+                            }
+                        } else {
+                            isPlaying = true;
+                            audioRecorder.playByUri(mContext, comments.getVoiceUrl());
+                            holder.iv_voice.setImageDrawable(animationDrawable);
+                            animationDrawable.start();
+                        }
+
+                    } else {
+                        isPlaying=true;
+                        animationDrawable.stop();
+                        audioRecorder.playStop();
+                        if (imageView != null) {
+                            imageView.setImageResource(R.drawable.sound_icon);
+                        }
+                        animationDrawable.start();
+                        audioRecorder.playByUri(mContext, comments.getVoiceUrl());
                     }
-                    animationDrawable.start();
-                    audioRecorder.playByUri(mContext, comments.getVoiceUrl());
 
                 }
 
-                audioRecorder.playComplete(new AudioRecorder.PlayComplete() {
+                audioRecorder.playComplete(new AudioRecorder.PlayComplete()
+
+                {
                     @Override
                     public void playComplete() {
                         if (audioRecorder != null) {
@@ -145,6 +171,7 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
                 });
                 isPlayingUri = comments.getVoiceUrl();
                 imageView = v.findViewById(R.id.iv_voice);
+                positionOnclick = position;
             }
         });
     }
@@ -174,6 +201,7 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
             tv_voice_time = itemView.findViewById(R.id.tv_voice_time);
             iv_voice = itemView.findViewById(R.id.iv_voice);
         }
+
     }
 
 
@@ -184,7 +212,11 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
             if (animationDrawable != null) {
                 animationDrawable.stop();
             }
-            audioRecorder.playStop();
+            positionOnclick = -1;
+            if (audioRecorder.isPlaying()) {
+                audioRecorder.playStop();
+            }
+            isPlaying = false;
             if (imageView != null) {
                 imageView.setImageResource(R.drawable.sound_icon);
             }

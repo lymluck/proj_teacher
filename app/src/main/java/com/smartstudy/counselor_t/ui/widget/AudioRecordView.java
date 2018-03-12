@@ -93,6 +93,8 @@ public class AudioRecordView extends LinearLayout {
                             iv_audio.setImageResource(R.drawable.icon_audio_play);
                             tv_again_audio.setVisibility(VISIBLE);
                             tv_send.setVisibility(VISIBLE);
+                            tv_title.setTextColor(Color.parseColor("#949BA1"));
+                            tv_title.setTextSize(15);
                             mAudioRecorder.playStop();
                         }
                     });

@@ -273,9 +273,11 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
             etAnswer.setHint("回复 @" + data.getAsker().getName());
         }
 
-        if (data.getAnswers() != null && data.getAnswers().size() > 0 && data.getAsker() != null) {
-            qaDetailAdapter.setAnswers(data.getAnswers(), data.getAsker().getName());
-            answer.setText("回复");
+        if (data.getAnswers() != null && data.getAnswers().size() > 0 ) {
+            if (qaDetailAdapter != null&& data.getAsker() != null) {
+                qaDetailAdapter.setAnswers(data.getAnswers(), data.getAsker().getName());
+                answer.setText("回复");
+            }
         } else {
             answer.setText("暂时还没有人回答哦，快来抢答吧！");
         }

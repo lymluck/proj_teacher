@@ -118,6 +118,7 @@ public class HttpUrlUtils {
             case "test":
 //                SERVER = "http://api.beikaodi.com/"; //test
 //                SERVER="http://172.17.7.72:3000/";
+//                SERVER = "http://slx.staging.smartstudy.com/api/"; //test
                 SERVER = "http://server.tdc.smartstudy.com:3234/"; //test
                 break;
             case "dev":

@@ -49,6 +49,10 @@ public class QaDetailAdapter extends RecyclerView.Adapter<QaDetailAdapter.MyView
 
     private ImageView iv_voice;
 
+    int positionOnclick = -1;
+
+    private boolean isPlaying = false;
+
     private Uri isPlayingUri;
 
     private ImageView imageView;
@@ -77,7 +81,7 @@ public class QaDetailAdapter extends RecyclerView.Adapter<QaDetailAdapter.MyView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
         final Answerer entity = (Answerer) answerers.get(position);
         holder.tv_answer_time.setText(entity.getCreateTimeText());
         DisplayImageUtils.displayCircleImage(mContext, entity.getCommenter().getAvatar(), holder.ivAssignee);
@@ -100,10 +104,12 @@ public class QaDetailAdapter extends RecyclerView.Adapter<QaDetailAdapter.MyView
                 holder.iv_voice.setImageDrawable(animationDrawable);
                 if (isPlayingUri == null) {
                     if (audioRecorder != null) {
+                        isPlaying = true;
                         if (animationDrawable != null && !audioRecorder.isPlaying()) {
                             animationDrawable.start();
                             audioRecorder.playByUri(mContext, entity.getVoiceUrl());
                         } else {
+                            isPlaying = false;
                             animationDrawable.stop();
                             audioRecorder.playStop();
                             if (imageView != null) {
@@ -112,13 +118,32 @@ public class QaDetailAdapter extends RecyclerView.Adapter<QaDetailAdapter.MyView
                         }
                     }
                 } else {
-                    animationDrawable.stop();
-                    audioRecorder.playStop();
-                    if (imageView != null) {
-                        imageView.setImageResource(R.drawable.sound_icon);
+                    if (positionOnclick == position) {
+                        if (isPlaying) {
+                            isPlaying = false;
+                            animationDrawable.stop();
+                            audioRecorder.playStop();
+                            if (imageView != null) {
+                                imageView.setImageResource(R.drawable.sound_icon);
+                            }
+                        } else {
+                            isPlaying = true;
+                            audioRecorder.playByUri(mContext, entity.getVoiceUrl());
+                            holder.iv_voice.setImageDrawable(animationDrawable);
+                            animationDrawable.start();
+                        }
+
+                    } else {
+                        isPlaying = true;
+                        animationDrawable.stop();
+                        audioRecorder.playStop();
+                        if (imageView != null) {
+                            imageView.setImageResource(R.drawable.sound_icon);
+                        }
+                        animationDrawable.start();
+                        audioRecorder.playByUri(mContext, entity.getVoiceUrl());
                     }
-                    animationDrawable.start();
-                    audioRecorder.playByUri(mContext, entity.getVoiceUrl());
+
                 }
 
                 audioRecorder.playComplete(new AudioRecorder.PlayComplete() {
@@ -131,6 +156,7 @@ public class QaDetailAdapter extends RecyclerView.Adapter<QaDetailAdapter.MyView
                         }
                     }
                 });
+                positionOnclick = position;
                 isPlayingUri = entity.getVoiceUrl();
                 imageView = v.findViewById(R.id.iv_voice);
             }
@@ -190,10 +216,13 @@ public class QaDetailAdapter extends RecyclerView.Adapter<QaDetailAdapter.MyView
     public void onDataSynEvent(ItemOnClick event) {
         if (event.getItemWhere().equals("secondItem") || event.getItemWhere().equals("Qa")) {
             isPlayingUri = null;
+            isPlaying = false;
             if (animationDrawable != null) {
                 animationDrawable.stop();
             }
-            audioRecorder.playStop();
+            if (audioRecorder.isPlaying()) {
+                audioRecorder.playStop();
+            }
             if (imageView != null) {
                 imageView.setImageResource(R.drawable.sound_icon);
             }
