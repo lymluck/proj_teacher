@@ -74,7 +74,7 @@
             android:id="@+id/ll_voice"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginRight="70dp"
+            android:layout_marginRight="54dp"
             android:background="@drawable/bg_voice_play"
             android:orientation="horizontal"
             android:gravity="center_vertical"

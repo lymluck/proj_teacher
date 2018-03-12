@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -149,21 +150,32 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
             }
         });
 
+        etAnswer.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
 
-//        etAnswer.setOnFocusChangeListener(new android.view.View.
-//                OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                if (hasFocus) {
-//                    // 此处为得到焦点时的处理内容
-//                    iv_speak.setImageResource(R.drawable.rc_audio_toggle);
-//                    iv_speak.setTag(R.drawable.rc_audio_toggle);
-//                    audioRecordView.setVisibility(View.GONE);
-//                } else {
-//                    // 此处为失去焦点时的处理内容
-//                }
-//            }
-//        });
+                // 此处为得到焦点时的处理内容
+                iv_speak.setImageResource(R.drawable.rc_audio_toggle);
+                iv_speak.setTag(R.drawable.rc_audio_toggle);
+                etAnswer.setFocusable(true);
+                etAnswer.setFocusableInTouchMode(true);
+                ll_speak.setVisibility(View.GONE);
+                return false;
+            }
+
+        });
+
+        etAnswer.setOnFocusChangeListener(new android.view.View.
+                OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+
+                } else {
+                    // 此处为失去焦点时的处理内容
+                }
+            }
+        });
 
         topdefaultLeftbutton.setOnClickListener(this);
 
@@ -181,6 +193,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         setTitle("问题详情");
         questionId = data.getStringExtra("id");
 
+        setTopLineVisibility(View.VISIBLE);
         recyclerView = findViewById(R.id.rv_qa);
         tvPost = findViewById(R.id.tv_post);
         etAnswer = findViewById(R.id.et_answer);
@@ -260,7 +273,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
             etAnswer.setHint("回复 @" + data.getAsker().getName());
         }
 
-        if (data.getAnswers() != null && data.getAnswers().size() > 0) {
+        if (data.getAnswers() != null && data.getAnswers().size() > 0 && data.getAsker() != null) {
             qaDetailAdapter.setAnswers(data.getAnswers(), data.getAsker().getName());
             answer.setText("回复");
         } else {

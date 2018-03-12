@@ -70,6 +70,9 @@ public class AudioRecordView extends LinearLayout {
                 } else if (recordState == RECORD_ON) {
                     mAudioRecorder.stop();
                     stopTime();
+                    tv_title.setText(getTime(i, false));
+                    tv_title.setTextColor(Color.parseColor("#949BA1"));
+                    tv_title.setTextSize(15);
                     recordState = RECORD_COMPLETE;
                     tv_again_audio.setVisibility(VISIBLE);
                     tv_send.setVisibility(VISIBLE);
@@ -178,14 +181,14 @@ public class AudioRecordView extends LinearLayout {
                         tv_title.setTextColor(Color.parseColor("#949BA1"));
                         tv_title.setTextSize(15);
                     }
-                    tv_title.setText(getTime(i));
+                    tv_title.setText(getTime(i, true));
                     startTime();
                     break;
                 case RECORD_COMPLETE:
                     mAudioRecorder.stop();
                     stopTime();
                     recordState = RECORD_COMPLETE;
-                    tv_title.setText("");
+                    tv_title.setText("3.00");
                     tv_again_audio.setVisibility(VISIBLE);
                     tv_send.setVisibility(VISIBLE);
                     iv_audio.setImageResource(R.drawable.icon_audio_play);
@@ -196,7 +199,7 @@ public class AudioRecordView extends LinearLayout {
     };
 
 
-    private String getTime(int time) {
+    private String getTime(int time, boolean flag) {
         if (0 <= time && time < 10) {
             return "0:0" + time;
         } else if (10 <= time && time < 60) {
@@ -210,7 +213,15 @@ public class AudioRecordView extends LinearLayout {
         } else if (130 <= time && time < 170) {
             return "2:" + (time - 120);
         } else {
-            return "倒计时 " + (180 - time);
+            if (flag == true) {
+                return "倒计时 " + (180 - time);
+            } else {
+                if (time < 180) {
+                    return "2:" + (time - 120);
+                } else {
+                    return "3:00";
+                }
+            }
         }
     }
 
