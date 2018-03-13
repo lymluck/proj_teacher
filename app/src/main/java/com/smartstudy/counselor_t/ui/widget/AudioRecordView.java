@@ -44,6 +44,9 @@ public class AudioRecordView extends LinearLayout {
     private int i = 0;
     private TimerTask timerTask = null;
 
+    private AgainRecordOnclick againRecordOnclick;
+
+
     public AudioRecordView(Context context) {
         super(context);
     }
@@ -96,6 +99,7 @@ public class AudioRecordView extends LinearLayout {
                             tv_title.setTextColor(Color.parseColor("#949BA1"));
                             tv_title.setTextSize(15);
                             mAudioRecorder.playStop();
+                            stopTime();
                         }
                     });
 
@@ -113,12 +117,15 @@ public class AudioRecordView extends LinearLayout {
                 //重新录音
                 mAudioRecorder.stop();
                 mAudioRecorder.deleteOldFile();
-                tv_again_audio.setVisibility(GONE);
-                tv_send.setVisibility(GONE);
-                recordState = RECORD_OFF;
-                i = 0;
-                updateTitle("点击开始录音");
-                iv_audio.setImageResource(R.drawable.icon_audio_speak);
+                if (againRecordOnclick != null) {
+                    againRecordOnclick.againRecordOnclick();
+                }
+//                tv_again_audio.setVisibility(GONE);
+//                tv_send.setVisibility(GONE);
+//                recordState = RECORD_OFF;
+//                i = 0;
+//                updateTitle("点击开始录音");
+//                iv_audio.setImageResource(R.drawable.icon_audio_speak);
             }
         });
 
@@ -252,8 +259,6 @@ public class AudioRecordView extends LinearLayout {
             }
         };
         timer.schedule(timerTask, 1000);//1000ms执行一次
-
-
     }
 
     /**
@@ -274,5 +279,13 @@ public class AudioRecordView extends LinearLayout {
         }
         lastClickTime = time;
         return false;
+    }
+
+    public interface AgainRecordOnclick {
+        void againRecordOnclick();
+    }
+
+    public void setAgainRecordOnclick(AgainRecordOnclick againRecordOnclick) {
+        this.againRecordOnclick = againRecordOnclick;
     }
 }

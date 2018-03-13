@@ -284,23 +284,34 @@
         </activity>
         <!-- 极光推送 配置结束 -->
 
+        <!--<activity-->
+        <!--android:name=".ui.MainActivity"-->
+        <!--android:screenOrientation="portrait">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.MAIN" />-->
+
+        <!--<category android:name="android.intent.category.LAUNCHER" />-->
+        <!--</intent-filter>-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.VIEW" />-->
+
+        <!--<category android:name="android.intent.category.DEFAULT" />-->
+
+        <!--<data-->
+        <!--android:host="com.smartstudy.counselor_t"-->
+        <!--android:pathPrefix="/conversationlist"-->
+        <!--android:scheme="rong" />-->
+        <!--</intent-filter>-->
+        <!--</activity>-->
+
+
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.activity.MyQaActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data
-                    android:host="com.smartstudy.counselor_t"
-                    android:pathPrefix="/conversationlist"
-                    android:scheme="rong" />
             </intent-filter>
         </activity>
         <activity
@@ -387,6 +398,11 @@
 
         <activity
             android:name=".ui.activity.ReloadQaActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/AppDialogActivityTheme"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.activity.MyInfoDetailActivity"
             android:launchMode="singleTask"
             android:theme="@style/AppDialogActivityTheme"
             android:windowSoftInputMode="adjustResize|stateHidden" />

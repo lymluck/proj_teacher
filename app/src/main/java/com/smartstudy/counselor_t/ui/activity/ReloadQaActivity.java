@@ -58,6 +58,13 @@ public class ReloadQaActivity extends BaseActivity<ReloadQaContract.Presenter> i
                 }
             }
         });
+
+        audioRecordView.setAgainRecordOnclick(new AudioRecordView.AgainRecordOnclick() {
+            @Override
+            public void againRecordOnclick() {
+                finish();
+            }
+        });
     }
 
     @Override

@@ -196,7 +196,7 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
                     }
                 }
             }
-            this.startActivity(new Intent(this, MainActivity.class));
+            this.startActivity(new Intent(this, MyQaActivity.class));
             finish();
         } else if (teacherInfo.getStatus() == 1) {
             btPostInfo.setClickable(false);

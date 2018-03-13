@@ -17,8 +17,8 @@ public class HttpUrlUtils {
     public static final String URL_RANKS_TYPE = "/rank/categories/index";
     public static final String URL_RANKS_SEARCH = "/rank/categories"; //排名搜索
     public static final String URL_RANKS_HOT = "/rank/categories/hottest"; //热门排行榜
-    public static final String URL_QUESTS = "/questions/list"; //问答列表
-    public static final String URL_QUESTS_LINK = "/questions/%1$s"; //问答详情
+    public static final String URL_QUESTS = "questions/list"; //问答列表
+    public static final String URL_QUESTS_LINK = "questions/%1$s"; //问答详情
 
     public static final String URL_GLOBLE_LIST = "/lov/data/DATA_WORLD_MAJOR_RANKINGS/value"; //世界专业排名列表
     public static final String URL_USA_LIST = "/lov/data/DATA_USA_MAJOR_RANKINGS/value"; //美国专业排名列表
@@ -57,7 +57,7 @@ public class HttpUrlUtils {
     public static final String URL_PROGRAM = "/major_lib/programs";  //本科项目列表
     public static final String URL_COMMAND_SCHOOL = "/major_lib/program/%1$s/schools";  //推荐院校列表
     public static final String URL_HOME_HOT = "/view/app/tab/index";  //首页各种列表
-    public static final String URL_USER_LOGOUT = "/counsellor/logout";  //推荐院校列表
+    public static final String URL_USER_LOGOUT = "counsellor/logout";  //推荐院校列表
     public static final String URL_MSG_CENTER = "/notification/list";  //消息中心
     public static final String URL_MSG_UNREAD = "/notification/count/unread";  //消息未读数
     public static final String URL_COURSE_LIST = "/course/list";  //课程列表
@@ -92,7 +92,7 @@ public class HttpUrlUtils {
     public static final String URL_SCHOOL_UNDERGRADUATE = "/school/%1$s/undergraduate-application-department-first.html";  //本科申请
     public static final String URL_SCHOOL_GRADUATE = "/school/%1$s/graduate-application-department-first.html";  //研究生申请
     public static final String URL_SCHOOL_SIA = "/school/%1$s/sia";  //艺术生申请
-    public static final String URL_USER_CONTRACT = "/user-agreement.html";  //用户协议
+    public static final String URL_USER_CONTRACT = "user-agreement.html";  //用户协议
     public static final String URL_CHOOSE_SPEC = "/tool/holland-major-test.html";  //智能选专业
     public static final String URL_RESULT_RATE = "/tool/admission-rate-result/%1$s.html";  //录取率测试结果页
     public static final String URL_RESULT_SCHOOL = "/tool/match-school-result-%1$s-%2$s-%3$s-%4$s-%5$s-%6$s-%7$s-%8$s-%9$s-%10$s.html";  //智能选校结果
@@ -104,25 +104,27 @@ public class HttpUrlUtils {
     public static final String URL_COURSE_SHARE = "/course-%1$s/outline?sectionId=%2$s";  //课程分享
     public static final String URL_FAVORITE = "/favorite/question/%1$s";//点赞功能
     public static final String URL_POST_QUESTION = "/question/%1$s/append";//提交追问
-    public static final String URL_POST_ANSWER = "/questions/%1$s/answer";//提交追问
+    public static final String URL_POST_ANSWER = "questions/%1$s/answer";//提交追问
 
     /*********获取api接口url***********/
     public static String getBaseUrl() {
 //        String SERVER = "http://172.17.7.72:3000/";
-        String SERVER = "http://server.tdc.smartstudy.com:3234";
+        String SERVER = "http://slx.staging.smartstudy.com/api/";
         String api = (String) SPCacheUtils.get(ConstantUtils.API_SERVER, "");
         switch (api) {
             case "master":
-                SERVER = "https://api.smartstudy.com/school/";
+//                SERVER = "https://api.smartstudy.com/school/";
+                SERVER = "http://slx.staging.smartstudy.com/api/";
                 break;
             case "test":
 //                SERVER = "http://api.beikaodi.com/"; //test
 //                SERVER="http://172.17.7.72:3000/";
-//                SERVER = "http://slx.staging.smartstudy.com/api/"; //test
-                SERVER = "http://server.tdc.smartstudy.com:3234/"; //test
+                SERVER = "http://slx.staging.smartstudy.com/api/"; //test
+//                SERVER = "http://server.tdc.smartstudy.com:3234/"; //test
                 break;
             case "dev":
-                SERVER = "http://linkang.smartstudy.com:3000/"; //dev
+//                SERVER = "http://linkang.smartstudy.com:3000/"; //dev
+                SERVER = "http://slx.staging.smartstudy.com/api/";
                 break;
             default:
                 break;

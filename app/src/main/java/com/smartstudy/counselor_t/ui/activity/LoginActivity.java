@@ -312,7 +312,7 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
 
     @Override
     public void phoneCodeLoginSuccess(int status) {
-        startActivity(new Intent(this, MainActivity.class));
+        startActivity(new Intent(this, MyQaActivity.class));
         finish();
     }
 

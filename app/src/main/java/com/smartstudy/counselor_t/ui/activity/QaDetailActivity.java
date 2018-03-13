@@ -223,7 +223,6 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         iv_speak = findViewById(R.id.iv_speak);
 
 //        audioRecordView = findViewById(R.id.arv);
-
         initAdapter();
         if (!TextUtils.isEmpty(questionId)) {
             presenter.getQaDetails(questionId);
@@ -266,7 +265,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
     @Override
     public void getQaDetails(QaDetailInfo data) {
         if (data.getAsker() != null) {
-            DisplayImageUtils.displayCircleImage(getApplicationContext(), data.getAsker().getAvatar(), ivAsker);
+            DisplayImageUtils.displayCircleImagePerson(getApplicationContext(), data.getAsker().getAvatar(), ivAsker);
             tvAskerName.setText(data.getAsker().getName());
             tvAskerTime.setText(data.getCreateTimeText());
             tvQuestion.setText(data.getContent());
