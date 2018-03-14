@@ -46,7 +46,7 @@
                     android:id="@+id/tv_answer_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#C4C9CC"
+                    android:textColor="@color/app_text_color"
                     android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
@@ -66,6 +66,7 @@
             android:id="@+id/tv_answer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:lineSpacingExtra="4dp"
             android:textColor="@color/app_text_color2"
             android:textSize="15sp" />
 

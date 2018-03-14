@@ -29,6 +29,7 @@ public class ReloadQaActivity extends BaseActivity<ReloadQaContract.Presenter> i
 
     ProgressDialog pdDialog;
 
+    File file;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +48,11 @@ public class ReloadQaActivity extends BaseActivity<ReloadQaContract.Presenter> i
         audioRecordView.setsendOnClickListener(new AudioRecordView.SendOnClickListener() {
             @Override
             public void sendOnClick(String path) {
-                File file = new File(path);
+                file = new File(path);
                 if (file.exists()) {
                     pdDialog = new ProgressDialog(ReloadQaActivity.this);
-                    pdDialog.setMessage("正在加载中");
+                    pdDialog.setMessage("正在上传中");
                     pdDialog.show();
-                    ToastUtils.shortToast(ReloadQaActivity.this, "发送成功");
                     presenter.postAnswerVoice(questionId, file);
 
                 }
@@ -80,12 +80,10 @@ public class ReloadQaActivity extends BaseActivity<ReloadQaContract.Presenter> i
         if (presenter != null) {
             presenter = null;
         }
-
         if (AudioRecorder.getInstance() != null) {
             AudioRecorder.getInstance().setReset();
 
         }
-
         super.onDestroy();
     }
 
@@ -99,7 +97,19 @@ public class ReloadQaActivity extends BaseActivity<ReloadQaContract.Presenter> i
         if (pdDialog != null && pdDialog.isShowing()) {
             pdDialog.dismiss();
         }
+        ToastUtils.shortToast(ReloadQaActivity.this, "发送成功");
+        if (file.exists()) {
+            file.delete();
+        }
         finish();
 
+    }
+
+    @Override
+    public void postAnswerFail(String message) {
+        ToastUtils.shortToast(ReloadQaActivity.this, message);
+        if (pdDialog != null && pdDialog.isShowing()) {
+            pdDialog.dismiss();
+        }
     }
 }

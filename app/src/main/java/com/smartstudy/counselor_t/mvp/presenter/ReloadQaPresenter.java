@@ -48,7 +48,7 @@ public class ReloadQaPresenter extends BasePresenterImpl<ReloadQaContract.View> 
 
             @Override
             public void onError(String msg) {
-                view.showTip(msg);
+                view.postAnswerFail(msg);
             }
         });
     }

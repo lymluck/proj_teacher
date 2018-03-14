@@ -16,6 +16,8 @@ import java.io.File;
 public interface ReloadQaContract {
     interface View extends BaseView {
         void postAnswerSuccess();
+
+        void postAnswerFail(String message);
     }
 
     interface Presenter extends BasePresenter {

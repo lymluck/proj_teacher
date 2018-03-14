@@ -16,6 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="15dp"
+            android:lineSpacingExtra="4dp"
             android:paddingRight="16dp"
             android:textColor="@color/app_text_color2"
             android:textSize="15sp" />
@@ -62,6 +63,6 @@
         android:layout_height="wrap_content"
         android:paddingBottom="15dp"
         android:paddingTop="12dp"
-        android:textColor="@color/app_text_color3"
+        android:textColor="@color/app_text_color"
         android:textSize="12sp" />
 </LinearLayout>

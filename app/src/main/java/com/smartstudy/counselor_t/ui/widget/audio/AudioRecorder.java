@@ -96,7 +96,9 @@ public class AudioRecorder {
 
     public void deleteOldFile() {
         File file = new File(fileFolder + "/" + fileName + ".amr");
-        file.deleteOnExit();
+        if (file.exists()) {
+            file.delete();
+        }
     }
 
     public void playByUri(Context context, Uri uri) {
@@ -168,6 +170,7 @@ public class AudioRecorder {
     public void setReset() {
         playStop();
         stop();
+        deleteOldFile();
         instance = null;
     }
 

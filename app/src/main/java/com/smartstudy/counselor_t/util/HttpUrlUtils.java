@@ -113,18 +113,15 @@ public class HttpUrlUtils {
         String api = (String) SPCacheUtils.get(ConstantUtils.API_SERVER, "");
         switch (api) {
             case "master":
-//                SERVER = "https://api.smartstudy.com/school/";
-                SERVER = "http://slx.staging.smartstudy.com/api/";
+                SERVER = "https://slx.smartstudy.com/api/";
+//                SERVER = "http://slx.staging.smartstudy.com/api/";
                 break;
             case "test":
-//                SERVER = "http://api.beikaodi.com/"; //test
-//                SERVER="http://172.17.7.72:3000/";
+//               SERVER = "https://slx.smartstudy.com/api/";
                 SERVER = "http://slx.staging.smartstudy.com/api/"; //test
-//                SERVER = "http://server.tdc.smartstudy.com:3234/"; //test
                 break;
             case "dev":
-//                SERVER = "http://linkang.smartstudy.com:3000/"; //dev
-                SERVER = "http://slx.staging.smartstudy.com/api/";
+                SERVER = "http://blog.smartstudy.com:3234/";
                 break;
             default:
                 break;
