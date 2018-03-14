@@ -165,17 +165,6 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
         });
 
-        etAnswer.setOnFocusChangeListener(new android.view.View.
-                OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-
-                } else {
-                    // 此处为失去焦点时的处理内容
-                }
-            }
-        });
 
         topdefaultLeftbutton.setOnClickListener(this);
 
@@ -222,7 +211,6 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
         iv_speak = findViewById(R.id.iv_speak);
 
-//        audioRecordView = findViewById(R.id.arv);
         initAdapter();
         if (!TextUtils.isEmpty(questionId)) {
             presenter.getQaDetails(questionId);
@@ -272,8 +260,8 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
             etAnswer.setHint("回复 @" + data.getAsker().getName());
         }
 
-        if (data.getAnswers() != null && data.getAnswers().size() > 0 ) {
-            if (qaDetailAdapter != null&& data.getAsker() != null) {
+        if (data.getAnswers() != null && data.getAnswers().size() > 0) {
+            if (qaDetailAdapter != null && data.getAsker() != null) {
                 qaDetailAdapter.setAnswers(data.getAnswers(), data.getAsker().getName());
                 answer.setText("回复");
             }

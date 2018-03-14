@@ -120,12 +120,6 @@ public class AudioRecordView extends LinearLayout {
                 if (againRecordOnclick != null) {
                     againRecordOnclick.againRecordOnclick();
                 }
-//                tv_again_audio.setVisibility(GONE);
-//                tv_send.setVisibility(GONE);
-//                recordState = RECORD_OFF;
-//                i = 0;
-//                updateTitle("点击开始录音");
-//                iv_audio.setImageResource(R.drawable.icon_audio_speak);
             }
         });
 
