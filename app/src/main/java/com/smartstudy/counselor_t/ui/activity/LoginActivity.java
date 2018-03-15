@@ -252,46 +252,46 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
                 break;
             case R.id.img_logo:
                 //测试用
-//                if (isDebug) {
-                if (!isSelected) {
-                    startAnimator();
-                } else {
-                    endAnimator();
+                if (isDebug) {
+                    if (!isSelected) {
+                        startAnimator();
+                    } else {
+                        endAnimator();
+                    }
                 }
-//                }
                 break;
             case R.id.btn_master:
                 //测试用
-//                if (isDebug) {
-                if (!isSelected) {
-                    startAnimator();
-                } else {
-                    endAnimator();
+                if (isDebug) {
+                    if (!isSelected) {
+                        startAnimator();
+                    } else {
+                        endAnimator();
+                    }
+                    SPCacheUtils.put(ConstantUtils.API_SERVER, "master");
                 }
-                SPCacheUtils.put(ConstantUtils.API_SERVER, "master");
-//                }
                 break;
             case R.id.btn_test:
                 //测试用
-//                if (isDebug) {
-                if (!isSelected) {
-                    startAnimator();
-                } else {
-                    endAnimator();
+                if (isDebug) {
+                    if (!isSelected) {
+                        startAnimator();
+                    } else {
+                        endAnimator();
+                    }
+                    SPCacheUtils.put(ConstantUtils.API_SERVER, "test");
                 }
-                SPCacheUtils.put(ConstantUtils.API_SERVER, "test");
-//                }
                 break;
             case R.id.btn_dev:
                 //测试用
-//                if (isDebug) {
-                if (!isSelected) {
-                    startAnimator();
-                } else {
-                    endAnimator();
+                if (isDebug) {
+                    if (!isSelected) {
+                        startAnimator();
+                    } else {
+                        endAnimator();
+                    }
+                    SPCacheUtils.put(ConstantUtils.API_SERVER, "dev");
                 }
-                SPCacheUtils.put(ConstantUtils.API_SERVER, "dev");
-//                }
                 break;
             default:
                 break;
