@@ -14,6 +14,7 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
@@ -191,28 +192,28 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
 
     private void forTest() {
         //测试用
-//        if (isDebug) {
-        img_logo.setOnClickListener(this);
-        _id(R.id.btn_master).setOnClickListener(this);
-        _id(R.id.btn_test).setOnClickListener(this);
-        _id(R.id.btn_dev).setOnClickListener(this);
-        list = new ArrayList<>();
-        list.add(_id(R.id.btn_master));
-        list.add(_id(R.id.btn_test));
-        list.add(_id(R.id.btn_dev));
-        final DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        img_logo.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                ToastUtils.shortToast(LoginActivity.this, "手机屏幕分辨率:" + displayMetrics.widthPixels + "X" + displayMetrics.heightPixels + "\n" + "密度:"
-                        + displayMetrics.density + "\n" + "使用每英寸的像素点来显示密度:" + displayMetrics.densityDpi + "\n" + "xdpi"
-                        + displayMetrics.xdpi + "\n" + "ydpi" + displayMetrics.ydpi + "\n" + "scaledDensity"
-                        + displayMetrics.scaledDensity);
-                return false;
-            }
-        });
-//        }
+        if (isDebug) {
+            img_logo.setOnClickListener(this);
+            _id(R.id.btn_master).setOnClickListener(this);
+            _id(R.id.btn_test).setOnClickListener(this);
+            _id(R.id.btn_dev).setOnClickListener(this);
+            list = new ArrayList<>();
+            list.add(_id(R.id.btn_master));
+            list.add(_id(R.id.btn_test));
+            list.add(_id(R.id.btn_dev));
+            final DisplayMetrics displayMetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            img_logo.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    ToastUtils.shortToast(LoginActivity.this, "手机屏幕分辨率:" + displayMetrics.widthPixels + "X" + displayMetrics.heightPixels + "\n" + "密度:"
+                            + displayMetrics.density + "\n" + "使用每英寸的像素点来显示密度:" + displayMetrics.densityDpi + "\n" + "xdpi"
+                            + displayMetrics.xdpi + "\n" + "ydpi" + displayMetrics.ydpi + "\n" + "scaledDensity"
+                            + displayMetrics.scaledDensity);
+                    return false;
+                }
+            });
+        }
     }
 
     @Override

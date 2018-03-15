@@ -173,8 +173,11 @@ public class QaDetailAdapter extends RecyclerView.Adapter<QaDetailAdapter.MyView
                 .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.bg_home_search).margin(DensityUtils.dip2px(64), 0).build());
 
         holder.rvDetailAnswer.setAdapter(qadetailAnswerItemAdapter);
-        if (entity.getComments() != null) {
+        if (entity.getComments() != null && entity.getComments().size() > 0) {
             qadetailAnswerItemAdapter.setComments(entity.getComments(), entity.getCommenter().getName(), askName);
+            holder.v_line.setVisibility(View.VISIBLE);
+        } else {
+            holder.v_line.setVisibility(View.GONE);
         }
         holder.rvDetailAnswer.setVisibility(View.VISIBLE);
         /////////////////////////////////////////////////////
@@ -197,6 +200,7 @@ public class QaDetailAdapter extends RecyclerView.Adapter<QaDetailAdapter.MyView
         TextView tv_voice_time;
         LinearLayout ll_voice;
         ImageView iv_voice;
+        View v_line;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -208,6 +212,7 @@ public class QaDetailAdapter extends RecyclerView.Adapter<QaDetailAdapter.MyView
             tv_voice_time = itemView.findViewById(R.id.tv_voice_time);
             iv_voice = itemView.findViewById(R.id.iv_voice);
             ll_voice = itemView.findViewById(R.id.ll_voice);
+            v_line = itemView.findViewById(R.id.v_line);
         }
     }
 

@@ -1,5 +1,7 @@
 package com.smartstudy.counselor_t.ui.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -40,15 +42,20 @@ public class MyInfoDetailActivity extends BaseActivity<MainActivityContract.Pres
 
     @Override
     public void initEvent() {
-        topdefaultLefttext.setOnClickListener(this);
+        topdefaultLeftbutton.setOnClickListener(this);
+        topdefaultRighttext.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.topdefault_lefttext:
-                presenter.getLogOut();
+            case R.id.topdefault_leftbutton:
+                finish();
                 break;
+            case R.id.topdefault_righttext:
+                showNormalDialog();
+                break;
+
             default:
                 break;
         }
@@ -56,12 +63,13 @@ public class MyInfoDetailActivity extends BaseActivity<MainActivityContract.Pres
 
     @Override
     public void initView() {
-        setLeftTxt("注销");
         setTopdefaultLefttextVisible(View.VISIBLE);
-        setLeftImgVisible(View.GONE);
+        setLeftImgVisible(View.VISIBLE);
         setTitleLineVisible(View.VISIBLE);
-        setTopdefaultLefttextColor("#949BA1");
+        setTopdefaultRighttextColor("#949BA1");
         setTitle("个人信息");
+        setTopdefaultRighttextVisible(View.VISIBLE);
+        setRightTxt("注销");
         MyFragment myFragment = new MyFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.flyt_qa, myFragment);
@@ -90,4 +98,28 @@ public class MyInfoDetailActivity extends BaseActivity<MainActivityContract.Pres
                 Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(to_login);
     }
+
+
+    private void showNormalDialog() {
+        final AlertDialog.Builder normalDialog =
+                new AlertDialog.Builder(this);
+        normalDialog.setMessage("确定要退出登陆吗?");
+        normalDialog.setPositiveButton("确定",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        presenter.getLogOut();
+                    }
+                });
+        normalDialog.setNegativeButton("取消",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        // 显示
+        normalDialog.show();
+    }
 }
+

@@ -1,5 +1,6 @@
 package com.smartstudy.counselor_t.listener;
 
+import io.reactivex.annotations.Nullable;
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -10,7 +11,7 @@ public interface ObserverListener<T> {
 
     void onSubscribe(Disposable disposable);
 
-    void onNext(T result);
+    void onNext(@Nullable T result);
 
     void onError(String msg);
 }

@@ -40,10 +40,10 @@ public class BaseModel {
 
                     @Override
                     public void onNext(ResponseInfo responseInfo) {
+                        if (responseInfo != null) {
+                            Log.d("result======", responseInfo.toString());
+                        }
                         if (responseInfo.isSuccess()) {
-                            if (responseInfo.getData() != null) {
-                                Log.d("result======", responseInfo.getData());
-                            }
                             listener.onNext(responseInfo.getData());
                         } else {
                             listener.onError(responseInfo.getMsg());
@@ -52,6 +52,7 @@ public class BaseModel {
 
                     @Override
                     public void onError(Throwable e) {
+                        Log.d("err======", e.getMessage());
                         if (!TextUtils.isEmpty(e.getMessage())) {
                             listener.onError(e.getMessage());
                         }
@@ -59,7 +60,7 @@ public class BaseModel {
 
                     @Override
                     public void onComplete() {
-
+                        Log.d("complete=====","");
                     }
                 });
     }

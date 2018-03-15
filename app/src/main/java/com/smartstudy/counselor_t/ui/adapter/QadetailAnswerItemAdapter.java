@@ -88,7 +88,7 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
     public void onBindViewHolder(@NonNull final QadetailAnswerItemAdapter.MyViewHolder holder, final int position) {
         final Answerer.Comments comments = mDatas.get(position);
         if (comments.getCommentType().equals("subQuestion")) {
-            String question = "<font color='#FF9C08'>" + "追问 @" + answerName + "</font>" + ": " + comments.getContent();
+            String question = "<font color='#FF9C08'>" + "追问 @" + answerName + "</font>" + ": " + (comments.getContent()==null?"":comments.getContent());
             holder.tv_detail_answer.setText(Html.fromHtml(TextBrHandle.parseContent(question)));
             holder.ll_voice.setVisibility(View.GONE);
         } else {
@@ -98,7 +98,7 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
                 holder.ll_voice.setVisibility(View.VISIBLE);
                 holder.tv_voice_time.setText(comments.getVoiceDuration());
             } else {
-                String answer = "回复<font color='#078CF1'>" + " @" + askName + "</font>" + ": " + comments.getContent();
+                String answer = "回复<font color='#078CF1'>" + " @" + askName + "</font>" + ": " +(comments.getContent()==null?"":comments.getContent());
                 holder.tv_detail_answer.setText(Html.fromHtml(TextBrHandle.parseContent(answer)));
                 holder.ll_voice.setVisibility(View.GONE);
             }

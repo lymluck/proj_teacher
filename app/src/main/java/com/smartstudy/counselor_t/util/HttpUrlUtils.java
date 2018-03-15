@@ -1,5 +1,7 @@
 package com.smartstudy.counselor_t.util;
 
+import android.util.Log;
+
 public class HttpUrlUtils {
 
     /**************************** api ***************************/
@@ -109,16 +111,18 @@ public class HttpUrlUtils {
     /*********获取api接口url***********/
     public static String getBaseUrl() {
 //        String SERVER = "http://172.17.7.72:3000/";
-        String SERVER = "http://slx.staging.smartstudy.com/api/";
+//        String SERVER = "https://slx.smartstudy.com/api/";
+        String SERVER = "http://slx.staging.smartstudy.com/api/"; //test
         String api = (String) SPCacheUtils.get(ConstantUtils.API_SERVER, "");
         switch (api) {
+
             case "master":
-                SERVER = "https://slx.smartstudy.com/api/";
+                SERVER ="https://slx.smartstudy.com/api/";
 //                SERVER = "http://slx.staging.smartstudy.com/api/";
                 break;
             case "test":
 //               SERVER = "https://slx.smartstudy.com/api/";
-                SERVER = "http://slx.staging.smartstudy.com/api/"; //test
+                SERVER = "https://slx.staging.smartstudy.com/api/"; //test
                 break;
             case "dev":
                 SERVER = "http://blog.smartstudy.com:3234/";

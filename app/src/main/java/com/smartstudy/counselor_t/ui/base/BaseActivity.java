@@ -238,6 +238,9 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         topdefaultLefttext.setTextColor(Color.parseColor(color));
     }
 
+    public void setTopdefaultRighttextColor(String color) {
+        topdefaultRighttext.setTextColor(Color.parseColor(color));
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
