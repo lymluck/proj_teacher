@@ -22,7 +22,7 @@ public class HttpUrlUtils {
 
     public static final String URL_GLOBLE_LIST = "/lov/data/DATA_WORLD_MAJOR_RANKINGS/value"; //世界专业排名列表
     public static final String URL_USA_LIST = "/lov/data/DATA_USA_MAJOR_RANKINGS/value"; //美国专业排名列表
-    public static final String URL_APP_VERSION = "/android/version/%1$s/check";  //版本下载
+    public static final String URL_APP_VERSION = "app/android/version/%1$s/check";  //版本检测
     public static final String URL_DEVICE = "/device";  //设备信息
     public static final String URL_MYINFO = "/personal/info";  //获取我的信息
     public static final String URL_SEARCH = "/search";  //首页搜索

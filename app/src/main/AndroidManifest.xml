@@ -50,6 +50,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!-- 版本下载 -->
+        <service
+            android:name=".service.VersionUpdateService"
+            android:enabled="true"
+            android:exported="false" />
+
         <service
             android:name="io.rong.imlib.ipc.RongService"
             android:process=":ipc" />

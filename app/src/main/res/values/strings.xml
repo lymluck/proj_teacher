@@ -34,4 +34,7 @@
     <string name="loginout_msg">你的账号已在其他设备上登录，是否重新登录？</string>
     <string name="blocked_msg">你的账号已被禁用，如有疑问请联系管理员！</string>
     <string name="refused_msg">你的信息审核未通过！</string>
+    <string name="update_vs_now">立即更新</string>
+    <string name="not_update">以后再说</string>
+    <string name="version_update">版本更新</string>
 </resources>

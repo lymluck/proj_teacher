@@ -28,6 +28,12 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class BaseModel {
 
+    protected Observable fileObservalbe(Observable observable) {
+        return observable.subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
     protected void apiSubscribe(Observable observable, final ObserverListener listener) {
         observable.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())

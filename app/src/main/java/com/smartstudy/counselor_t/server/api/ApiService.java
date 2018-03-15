@@ -8,7 +8,9 @@ import com.smartstudy.counselor_t.util.ParameterUtils;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.HeaderMap;
@@ -17,6 +19,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
+import retrofit2.http.Streaming;
 import retrofit2.http.Url;
 
 /**
@@ -109,8 +112,23 @@ public interface ApiService {
 
 
     /**
+     * 版本检测
+     */
+    @GET()
+    Observable<ResponseInfo> checkVersion(@HeaderMap Map<String, String> header, @Url() String url);
+
+    /**
      * 登出
      */
     @POST(HttpUrlUtils.URL_USER_LOGOUT)
     Observable<ResponseInfo> getLogOut(@HeaderMap Map<String, String> header);
+
+    /**
+     * 文件下载
+     * @param url
+     * @return
+     */
+    @Streaming
+    @GET
+    Observable<ResponseBody> downLoadFile(@NonNull @Url String url);
 }
