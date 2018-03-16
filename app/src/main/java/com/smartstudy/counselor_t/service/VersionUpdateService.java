@@ -41,18 +41,19 @@ public class VersionUpdateService extends Service implements DownloadFileContrac
     private String apk_path;
     private RemoteViews mContentView;
     private WeakHandler mHandler;
+    private String lastVersion;
 
-    private Context mContext = this;
     /**
      * 更新进度的回调接口
      */
-    private static OnProgressListener onProgressListener;
+    private static OnProgressListener mProgressListener;
 
 
-//    @Override
-//    public int onStartCommand(Intent intent, int flags, int startId) {
-//        return START_STICKY;
-//    }
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        lastVersion = intent.getStringExtra("version");
+        return super.onStartCommand(intent, flags, startId);
+    }
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -95,9 +96,9 @@ public class VersionUpdateService extends Service implements DownloadFileContrac
                             // 下载完毕后变换通知形式
                             mNotification.build().flags = Notification.FLAG_AUTO_CANCEL;
                             mNotification.setContent(null);
-                            Intent intent = new Intent(mContext, MainActivity.class);
+                            Intent intent = new Intent(VersionUpdateService.this, MainActivity.class);
                             // 更新参数,注意flags要使用FLAG_UPDATE_CURRENT
-                            PendingIntent contentIntent = PendingIntent.getActivity(mContext, 0, intent,
+                            PendingIntent contentIntent = PendingIntent.getActivity(VersionUpdateService.this, 0, intent,
                                     PendingIntent.FLAG_UPDATE_CURRENT);
                             mNotification.setContentTitle("下载完成");
                             mNotification.setContentText("文件已下载完毕");
@@ -117,7 +118,7 @@ public class VersionUpdateService extends Service implements DownloadFileContrac
                         // 下载完毕
                         // 取消通知
                         mNotificationManager.cancel(NOTIFY_ID);
-                        Utils.installApk(mContext, apk_path);
+                        Utils.installApk(VersionUpdateService.this, apk_path);
                         break;
                     default:
                         break;
@@ -157,12 +158,9 @@ public class VersionUpdateService extends Service implements DownloadFileContrac
         }
 
         public void setOnProgressListener(OnProgressListener onProgressListener) {
-            VersionUpdateService.onProgressListener = onProgressListener;
+            mProgressListener = onProgressListener;
         }
 
-        public void installAPK() {
-            Utils.installApk(mContext, apk_path);
-        }
     }
 
     private void startDownload(int flag) {
@@ -182,7 +180,7 @@ public class VersionUpdateService extends Service implements DownloadFileContrac
         int icon = R.mipmap.ic_launcher;
         CharSequence tickerText = "开始下载";
         long when = System.currentTimeMillis();
-        mNotification = new NotificationCompat.Builder(mContext);
+        mNotification = new NotificationCompat.Builder(VersionUpdateService.this);
         mNotification.setSmallIcon(icon);
         mNotification.setTicker(tickerText);
         mNotification.setWhen(when);
@@ -208,10 +206,10 @@ public class VersionUpdateService extends Service implements DownloadFileContrac
     }
 
     public void downloadApk(final int flag) {
-        String fileName = AppUtils.getAppName(this) + "_" + AppUtils.getVersionName() + ".apk";
-        File apkfile = SDCardUtils.getFileDirPath("Xxd_im/file/" + fileName);
+        String fileName = AppUtils.getAppName(this) + "_" + lastVersion + ".apk";
+        File fileDir = SDCardUtils.getFileDirPath("Xxd_im/file");
         DownloadFilePresenter presenter = new DownloadFilePresenter(this);
-        presenter.downloadFile(app.getDownLoadUrl(), apkfile, new OnDownloadFileListener<File>() {
+        presenter.downloadFile(app.getDownLoadUrl(), fileDir, fileName, new OnDownloadFileListener<File>() {
             @Override
             public void onErr(String msg) {
                 Message message = mHandler.obtainMessage();
@@ -229,8 +227,8 @@ public class VersionUpdateService extends Service implements DownloadFileContrac
                         mHandler.sendEmptyMessage(ParameterUtils.MSG_WHAT_PROGRESS);
                     }
                 } else if (flag == ParameterUtils.FLAG_UPDATE_NOW) {
-                    if (onProgressListener != null) {
-                        onProgressListener.onProgress(mProgress);
+                    if (mProgressListener != null) {
+                        mProgressListener.onProgress(progress);
                     }
                 }
             }
@@ -239,8 +237,8 @@ public class VersionUpdateService extends Service implements DownloadFileContrac
             public void onFinish(File result) {
                 apk_path = result.getAbsolutePath();
                 if (flag == ParameterUtils.FLAG_UPDATE_NOW) {
-                    if (onProgressListener != null) {
-                        onProgressListener.onFinish(apk_path);
+                    if (mProgressListener != null) {
+                        mProgressListener.onFinish(apk_path);
                     }
                 } else if (flag == ParameterUtils.FLAG_UPDATE) {
                     mHandler.sendEmptyMessage(ParameterUtils.MSG_WHAT_FINISH);

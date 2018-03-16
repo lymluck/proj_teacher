@@ -16,9 +16,9 @@ public interface MainActivityContract {
 
         void getAuditResult(TeacherInfo teacherInfo);
 
-        void updateable(String downUrl, String des);
+        void updateable(String downUrl, String version, String des);
 
-        void forceUpdate(String downUrl, String des);
+        void forceUpdate(String downUrl, String version, String des);
 
     }
 

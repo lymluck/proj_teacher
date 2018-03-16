@@ -71,9 +71,9 @@ public class MainActivityPresenter extends BasePresenterImpl<MainActivityContrac
                 if (info != null) {
                     if (info.isNeedUpdate()) {
                         if (info.isForceUpdate()) {
-                            view.forceUpdate(info.getPackageUrl(), info.getDescription());
+                            view.forceUpdate(info.getPackageUrl(), info.getLatestVersion(), info.getDescription());
                         } else {
-                            view.updateable(info.getPackageUrl(), info.getDescription());
+                            view.updateable(info.getPackageUrl(), info.getLatestVersion(), info.getDescription());
                         }
                     }
                     info = null;

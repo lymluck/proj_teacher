@@ -107,20 +107,19 @@ public class HttpUrlUtils {
 
     /*********获取api接口url***********/
     public static String getBaseUrl() {
-//        String SERVER = "http://172.17.7.72:3000/";
-        String SERVER = "http://server.tdc.smartstudy.com:3234";
+        String SERVER = "http://slx.smartstudy.com/api/";
         String api = (String) SPCacheUtils.get(ConstantUtils.API_SERVER, "");
         switch (api) {
             case "master":
-                SERVER = "https://api.smartstudy.com/school/";
+                SERVER = "http://slx.smartstudy.com/api/";
                 break;
             case "test":
-//                SERVER = "http://api.beikaodi.com/"; //test
-//                SERVER="http://172.17.7.72:3000/";
-                SERVER = "http://blog.smartstudy.com:3234/"; //test
+                //test
+                SERVER = "http://slx.staging.smartstudy.com/api/";
                 break;
             case "dev":
-                SERVER = "http://linkang.smartstudy.com:3000/"; //dev
+                //dev
+                SERVER = "http://server.tdc.smartstudy.com:3234/";
                 break;
             default:
                 break;

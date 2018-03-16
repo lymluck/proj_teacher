@@ -57,7 +57,7 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
     private FrameLayout flt_logo;
     private List<View> list = null;
     private boolean isSelected = false;
-    private boolean isDebug = AppUtils.isApkInDebug(this);
+    private boolean isDebug = AppUtils.isApkInDebug();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,28 +191,28 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
 
     private void forTest() {
         //测试用
-//        if (isDebug) {
-        img_logo.setOnClickListener(this);
-        _id(R.id.btn_master).setOnClickListener(this);
-        _id(R.id.btn_test).setOnClickListener(this);
-        _id(R.id.btn_dev).setOnClickListener(this);
-        list = new ArrayList<>();
-        list.add(_id(R.id.btn_master));
-        list.add(_id(R.id.btn_test));
-        list.add(_id(R.id.btn_dev));
-        final DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        img_logo.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                ToastUtils.shortToast(LoginActivity.this, "手机屏幕分辨率:" + displayMetrics.widthPixels + "X" + displayMetrics.heightPixels + "\n" + "密度:"
-                        + displayMetrics.density + "\n" + "使用每英寸的像素点来显示密度:" + displayMetrics.densityDpi + "\n" + "xdpi"
-                        + displayMetrics.xdpi + "\n" + "ydpi" + displayMetrics.ydpi + "\n" + "scaledDensity"
-                        + displayMetrics.scaledDensity);
-                return false;
-            }
-        });
-//        }
+        if (isDebug) {
+            img_logo.setOnClickListener(this);
+            _id(R.id.btn_master).setOnClickListener(this);
+            _id(R.id.btn_test).setOnClickListener(this);
+            _id(R.id.btn_dev).setOnClickListener(this);
+            list = new ArrayList<>();
+            list.add(_id(R.id.btn_master));
+            list.add(_id(R.id.btn_test));
+            list.add(_id(R.id.btn_dev));
+            final DisplayMetrics displayMetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            img_logo.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    ToastUtils.shortToast(LoginActivity.this, "手机屏幕分辨率:" + displayMetrics.widthPixels + "X" + displayMetrics.heightPixels + "\n" + "密度:"
+                            + displayMetrics.density + "\n" + "使用每英寸的像素点来显示密度:" + displayMetrics.densityDpi + "\n" + "xdpi"
+                            + displayMetrics.xdpi + "\n" + "ydpi" + displayMetrics.ydpi + "\n" + "scaledDensity"
+                            + displayMetrics.scaledDensity);
+                    return false;
+                }
+            });
+        }
     }
 
     @Override
@@ -252,46 +252,46 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
                 break;
             case R.id.img_logo:
                 //测试用
-//                if (isDebug) {
-                if (!isSelected) {
-                    startAnimator();
-                } else {
-                    endAnimator();
+                if (isDebug) {
+                    if (!isSelected) {
+                        startAnimator();
+                    } else {
+                        endAnimator();
+                    }
                 }
-//                }
                 break;
             case R.id.btn_master:
                 //测试用
-//                if (isDebug) {
-                if (!isSelected) {
-                    startAnimator();
-                } else {
-                    endAnimator();
+                if (isDebug) {
+                    if (!isSelected) {
+                        startAnimator();
+                    } else {
+                        endAnimator();
+                    }
+                    SPCacheUtils.put(ConstantUtils.API_SERVER, "master");
                 }
-                SPCacheUtils.put(ConstantUtils.API_SERVER, "master");
-//                }
                 break;
             case R.id.btn_test:
                 //测试用
-//                if (isDebug) {
-                if (!isSelected) {
-                    startAnimator();
-                } else {
-                    endAnimator();
+                if (isDebug) {
+                    if (!isSelected) {
+                        startAnimator();
+                    } else {
+                        endAnimator();
+                    }
+                    SPCacheUtils.put(ConstantUtils.API_SERVER, "test");
                 }
-                SPCacheUtils.put(ConstantUtils.API_SERVER, "test");
-//                }
                 break;
             case R.id.btn_dev:
                 //测试用
-//                if (isDebug) {
-                if (!isSelected) {
-                    startAnimator();
-                } else {
-                    endAnimator();
+                if (isDebug) {
+                    if (!isSelected) {
+                        startAnimator();
+                    } else {
+                        endAnimator();
+                    }
+                    SPCacheUtils.put(ConstantUtils.API_SERVER, "dev");
                 }
-                SPCacheUtils.put(ConstantUtils.API_SERVER, "dev");
-//                }
                 break;
             default:
                 break;

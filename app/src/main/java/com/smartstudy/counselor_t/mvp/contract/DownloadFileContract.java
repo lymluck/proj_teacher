@@ -17,6 +17,6 @@ public interface DownloadFileContract {
 
     interface Presenter extends BasePresenter {
 
-        void downloadFile(String url, File downloadFile, final OnDownloadFileListener<File> listener);
+        void downloadFile(String url, File fileDir, String fileName, final OnDownloadFileListener<File> listener);
     }
 }

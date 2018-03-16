@@ -22,16 +22,15 @@ import okhttp3.ResponseBody;
 
 public class DownloadFileModel extends BaseModel {
 
-    public void downloadFile(String url, final File file, final FileDownLoadObserver listener) {
+    public void downloadFile(String url, final File file, final String fileName, final FileDownLoadObserver listener) {
         fileObservalbe(ApiManager.getApiService().downLoadFile(url))
                 .observeOn(Schedulers.computation())
                 .map(new Function<ResponseBody, File>() {
                     @Override
                     public File apply(@NonNull ResponseBody responseBody) throws Exception {
-                        return listener.saveFile(responseBody, file);
+                        return listener.saveFile(responseBody, file, fileName);
                     }
-                })
-                .subscribe(new Consumer<File>() {
+                }).subscribe(new Consumer<File>() {
                     @Override
                     public void accept(@NonNull File file) throws Exception {
                         listener.onNext(file);

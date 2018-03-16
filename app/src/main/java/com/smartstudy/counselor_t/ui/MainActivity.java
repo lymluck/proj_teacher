@@ -55,6 +55,8 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
     private WeakHandler myHandler;
     private boolean isBinded;
     private VersionUpdateService.DownloadBinder binder;
+    private Button updateBtn;
+    private TextView updateTitle;
 
     private ProgressBar progressbar;
     private TextView tv_progress;
@@ -113,6 +115,13 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
                     case ParameterUtils.FLAG_UPDATE:
                         progressbar.setProgress(msg.arg1);
                         tv_progress.setText(msg.arg1 + "%");
+                        break;
+                    case ParameterUtils.MSG_WHAT_FINISH:
+                        progressbar.setProgress(100);
+                        tv_progress.setText("100%");
+                        updateBtn.setVisibility(View.VISIBLE);
+                        updateBtn.setText("安装");
+                        updateTitle.setText("立即安装");
                         break;
                     default:
                         break;
@@ -252,12 +261,12 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
             isBinded = true;
             binder.start(update_type);
             if (update_type == ParameterUtils.FLAG_UPDATE_NOW) {
-                final Button btn = (Button) updateDialog.findViewById(R.id.dialog_base_confirm_btn);
-                final TextView title = (TextView) updateDialog.findViewById(R.id.dialog_base_title_tv);
-                btn.setVisibility(View.GONE);
+                updateBtn = updateDialog.findViewById(R.id.dialog_base_confirm_btn);
+                updateTitle = updateDialog.findViewById(R.id.dialog_base_title_tv);
+                updateBtn.setVisibility(View.GONE);
                 updateDialog.findViewById(R.id.dialog_base_text_tv).setVisibility(View.GONE);
                 updateDialog.findViewById(R.id.llyt_progress).setVisibility(View.VISIBLE);
-                title.setText("开始更新");
+                updateTitle.setText("开始更新");
                 binder.setOnProgressListener(new OnProgressListener() {
                     @Override
                     public void onStart() {
@@ -276,11 +285,9 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
                     @Override
                     public void onFinish(final String path) {
                         apk_path = path;
-                        progressbar.setProgress(100);
-                        tv_progress.setText("100%");
-                        btn.setVisibility(View.VISIBLE);
-                        btn.setText("安装");
-                        title.setText("立即安装");
+                        Message msg = myHandler.obtainMessage();
+                        msg.what = ParameterUtils.MSG_WHAT_FINISH;
+                        myHandler.sendMessage(msg);
                     }
                 });
             }
@@ -288,7 +295,7 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
     };
 
     @Override
-    public void updateable(final String downUrl, String des) {
+    public void updateable(final String downUrl, final String lastVersion, String des) {
         update_type = ParameterUtils.FLAG_UPDATE;
         //提示当前有版本更新
         String isToUpdate = (String) SPCacheUtils.get("isToUpdate", "");
@@ -303,6 +310,7 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
                                     BaseApplication.getInstance().setDownLoadUrl(downUrl);
                                     //开始下载
                                     Intent it = new Intent(MainActivity.this, VersionUpdateService.class);
+                                    it.putExtra("version", lastVersion);
                                     startService(it);
                                     bindService(it, conn, Context.BIND_AUTO_CREATE);
                                     updateDialog.dismiss();
@@ -318,14 +326,14 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
                     });
             ((TextView) updateDialog.findViewById(R.id.dialog_info)).setGravity(Gravity.CENTER_VERTICAL);
             WindowManager.LayoutParams p = updateDialog.getWindow().getAttributes();
-            p.width = (int) (ScreenUtils.getScreenWidth() * 0.9);
+            p.width = (int) (ScreenUtils.getScreenWidth() * 0.85);
             updateDialog.getWindow().setAttributes(p);
             updateDialog.show();
         }
     }
 
     @Override
-    public void forceUpdate(final String downUrl, String des) {
+    public void forceUpdate(final String downUrl, final String lastVersion, String des) {
         update_type = ParameterUtils.FLAG_UPDATE_NOW;
         String title = getString(R.string.update_vs_now);
         updateDialog = DialogCreator.createBaseCustomDialog(MainActivity.this, title, des, new View.OnClickListener() {
@@ -338,17 +346,18 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
                     BaseApplication.getInstance().setDownLoadUrl(downUrl);
                     //开始下载
                     Intent it = new Intent(MainActivity.this, VersionUpdateService.class);
+                    it.putExtra("version", lastVersion);
                     startService(it);
                     bindService(it, conn, Context.BIND_AUTO_CREATE);
                 }
             }
         });
-        progressbar = (ProgressBar) updateDialog.findViewById(R.id.progressbar);
-        tv_progress = (TextView) updateDialog.findViewById(R.id.tv_progress);
+        progressbar = updateDialog.findViewById(R.id.progressbar);
+        tv_progress = updateDialog.findViewById(R.id.tv_progress);
         updateDialog.findViewById(R.id.dialog_base_confirm_btn).setBackgroundResource(R.drawable.bg_btn_wm_lrb_radius);
         ((TextView) updateDialog.findViewById(R.id.dialog_base_text_tv)).setGravity(Gravity.CENTER_VERTICAL);
         WindowManager.LayoutParams p = updateDialog.getWindow().getAttributes();
-        p.width = (int) (ScreenUtils.getScreenWidth() * 0.9);
+        p.width = (int) (ScreenUtils.getScreenWidth() * 0.85);
         updateDialog.getWindow().setAttributes(p);
         updateDialog.show();
     }

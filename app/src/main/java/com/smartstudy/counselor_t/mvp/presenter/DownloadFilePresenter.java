@@ -34,8 +34,8 @@ public class DownloadFilePresenter extends BasePresenterImpl<DownloadFileContrac
     }
 
     @Override
-    public void downloadFile(String url, File downloadFile, final OnDownloadFileListener<File> listener) {
-        model.downloadFile(url, downloadFile, new FileDownLoadObserver<File>() {
+    public void downloadFile(String url, File fileDir, String fileName, final OnDownloadFileListener<File> listener) {
+        model.downloadFile(url, fileDir, fileName, new FileDownLoadObserver<File>() {
             @Override
             public void onProgress(int progress, long total) {
                 listener.onProgress(progress);

@@ -39,4 +39,17 @@ public class ResponseInfo {
     public boolean isSuccess() {
         return TextUtils.equals(code, "0");
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("{");
+        sb.append("\"code\":\"")
+                .append(code).append('\"');
+        sb.append(",\"data\":\"")
+                .append(data).append('\"');
+        sb.append(",\"msg\":\"")
+                .append(msg).append('\"');
+        sb.append('}');
+        return sb.toString();
+    }
 }

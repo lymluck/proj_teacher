@@ -100,9 +100,9 @@ public class AppUtils {
     /**
      * 判断当前应用是否是debug状态
      */
-    public static boolean isApkInDebug(Context context) {
+    public static boolean isApkInDebug() {
         try {
-            ApplicationInfo info = context.getApplicationInfo();
+            ApplicationInfo info = BaseApplication.appContext.getApplicationInfo();
             return (info.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
         } catch (Exception e) {
             return false;
