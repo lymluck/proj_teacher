@@ -1,9 +1,9 @@
 package com.smartstudy.counselor_t.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -11,17 +11,12 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.smartstudy.counselor_t.R;
-import com.smartstudy.counselor_t.entity.Answerer;
 import com.smartstudy.counselor_t.entity.ItemOnClick;
 import com.smartstudy.counselor_t.entity.QaDetailInfo;
 import com.smartstudy.counselor_t.mvp.contract.QaDetailContract;
@@ -33,11 +28,10 @@ import com.smartstudy.counselor_t.ui.widget.NoScrollLinearLayoutManager;
 import com.smartstudy.counselor_t.ui.widget.audio.AudioRecorder;
 import com.smartstudy.counselor_t.util.DensityUtils;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
+import com.smartstudy.counselor_t.util.KeyBoardUtils;
 import com.smartstudy.counselor_t.util.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
-
-import java.util.List;
 
 /**
  * Created by yqy on 2017/12/4.
@@ -49,8 +43,6 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
     private NoScrollLinearLayoutManager mLayoutManager;
 
     private RecyclerView recyclerView;
-
-    private List<Answerer> answerers;
 
     private ImageView ivAsker;
 
@@ -72,24 +64,15 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
     private ImageView iv_audio;
 
-//    private AudioRecordView audioRecordView;
-
     private LinearLayout ll_speak;
 
-    private RelativeLayout rl_post;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
-
-    FrameLayout frameLayout;
-
-    WindowManager wm;
-
-    private long lastClickTime;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qa_detail_list);
-        wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
     }
 
 
@@ -131,19 +114,19 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
                     case R.drawable.rc_audio_toggle:
                         iv_speak.setImageResource(R.drawable.rc_keyboard);
                         iv_speak.setTag(R.drawable.rc_keyboard);
-                        hideWindowSoft();
+                        KeyBoardUtils.closeKeybord(etAnswer, QaDetailActivity.this);
                         ll_speak.setVisibility(View.VISIBLE);
                         break;
                     case R.drawable.rc_keyboard:
                         iv_speak.setImageResource(R.drawable.rc_audio_toggle);
                         iv_speak.setTag(R.drawable.rc_audio_toggle);
-                        showWindowSoft();
                         ll_speak.setVisibility(View.GONE);
+                        KeyBoardUtils.openKeybord(etAnswer, QaDetailActivity.this);
                         break;
                     default:
                         iv_speak.setImageResource(R.drawable.rc_keyboard);
                         iv_speak.setTag(R.drawable.rc_keyboard);
-                        hideWindowSoft();
+                        KeyBoardUtils.closeKeybord(etAnswer, QaDetailActivity.this);
                         ll_speak.setVisibility(View.VISIBLE);
                         break;
                 }
@@ -179,27 +162,19 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
     @Override
     public void initView() {
         Intent data = getIntent();
-        setTitle("问题详情");
         questionId = data.getStringExtra("id");
 
+        setTitle(getString(R.string.qa_detail_title));
         setTopLineVisibility(View.VISIBLE);
-        recyclerView = findViewById(R.id.rv_qa);
+
         tvPost = findViewById(R.id.tv_post);
+
         etAnswer = findViewById(R.id.et_answer);
-        recyclerView.setHasFixedSize(true);
-        mLayoutManager = new NoScrollLinearLayoutManager(this);
-        mLayoutManager.setScrollEnabled(true);
-        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
-                .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.bg_home_search).build());
         answer = findViewById(R.id.answer);
 
         iv_audio = findViewById(R.id.iv_audio);
 
         ll_speak = findViewById(R.id.ll_speak);
-
-        rl_post = findViewById(R.id.rl_post);
 
         ivAsker = findViewById(R.id.iv_asker);
 
@@ -210,6 +185,25 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         tvAskerTime = findViewById(R.id.tv_ask_time);
 
         iv_speak = findViewById(R.id.iv_speak);
+
+        recyclerView = findViewById(R.id.rv_qa);
+
+        swipeRefreshLayout = findViewById(R.id.srlt_qa);
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.app_main_color));
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.getQaDetails(questionId);
+            }
+        });
+
+        recyclerView.setHasFixedSize(true);
+        mLayoutManager = new NoScrollLinearLayoutManager(this);
+        mLayoutManager.setScrollEnabled(true);
+        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
+                .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.bg_home_search).build());
 
         initAdapter();
         if (!TextUtils.isEmpty(questionId)) {
@@ -252,6 +246,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
     @Override
     public void getQaDetails(QaDetailInfo data) {
+        swipeRefreshLayout.setRefreshing(false);
         if (data.getAsker() != null) {
             DisplayImageUtils.displayCircleImagePerson(getApplicationContext(), data.getAsker().getAvatar(), ivAsker);
             tvAskerName.setText(data.getAsker().getName());
@@ -271,10 +266,16 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         data = null;
     }
 
+    @Override
+    public void getQaDetailFail(String message) {
+        ToastUtils.shortToast(this,message);
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
 
     @Override
     public void postAnswerSuccess() {
-        hideWindowSoft();
+        KeyBoardUtils.closeKeybord(etAnswer, QaDetailActivity.this);
         hideAudioView();
         presenter.getQaDetails(questionId);
     }
@@ -289,23 +290,6 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
     private void initAdapter() {
         qaDetailAdapter = new QaDetailAdapter(this);
         recyclerView.setAdapter(qaDetailAdapter);
-    }
-
-
-    private void showWindowSoft() {
-        etAnswer.setFocusable(true);
-        etAnswer.setFocusableInTouchMode(true);
-        etAnswer.requestFocus();
-        InputMethodManager inputManager = (InputMethodManager) etAnswer.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputManager.showSoftInput(etAnswer, 0);
-    }
-
-
-    private void hideWindowSoft() {
-        etAnswer.setText("");
-        etAnswer.clearFocus();
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(etAnswer.getWindowToken(), 0);
     }
 
 

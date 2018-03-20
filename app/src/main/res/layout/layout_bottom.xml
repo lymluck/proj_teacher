@@ -72,7 +72,7 @@
                     android:layout_toRightOf="@id/ll"
                     android:textColor="@android:color/white"
                     android:textSize="12sp"
-                    android:visibility="invisible" />
+                    android:visibility="invisible"/>
             </FrameLayout>
 
 

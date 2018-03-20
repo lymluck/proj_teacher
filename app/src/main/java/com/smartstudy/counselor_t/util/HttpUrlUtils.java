@@ -107,6 +107,8 @@ public class HttpUrlUtils {
     public static final String URL_FAVORITE = "/favorite/question/%1$s";//点赞功能
     public static final String URL_POST_QUESTION = "/question/%1$s/append";//提交追问
     public static final String URL_POST_ANSWER = "questions/%1$s/answer";//提交追问
+    public static final String URL_MY_ANSWER = "questions/list/answered_by_me";
+
 
     /*********获取api接口url***********/
     public static String getBaseUrl() {
@@ -117,7 +119,7 @@ public class HttpUrlUtils {
         switch (api) {
 
             case "master":
-                SERVER ="https://slx.smartstudy.com/api/";
+                SERVER = "https://slx.smartstudy.com/api/";
 //                SERVER = "http://slx.staging.smartstudy.com/api/";
                 break;
             case "test":

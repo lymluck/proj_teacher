@@ -26,7 +26,7 @@ import java.util.TimerTask;
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */
-public class AudioRecordView extends LinearLayout {
+public class AudioRecordView extends LinearLayout implements View.OnClickListener {
     private TextView tv_title;
     private TextView tv_again_audio;
     private ImageView iv_audio;
@@ -61,55 +61,7 @@ public class AudioRecordView extends LinearLayout {
         tv_again_audio.setVisibility(GONE);
         tv_send.setVisibility(GONE);
         mAudioRecorder = AudioRecorder.getInstance();
-        iv_audio.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isFastDoubleClick()) {
-                    return;
-                }
-                if (recordState == RECORD_OFF) {
-                    //不在录音的状态
-                    startRecord();
-                } else if (recordState == RECORD_ON) {
-                    mAudioRecorder.stop();
-                    stopTime();
-                    tv_title.setText(getTime(i, false));
-                    tv_title.setTextColor(Color.parseColor("#949BA1"));
-                    tv_title.setTextSize(15);
-                    recordState = RECORD_COMPLETE;
-                    tv_again_audio.setVisibility(VISIBLE);
-                    tv_send.setVisibility(VISIBLE);
-                    iv_audio.setImageResource(R.drawable.icon_audio_play);
-                } else if (recordState == RECORD_COMPLETE) {
-                    if (mAudioRecorder.isPlaying()) {
-                        mAudioRecorder.playStop();
-                    }
-                    mAudioRecorder.play(mAudioRecorder.getFilePath());
-                    recordState = RECORD_PLAY;
-                    i = 0;
-                    startTime();
-                    iv_audio.setImageResource(R.drawable.icon_audio_stop);
-                    mAudioRecorder.playComplete(new AudioRecorder.PlayComplete() {
-                        @Override
-                        public void playComplete() {
-                            recordState = RECORD_COMPLETE;
-                            iv_audio.setImageResource(R.drawable.icon_audio_play);
-                            tv_again_audio.setVisibility(VISIBLE);
-                            tv_send.setVisibility(VISIBLE);
-                            tv_title.setTextColor(Color.parseColor("#949BA1"));
-                            tv_title.setTextSize(15);
-                            mAudioRecorder.playStop();
-                            stopTime();
-                        }
-                    });
-
-                } else if (recordState == RECORD_PLAY) {
-                    mAudioRecorder.playStop();
-                    recordState = RECORD_COMPLETE;
-                    iv_audio.setImageResource(R.drawable.icon_audio_play);
-                }
-            }
-        });
+        iv_audio.setOnClickListener(this);
 
         tv_again_audio.setOnClickListener(new OnClickListener() {
             @Override
@@ -120,6 +72,21 @@ public class AudioRecordView extends LinearLayout {
                 if (againRecordOnclick != null) {
                     againRecordOnclick.againRecordOnclick();
                 }
+            }
+        });
+
+
+        mAudioRecorder.playComplete(new AudioRecorder.PlayComplete() {
+            @Override
+            public void playComplete() {
+                recordState = RECORD_COMPLETE;
+                iv_audio.setImageResource(R.drawable.icon_audio_play);
+                tv_again_audio.setVisibility(VISIBLE);
+                tv_send.setVisibility(VISIBLE);
+                tv_title.setTextColor(Color.parseColor("#949BA1"));
+                tv_title.setTextSize(15);
+                mAudioRecorder.playStop();
+                stopTime();
             }
         });
 
@@ -148,15 +115,55 @@ public class AudioRecordView extends LinearLayout {
         this.listener = listener;
     }
 
+    @Override
+    public void onClick(View view) {
+        if (isFastDoubleClick()) {
+            return;
+        }
+        switch (recordState) {
+            case RECORD_OFF:
+                startRecord();
+                break;
+
+            case RECORD_ON:
+                mAudioRecorder.stop();
+                stopTime();
+                tv_title.setText(getTime(i, false));
+                tv_title.setTextColor(Color.parseColor("#949BA1"));
+                tv_title.setTextSize(15);
+                recordState = RECORD_COMPLETE;
+                tv_again_audio.setVisibility(VISIBLE);
+                tv_send.setVisibility(VISIBLE);
+                iv_audio.setImageResource(R.drawable.icon_audio_play);
+                break;
+
+            case RECORD_COMPLETE:
+                if (mAudioRecorder.isPlaying()) {
+                    mAudioRecorder.playStop();
+                }
+                mAudioRecorder.play(mAudioRecorder.getFilePath());
+                recordState = RECORD_PLAY;
+                i = 0;
+                startTime();
+                iv_audio.setImageResource(R.drawable.icon_audio_stop);
+                break;
+
+            case RECORD_PLAY:
+                mAudioRecorder.playStop();
+                recordState = RECORD_COMPLETE;
+                iv_audio.setImageResource(R.drawable.icon_audio_play);
+                break;
+
+            default:
+                break;
+
+        }
+    }
+
 
     public interface SendOnClickListener {
         void sendOnClick(String path);
     }
-
-
-//    public void setAudioRecord(RecordStrategy record) {
-//        this.mAudioRecorder = record;
-//    }
 
 
     public void startRecord() {
@@ -196,6 +203,7 @@ public class AudioRecordView extends LinearLayout {
                     tv_send.setVisibility(VISIBLE);
                     iv_audio.setImageResource(R.drawable.icon_audio_play);
                     break;
+
             }
 
         }

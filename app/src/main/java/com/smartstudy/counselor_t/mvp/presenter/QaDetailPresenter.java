@@ -54,7 +54,7 @@ public class QaDetailPresenter extends BasePresenterImpl<QaDetailContract.View> 
 
             @Override
             public void onError(String msg) {
-                view.showTip(msg);
+                view.getQaDetailFail(msg);
             }
 
         });

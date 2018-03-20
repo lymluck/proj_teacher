@@ -3,19 +3,15 @@ package com.smartstudy.counselor_t.ui.fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.QuestionInfo;
 import com.smartstudy.counselor_t.entity.SchoolInfo;
-import com.smartstudy.counselor_t.handler.WeakHandler;
 import com.smartstudy.counselor_t.mvp.contract.QaListContract;
 import com.smartstudy.counselor_t.mvp.presenter.QuestionsPresenter;
 import com.smartstudy.counselor_t.ui.activity.QaDetailActivity;
@@ -30,7 +26,6 @@ import com.smartstudy.counselor_t.ui.widget.NoScrollLinearLayoutManager;
 import com.smartstudy.counselor_t.util.DensityUtils;
 import com.smartstudy.counselor_t.util.ParameterUtils;
 import com.smartstudy.counselor_t.util.ToastUtils;
-import com.smartstudy.counselor_t.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -266,7 +261,6 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
     @Override
     public void showTip(String message) {
         if (presenter != null) {
-
             swipeRefreshLayout.setRefreshing(false);
             rclv_qa.loadComplete(true);
             ToastUtils.shortToast(mActivity, message);

@@ -8,7 +8,7 @@ public class DataListInfo {
 
     private PaginationInfo pagination;
     private String data;
-    private String meta;
+    private Meta meta;
 
     public PaginationInfo getPagination() {
         return pagination;
@@ -26,12 +26,25 @@ public class DataListInfo {
         this.data = data;
     }
 
-    public String getMeta() {
+    public Meta getMeta() {
         return meta;
     }
 
-    public void setMeta(String meta) {
+    public void setMeta(Meta meta) {
         this.meta = meta;
+    }
+
+    public class Meta {
+        private int totalSubQuestionCountToMe;
+
+
+        public int getTotalSubQuestionCountToMe() {
+            return totalSubQuestionCountToMe;
+        }
+
+        public void setTotalSubQuestionCountToMe(int totalSubQuestionCountToMe) {
+            this.totalSubQuestionCountToMe = totalSubQuestionCountToMe;
+        }
     }
 
     @Override

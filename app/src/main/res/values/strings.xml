@@ -36,4 +36,5 @@
     <string name="no_net_tip">连接不上网络啦～</string>
     <string name="no_qa_tip">还没有提过问题哦～</string>
     <string name="visit_count">%1$s人看过</string>
+    <string name="qa_detail_title">问题详情</string>
 </resources>

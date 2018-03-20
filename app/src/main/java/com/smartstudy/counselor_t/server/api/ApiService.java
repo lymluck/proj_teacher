@@ -145,4 +145,11 @@ public interface ApiService {
     @POST()
     Observable<ResponseInfo> postAnswerVoice(@HeaderMap Map<String, String> header,@Url() String url, @Body RequestBody Body);
 
+    /**
+     *用户注销
+     */
+    @GET(HttpUrlUtils.URL_MY_ANSWER)
+    Observable<ResponseInfo> getMyQuestion(@HeaderMap Map<String, String> header,@QueryMap Map<String, String> params);
+
+
 }

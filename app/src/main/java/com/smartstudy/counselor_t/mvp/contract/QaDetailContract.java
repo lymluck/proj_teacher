@@ -18,6 +18,8 @@ public interface QaDetailContract {
 
         void getQaDetails(QaDetailInfo data);
 
+        void getQaDetailFail(String message);
+
         void postAnswerSuccess();
     }
 
