@@ -75,7 +75,7 @@ public class BaseModel {
         Map<String, String> params = new HashMap<>();
         params.put("User-Agent", AppUtils.getUserAgent(AppUtils.getAndroidUserAgent(BaseApplication.getInstance())) + " Store/"
                 + "xxd");
-        params.put("x-smartsa-uid", DeviceUtils.getIdentifier());
+        params.put("x-smartsa-uid", DeviceUtils.getUniquePsuedoID());
         params.put("x-smartsa-push-reg-id", JPushInterface.getRegistrationID(BaseApplication.appContext));
         String ticket = (String) SPCacheUtils.get("ticket", ConstantUtils.CACHE_NULL);
         if (!TextUtils.isEmpty(ticket) && !ConstantUtils.CACHE_NULL.equals(ticket)) {

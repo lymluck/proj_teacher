@@ -275,7 +275,7 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
                     @Override
                     public void onProgress(int progress) {
                         if (progress < 100) {
-                            Message msg = myHandler.obtainMessage();
+                            Message msg = Message.obtain();
                             msg.what = ParameterUtils.FLAG_UPDATE;
                             msg.arg1 = progress;
                             myHandler.sendMessage(msg);
@@ -285,7 +285,7 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
                     @Override
                     public void onFinish(final String path) {
                         apk_path = path;
-                        Message msg = myHandler.obtainMessage();
+                        Message msg = Message.obtain();
                         msg.what = ParameterUtils.MSG_WHAT_FINISH;
                         myHandler.sendMessage(msg);
                     }

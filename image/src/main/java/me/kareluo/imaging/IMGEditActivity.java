@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import me.kareluo.imaging.core.IMGMode;
 import me.kareluo.imaging.core.IMGText;
@@ -28,7 +29,7 @@ public class IMGEditActivity extends IMGEditBaseActivity {
     private static final int MAX_WIDTH = 1024;
     private static final int MAX_HEIGHT = 1024;
 
-    private String[] items = {"发送给朋友", "保存图片"};
+    private List<String> items;
     private File mImageFile = null;
     public static final int REQUEST_SHARE = 10;
     public static final int REQUEST_EDIT = 11;
@@ -178,24 +179,31 @@ public class IMGEditActivity extends IMGEditBaseActivity {
 
 
     public void showOptDialog() {
+        items.add("发送给朋友");
+        items.add("保存图片");
         OptionsPopupDialog dialog = OptionsPopupDialog.newInstance(this, items).setOptionsPopupDialogListener(new OptionsPopupDialog.OnOptionsItemClickedListener() {
             @Override
             public void onOptionsItemClicked(int var1) {
                 writeToFile();
                 if (mImageFile != null) {
-                    if (items[var1].equals("发送给朋友")) {
-                        Router.build("MsgShareActivity")
-                                .with("type", "image")
-                                .with("uri", Uri.fromFile(mImageFile)).requestCode(REQUEST_SHARE).go(IMGEditActivity.this);
-                    } else {
-                        Bitmap bitmap = BitmapFactory.decodeFile(mImageFile.getPath());
-                        boolean isSaveSuccess = ImgUtils.saveImageToGallery(IMGEditActivity.this, bitmap);
-                        if (isSaveSuccess) {
-                            Toast.makeText(IMGEditActivity.this, "保存图片成功", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(IMGEditActivity.this, "保存图片失败，请稍后重试", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
+                    switch (var1) {
+                        case 0:
+                            Router.build("MsgShareActivity")
+                                    .with("type", "image")
+                                    .with("uri", Uri.fromFile(mImageFile)).requestCode(REQUEST_SHARE).go(IMGEditActivity.this);
+                            break;
+                        case 1:
+                            Bitmap bitmap = BitmapFactory.decodeFile(mImageFile.getPath());
+                            boolean isSaveSuccess = ImgUtils.saveImageToGallery(IMGEditActivity.this, bitmap);
+                            if (isSaveSuccess) {
+                                Toast.makeText(IMGEditActivity.this, "保存图片成功", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(IMGEditActivity.this, "保存图片失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            break;
+                        default:
+                            break;
                     }
                 }
             }

@@ -212,7 +212,7 @@ public class VersionUpdateService extends Service implements DownloadFileContrac
         presenter.downloadFile(app.getDownLoadUrl(), fileDir, fileName, new OnDownloadFileListener<File>() {
             @Override
             public void onErr(String msg) {
-                Message message = mHandler.obtainMessage();
+                Message message = Message.obtain();
                 message.obj = msg;
                 message.what = ParameterUtils.MSG_WHAT_ERR;
                 mHandler.sendMessage(message);
