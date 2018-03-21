@@ -14,6 +14,7 @@ import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
 import com.smartstudy.counselor_t.mvp.contract.QaListContract;
 import com.smartstudy.counselor_t.mvp.model.QuestionsModel;
+import com.smartstudy.counselor_t.util.DisplayImageUtils;
 import com.smartstudy.counselor_t.util.Utils;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public class QuestionsPresenter extends BasePresenterImpl<QaListContract.View> i
     }
 
     @Override
-    public void getQuestions( int page, final int request_state) {
+    public void getQuestions(int page, final int request_state) {
         questionsModel.getQuestions(page, new ObserverListener<String>() {
             @Override
             public void onSubscribe(Disposable disposable) {
@@ -50,22 +51,17 @@ public class QuestionsPresenter extends BasePresenterImpl<QaListContract.View> i
 
             @Override
             public void onNext(String result) {
+                int subCount = 0;
                 DataListInfo dataListInfo = JSON.parseObject((String) result, DataListInfo.class);
                 List<QuestionInfo> data = JSON.parseArray(dataListInfo.getData(), QuestionInfo.class);
-                dataListInfo = null;
-//                QuestionInfo questionInfo = new QuestionInfo();
-//                questionInfo.setAnswerCount(2);
-//                questionInfo.setContent("测试问题：天有多高？");
-//                questionInfo.setCreateTime("2017-05-02");
-//                QuestionInfo.Asker answerer = new QuestionInfo.Asker();
-//                answerer.setAvatar("https://bkd-media.smartstudy.com/user/avatar/default/c1/96/c196d8a6bc7b1685bef28f7c8bb140984692.jpg");
-//                answerer.setName("小明");
-//                questionInfo.setAsker(answerer);
-//                data.add(questionInfo);
+                if (JSON.parseObject(dataListInfo.getMeta()).containsKey("totalSubQuestionCountToMe")) {
+                    subCount = JSON.parseObject(dataListInfo.getMeta()).getIntValue("totalSubQuestionCountToMe");
+                }
                 if (data != null) {
-                    view.getQuestionsSuccess(data, request_state);
+                    view.getQuestionsSuccess(subCount, data, request_state);
                     data = null;
                 }
+                dataListInfo = null;
             }
 
             @Override
@@ -75,59 +71,6 @@ public class QuestionsPresenter extends BasePresenterImpl<QaListContract.View> i
         });
     }
 
-    @Override
-    public void getMyQuestions(int page, final int request_state) {
-        questionsModel.getMyQuestions(page, new ObserverListener<String>() {
-            @Override
-            public void onSubscribe(Disposable disposable) {
-                addDisposable(disposable);
-            }
-
-            @Override
-            public void onNext(String result) {
-                DataListInfo dataListInfo = JSON.parseObject(result, DataListInfo.class);
-                List<QuestionInfo> data = JSON.parseArray(dataListInfo.getData(), QuestionInfo.class);
-                dataListInfo = null;
-                if (data != null) {
-                    view.getQuestionsSuccess(data, request_state);
-                    data = null;
-                }
-            }
-
-            @Override
-            public void onError(String msg) {
-                view.showTip(msg);
-            }
-        });
-    }
-
-    @Override
-    public void getSchoolQa(String schoolId, int page, final int request_state) {
-
-        questionsModel.getSchoolQa(schoolId, page, new ObserverListener<String>() {
-            @Override
-            public void onSubscribe(Disposable disposable) {
-                addDisposable(disposable);
-            }
-
-            @Override
-            public void onNext(String result) {
-                DataListInfo dataListInfo = JSON.parseObject(result, DataListInfo.class);
-                List<QuestionInfo> data = JSON.parseArray(dataListInfo.getData(), QuestionInfo.class);
-                dataListInfo = null;
-                if (data != null) {
-                    view.getQuestionsSuccess(data, request_state);
-                    data = null;
-                }
-            }
-
-            @Override
-            public void onError(String msg) {
-                view.showTip(msg);
-            }
-        });
-
-    }
 
     @Override
     public void showLoading(Context context, View emptyView) {
@@ -142,7 +85,7 @@ public class QuestionsPresenter extends BasePresenterImpl<QaListContract.View> i
             emptyView.findViewById(R.id.llyt_err).setVisibility(View.GONE);
             ImageView iv_loading = (ImageView) emptyView.findViewById(R.id.iv_loading);
             iv_loading.setVisibility(View.VISIBLE);
-//            DisplayImageUtils.displayGif(context, R.drawable.gif_data_loading, iv_loading);
+            DisplayImageUtils.displayGif(context, R.drawable.gif_data_loading, iv_loading);
         }
         view.showEmptyView(emptyView);
         context = null;

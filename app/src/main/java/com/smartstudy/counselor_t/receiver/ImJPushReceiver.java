@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.smartstudy.counselor_t.entity.TotalSubQuestion;
 import com.smartstudy.counselor_t.ui.activity.LoginActivity;
 import com.smartstudy.counselor_t.ui.activity.QaDetailActivity;
 import com.smartstudy.counselor_t.util.ParameterUtils;
@@ -16,6 +17,7 @@ import com.smartstudy.router.RouteCallback;
 import com.smartstudy.router.RouteResult;
 import com.smartstudy.router.Router;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -41,6 +43,7 @@ public class ImJPushReceiver extends BroadcastReceiver {
             Log.d(TAG, "[ImJPushReceiver] onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
             try {
                 String extra = bundle.getString(JPushInterface.EXTRA_EXTRA);
+                Log.w("kim", "---->" + extra);
                 if (extra != null) {
                     objExtra = new JSONObject(extra);
                 }
@@ -60,6 +63,7 @@ public class ImJPushReceiver extends BroadcastReceiver {
                 Log.d(TAG, "[ImJPushReceiver] 接收到推送下来的通知");
                 int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
                 Log.d(TAG, "[ImJPushReceiver] 接收到推送下来的通知的ID: " + notifactionId);
+                handleReceiveMessage(context, objExtra);
 
             } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
                 Log.d(TAG, "[ImJPushReceiver] 用户点击打开了通知");
@@ -115,8 +119,17 @@ public class ImJPushReceiver extends BroadcastReceiver {
         return sb.toString();
     }
 
+    private void handleReceiveMessage(Context context, JSONObject objExtra) {
+        //处理推送的追问数量
+        if (objExtra != null) {
+            int totalSubQuestionCount = objExtra.optInt("totalSubQuestionCount");
+            EventBus.getDefault().post(new TotalSubQuestion(totalSubQuestionCount));
+        }
+    }
+
     //send msg to MainActivity
     private void processCustomMessage(Context context, Bundle bundle) {
+
 //		if (MainActivity.isForeground) {
 //			String message = bundle.getString(JPushInterface.EXTRA_MESSAGE);
 //			String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
@@ -151,7 +164,7 @@ public class ImJPushReceiver extends BroadcastReceiver {
                         if (!TextUtils.isEmpty(questinId)) {
                             Intent intent = new Intent();
                             intent.putExtra("id", questinId);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             intent.setClass(context, QaDetailActivity.class);
                             context.startActivity(intent);
                         }

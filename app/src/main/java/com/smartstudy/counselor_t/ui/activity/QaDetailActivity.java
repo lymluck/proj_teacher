@@ -68,6 +68,9 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
     private SwipeRefreshLayout swipeRefreshLayout;
 
+    private LinearLayout ll_student;
+
+    QaDetailInfo detailInfo;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -104,6 +107,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
             }
         });
 
+        ll_student.setOnClickListener(this);
 
         iv_speak.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,8 +118,8 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
                     case R.drawable.rc_audio_toggle:
                         iv_speak.setImageResource(R.drawable.rc_keyboard);
                         iv_speak.setTag(R.drawable.rc_keyboard);
-                        KeyBoardUtils.closeKeybord(etAnswer, QaDetailActivity.this);
                         ll_speak.setVisibility(View.VISIBLE);
+                        KeyBoardUtils.closeKeybord(etAnswer, QaDetailActivity.this);
                         break;
                     case R.drawable.rc_keyboard:
                         iv_speak.setImageResource(R.drawable.rc_audio_toggle);
@@ -188,6 +192,8 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
         recyclerView = findViewById(R.id.rv_qa);
 
+        ll_student = findViewById(R.id.ll_student);
+
         swipeRefreshLayout = findViewById(R.id.srlt_qa);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.app_main_color));
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -204,7 +210,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
                 .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.bg_home_search).build());
-
+        recyclerView.setFocusable(false);
         initAdapter();
         if (!TextUtils.isEmpty(questionId)) {
             presenter.getQaDetails(questionId);
@@ -228,6 +234,16 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
                 finish();
                 break;
 
+
+            case R.id.ll_student:
+                if (detailInfo != null && detailInfo.getAsker() != null) {
+                    Intent intentStudent = new Intent();
+                    intentStudent.putExtra("ids", detailInfo.getAsker().getId());
+                    intentStudent.setClass(this, StudentInfoActivity.class);
+                    startActivity(intentStudent);
+                }
+                break;
+
             case R.id.iv_audio:
                 Intent intent = new Intent();
                 intent.putExtra("question_id", questionId);
@@ -247,6 +263,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
     @Override
     public void getQaDetails(QaDetailInfo data) {
         swipeRefreshLayout.setRefreshing(false);
+        this.detailInfo = data;
         if (data.getAsker() != null) {
             DisplayImageUtils.displayCircleImagePerson(getApplicationContext(), data.getAsker().getAvatar(), ivAsker);
             tvAskerName.setText(data.getAsker().getName());
@@ -268,7 +285,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
     @Override
     public void getQaDetailFail(String message) {
-        ToastUtils.shortToast(this,message);
+        ToastUtils.shortToast(this, message);
         swipeRefreshLayout.setRefreshing(false);
     }
 

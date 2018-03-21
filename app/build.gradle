@@ -56,6 +56,7 @@ dependencies {
     compile rootProject.ext.dependencies.support
     compile rootProject.ext.dependencies.glide
     annotationProcessor rootProject.ext.dependencies.glideprocessor
+    compile rootProject.ext.dependencies.nineoldandroids
     compile project(':imkit')
     compile project(':imlib')
     compile project(':image')

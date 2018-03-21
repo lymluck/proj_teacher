@@ -77,6 +77,7 @@ public class MyQaFragment extends UIFragment<MyQaFragmentContract.Presenter> imp
     public void onResume() {
         super.onResume();
 
+        getMyQa(ParameterUtils.PULL_DOWN);
     }
 
     @Override
@@ -236,14 +237,23 @@ public class MyQaFragment extends UIFragment<MyQaFragmentContract.Presenter> imp
 
     @Override
     public void getQuestionsSuccess(int subCount, List<QuestionInfo> data, int request_state) {
-        TextView tvSubCount = myQaActivity.getSubCountTextView();
-        if (subCount == 0) {
-            tvSubCount.setVisibility(View.GONE);
-        } else {
-            if (subCount < 100) {
-                tvSubCount.setText(subCount + "");
+        if (myQaActivity != null) {
+            TextView tvSubCount = myQaActivity.getSubCountTextView();
+            if (subCount == 0) {
+                tvSubCount.setVisibility(View.GONE);
             } else {
-                tvSubCount.setText("99+");
+                tvSubCount.setVisibility(View.VISIBLE);
+                if (subCount < 100) {
+                    if (subCount < 10) {
+                        tvSubCount.setBackgroundResource(R.drawable.bg_circle_answer_count);
+                    } else {
+                        tvSubCount.setBackgroundResource(R.drawable.bg_count_answer);
+                    }
+                    tvSubCount.setText(subCount + "");
+                } else {
+                    tvSubCount.setBackgroundResource(R.drawable.bg_count_answer);
+                    tvSubCount.setText("99+");
+                }
             }
         }
         if (presenter != null) {

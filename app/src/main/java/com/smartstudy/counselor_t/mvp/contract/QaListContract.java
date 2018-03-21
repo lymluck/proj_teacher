@@ -16,7 +16,7 @@ public interface QaListContract {
 
     interface View extends BaseView{
 
-        void getQuestionsSuccess(List<QuestionInfo> data, int request_state);
+        void getQuestionsSuccess(int subCount,List<QuestionInfo> data, int request_state);
 
         void showEmptyView(android.view.View view);
     }
@@ -24,10 +24,6 @@ public interface QaListContract {
     interface Presenter extends BasePresenter {
 
         void getQuestions(int page, int request_state);
-
-        void getMyQuestions(int page, int request_state);
-
-        void getSchoolQa(String schoolId, int page, int request_state);
 
         void showLoading(Context context, android.view.View emptyView);
 

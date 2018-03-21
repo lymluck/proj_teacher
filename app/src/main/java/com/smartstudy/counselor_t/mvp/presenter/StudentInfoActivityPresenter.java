@@ -53,8 +53,8 @@ public class StudentInfoActivityPresenter extends BasePresenterImpl<StudentActiv
             public void onNext(String s) {
                 StudentPageInfo studentPageInfo = JSON.parseObject(s, StudentPageInfo.class);
                 if (studentPageInfo != null) {
-                    String cacheUrl = DisplayImageUtils.formatImgUrl(studentPageInfo.getAvatar(), 90, 90);
-                    RongIM.getInstance().refreshUserInfoCache(new UserInfo(studentPageInfo.getImUserId(), studentPageInfo.getName(), TextUtils.isEmpty(cacheUrl) ? null : Uri.parse(cacheUrl)));
+//                    String cacheUrl = DisplayImageUtils.formatImgUrl(studentPageInfo.getAvatar(), 90, 90);
+//                    RongIM.getInstance().refreshUserInfoCache(new UserInfo(studentPageInfo.getImUserId(), studentPageInfo.getName(), TextUtils.isEmpty(cacheUrl) ? null : Uri.parse(cacheUrl)));
                     view.getStudentInfoDetailSuccess(studentPageInfo);
                 }
             }

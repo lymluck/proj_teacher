@@ -7,10 +7,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smartstudy.counselor_t.R;
+import com.smartstudy.counselor_t.entity.ItemOnClick;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
+import com.smartstudy.counselor_t.entity.TotalSubQuestion;
 import com.smartstudy.counselor_t.mvp.contract.MyQaActivityContract;
 import com.smartstudy.counselor_t.mvp.presenter.MyQaActivityPresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
@@ -21,6 +24,10 @@ import com.smartstudy.counselor_t.util.ConstantUtils;
 import com.smartstudy.counselor_t.util.ParameterUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
 import com.smartstudy.counselor_t.util.Utils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import io.rong.imkit.RongIM;
 
@@ -40,11 +47,14 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
     private MyQaFragment myFragment;
     private TextView tv_subcount;
 
+    private ImageView user_icon;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         state = savedInstanceState;
         setContentView(R.layout.activity_qa_list);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -67,6 +77,7 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
 
         all_answer = findViewById(R.id.all_answer);
         my_answer = findViewById(R.id.my_answer);
+        user_icon = findViewById(R.id.user_icon);
 
         String ticket = (String) SPCacheUtils.get("ticket", ConstantUtils.CACHE_NULL);
         if (!TextUtils.isEmpty(ticket) && ConstantUtils.CACHE_NULL.equals(ticket)) {
@@ -88,6 +99,7 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
     public void initEvent() {
         all_answer.setOnClickListener(this);
         my_answer.setOnClickListener(this);
+        user_icon.setOnClickListener(this);
     }
 
     @Override
@@ -104,7 +116,7 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.topdefault_rightbutton:
+            case R.id.user_icon:
                 startActivity(new Intent(this, MyInfoDetailActivity.class));
                 break;
 
@@ -216,6 +228,28 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
     }
 
 
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void onDataSynEvent(TotalSubQuestion totalSubQuestion) {
+        if (totalSubQuestion != null) {
+            if (totalSubQuestion.getTotalSubQuestionCount() == 0) {
+                tv_subcount.setVisibility(View.GONE);
+            } else {
+                tv_subcount.setVisibility(View.VISIBLE);
+                if (totalSubQuestion.getTotalSubQuestionCount() < 100) {
+                    if (totalSubQuestion.getTotalSubQuestionCount() < 10) {
+                        tv_subcount.setBackgroundResource(R.drawable.bg_circle_answer_count);
+                    } else {
+                        tv_subcount.setBackgroundResource(R.drawable.bg_count_answer);
+                    }
+                    tv_subcount.setText(totalSubQuestion.getTotalSubQuestionCount() + "");
+                } else {
+                    tv_subcount.setBackgroundResource(R.drawable.bg_count_answer);
+                    tv_subcount.setText("99+");
+                }
+            }
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -225,6 +259,7 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
         if (state != null) {
             state = null;
         }
+        EventBus.getDefault().unregister(this);
     }
 
     public TextView getSubCountTextView() {

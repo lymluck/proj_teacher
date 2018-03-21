@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -58,6 +59,7 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
     private String photoSaveName = null;// 图片名
     private String selected_path = null;
     private boolean isImage = false;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +68,13 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
         setTopLineVisibility(View.VISIBLE);
         setLeftImgVisible(View.INVISIBLE);
         setTitle("完善个人信息");
+        swipeRefreshLayout = findViewById(R.id.srl_person);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.getAuditResult();
+            }
+        });
     }
 
     @Override
@@ -168,6 +177,7 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
 
     @Override
     public void showAuditResult(TeacherInfo teacherInfo) {
+        swipeRefreshLayout.setRefreshing(false);
         if (teacherInfo.getStatus() == 2) {
             //更新融云
             String imUserId = (String) SPCacheUtils.get("imUserId", "");

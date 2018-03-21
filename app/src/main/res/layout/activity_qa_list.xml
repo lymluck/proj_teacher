@@ -4,7 +4,9 @@
     android:background="@color/main_bg"
     android:orientation="vertical">
 
-    <include layout="@layout/layout_qa_title" />
+    <include
+        android:id="@+id/layout_qa_title"
+        layout="@layout/layout_qa_title" />
 
     <FrameLayout
         android:id="@+id/flyt_qa"

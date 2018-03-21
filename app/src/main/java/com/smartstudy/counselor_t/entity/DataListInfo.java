@@ -8,7 +8,7 @@ public class DataListInfo {
 
     private PaginationInfo pagination;
     private String data;
-    private Meta meta;
+    private String meta;
 
     public PaginationInfo getPagination() {
         return pagination;
@@ -26,11 +26,11 @@ public class DataListInfo {
         this.data = data;
     }
 
-    public Meta getMeta() {
+    public String getMeta() {
         return meta;
     }
 
-    public void setMeta(Meta meta) {
+    public void setMeta(String meta) {
         this.meta = meta;
     }
 

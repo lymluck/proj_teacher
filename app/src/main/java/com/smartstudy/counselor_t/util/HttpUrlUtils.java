@@ -120,7 +120,7 @@ public class HttpUrlUtils {
 
             case "master":
                 SERVER = "https://slx.smartstudy.com/api/";
-//                SERVER = "http://slx.staging.smartstudy.com/api/";
+//                SERVER = "http://slx.sta ging.smartstudy.com/api/";
                 break;
             case "test":
 //               SERVER = "https://slx.smartstudy.com/api/";

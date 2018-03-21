@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.DataListInfo;
 import com.smartstudy.counselor_t.entity.QuestionInfo;
@@ -56,11 +57,15 @@ public class MyQaFragmentPresenter extends BasePresenterImpl<MyQaFragmentContrac
 
             @Override
             public void onNext(String result) {
+                int subCount = 0;
                 DataListInfo dataListInfo = JSON.parseObject(result, DataListInfo.class);
                 List<QuestionInfo> data = JSON.parseArray(dataListInfo.getData(), QuestionInfo.class);
+                if (JSON.parseObject(dataListInfo.getMeta()).containsKey("totalSubQuestionCountToMe")) {
+                    subCount = JSON.parseObject(dataListInfo.getMeta()).getIntValue("totalSubQuestionCountToMe");
+                }
                 dataListInfo = null;
                 if (data != null) {
-                    view.getQuestionsSuccess(dataListInfo.getMeta().getTotalSubQuestionCountToMe(), data, request_state);
+                    view.getQuestionsSuccess(subCount, data, request_state);
                     data = null;
                 }
             }

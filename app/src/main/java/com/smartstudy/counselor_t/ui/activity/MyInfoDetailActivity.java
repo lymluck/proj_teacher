@@ -33,6 +33,7 @@ public class MyInfoDetailActivity extends BaseActivity<MainActivityContract.Pres
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qa_list);
+        findViewById(R.id.layout_qa_title).setVisibility(View.GONE);
     }
 
     @Override

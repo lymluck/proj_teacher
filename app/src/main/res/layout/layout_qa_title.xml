@@ -14,9 +14,9 @@
             android:id="@+id/llyt_tab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginLeft="98dp"
             android:layout_marginRight="98dp"
-            android:layout_gravity="center"
             android:alpha="0.8"
             android:background="@drawable/bg_study_consultants_border14"
             android:orientation="horizontal">
@@ -41,11 +41,11 @@
                 android:id="@+id/my_answer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:background="@drawable/bg_study_consultans_select_border14"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
-                android:layout_weight="1"
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp"
                 android:text="我的回答"
@@ -56,19 +56,34 @@
 
         <TextView
             android:id="@+id/tv_subcount"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:background="@drawable/bg_circle_answer_count"
-            android:gravity="center"
             android:layout_marginRight="90dp"
-            android:text="5"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/bg_count_answer"
+            android:gravity="center"
+            android:minHeight="18dp"
+            android:minWidth="18dp"
             android:textColor="@color/white"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/user_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|right"
+            android:clickable="true"
+            android:paddingLeft="@dimen/app_top_right_btn_marginleftright"
+            android:paddingRight="@dimen/app_top_right_btn_marginright"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_my_info"
+            android:transitionName="btn_tr" />
     </FrameLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="#E4E5E6"/>
+        android:background="#E4E5E6" />
 </LinearLayout>
