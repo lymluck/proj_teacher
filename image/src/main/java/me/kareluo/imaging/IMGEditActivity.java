@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import me.kareluo.imaging.core.IMGMode;
@@ -140,6 +141,10 @@ public class IMGEditActivity extends IMGEditBaseActivity {
     @Override
     public void onDoneClick() {
         if (getIntent().getBooleanExtra("showDialog", true)) {
+            if (items == null) {
+                items = new ArrayList<>();
+            }
+            items.clear();
             showOptDialog();
         } else {
             writeToFile();

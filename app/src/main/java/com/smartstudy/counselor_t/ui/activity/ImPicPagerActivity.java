@@ -51,6 +51,7 @@ public class ImPicPagerActivity extends PicturePagerActivity {
 
     private String qrCodeUrl;
     private OptionsPopupDialog mDialog;
+    private List<String> items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +73,10 @@ public class ImPicPagerActivity extends PicturePagerActivity {
         //识别图片中是否有二维码
         new MyTask(this, file).execute();
         //弹出菜单选项
-        List<String> items = new ArrayList<>();
+        if (items == null) {
+            items = new ArrayList<>();
+        }
+        items.clear();
         items.add("发送给朋友");
         items.add(this.getString(io.rong.imkit.R.string.rc_save_picture));
         items.add("编辑图片");
