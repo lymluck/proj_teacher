@@ -67,9 +67,16 @@ public class QaDetailAdapter extends RecyclerView.Adapter<QaDetailAdapter.MyView
         this.notifyDataSetChanged();
     }
 
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        EventBus.getDefault().register(this);//订阅
+    }
+
     public QaDetailAdapter(Context context) {
         this.mContext = context;
-        EventBus.getDefault().register(this);//订阅
+
     }
 
     @NonNull
@@ -232,5 +239,12 @@ public class QaDetailAdapter extends RecyclerView.Adapter<QaDetailAdapter.MyView
                 imageView.setImageResource(R.drawable.sound_icon);
             }
         }
+    }
+
+
+    @Override
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+        EventBus.getDefault().unregister(this);
     }
 }

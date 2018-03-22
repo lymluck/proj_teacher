@@ -71,8 +71,13 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
     }
 
     public QadetailAnswerItemAdapter(Context context) {
-        EventBus.getDefault().register(this);//订阅
         this.mContext = context;
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        EventBus.getDefault().register(this);
     }
 
     @NonNull
@@ -88,7 +93,7 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
     public void onBindViewHolder(@NonNull final QadetailAnswerItemAdapter.MyViewHolder holder, final int position) {
         final Answerer.Comments comments = mDatas.get(position);
         if (comments.getCommentType().equals("subQuestion")) {
-            String question = "<font color='#FF9C08'>" + "追问 @" + answerName + "</font>" + ": " + (comments.getContent()==null?"":comments.getContent());
+            String question = "<font color='#FF9C08'>" + "追问 @" + answerName + "</font>" + ": " + (comments.getContent() == null ? "" : comments.getContent());
             holder.tv_detail_answer.setText(Html.fromHtml(TextBrHandle.parseContent(question)));
             holder.ll_voice.setVisibility(View.GONE);
         } else {
@@ -98,7 +103,7 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
                 holder.ll_voice.setVisibility(View.VISIBLE);
                 holder.tv_voice_time.setText(comments.getVoiceDuration());
             } else {
-                String answer = "回复<font color='#078CF1'>" + " @" + askName + "</font>" + ": " +(comments.getContent()==null?"":comments.getContent());
+                String answer = "回复<font color='#078CF1'>" + " @" + askName + "</font>" + ": " + (comments.getContent() == null ? "" : comments.getContent());
                 holder.tv_detail_answer.setText(Html.fromHtml(TextBrHandle.parseContent(answer)));
                 holder.ll_voice.setVisibility(View.GONE);
             }
@@ -145,7 +150,7 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
                         }
 
                     } else {
-                        isPlaying=true;
+                        isPlaying = true;
                         animationDrawable.stop();
                         audioRecorder.playStop();
                         if (imageView != null) {
@@ -207,6 +212,7 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onDataSynEvent(ItemOnClick event) {
+        Log.w("kim", "wode item");
         if (event.getItemWhere().equals("firstItem") || event.getItemWhere().equals("Qa")) {
             isPlayingUri = null;
             if (animationDrawable != null) {
@@ -223,4 +229,10 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
         }
     }
 
+
+    @Override
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+        EventBus.getDefault().unregister(this);
+    }
 }

@@ -319,7 +319,6 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
     @Override
     protected void onDestroy() {
-        EventBus.getDefault().unregister(this);//解除订阅
         if (recyclerView != null) {
             recyclerView.removeAllViews();
             recyclerView = null;
