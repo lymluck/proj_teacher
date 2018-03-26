@@ -104,7 +104,7 @@ public class MyInfoDetailActivity extends BaseActivity<MainActivityContract.Pres
     private void showNormalDialog() {
         final AlertDialog.Builder normalDialog =
                 new AlertDialog.Builder(this);
-        normalDialog.setMessage("确定要退出登陆吗?");
+        normalDialog.setMessage("确定要退出登录吗?");
         normalDialog.setPositiveButton("确定",
                 new DialogInterface.OnClickListener() {
                     @Override

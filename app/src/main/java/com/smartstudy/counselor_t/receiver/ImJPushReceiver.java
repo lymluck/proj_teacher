@@ -43,7 +43,6 @@ public class ImJPushReceiver extends BroadcastReceiver {
             Log.d(TAG, "[ImJPushReceiver] onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
             try {
                 String extra = bundle.getString(JPushInterface.EXTRA_EXTRA);
-                Log.w("kim", "---->" + extra);
                 if (extra != null) {
                     objExtra = new JSONObject(extra);
                 }

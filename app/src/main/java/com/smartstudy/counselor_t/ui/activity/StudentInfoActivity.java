@@ -168,6 +168,8 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
 
         rv_school.setAdapter(mAdapter);
 
+        rv_school.setNestedScrollingEnabled(false);
+
         rv_school.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
                 .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.horizontal_line_color).build());
 
