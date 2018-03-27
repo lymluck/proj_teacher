@@ -70,6 +70,12 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
     private LinearLayout ll_student;
 
+    private TextView tv_location;
+
+    private TextView tv_platform;
+
+    private TextView tv_schoolName;
+
     QaDetailInfo detailInfo;
 
     @Override
@@ -194,6 +200,12 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
         ll_student = findViewById(R.id.ll_student);
 
+        tv_location = findViewById(R.id.tv_location);
+
+        tv_platform = findViewById(R.id.tv_platform);
+
+        tv_schoolName = findViewById(R.id.tv_schoolName);
+
         swipeRefreshLayout = findViewById(R.id.srlt_qa);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.app_main_color));
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -280,6 +292,28 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         } else {
             answer.setText("暂时还没有人回答哦，快来抢答吧！");
         }
+
+        if (TextUtils.isEmpty(data.getUserLocation())) {
+            tv_location.setVisibility(View.GONE);
+        } else {
+            tv_location.setVisibility(View.VISIBLE);
+            tv_location.setText(data.getUserLocation());
+        }
+
+        if (TextUtils.isEmpty(data.getPlatform())) {
+            tv_platform.setVisibility(View.GONE);
+        } else {
+            tv_platform.setVisibility(View.VISIBLE);
+            tv_platform.setText(data.getPlatform());
+        }
+
+        if (TextUtils.isEmpty(data.getSchoolName())) {
+            tv_schoolName.setVisibility(View.GONE);
+        } else {
+            tv_schoolName.setVisibility(View.VISIBLE);
+            tv_schoolName.setText(data.getSchoolName());
+        }
+
         data = null;
     }
 

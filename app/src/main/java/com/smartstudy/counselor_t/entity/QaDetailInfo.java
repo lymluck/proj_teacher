@@ -35,6 +35,36 @@ public class QaDetailInfo {
 
     private int collectedCount;
 
+    private String platform;
+
+    private String userLocation;
+
+    private String schoolName;
+
+    public String getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(String platform) {
+        this.platform = platform;
+    }
+
+    public String getUserLocation() {
+        return userLocation;
+    }
+
+    public void setUserLocation(String userLocation) {
+        this.userLocation = userLocation;
+    }
+
+    public String getSchoolName() {
+        return schoolName;
+    }
+
+    public void setSchoolName(String schoolName) {
+        this.schoolName = schoolName;
+    }
+
     private List<Answerer> answers;
 
     public String getId() {

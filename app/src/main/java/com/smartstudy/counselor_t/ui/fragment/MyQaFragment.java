@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -185,6 +186,28 @@ public class MyQaFragment extends UIFragment<MyQaFragmentContract.Presenter> imp
                         answerCounnt.setTextColor(Color.parseColor("#949BA1"));
                         holder.getView(R.id.v_cricle).setVisibility(View.GONE);
                     }
+                }
+
+                if (TextUtils.isEmpty(questionInfo.getUserLocation())) {
+                    holder.getView(R.id.tv_location).setVisibility(View.GONE);
+                } else {
+                    holder.getView(R.id.tv_location).setVisibility(View.VISIBLE);
+                    holder.setText(R.id.tv_location, questionInfo.getUserLocation());
+                }
+
+                if (TextUtils.isEmpty(questionInfo.getPlatform())) {
+                    holder.getView(R.id.tv_platform).setVisibility(View.GONE);
+                } else {
+                    holder.getView(R.id.tv_platform).setVisibility(View.VISIBLE);
+                    holder.setText(R.id.tv_platform, questionInfo.getPlatform());
+                }
+
+
+                if (TextUtils.isEmpty(questionInfo.getSchoolName())) {
+                    holder.getView(R.id.tv_schoolName).setVisibility(View.GONE);
+                } else {
+                    holder.getView(R.id.tv_schoolName).setVisibility(View.VISIBLE);
+                    holder.setText(R.id.tv_schoolName, questionInfo.getSchoolName());
                 }
             }
 

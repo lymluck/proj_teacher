@@ -33,9 +33,54 @@
                 android:id="@+id/tv_asker_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:maxWidth="100dp"
                 android:paddingLeft="8dp"
                 android:textColor="@color/app_text_color2"
                 android:textSize="14sp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tv_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="4dp"
+                android:background="@drawable/bg_location_border2"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:maxWidth="70dp"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_platform"
+                android:layout_width="32dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="4dp"
+                android:background="@drawable/bg_sorce_from_border2"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_schoolName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_school_border2"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:maxWidth="110dp"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:visibility="gone" />
         </LinearLayout>
 
 
