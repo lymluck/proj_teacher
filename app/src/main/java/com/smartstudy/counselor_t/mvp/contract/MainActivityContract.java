@@ -17,6 +17,11 @@ public interface MainActivityContract {
         void getAuditResult(TeacherInfo teacherInfo);
 
         void getLogOutSuccess();
+
+        void updateable(String downUrl, String version, String des);
+
+        void forceUpdate(String downUrl, String version, String des);
+
     }
 
     interface Presenter extends BasePresenter {
@@ -24,5 +29,8 @@ public interface MainActivityContract {
         void getAuditResult();
 
         void getLogOut();
+
+        void checkVersion();
+
     }
 }

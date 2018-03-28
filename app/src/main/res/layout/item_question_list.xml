@@ -47,8 +47,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_weight="1"
                 android:textColor="@color/app_text_color2"
-                android:textSize="@dimen/app_text_size3"
-                android:textStyle="bold" />
+                android:textSize="@dimen/app_text_size3" />
 
             <TextView
                 android:id="@+id/tv_create_time"
@@ -101,7 +100,7 @@
 
                 <TextView
                     android:id="@+id/tv_platform"
-                    android:layout_width="32dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="4dp"
                     android:background="@drawable/bg_sorce_from_border2"

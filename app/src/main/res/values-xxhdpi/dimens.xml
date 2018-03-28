@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="qa_title_padding_left">108dp</dimen>
+    <dimen name="qa_title_padding_right">108dp</dimen>
+    <dimen name="qa_title_circle_padding_right">100dp</dimen>
+</resources>

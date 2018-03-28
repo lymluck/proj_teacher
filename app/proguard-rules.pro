@@ -73,6 +73,8 @@
 -keep class com.google.gson.** {*;}
 -keep class com.google.protobuf.** {*;}
 
+-keep class com.smartstudy.counselor_t.entity.**{*;} # 自定义数据模型的bean目录
+
 -keepattributes *Annotation*
 -keepclassmembers class ** {
     @org.greenrobot.eventbus.Subscribe <methods>;
@@ -83,3 +85,4 @@
 -keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
     <init>(java.lang.Throwable);
 }
+

@@ -11,7 +11,9 @@ import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.mvp.base.BasePresenter;
 import com.smartstudy.counselor_t.mvp.contract.MainActivityContract;
+import com.smartstudy.counselor_t.mvp.contract.MyInfoDetailContract;
 import com.smartstudy.counselor_t.mvp.presenter.MainActivityPresenter;
+import com.smartstudy.counselor_t.mvp.presenter.MyInfoDetailPresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.ui.fragment.MyFragment;
 import com.smartstudy.counselor_t.ui.fragment.QaFragment;
@@ -28,7 +30,7 @@ import io.rong.imkit.RongIM;
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */
-public class MyInfoDetailActivity extends BaseActivity<MainActivityContract.Presenter> implements MainActivityContract.View {
+public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Presenter> implements MyInfoDetailContract.View {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,8 +39,8 @@ public class MyInfoDetailActivity extends BaseActivity<MainActivityContract.Pres
     }
 
     @Override
-    public MainActivityContract.Presenter initPresenter() {
-        return new MainActivityPresenter(this);
+    public MyInfoDetailContract.Presenter initPresenter() {
+        return new MyInfoDetailPresenter(this);
     }
 
     @Override

@@ -19,13 +19,14 @@ import com.smartstudy.zbar.zxing.QRCodeDecoder;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.rong.common.FileUtils;
 import io.rong.imageloader.core.ImageLoader;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.activity.PicturePagerActivity;
 import io.rong.imkit.tools.RongWebviewActivity;
-import io.rong.imkit.utilities.OptionsPopupDialog;
 import io.rong.imlib.IRongCallback;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
@@ -33,6 +34,7 @@ import io.rong.imlib.model.Message;
 import io.rong.message.ImageMessage;
 import io.rong.message.TextMessage;
 import me.kareluo.imaging.IMGEditActivity;
+import me.kareluo.imaging.view.OptionsPopupDialog;
 
 import static me.kareluo.imaging.IMGEditActivity.REQUEST_EDIT;
 import static me.kareluo.imaging.IMGEditActivity.REQUEST_SHARE;
@@ -46,6 +48,10 @@ import static me.kareluo.imaging.IMGEditActivity.REQUEST_SHARE;
  */
 
 public class ImPicPagerActivity extends PicturePagerActivity {
+
+    private String qrCodeUrl;
+    private OptionsPopupDialog mDialog;
+    private List<String> items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +70,17 @@ public class ImPicPagerActivity extends PicturePagerActivity {
         } else {
             file = ImageLoader.getInstance().getDiskCache().get(largeImageUri.toString());
         }
-        String[] items = new String[]{"发送给朋友", this.getString(io.rong.imkit.R.string.rc_save_picture), "编辑图片"};
-        OptionsPopupDialog dialog = OptionsPopupDialog.newInstance(this, items).setOptionsPopupDialogListener(new OptionsPopupDialog.OnOptionsItemClickedListener() {
+        //识别图片中是否有二维码
+        new MyTask(this, file).execute();
+        //弹出菜单选项
+        if (items == null) {
+            items = new ArrayList<>();
+        }
+        items.clear();
+        items.add("发送给朋友");
+        items.add(this.getString(io.rong.imkit.R.string.rc_save_picture));
+        items.add("编辑图片");
+        mDialog = OptionsPopupDialog.newInstance(this, items).setOptionsPopupDialogListener(new OptionsPopupDialog.OnOptionsItemClickedListener() {
             @Override
             public void onOptionsItemClicked(int which) {
                 switch (which) {
@@ -81,13 +96,17 @@ public class ImPicPagerActivity extends PicturePagerActivity {
                         startActivityForResult(new Intent(ImPicPagerActivity.this, IMGEditActivity.class)
                                 .putExtra("uri", Uri.fromFile(file)), REQUEST_EDIT);
                         break;
+                    case 3:
+                        //跳转到result这个url
+                        startActivity(new Intent(ImPicPagerActivity.this, RongWebviewActivity.class)
+                                .putExtra("url", qrCodeUrl));
+                        break;
                     default:
                         break;
                 }
             }
         });
-        dialog.show();
-        new MyTask(this, file, dialog).execute();
+        mDialog.show();
         return true;
     }
 
@@ -112,12 +131,10 @@ public class ImPicPagerActivity extends PicturePagerActivity {
     static class MyTask extends AsyncTask<String, Integer, String> {
         private WeakReference<ImPicPagerActivity> weakAty;
         private File mFile;
-        private OptionsPopupDialog mDialog;
 
-        public MyTask(ImPicPagerActivity activity, File file, OptionsPopupDialog dialog) {
+        public MyTask(ImPicPagerActivity activity, File file) {
             weakAty = new WeakReference<>(activity);
             mFile = file;
-            mDialog = dialog;
         }
 
         @Override
@@ -128,37 +145,10 @@ public class ImPicPagerActivity extends PicturePagerActivity {
         @Override
         protected void onPostExecute(final String result) {
             if (!TextUtils.isEmpty(result)) {
-                if (mDialog != null && mDialog.isShowing()) {
-                    final ImPicPagerActivity mActivity = weakAty.get();
-                    String[] items = new String[]{"发送给朋友", mActivity.getString(io.rong.imkit.R.string.rc_save_picture), "编辑图片", mActivity.getString(R.string.open_qrcode)};
-                    OptionsPopupDialog.newInstance(mActivity, items).setOptionsPopupDialogListener(new OptionsPopupDialog.OnOptionsItemClickedListener() {
-                        @Override
-                        public void onOptionsItemClicked(int which) {
-                            switch (which) {
-                                case 0:
-                                    Router.build("MsgShareActivity").with("uri", Uri.fromFile(mFile))
-                                            .with("type", "image")
-                                            .requestCode(REQUEST_SHARE).go(mActivity);
-                                    break;
-                                case 1:
-                                    savePic(mFile);
-                                    break;
-                                case 2:
-                                    mActivity.startActivityForResult(new Intent(mActivity, IMGEditActivity.class)
-                                            .putExtra("uri", Uri.parse("file://" + mFile.getAbsolutePath())), REQUEST_EDIT);
-                                    break;
-                                case 3:
-                                    //跳转到result这个url
-                                    mActivity.startActivity(new Intent(mActivity, RongWebviewActivity.class)
-                                            .putExtra("url", result));
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                    }).show();
-                    mDialog.dismiss();
-                }
+                ImPicPagerActivity mActivity = weakAty.get();
+                mActivity.qrCodeUrl = result;
+                mActivity.mDialog.addItem(mActivity.getString(R.string.open_qrcode));
+                mActivity.mDialog.refreshItem();
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.smartstudy.counselor_t.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -87,8 +88,8 @@ public class DisplayImageUtils {
     }
 
     public static void displayCircleImage(Context context, String url, ImageView view) {
-        GlideApp.with(context).load(url).circleCrop().diskCacheStrategy(DiskCacheStrategy.DATA).placeholder(R.drawable.ic_photo_image)
-                .error(R.drawable.ic_photo_image)
+        GlideApp.with(context).load(url).circleCrop().diskCacheStrategy(DiskCacheStrategy.DATA).placeholder(R.drawable.ic_circleimg_default)
+                .error(R.drawable.ic_circleimg_default)
                 .dontAnimate().into(view);
     }
 

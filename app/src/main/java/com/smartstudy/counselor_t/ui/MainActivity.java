@@ -1,26 +1,43 @@
 package com.smartstudy.counselor_t.ui;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.smartstudy.counselor_t.R;
+import com.smartstudy.counselor_t.app.BaseApplication;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
+import com.smartstudy.counselor_t.handler.WeakHandler;
+import com.smartstudy.counselor_t.listener.OnProgressListener;
 import com.smartstudy.counselor_t.mvp.contract.MainActivityContract;
 import com.smartstudy.counselor_t.mvp.presenter.MainActivityPresenter;
+import com.smartstudy.counselor_t.service.VersionUpdateService;
 import com.smartstudy.counselor_t.ui.activity.FillPersonActivity;
 import com.smartstudy.counselor_t.ui.activity.LoginActivity;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
+import com.smartstudy.counselor_t.ui.dialog.AppBasicDialog;
+import com.smartstudy.counselor_t.ui.dialog.DialogCreator;
 import com.smartstudy.counselor_t.ui.fragment.MyFragment;
 import com.smartstudy.counselor_t.ui.fragment.QaFragment;
 import com.smartstudy.counselor_t.ui.widget.DragPointView;
@@ -28,6 +45,8 @@ import com.smartstudy.counselor_t.util.ConstantUtils;
 import com.smartstudy.counselor_t.util.IMUtils;
 import com.smartstudy.counselor_t.util.ParameterUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
+import com.smartstudy.counselor_t.util.ScreenUtils;
+import com.smartstudy.counselor_t.util.Utils;
 import com.smartstudy.counselor_t.util.ToastUtils;
 import com.smartstudy.counselor_t.util.Utils;
 
@@ -44,6 +63,18 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
         MainActivityContract.View, ViewPager.OnPageChangeListener {
     private FragmentManager mfragmentManager;
     private ConversationListFragment mConversationListFragment = null;
+    private int update_type;
+    private AppBasicDialog updateDialog;
+    private String apk_path;
+    private WeakHandler myHandler;
+    private boolean isBinded;
+    private VersionUpdateService.DownloadBinder binder;
+    private Button updateBtn;
+    private TextView updateTitle;
+
+    private ProgressBar progressbar;
+    private TextView tv_progress;
+    private boolean isDestroy = true;
     public static ViewPager mViewPager;
     private List<Fragment> mFragment = new ArrayList<>();
     private ImageView xxdChatImage, xxdQaImage, xxdMeImage;
@@ -133,11 +164,35 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
                 }
             }
         }, Conversation.ConversationType.PRIVATE);
+        if (!BaseApplication.getInstance().isDownload()) {
+            presenter.checkVersion();
+        }
     }
-
 
     @Override
     public void initEvent() {
+        super.initEvent();
+        myHandler = new WeakHandler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                switch (msg.what) {
+                    case ParameterUtils.FLAG_UPDATE:
+                        progressbar.setProgress(msg.arg1);
+                        tv_progress.setText(msg.arg1 + "%");
+                        break;
+                    case ParameterUtils.MSG_WHAT_FINISH:
+                        progressbar.setProgress(100);
+                        tv_progress.setText("100%");
+                        updateBtn.setVisibility(View.VISIBLE);
+                        updateBtn.setText("安装");
+                        updateTitle.setText("立即安装");
+                        break;
+                    default:
+                        break;
+                }
+                return false;
+            }
+        });
         chatRLayout.setOnClickListener(this);
         answerRLayout.setOnClickListener(this);
         meRLayout.setOnClickListener(this);
@@ -145,6 +200,7 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
         mUnreadNumView.setOnClickListener(this);
         mUnreadNumView.setDragListencer(this);
     }
+
 
     @Override
     public void onClick(View v) {
@@ -187,7 +243,39 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
     @Override
     protected void onResume() {
         super.onResume();
+        //继续下载apk
+        if (isDestroy && BaseApplication.getInstance().isDownload()) {
+            Intent it = new Intent(MainActivity.this, VersionUpdateService.class);
+            startService(it);
+            bindService(it, conn, Context.BIND_AUTO_CREATE);
+        }
         imConnect();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        isDestroy = false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (updateDialog != null) {
+            updateDialog.dismiss();
+            updateDialog = null;
+        }
+        if (myHandler != null) {
+            myHandler = null;
+        }
+        if (isBinded) {
+            unbindService(conn);
+        }
+        if (binder != null && binder.isCanceled()) {
+            Intent it = new Intent(this, VersionUpdateService.class);
+            stopService(it);
+            binder = null;
+        }
     }
 
     private void imConnect() {
@@ -203,19 +291,6 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
                 IMUtils.reGetToken();
             }
         }
-    }
-
-    private void unReadMessage() {
-        RongIM.getInstance().getTotalUnreadCount(new RongIMClient.ResultCallback<Integer>() {
-            @Override
-            public void onSuccess(Integer integer) {
-                setTitle(String.format(getString(R.string.msg_unread), integer + ""));
-            }
-
-            @Override
-            public void onError(RongIMClient.ErrorCode errorCode) {
-            }
-        });
     }
 
     private ConversationListFragment initConversationList() {
@@ -251,6 +326,124 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
                 finish();
             }
         }
+    }
+
+    /**
+     * 连接版本下载service
+     */
+    ServiceConnection conn = new ServiceConnection() {
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            isBinded = false;
+        }
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            binder = (VersionUpdateService.DownloadBinder) service;
+            // 开始下载
+            isBinded = true;
+            binder.start(update_type);
+            if (update_type == ParameterUtils.FLAG_UPDATE_NOW) {
+                updateBtn = updateDialog.findViewById(R.id.dialog_base_confirm_btn);
+                updateTitle = updateDialog.findViewById(R.id.dialog_base_title_tv);
+                updateBtn.setVisibility(View.GONE);
+                updateDialog.findViewById(R.id.dialog_base_text_tv).setVisibility(View.GONE);
+                updateDialog.findViewById(R.id.llyt_progress).setVisibility(View.VISIBLE);
+                updateTitle.setText("开始更新");
+                binder.setOnProgressListener(new OnProgressListener() {
+                    @Override
+                    public void onStart() {
+                    }
+
+                    @Override
+                    public void onProgress(int progress) {
+                        if (progress < 100) {
+                            Message msg = Message.obtain();
+                            msg.what = ParameterUtils.FLAG_UPDATE;
+                            msg.arg1 = progress;
+                            myHandler.sendMessage(msg);
+                        }
+                    }
+
+                    @Override
+                    public void onFinish(final String path) {
+                        apk_path = path;
+                        Message msg = Message.obtain();
+                        msg.what = ParameterUtils.MSG_WHAT_FINISH;
+                        myHandler.sendMessage(msg);
+                    }
+                });
+            }
+        }
+    };
+
+    @Override
+    public void updateable(final String downUrl, final String lastVersion, String des) {
+        update_type = ParameterUtils.FLAG_UPDATE;
+        //提示当前有版本更新
+        String isToUpdate = (String) SPCacheUtils.get("isToUpdate", "");
+        if ("".equals(isToUpdate) || "yes".equals(isToUpdate)) {
+            updateDialog = DialogCreator.createAppBasicDialog(this, getString(R.string.version_update), des,
+                    getString(R.string.update_vs_now), getString(R.string.not_update), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            switch (v.getId()) {
+                                case R.id.positive_btn:
+                                    BaseApplication.getInstance().setDownload(true);
+                                    BaseApplication.getInstance().setDownLoadUrl(downUrl);
+                                    //开始下载
+                                    Intent it = new Intent(MainActivity.this, VersionUpdateService.class);
+                                    it.putExtra("version", lastVersion);
+                                    startService(it);
+                                    bindService(it, conn, Context.BIND_AUTO_CREATE);
+                                    updateDialog.dismiss();
+                                    break;
+                                case R.id.negative_btn:
+                                    SPCacheUtils.put("isToUpdate", "no");
+                                    updateDialog.dismiss();
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    });
+            ((TextView) updateDialog.findViewById(R.id.dialog_info)).setGravity(Gravity.CENTER_VERTICAL);
+            WindowManager.LayoutParams p = updateDialog.getWindow().getAttributes();
+            p.width = (int) (ScreenUtils.getScreenWidth() * 0.85);
+            updateDialog.getWindow().setAttributes(p);
+            updateDialog.show();
+        }
+    }
+
+    @Override
+    public void forceUpdate(final String downUrl, final String lastVersion, String des) {
+        update_type = ParameterUtils.FLAG_UPDATE_NOW;
+        String title = getString(R.string.update_vs_now);
+        updateDialog = DialogCreator.createBaseCustomDialog(MainActivity.this, title, des, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (apk_path != null) {
+                    Utils.installApk(getApplicationContext(), apk_path);
+                } else {
+                    BaseApplication.getInstance().setDownload(true);
+                    BaseApplication.getInstance().setDownLoadUrl(downUrl);
+                    //开始下载
+                    Intent it = new Intent(MainActivity.this, VersionUpdateService.class);
+                    it.putExtra("version", lastVersion);
+                    startService(it);
+                    bindService(it, conn, Context.BIND_AUTO_CREATE);
+                }
+            }
+        });
+        progressbar = updateDialog.findViewById(R.id.progressbar);
+        tv_progress = updateDialog.findViewById(R.id.tv_progress);
+        updateDialog.findViewById(R.id.dialog_base_confirm_btn).setBackgroundResource(R.drawable.bg_btn_wm_lrb_radius);
+        ((TextView) updateDialog.findViewById(R.id.dialog_base_text_tv)).setGravity(Gravity.CENTER_VERTICAL);
+        WindowManager.LayoutParams p = updateDialog.getWindow().getAttributes();
+        p.width = (int) (ScreenUtils.getScreenWidth() * 0.85);
+        updateDialog.getWindow().setAttributes(p);
+        updateDialog.show();
     }
 
     private void changeTextViewColor() {
@@ -358,4 +551,18 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
             }
         }, mConversationsTypes);
     }
+
+    private void unReadMessage() {
+        RongIM.getInstance().getTotalUnreadCount(new RongIMClient.ResultCallback<Integer>() {
+            @Override
+            public void onSuccess(Integer integer) {
+                setTitle(String.format(getString(R.string.msg_unread), integer + ""));
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+            }
+        });
+    }
+
 }

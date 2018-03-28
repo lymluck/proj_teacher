@@ -54,4 +54,10 @@
     <dimen name="app_text_size6">10sp</dimen>  <!-- 结果页文字大小 -->
     <!-- 收藏页时间文字大小 -->
     <dimen name="app_text_size7">11sp</dimen>
+
+
+    <dimen name="qa_title_padding_left">98dp</dimen>
+    <dimen name="qa_title_padding_right">98dp</dimen>
+    <dimen name="qa_title_circle_padding_right">90dp</dimen>
+
 </resources>

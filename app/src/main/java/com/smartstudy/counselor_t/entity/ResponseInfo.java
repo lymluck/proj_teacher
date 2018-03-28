@@ -42,10 +42,14 @@ public class ResponseInfo {
 
     @Override
     public String toString() {
-        return "ResponseInfo{" +
-                "code='" + code + '\'' +
-                ", data='" + data + '\'' +
-                ", msg='" + msg + '\'' +
-                '}';
+        final StringBuilder sb = new StringBuilder("{");
+        sb.append("\"code\":\"")
+                .append(code).append('\"');
+        sb.append(",\"data\":\"")
+                .append(data).append('\"');
+        sb.append(",\"msg\":\"")
+                .append(msg).append('\"');
+        sb.append('}');
+        return sb.toString();
     }
 }

@@ -452,7 +452,7 @@ public class Utils {
                 cookieManager.setCookie(url, "xxd_ticket=" + SPCacheUtils.get("ticket", ""));
                 cookieManager.setCookie(url, "ss_user=" + SPCacheUtils.get("ss_user", ""));
             }
-            cookieManager.setCookie(url, "xxd_uid=" + DeviceUtils.getIdentifier());
+            cookieManager.setCookie(url, "xxd_uid=" + DeviceUtils.getUniquePsuedoID());
         }
     }
 

@@ -28,6 +28,12 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class BaseModel {
 
+    protected Observable fileObservalbe(Observable observable) {
+        return observable.subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
     protected void apiSubscribe(Observable observable, final ObserverListener listener) {
         observable.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
@@ -54,6 +60,7 @@ public class BaseModel {
                     public void onError(Throwable e) {
                         Log.d("err======", e.getMessage());
                         if (!TextUtils.isEmpty(e.getMessage())) {
+                            Log.d("err======", e.getMessage());
                             listener.onError(e.getMessage());
                         }
                     }
@@ -69,7 +76,7 @@ public class BaseModel {
         Map<String, String> params = new HashMap<>();
         params.put("User-Agent", AppUtils.getUserAgent(AppUtils.getAndroidUserAgent(BaseApplication.getInstance())) + " Store/"
                 + "xxd");
-        params.put("x-smartsa-uid", DeviceUtils.getIdentifier());
+        params.put("x-smartsa-uid", DeviceUtils.getUniquePsuedoID());
         params.put("x-smartsa-push-reg-id", JPushInterface.getRegistrationID(BaseApplication.appContext));
         String ticket = (String) SPCacheUtils.get("ticket", ConstantUtils.CACHE_NULL);
         if (!TextUtils.isEmpty(ticket) && !ConstantUtils.CACHE_NULL.equals(ticket)) {

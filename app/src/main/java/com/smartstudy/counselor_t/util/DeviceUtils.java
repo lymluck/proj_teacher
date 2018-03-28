@@ -10,6 +10,8 @@ import android.telephony.TelephonyManager;
 
 import com.smartstudy.counselor_t.app.BaseApplication;
 
+import java.util.UUID;
+
 
 /**
  * 获取设备信息
@@ -42,19 +44,25 @@ public class DeviceUtils {
      *
      * @return
      */
-    public static String getIdentifier() {
-        String id;
-        TelephonyManager mTelephony = (TelephonyManager) BaseApplication.appContext.getSystemService(Context.TELEPHONY_SERVICE);
-        if (ActivityCompat.checkSelfPermission(BaseApplication.appContext, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-            id = "";
+    public static String getUniquePsuedoID() {
+        String serial = null;
+        String m_szDevIDShort = "35" +
+                Build.BOARD.length() % 10 + Build.BRAND.length() % 10 +
+                Build.CPU_ABI.length() % 10 + Build.DEVICE.length() % 10 +
+                Build.DISPLAY.length() % 10 + Build.HOST.length() % 10 +
+                Build.ID.length() % 10 + Build.MANUFACTURER.length() % 10 +
+                Build.MODEL.length() % 10 + Build.PRODUCT.length() % 10 +
+                Build.TAGS.length() % 10 + Build.TYPE.length() % 10 +
+                Build.USER.length() % 10; //13 位
+        try {
+            serial = android.os.Build.class.getField("SERIAL").get(null).toString();
+            //API>=9 使用serial号
+            return new UUID(m_szDevIDShort.hashCode(), serial.hashCode()).toString();
+        } catch (Exception exception) {
+            //serial需要一个初始化
+            serial = "serial";
         }
-        if (mTelephony.getDeviceId() != null) {
-            id = mTelephony.getDeviceId();
-        } else {
-            //android.provider.Settings;
-            id = Settings.Secure.getString(BaseApplication.appContext.getContentResolver(), Settings.Secure.ANDROID_ID);
-        }
-        return id;
+        return new UUID(m_szDevIDShort.hashCode(), serial.hashCode()).toString();
     }
 
     /**

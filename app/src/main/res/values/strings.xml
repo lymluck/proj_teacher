@@ -20,7 +20,10 @@
     <string name="picture_max">最多只能同时上传9张图片</string>
     <string name="move_and_zoom">移动和缩放</string>
     <string name="picture_load_failure">图片加载失败</string>
+    <string name="page_empty_tip">抱歉，没有相关数据哦～</string>
+    <string name="no_net_tip">连接不上网络啦～</string>
     <string name="no_search_tip">抱歉，没有找到你想要的内容哦～</string>
+    <string name="search">搜索</string>
     <string name="login">登录</string>
     <string name="login_now">您还未登录，立即登录？</string>
     <string name="send_to">发送给：</string>
@@ -31,9 +34,9 @@
     <string name="loginout_msg">你的账号已在其他设备上登录，是否重新登录？</string>
     <string name="blocked_msg">你的账号已被禁用，如有疑问请联系管理员！</string>
     <string name="refused_msg">你的信息审核未通过！</string>
-    <string name="page_empty_tip">抱歉，没有相关数据哦～</string>
-    <string name="search">搜索</string>
-    <string name="no_net_tip">连接不上网络啦～</string>
+    <string name="update_vs_now">立即更新</string>
+    <string name="not_update">以后再说</string>
+    <string name="version_update">版本更新</string>
     <string name="no_qa_tip">还没有提过问题哦～</string>
     <string name="visit_count">%1$s人看过</string>
     <string name="qa_detail_title">问题详情</string>

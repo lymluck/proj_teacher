@@ -31,7 +31,6 @@ import com.smartstudy.counselor_t.handler.WeakHandler;
 import com.smartstudy.counselor_t.listener.SoftKeyBoardListener;
 import com.smartstudy.counselor_t.mvp.contract.LoginActivityContract;
 import com.smartstudy.counselor_t.mvp.presenter.LoginAcitivityPresenter;
-import com.smartstudy.counselor_t.ui.MainActivity;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.ui.widget.EditTextWithClear;
 import com.smartstudy.counselor_t.util.AppUtils;
@@ -58,7 +57,7 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
     private FrameLayout flt_logo;
     private List<View> list = null;
     private boolean isSelected = false;
-    private boolean isDebug = AppUtils.isApkInDebug(this);
+    private boolean isDebug = AppUtils.isApkInDebug();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
