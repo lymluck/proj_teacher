@@ -93,12 +93,6 @@ public class DisplayImageUtils {
                 .dontAnimate().into(view);
     }
 
-    public static void displayCircleImagePerson(Context context, String url, ImageView view) {
-        GlideApp.with(context).load(url).circleCrop().diskCacheStrategy(DiskCacheStrategy.DATA).placeholder(R.drawable.ic_photo_image)
-                .error(R.drawable.ic_circleimg_default)
-                .dontAnimate().into(view);
-    }
-
 
     public static void displayRoundImage(Context context, String url, ImageView view, int radius_dp) {
         GlideApp.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.DATA)

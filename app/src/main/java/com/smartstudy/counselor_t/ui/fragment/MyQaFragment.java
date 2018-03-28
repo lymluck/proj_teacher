@@ -77,8 +77,6 @@ public class MyQaFragment extends UIFragment<MyQaFragmentContract.Presenter> imp
     @Override
     public void onResume() {
         super.onResume();
-
-        getMyQa(ParameterUtils.PULL_DOWN);
     }
 
     @Override

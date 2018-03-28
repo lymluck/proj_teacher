@@ -69,7 +69,6 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
     @Override
     public void onResume() {
         super.onResume();
-        getQa(ParameterUtils.PULL_DOWN);
     }
 
     @Override

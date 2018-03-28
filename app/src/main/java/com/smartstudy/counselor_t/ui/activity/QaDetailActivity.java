@@ -277,7 +277,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         swipeRefreshLayout.setRefreshing(false);
         this.detailInfo = data;
         if (data.getAsker() != null) {
-            DisplayImageUtils.displayCircleImagePerson(getApplicationContext(), data.getAsker().getAvatar(), ivAsker);
+            DisplayImageUtils.formatPersonImgUrl(getApplicationContext(), data.getAsker().getAvatar(), ivAsker);
             tvAskerName.setText(data.getAsker().getName());
             tvAskerTime.setText(data.getCreateTimeText());
             tvQuestion.setText(data.getContent());

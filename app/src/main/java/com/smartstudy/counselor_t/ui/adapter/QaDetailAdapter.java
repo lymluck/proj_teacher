@@ -91,7 +91,7 @@ public class QaDetailAdapter extends RecyclerView.Adapter<QaDetailAdapter.MyView
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
         final Answerer entity = (Answerer) answerers.get(position);
         holder.tv_answer_time.setText(entity.getCreateTimeText());
-        DisplayImageUtils.displayCircleImagePerson(mContext, entity.getCommenter().getAvatar(), holder.ivAssignee);
+        DisplayImageUtils.formatPersonImgUrl(mContext, entity.getCommenter().getAvatar(), holder.ivAssignee);
         holder.tv_assignee.setText(entity.getCommenter().getName());
         holder.tvAnswer.setText(entity.getContent());
         if (entity.getVoiceUrl() != null) {
