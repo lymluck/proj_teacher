@@ -219,10 +219,9 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
             btPostInfo.setBackgroundResource(R.drawable.bg_submit_review_blue);
         }
 
-        DisplayImageUtils.displayCircleImage(this, "", ivPhoto);
         if (!TextUtils.isEmpty(teacherInfo.getAvatar()) && photoFile == null) {
             isImage = true;
-            DisplayImageUtils.displayCircleImage(this, teacherInfo.getAvatar(), ivAvatar);
+            DisplayImageUtils.formatPersonImgUrl(this, teacherInfo.getAvatar(), ivAvatar);
         }
         if (!TextUtils.isEmpty(teacherInfo.getName()) && TextUtils.isEmpty(getNickName())) {
             tv_nick_name.setText(teacherInfo.getName());

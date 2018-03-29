@@ -46,7 +46,7 @@ public class MyQaFragment extends UIFragment<MyQaFragmentContract.Presenter> imp
     private SwipeRefreshLayout swipeRefreshLayout;
     private CommonAdapter<QuestionInfo> mAdapter;
     private LoadMoreWrapper<QuestionInfo> loadMoreWrapper;
-    private EmptyWrapper<SchoolInfo> emptyWrapper;
+    private EmptyWrapper<QuestionInfo> emptyWrapper;
     private NoScrollLinearLayoutManager mLayoutManager;
     private View emptyView;
 
@@ -278,6 +278,7 @@ public class MyQaFragment extends UIFragment<MyQaFragmentContract.Presenter> imp
             }
         }
         if (presenter != null) {
+            presenter.setEmptyView(mActivity, emptyView);
             mLayoutManager.setScrollEnabled(true);
             int len = data.size();
             if (request_state == ParameterUtils.PULL_DOWN) {

@@ -19,7 +19,7 @@ public interface MyQaFragmentContract {
 
     interface View extends BaseView {
 
-        void getQuestionsSuccess(int subCount,List<QuestionInfo> data, int request_state);
+        void getQuestionsSuccess(int subCount, List<QuestionInfo> data, int request_state);
 
         void showEmptyView(android.view.View view);
     }
@@ -30,6 +30,6 @@ public interface MyQaFragmentContract {
 
         void showLoading(Context context, android.view.View emptyView);
 
-        void setEmptyView(Context context, android.view.View emptyView, String flag);
+        void setEmptyView(Context context, android.view.View emptyView);
     }
 }

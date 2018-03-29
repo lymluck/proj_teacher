@@ -1,6 +1,7 @@
 package com.smartstudy.counselor_t.mvp.presenter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -101,15 +102,13 @@ public class MyQaFragmentPresenter extends BasePresenterImpl<MyQaFragmentContrac
     }
 
     @Override
-    public void setEmptyView(Context context, View emptyView, String flag) {
+    public void setEmptyView(Context context, View emptyView) {
         emptyView.findViewById(R.id.llyt_err).setVisibility(View.VISIBLE);
         emptyView.findViewById(R.id.iv_loading).setVisibility(View.GONE);
         ImageView iv_err = (ImageView) emptyView.findViewById(R.id.iv_err);
         TextView tv_err_tip = (TextView) emptyView.findViewById(R.id.tv_err_tip);
-        if (!"list".equals(flag)) {
-            iv_err.setImageResource(R.drawable.ic_no_question);
-            tv_err_tip.setText(context.getString(R.string.no_qa_tip));
-        }
+        iv_err.setImageResource(R.drawable.ic_no_question);
+        tv_err_tip.setText("还没有回答过问题哦");
         view.showEmptyView(emptyView);
         context = null;
         emptyView = null;
