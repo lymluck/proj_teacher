@@ -76,20 +76,6 @@ public class AudioRecordView extends LinearLayout implements View.OnClickListene
         });
 
 
-        mAudioRecorder.playComplete(new AudioRecorder.PlayComplete() {
-            @Override
-            public void playComplete() {
-                recordState = RECORD_COMPLETE;
-                iv_audio.setImageResource(R.drawable.icon_audio_play);
-                tv_again_audio.setVisibility(VISIBLE);
-                tv_send.setVisibility(VISIBLE);
-                tv_title.setTextColor(Color.parseColor("#949BA1"));
-                tv_title.setTextSize(15);
-                mAudioRecorder.playStop();
-                stopTime();
-            }
-        });
-
         tv_send.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,9 +103,7 @@ public class AudioRecordView extends LinearLayout implements View.OnClickListene
 
     @Override
     public void onClick(View view) {
-        if (isFastDoubleClick()) {
-            return;
-        }
+
         switch (recordState) {
             case RECORD_OFF:
                 startRecord();
@@ -146,12 +130,26 @@ public class AudioRecordView extends LinearLayout implements View.OnClickListene
                 i = 0;
                 startTime();
                 iv_audio.setImageResource(R.drawable.icon_audio_stop);
+                mAudioRecorder.playComplete(new AudioRecorder.PlayComplete() {
+                    @Override
+                    public void playComplete() {
+                        recordState = RECORD_COMPLETE;
+                        iv_audio.setImageResource(R.drawable.icon_audio_play);
+                        tv_again_audio.setVisibility(VISIBLE);
+                        tv_send.setVisibility(VISIBLE);
+                        tv_title.setTextColor(Color.parseColor("#949BA1"));
+                        tv_title.setTextSize(15);
+                        mAudioRecorder.playStop();
+                        stopTime();
+                    }
+                });
                 break;
 
             case RECORD_PLAY:
                 mAudioRecorder.playStop();
                 recordState = RECORD_COMPLETE;
                 iv_audio.setImageResource(R.drawable.icon_audio_play);
+                stopTime();
                 break;
 
             default:
@@ -159,7 +157,6 @@ public class AudioRecordView extends LinearLayout implements View.OnClickListene
 
         }
     }
-
 
     public interface SendOnClickListener {
         void sendOnClick(String path);
