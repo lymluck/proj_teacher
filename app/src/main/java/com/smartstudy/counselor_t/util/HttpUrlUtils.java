@@ -19,7 +19,7 @@ public class HttpUrlUtils {
     /**************************** web ***************************/
     public static final String URL_USER_CONTRACT = "/user-agreement.html";  //用户协议
     public static final String URL_POST_ANSWER = "questions/%1$s/answer";//提交追问
-    public static final String URL_MY_ANSWER = "questions/list/answered_by_me";
+    public static final String URL_MY_ANSWER = "questions/list/answered_by_me";//我的问答
 
 
     /*********获取api接口url***********/

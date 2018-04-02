@@ -67,18 +67,14 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
         setLeftImgVisible(View.GONE);
         setTopdefaultLefttextVisible(View.GONE);
         setTitleLineVisible(View.GONE);
-
         setTitle("答疑");
         setRightImg(R.drawable.ic_my_info);
         setRightImgVisible(View.VISIBLE);
-
         setHeadVisible(View.GONE);
         tv_subcount = findViewById(R.id.tv_subcount);
-
         all_answer = findViewById(R.id.all_answer);
         my_answer = findViewById(R.id.my_answer);
         user_icon = findViewById(R.id.user_icon);
-
         String ticket = (String) SPCacheUtils.get("ticket", ConstantUtils.CACHE_NULL);
         if (!TextUtils.isEmpty(ticket) && ConstantUtils.CACHE_NULL.equals(ticket)) {
             startActivity(new Intent(this, LoginActivity.class));

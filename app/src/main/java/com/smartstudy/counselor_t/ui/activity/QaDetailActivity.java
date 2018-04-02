@@ -22,6 +22,7 @@ import com.smartstudy.counselor_t.entity.QaDetailInfo;
 import com.smartstudy.counselor_t.mvp.contract.QaDetailContract;
 import com.smartstudy.counselor_t.mvp.presenter.QaDetailPresenter;
 import com.smartstudy.counselor_t.ui.adapter.QaDetailAdapter;
+import com.smartstudy.counselor_t.ui.adapter.wrapper.HeaderAndFooterWrapper;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.ui.widget.HorizontalDividerItemDecoration;
 import com.smartstudy.counselor_t.ui.widget.NoScrollLinearLayoutManager;
@@ -77,6 +78,10 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
     private TextView tv_schoolName;
 
     QaDetailInfo detailInfo;
+
+    private HeaderAndFooterWrapper mHeader;
+
+    private View headView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -173,39 +178,14 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
     public void initView() {
         Intent data = getIntent();
         questionId = data.getStringExtra("id");
-
         setTitle(getString(R.string.qa_detail_title));
         setTopLineVisibility(View.VISIBLE);
-
         tvPost = findViewById(R.id.tv_post);
-
         etAnswer = findViewById(R.id.et_answer);
-        answer = findViewById(R.id.answer);
-
         iv_audio = findViewById(R.id.iv_audio);
-
         ll_speak = findViewById(R.id.ll_speak);
-
-        ivAsker = findViewById(R.id.iv_asker);
-
-        tvAskerName = findViewById(R.id.tv_asker_name);
-
-        tvQuestion = findViewById(R.id.tv_question);
-
-        tvAskerTime = findViewById(R.id.tv_ask_time);
-
         iv_speak = findViewById(R.id.iv_speak);
-
         recyclerView = findViewById(R.id.rv_qa);
-
-        ll_student = findViewById(R.id.ll_student);
-
-        tv_location = findViewById(R.id.tv_location);
-
-        tv_platform = findViewById(R.id.tv_platform);
-
-        tv_schoolName = findViewById(R.id.tv_schoolName);
-
         swipeRefreshLayout = findViewById(R.id.srlt_qa);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.app_main_color));
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -224,10 +204,27 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
                 .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.bg_home_search).build());
         recyclerView.setFocusable(false);
         initAdapter();
+        initHeaderAndFooter();
         if (!TextUtils.isEmpty(questionId)) {
             presenter.getQaDetails(questionId);
 
         }
+    }
+
+    private void initHeaderAndFooter() {
+        headView = mInflater.inflate(R.layout.layout_question_list, null, false);
+        ll_student = headView.findViewById(R.id.ll_student);
+        ivAsker = headView.findViewById(R.id.iv_asker);
+        tvAskerName = headView.findViewById(R.id.tv_asker_name);
+        tv_location = headView.findViewById(R.id.tv_location);
+        tv_platform = headView.findViewById(R.id.tv_platform);
+        tv_schoolName = headView.findViewById(R.id.tv_schoolName);
+        tvQuestion = headView.findViewById(R.id.tv_question);
+        tvAskerTime = headView.findViewById(R.id.tv_ask_time);
+        answer = headView.findViewById(R.id.answer);
+        mHeader = new HeaderAndFooterWrapper(qaDetailAdapter);
+        mHeader.addHeaderView(headView);
+        recyclerView.setAdapter(mHeader);
     }
 
 

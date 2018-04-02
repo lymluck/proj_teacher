@@ -109,8 +109,8 @@ public class QaDetailAdapter extends RecyclerView.Adapter<QaDetailAdapter.MyView
                 EventBus.getDefault().post(new ItemOnClick("firstItem"));
                 animationDrawable = (AnimationDrawable) mContext.getResources().getDrawable(R.drawable.bg_voice_receive);
                 holder.iv_voice.setImageDrawable(animationDrawable);
-                if (isPlayingUri == null) {
-                    if (audioRecorder != null) {
+                if (audioRecorder != null) {
+                    if (isPlayingUri == null) {
                         isPlaying = true;
                         if (animationDrawable != null && !audioRecorder.isPlaying()) {
                             animationDrawable.start();
@@ -123,46 +123,46 @@ public class QaDetailAdapter extends RecyclerView.Adapter<QaDetailAdapter.MyView
                                 imageView.setImageResource(R.drawable.sound_icon);
                             }
                         }
-                    }
-                } else {
-                    if (positionOnclick == position) {
-                        if (isPlaying) {
-                            isPlaying = false;
+
+                    } else {
+                        if (positionOnclick == position) {
+                            if (isPlaying) {
+                                isPlaying = false;
+                                animationDrawable.stop();
+                                audioRecorder.playStop();
+                                if (imageView != null) {
+                                    imageView.setImageResource(R.drawable.sound_icon);
+                                }
+                            } else {
+                                isPlaying = true;
+                                audioRecorder.playByUri(mContext, entity.getVoiceUrl());
+                                holder.iv_voice.setImageDrawable(animationDrawable);
+                                animationDrawable.start();
+                            }
+
+                        } else {
+                            isPlaying = true;
                             animationDrawable.stop();
                             audioRecorder.playStop();
                             if (imageView != null) {
                                 imageView.setImageResource(R.drawable.sound_icon);
                             }
-                        } else {
-                            isPlaying = true;
-                            audioRecorder.playByUri(mContext, entity.getVoiceUrl());
-                            holder.iv_voice.setImageDrawable(animationDrawable);
                             animationDrawable.start();
+                            audioRecorder.playByUri(mContext, entity.getVoiceUrl());
                         }
 
-                    } else {
-                        isPlaying = true;
-                        animationDrawable.stop();
-                        audioRecorder.playStop();
-                        if (imageView != null) {
-                            imageView.setImageResource(R.drawable.sound_icon);
-                        }
-                        animationDrawable.start();
-                        audioRecorder.playByUri(mContext, entity.getVoiceUrl());
                     }
-
+                    audioRecorder.playComplete(new AudioRecorder.PlayComplete() {
+                        @Override
+                        public void playComplete() {
+                            if (audioRecorder != null) {
+                                animationDrawable.stop();
+                                audioRecorder.playStop();
+                                holder.iv_voice.setImageResource(R.drawable.sound_icon);
+                            }
+                        }
+                    });
                 }
-
-                audioRecorder.playComplete(new AudioRecorder.PlayComplete() {
-                    @Override
-                    public void playComplete() {
-                        if (audioRecorder != null) {
-                            animationDrawable.stop();
-                            audioRecorder.playStop();
-                            holder.iv_voice.setImageResource(R.drawable.sound_icon);
-                        }
-                    }
-                });
                 positionOnclick = position;
                 isPlayingUri = entity.getVoiceUrl();
                 imageView = v.findViewById(R.id.iv_voice);
@@ -232,8 +232,10 @@ public class QaDetailAdapter extends RecyclerView.Adapter<QaDetailAdapter.MyView
             if (animationDrawable != null) {
                 animationDrawable.stop();
             }
-            if (audioRecorder.isPlaying()) {
-                audioRecorder.playStop();
+            if (audioRecorder != null) {
+                if (audioRecorder.isPlaying()) {
+                    audioRecorder.playStop();
+                }
             }
             if (imageView != null) {
                 imageView.setImageResource(R.drawable.sound_icon);
