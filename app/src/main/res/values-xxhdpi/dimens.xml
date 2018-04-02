@@ -3,4 +3,24 @@
     <dimen name="qa_title_padding_left">108dp</dimen>
     <dimen name="qa_title_padding_right">108dp</dimen>
     <dimen name="qa_title_circle_padding_right">100dp</dimen>
+    <dimen name="login_logo_margin_t">70dp</dimen><!--登录页面logo上边距  -->
+    <dimen name="login_logo_wh">80dp</dimen><!--登录页面logo宽高  -->
+    <dimen name="login_edittext_margin_t">75dp</dimen><!--登录页面edittext距logo上边距  -->
+    <dimen name="myinfo_camera_margin_t">-50dp</dimen><!--个人中心页面拍照按钮距顶部外边距  -->
+    <dimen name="item_rightbtnheight">30dp</dimen><!--右边按钮的高度  -->
+    <dimen name="edittext_withclear_paddinglr">10dp</dimen>  <!-- 自定义带清除图标的edittext左右内边距 -->
+    <dimen name="login_btn_margin_t">45dp</dimen><!--登录页面btn上边距  -->
+    <dimen name="login_contract_margin_t">200dp</dimen><!--登录页面协议上边距  -->
+    <dimen name="app_btnh">45dp</dimen>  <!-- 全局按钮高度值-->
+    <dimen name="app_btn_paddingtb">5dp</dimen>  <!-- 全局按钮内上下边距值-->
+    <dimen name="app_btn_margintop">60dp</dimen> <!-- 按钮距顶部高 -->
+    <dimen name="app_textsize">16sp</dimen> <!-- app正文文本大小 -->
+    <dimen name="app_text_size1">17sp</dimen>  <!-- app头部标题文本大小 -->
+    <dimen name="app_text_size2">15sp</dimen>  <!-- 全局表单输入框字体大小 -->
+    <dimen name="app_text_size3">14sp</dimen>  <!-- 全局按钮背景可点击文字字体大小 -->
+    <dimen name="app_text_size4">13sp</dimen>  <!-- 提示文字 -->
+    <dimen name="app_text_size5">12sp</dimen>  <!-- 收藏页时间 -->
+    <dimen name="app_text_size6">10sp</dimen>  <!-- 结果页文字大小 -->
+    <!-- 收藏页时间文字大小 -->
+    <dimen name="app_text_size7">11sp</dimen>
 </resources>

@@ -1,6 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="qa_title_padding_left">98dp</dimen>
-    <dimen name="qa_title_padding_right">98dp</dimen>
-    <dimen name="qa_title_circle_padding_right">90dp</dimen>
 </resources>
