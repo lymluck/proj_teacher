@@ -153,7 +153,7 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
         rv_school = findViewById(R.id.rv_school);
         v_backline = findViewById(R.id.v_backline);
         tv_count_school = findViewById(R.id.tv_count_school);
-
+        rv_school.setNestedScrollingEnabled(false);
         rv_school.setHasFixedSize(true);
 
         mLayoutManager = new NoScrollLinearLayoutManager(this);
