@@ -24,6 +24,7 @@ import com.smartstudy.permissions.AfterPermissionGranted;
 import com.smartstudy.permissions.AppSettingsDialog;
 import com.smartstudy.permissions.Permission;
 import com.smartstudy.permissions.PermissionUtil;
+import com.smartstudy.slideback.SlideBackActivity;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,7 +33,7 @@ import java.util.List;
  * Created by louis on 2017/12/14.
  */
 
-public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements BaseView, View.OnClickListener, PermissionUtil.PermissionCallbacks {
+public abstract class BaseActivity<P extends BasePresenter> extends SlideBackActivity implements BaseView, View.OnClickListener, PermissionUtil.PermissionCallbacks {
 
     private FrameLayout contentView;
     private RelativeLayout rlytTop;
