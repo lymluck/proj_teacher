@@ -1,1 +1,2 @@
-include ':app', ':imlib', ':imkit', ':permissionlib', ':xxdRouter', ':xxdAnnotation', ':buildSrc', ':xxdCompiler', ':image', ':qrcode',':slideback'
+include ':app', ':imlib', ':imkit', ':permissionlib', ':xxdRouter', ':xxdAnnotation'
+include ':buildSrc', ':xxdCompiler', ':image', ':qrcode', ':slideback'
