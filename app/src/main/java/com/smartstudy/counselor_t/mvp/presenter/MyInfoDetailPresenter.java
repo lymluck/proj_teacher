@@ -59,25 +59,5 @@ public class MyInfoDetailPresenter extends BasePresenterImpl<MyInfoDetailContrac
         });
     }
 
-
-    @Override
-    public void getLogOut() {
-        myInfoDetailModel.getLogOut(new ObserverListener<String>() {
-            @Override
-            public void onSubscribe(Disposable disposable) {
-                addDisposable(disposable);
-            }
-
-            @Override
-            public void onNext(String s) {
-                view.getLogOutSuccess();
-            }
-
-            @Override
-            public void onError(String msg) {
-                view.showTip(msg);
-            }
-        });
-    }
 }
 

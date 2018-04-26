@@ -212,7 +212,6 @@ public class QadetailAnswerItemAdapter extends RecyclerView.Adapter<QadetailAnsw
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onDataSynEvent(ItemOnClick event) {
-        Log.w("kim", "wode item");
         if (event.getItemWhere().equals("firstItem") || event.getItemWhere().equals("Qa")) {
             isPlayingUri = null;
             if (animationDrawable != null) {

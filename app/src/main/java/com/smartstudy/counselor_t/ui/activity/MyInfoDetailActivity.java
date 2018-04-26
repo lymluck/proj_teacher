@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
 import com.smartstudy.counselor_t.R;
+import com.smartstudy.counselor_t.entity.ItemOnClick;
+import com.smartstudy.counselor_t.entity.SaveItem;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.mvp.base.BasePresenter;
 import com.smartstudy.counselor_t.mvp.contract.MainActivityContract;
@@ -20,6 +22,8 @@ import com.smartstudy.counselor_t.ui.fragment.QaFragment;
 import com.smartstudy.counselor_t.util.ParameterUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
 import com.smartstudy.counselor_t.util.Utils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import io.rong.imkit.RongIM;
 
@@ -56,9 +60,8 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                 finish();
                 break;
             case R.id.topdefault_righttext:
-                showNormalDialog();
+                EventBus.getDefault().post(new SaveItem());
                 break;
-
             default:
                 break;
         }
@@ -69,10 +72,10 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         setTopdefaultLefttextVisible(View.VISIBLE);
         setLeftImgVisible(View.VISIBLE);
         setTitleLineVisible(View.VISIBLE);
-        setTopdefaultRighttextColor("#949BA1");
+        setTopdefaultRighttextColor("#078CF1");
         setTitle("个人信息");
         setTopdefaultRighttextVisible(View.VISIBLE);
-        setRightTxt("注销");
+        setRightTxt("保存");
         MyFragment myFragment = new MyFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.flyt_qa, myFragment);
@@ -84,45 +87,10 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
 
     }
 
+
     @Override
-    public void getLogOutSuccess() {
-        RongIM.getInstance().logout();
-        SPCacheUtils.put("phone", ParameterUtils.CACHE_NULL);
-        SPCacheUtils.put("name", ParameterUtils.CACHE_NULL);
-        SPCacheUtils.put("avatar", ParameterUtils.CACHE_NULL);
-        SPCacheUtils.put("ticket", ParameterUtils.CACHE_NULL);
-        SPCacheUtils.put("orgId", ParameterUtils.CACHE_NULL);
-        SPCacheUtils.put("title", ParameterUtils.CACHE_NULL);
-        SPCacheUtils.put("imToken", "");
-        SPCacheUtils.put("imUserId", "");
-        Utils.removeCookie(this);
-        Intent to_login = new Intent(this, LoginActivity.class);
-        to_login.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(to_login);
-    }
-
-
-    private void showNormalDialog() {
-        final AlertDialog.Builder normalDialog =
-                new AlertDialog.Builder(this);
-        normalDialog.setMessage("确定要退出登录吗?");
-        normalDialog.setPositiveButton("确定",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        presenter.getLogOut();
-                    }
-                });
-        normalDialog.setNegativeButton("取消",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-        // 显示
-        normalDialog.show();
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }
 

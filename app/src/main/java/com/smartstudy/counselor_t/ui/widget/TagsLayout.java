@@ -2,7 +2,9 @@ package com.smartstudy.counselor_t.ui.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.util.DensityUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +29,7 @@ public class TagsLayout<T> extends ViewGroup {
     private int backgroup;
     private int padingLeftAndRight;
     private int getPadingBottomAndTop;
+    private List<String> tList = new ArrayList<>();
 
     public TagsLayout(Context context) {
         this(context, null);
@@ -44,8 +48,8 @@ public class TagsLayout<T> extends ViewGroup {
             childVerticalSpace = attrArray.getDimensionPixelSize(R.styleable.TagsLayout_tagVerticalSpace, 0);
             childTextColor = attrArray.getColor(R.styleable.TagsLayout_textColor, getResources().getColor(R.color.orange_clor));
             childTextSize = attrArray.getDimension(R.styleable.TagsLayout_textChildSize, DensityUtils.dip2px(11));
-            padingLeftAndRight=attrArray.getDimensionPixelSize(R.styleable.TagsLayout_padding_left_right, 15);
-            getPadingBottomAndTop=attrArray.getDimensionPixelSize(R.styleable.TagsLayout_padding_bottom_top, 0);
+            padingLeftAndRight = attrArray.getDimensionPixelSize(R.styleable.TagsLayout_padding_left_right, 15);
+            getPadingBottomAndTop = attrArray.getDimensionPixelSize(R.styleable.TagsLayout_padding_bottom_top, 0);
             attrArray.recycle();
         }
     }
@@ -162,27 +166,43 @@ public class TagsLayout<T> extends ViewGroup {
         this.backgroup = backgroup;
     }
 
+    public String getTabValue() {
+        String value = "";
+        if (this.tList != null && this.tList.size() > 0) {
+            for (int i = 0; i < tList.size(); i++) {
+                if (!TextUtils.isEmpty(tList.get(i).trim())) {
+                    value += this.tList.get(i) + ",";
+                }
+            }
+        }
+        return value;
+    }
+
     public void createTab(Context context, List<String> tList) {
-        MarginLayoutParams lp = new MarginLayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        if (context != null) {
+            MarginLayoutParams lp = new MarginLayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+            if (this.tList != null) {
+                this.tList.clear();
+            }
+            this.tList.addAll(tList);
+            int j = maxLine == 0 ? tList.size() : maxLine;
+            if (j > tList.size()) {
+                j = tList.size();
+            }
 
-        int j = maxLine == 0 ? tList.size() : maxLine;
-        if (j > tList.size()) {
-            j = tList.size();
+            if (this.getChildCount() > 0) {
+                this.removeAllViews();
+            }
+            for (int i = 0; i < j; i++) {
+                TextView textView = new TextView(context);
+                textView.setText(tList.get(i));
+                textView.setTextColor(childTextColor);
+                textView.setTextSize(DensityUtils.px2sp(childTextSize));
+                textView.setPadding(padingLeftAndRight, getPadingBottomAndTop, padingLeftAndRight, getPadingBottomAndTop);
+                textView.setBackgroundResource(backgroup);
+                this.addView(textView, lp);
+            }
         }
-
-        if (this.getChildCount() > 0) {
-            return;
-        }
-        for (int i = 0; i < j; i++) {
-            TextView textView = new TextView(context);
-            textView.setText(tList.get(i));
-            textView.setTextColor(childTextColor);
-            textView.setTextSize(DensityUtils.px2sp(childTextSize));
-            textView.setPadding(padingLeftAndRight, getPadingBottomAndTop, padingLeftAndRight, getPadingBottomAndTop);
-            textView.setBackgroundResource(backgroup);
-            this.addView(textView, lp);
-        }
-
     }
 
 }

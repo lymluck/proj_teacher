@@ -1,4 +1,4 @@
-package com.smartstudy.commonlib.entity;
+package com.smartstudy.counselor_t.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;

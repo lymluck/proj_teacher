@@ -131,6 +131,8 @@ public class ParameterUtils {
     public static final String EDIT_GJ_EVENT = "edit_gj_event";  //flag
     public static final String EDIT_EG_SCORE = "edit_eg_score";  //flag
     public static final String EDIT_GRE_SCORE = "edit_gre_score";  //flag
+    public static final String WORK_CITY = "work_city";  //flag
+    public static final String WORK_BUSSIENSS = "work_bussienss";  //flag
     public static final String EDIT_SAT_SCORE = "edit_sat_score";  //flag
     public static final String EDIT_WORK_NAME = "edit_work_name";//工作职称
     public static final String EDIT_WORK_EXPERIENCE = "edit_work_experience";//工作经验

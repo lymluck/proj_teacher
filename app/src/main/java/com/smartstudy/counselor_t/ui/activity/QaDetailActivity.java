@@ -285,6 +285,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
             if (qaDetailAdapter != null && data.getAsker() != null) {
                 qaDetailAdapter.setAnswers(data.getAnswers(), data.getAsker().getName());
                 answer.setText("回复");
+                mHeader.notifyDataSetChanged();
             }
         } else {
             answer.setText("暂时还没有人回答哦，快来抢答吧！");

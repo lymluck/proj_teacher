@@ -45,6 +45,33 @@ public class TeacherInfo implements Serializable {
     private String phone;
     private boolean schoolCertified;
     private boolean visible;
+    private String workingCityKey;
+    private String adeptWorksKey;
+    private String introduction;
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
+    }
+
+    public String getWorkingCityKey() {
+        return workingCityKey;
+    }
+
+    public void setWorkingCityKey(String workingCityKey) {
+        this.workingCityKey = workingCityKey;
+    }
+
+    public String getAdeptWorksKey() {
+        return adeptWorksKey;
+    }
+
+    public void setAdeptWorksKey(String adeptWorksKey) {
+        this.adeptWorksKey = adeptWorksKey;
+    }
 
     public int getStatus() {
         return status;

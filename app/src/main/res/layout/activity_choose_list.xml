@@ -7,9 +7,7 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <include layout="@layout/app_top_default" />
-
-    <com.smartstudy.commonlib.ui.customview.slidinglayout.SlidingLayout
+    <com.smartstudy.counselor_t.ui.widget.slidinglayout.SlidingLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -17,7 +15,7 @@
             android:id="@+id/rcv_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-    </com.smartstudy.commonlib.ui.customview.slidinglayout.SlidingLayout>
+    </com.smartstudy.counselor_t.ui.widget.slidinglayout.SlidingLayout>
 
     <TextView
         android:id="@+id/tv_multi_tips"

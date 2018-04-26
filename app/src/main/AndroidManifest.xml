@@ -321,14 +321,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.VIEW" />-->
+            <!--<action android:name="android.intent.action.VIEW" />-->
 
-                <!--<category android:name="android.intent.category.DEFAULT" />-->
+            <!--<category android:name="android.intent.category.DEFAULT" />-->
 
-                <!--<data-->
-                    <!--android:host="com.smartstudy.counselor_t"-->
-                    <!--android:pathPrefix="/conversationlist"-->
-                    <!--android:scheme="rong" />-->
+            <!--<data-->
+            <!--android:host="com.smartstudy.counselor_t"-->
+            <!--android:pathPrefix="/conversationlist"-->
+            <!--android:scheme="rong" />-->
             <!--</intent-filter>-->
         </activity>
         <activity
@@ -420,6 +420,13 @@
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.activity.MyInfoDetailActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/AppDialogActivityTheme"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
+
+        <activity
+            android:name=".ui.activity.ChooseListActivity"
             android:launchMode="singleTask"
             android:theme="@style/AppDialogActivityTheme"
             android:windowSoftInputMode="adjustResize|stateHidden" />

@@ -5,23 +5,29 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.smartstudy.counselor_t.R;
+import com.smartstudy.counselor_t.entity.IdNameInfo;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.mvp.contract.FillPersonContract;
 import com.smartstudy.counselor_t.mvp.presenter.FillPersonPresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.ui.widget.ClipImageLayout;
+import com.smartstudy.counselor_t.ui.widget.TagsLayout;
 import com.smartstudy.counselor_t.util.CheckUtil;
 import com.smartstudy.counselor_t.util.ConstantUtils;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
@@ -30,6 +36,9 @@ import com.smartstudy.counselor_t.util.SPCacheUtils;
 import com.smartstudy.counselor_t.util.ToastUtils;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.model.UserInfo;
@@ -45,20 +54,30 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
 
     private ImageView ivAvatar;
     private ImageView ivPhoto;
-    private Button btPostInfo;
+    private TextView btPostInfo;
     private EditText tv_nick_name;
     private EditText tv_work_name;
     private EditText tv_work_experience;
     private EditText tv_graduated_school;
     private EditText tv_email;
     private EditText tv_name;
-
     private File photoFile;
     private File photoSaveFile;// 保存文件夹
     private String photoSaveName = null;// 图片名
     private String selected_path = null;
     private boolean isImage = false;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private LinearLayout llCity;
+    private TextView tvCity;
+    private LinearLayout llGoodBusiness;
+    private TextView tvGoodBusiness;
+    private TagsLayout tlyTags;
+    private String cityValue;
+    private String bussinessValue;
+    List<IdNameInfo> workIdNameInfos = new ArrayList<>();
+    List<IdNameInfo> adeptIdNameInfos = new ArrayList<>();
+    private EditText tvPersonalProfile;
+    private TeacherInfo teacherInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +93,7 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
                 presenter.getAuditResult();
             }
         });
+        presenter.getOptions();
     }
 
     @Override
@@ -81,11 +101,13 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
         return new FillPersonPresenter(this);
     }
 
-
     @Override
     public void initEvent() {
         btPostInfo.setOnClickListener(this);
         ivAvatar.setOnClickListener(this);
+        llCity.setOnClickListener(this);
+        llGoodBusiness.setOnClickListener(this);
+        topdefaultLeftbutton.setOnClickListener(this);
     }
 
     @Override
@@ -100,18 +122,44 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
                     ToastUtils.shortToast(this, "信息未填写完整");
                     return;
                 }
-                presenter.postPersonInfo(getNickName(), photoFile, getWorkTitle(), getGraduatedSchool(), getWorkExperience(), getEmail(), getRealName());
+                presenter.postPersonInfo(getNickName(), photoFile, getWorkTitle(), getGraduatedSchool()
+                    , getWorkExperience(), getEmail(), getRealName(), cityValue, bussinessValue, getPersonalProfile());
                 break;
             case R.id.iv_avatar:
                 Intent intent = new Intent(FillPersonActivity.this, SelectMyPhotoActivity.class);
                 intent.putExtra("singlePic", true);
                 startActivityForResult(intent, ParameterUtils.REQUEST_CODE_CHANGEPHOTO);
                 break;
+
+            case R.id.ll_city:
+                Intent toCity = new Intent(this, ChooseListActivity.class);
+                toCity.putExtra("value", tvCity.getText());
+                toCity.putParcelableArrayListExtra("list", (ArrayList<? extends Parcelable>) workIdNameInfos);
+                toCity.putExtra("ischange", false);
+                toCity.putExtra(ParameterUtils.TRANSITION_FLAG, ParameterUtils.WORK_CITY);
+                toCity.putExtra("title", "工作城市");
+                startActivityForResult(toCity, ParameterUtils.REQUEST_CODE_EDIT_MYINFO);
+                break;
+            case R.id.ll_good_business:
+                Intent toBuss = new Intent(this, ChooseListActivity.class);
+                if (tlyTags.getTabValue() != null) {
+                    toBuss.putExtra("value", tlyTags.getTabValue());
+                }
+                toBuss.putParcelableArrayListExtra("list", (ArrayList<? extends Parcelable>) adeptIdNameInfos);
+                toBuss.putExtra("ischange", true);
+                toBuss.putExtra(ParameterUtils.TRANSITION_FLAG, ParameterUtils.WORK_BUSSIENSS);
+                toBuss.putExtra("title", "擅长业务");
+                startActivityForResult(toBuss, ParameterUtils.REQUEST_CODE_EDIT_MYINFO);
+                break;
+
+            case R.id.topdefault_leftbutton:
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+                break;
             default:
                 break;
         }
     }
-
 
     @Override
     public void initView() {
@@ -124,9 +172,13 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
         tv_graduated_school = findViewById(R.id.tv_graduated_school);
         tv_name = findViewById(R.id.tv_name);
         tv_email = findViewById(R.id.tv_email);
+        llCity = findViewById(R.id.ll_city);
+        tvCity = findViewById(R.id.tv_work_city);
+        llGoodBusiness = findViewById(R.id.ll_good_business);
+        tvPersonalProfile = findViewById(R.id.tv_personal_profile);
+        tlyTags = findViewById(R.id.tly_tags);
         presenter.getAuditResult();
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -138,7 +190,6 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
             case ParameterUtils.REQUEST_CODE_CHANGEPHOTO:
                 final String temppath = data.getStringExtra("path");
                 DisplayImageUtils.displayImageFile(getApplicationContext(), temppath, new SimpleTarget<File>(100, 100) {
-
                     @Override
                     public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
                         photoFile = resource;
@@ -153,8 +204,19 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
                 toClipImage.putExtra("clipType", ClipImageLayout.SQUARE);
                 startActivityForResult(toClipImage, ParameterUtils.REQUEST_CODE_CLIP_OVER);
                 break;
-
-
+            case ParameterUtils.REQUEST_CODE_EDIT_MYINFO:
+                String flag = data.getStringExtra(ParameterUtils.TRANSITION_FLAG);
+                if (flag.equals(ParameterUtils.WORK_CITY)) {
+                    cityValue = data.getStringExtra("new_value");
+                    if (!TextUtils.isEmpty(cityValue)) {
+                        tvCity.setText(getCityValue(cityValue));
+                    }
+                } else {
+                    bussinessValue = data.getStringExtra("new_value");
+                    List<String> list = Arrays.asList(getBussinessValue(bussinessValue).split(","));
+                    tlyTags.setBackGroup(R.drawable.bg_good_bussienss_border);
+                    tlyTags.createTab(FillPersonActivity.this, list);
+                }
             default:
                 break;
         }
@@ -177,6 +239,7 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
     @Override
     public void showAuditResult(TeacherInfo teacherInfo) {
         swipeRefreshLayout.setRefreshing(false);
+        this.teacherInfo = teacherInfo;
         if (teacherInfo.getStatus() == 2) {
             //更新融云
             String imUserId = (String) SPCacheUtils.get("imUserId", "");
@@ -241,8 +304,46 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
         if (!TextUtils.isEmpty(teacherInfo.getRealName()) && TextUtils.isEmpty(getRealName())) {
             tv_name.setText(teacherInfo.getRealName());
         }
+
+        if (!TextUtils.isEmpty(teacherInfo.getWorkingCityKey()) && TextUtils.isEmpty(getCity())) {
+            tvCity.setText(getCityValue(teacherInfo.getWorkingCityKey()));
+            cityValue = teacherInfo.getWorkingCityKey();
+        }
+        if (!TextUtils.isEmpty(teacherInfo.getAdeptWorksKey()) && TextUtils.isEmpty(getBussiness())) {
+            List<String> list = Arrays.asList(getBussinessValue(teacherInfo.getAdeptWorksKey()).split(","));
+            tlyTags.setBackGroup(R.drawable.bg_good_bussienss_border);
+            tlyTags.createTab(FillPersonActivity.this, list);
+            bussinessValue = teacherInfo.getAdeptWorksKey();
+        }
+
+        if (!TextUtils.isEmpty(teacherInfo.getIntroduction()) && TextUtils.isEmpty(getPersonalProfile())) {
+            tvPersonalProfile.setText(teacherInfo.getIntroduction());
+        }
     }
 
+    @Override
+    public void getOptionsSuccess(List<IdNameInfo> workIdNameInfos, List<IdNameInfo> adeptIdNameInfos) {
+        if (this.workIdNameInfos != null) {
+            this.workIdNameInfos.clear();
+            this.workIdNameInfos.addAll(workIdNameInfos);
+        }
+        if (this.adeptIdNameInfos != null) {
+            this.adeptIdNameInfos.clear();
+            this.adeptIdNameInfos.addAll(adeptIdNameInfos);
+        }
+
+        if (teacherInfo != null) {
+            if (!TextUtils.isEmpty(teacherInfo.getWorkingCityKey()) && TextUtils.isEmpty(getCity())) {
+                tvCity.setText(getCityValue(teacherInfo.getWorkingCityKey()));
+            }
+            if (!TextUtils.isEmpty(teacherInfo.getAdeptWorksKey()) && TextUtils.isEmpty(getBussiness())) {
+                List<String> list = Arrays.asList(getBussinessValue(teacherInfo.getWorkingCityKey()).split(","));
+                tlyTags.setBackGroup(R.drawable.bg_good_bussienss_border);
+                tlyTags.createTab(FillPersonActivity.this, list);
+            }
+        }
+
+    }
 
     private String getNickName() {
         return tv_nick_name.getText().toString().trim();
@@ -268,6 +369,20 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
         return tv_email.getText().toString().trim();
     }
 
+    private String getCity() {
+        return tvCity.getText().toString().trim();
+    }
+
+
+    private String getBussiness() {
+        return tlyTags.getTabValue();
+    }
+
+
+    private String getPersonalProfile() {
+        return tvPersonalProfile.getText().toString().trim();
+    }
+
 
     private void setBtEnBleClick() {
         btPostInfo.setClickable(false);
@@ -276,14 +391,42 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
         btPostInfo.setBackgroundResource(R.drawable.bg_submit_review_grey);
     }
 
-
     private boolean checkInput() {
         if ((photoFile == null && !isImage) || TextUtils.isEmpty(getNickName()) || TextUtils.isEmpty(getWorkTitle()) ||
-                TextUtils.isEmpty(getWorkExperience()) || TextUtils.isEmpty(getWorkExperience()) ||
-                TextUtils.isEmpty(getGraduatedSchool()) || TextUtils.isEmpty(getRealName()) ||
-                TextUtils.isEmpty(getEmail())) {
+            TextUtils.isEmpty(getWorkExperience()) || TextUtils.isEmpty(getWorkExperience()) ||
+            TextUtils.isEmpty(getGraduatedSchool()) || TextUtils.isEmpty(getRealName()) ||
+            TextUtils.isEmpty(getEmail()) || TextUtils.isEmpty(getCity()) || TextUtils.isEmpty(getBussiness())
+            || TextUtils.isEmpty(getPersonalProfile())) {
             return false;
         }
         return true;
+    }
+
+
+    private String getCityValue(String key) {
+        if (workIdNameInfos != null) {
+            for (IdNameInfo idNameInfo : workIdNameInfos) {
+                if (idNameInfo.getId().equals(key)) {
+                    return idNameInfo.getValue();
+                }
+            }
+        }
+        return "";
+    }
+
+
+    private String getBussinessValue(String key) {
+        String[] ids = key.split(",");
+        String value = "";
+        if (adeptIdNameInfos != null) {
+            for (IdNameInfo idNameInfo : adeptIdNameInfos) {
+                for (String id : ids) {
+                    if (id.equals(idNameInfo.getId())) {
+                        value += idNameInfo.getValue() + ",";
+                    }
+                }
+            }
+        }
+        return value;
     }
 }

@@ -14,6 +14,7 @@ public class HttpUrlUtils {
     public static final String URL_COUNSELLOR_PROFILE = "counsellor/profile";//获取老师个人信息
     public static final String URL_REFRESH_TOKEN = "counsellor/im/refresh";  //获取教师token
     public static final String URL_USER_LOGOUT = "counsellor/logout";  //退出登录
+    public static final String COUNSELLOR_PROFILE_OPTIONS = "counsellor/profile/options";
 
 
     /**************************** web ***************************/
@@ -24,12 +25,10 @@ public class HttpUrlUtils {
 
     /*********获取api接口url***********/
     public static String getBaseUrl() {
-//        String SERVER = "http://172.17.7.72:3000/";
-//        String SERVER = "https://slx.smartstudy.com/api/";
-        String SERVER = "http://slx.staging.smartstudy.com/api/"; //test
+        String SERVER = "https://slx.smartstudy.com/api/";
+//        String SERVER = "http://slx.staging.smartstudy.com/api/"; //test
         String api = (String) SPCacheUtils.get(ConstantUtils.API_SERVER, "");
         switch (api) {
-
             case "master":
                 SERVER = "https://slx.smartstudy.com/api/";
 //                SERVER = "http://slx.sta ging.smartstudy.com/api/";

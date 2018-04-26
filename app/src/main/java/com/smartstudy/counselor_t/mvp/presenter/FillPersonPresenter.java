@@ -1,6 +1,8 @@
 package com.smartstudy.counselor_t.mvp.presenter;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.smartstudy.counselor_t.entity.IdNameInfo;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
@@ -9,6 +11,7 @@ import com.smartstudy.counselor_t.mvp.model.FillPersonModel;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
 
 import java.io.File;
+import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 
@@ -36,23 +39,25 @@ public class FillPersonPresenter extends BasePresenterImpl<FillPersonContract.Vi
     }
 
     @Override
-    public void postPersonInfo(String name, File avatar, String title, String school, String yearsOfWorking, String email, String realName) {
-        fillPersonModel.postPersonInfo(name, avatar, title, school, yearsOfWorking, email, realName, new ObserverListener<String>() {
-            @Override
-            public void onSubscribe(Disposable disposable) {
-                addDisposable(disposable);
-            }
+    public void postPersonInfo(String name, File avatar, String title, String school, String yearsOfWorking,
+                               String email, String realName, String workingCityKey, String adeptWorksKey, String introdction) {
+        fillPersonModel.postPersonInfo(name, avatar, title, school, yearsOfWorking, email, realName
+            , workingCityKey, adeptWorksKey, introdction, new ObserverListener<String>() {
+                @Override
+                public void onSubscribe(Disposable disposable) {
+                    addDisposable(disposable);
+                }
 
-            @Override
-            public void onNext(String s) {
-                view.getStudentInfoDetailSuccess();
-            }
+                @Override
+                public void onNext(String s) {
+                    view.getStudentInfoDetailSuccess();
+                }
 
-            @Override
-            public void onError(String msg) {
-                view.showTip(msg);
-            }
-        });
+                @Override
+                public void onError(String msg) {
+                    view.showTip(msg);
+                }
+            });
     }
 
     @Override
@@ -74,6 +79,39 @@ public class FillPersonPresenter extends BasePresenterImpl<FillPersonContract.Vi
                     }
                     view.showAuditResult(teacherInfo);
                 }
+            }
+
+            @Override
+            public void onError(String msg) {
+//                view.showTip(msg);
+            }
+        });
+    }
+
+    @Override
+    public void getOptions() {
+        fillPersonModel.getOptions(new ObserverListener<String>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                addDisposable(disposable);
+            }
+
+            @Override
+            public void onNext(String s) {
+                JSONObject jsonObject = JSONObject.parseObject(s);
+                if (jsonObject != null) {
+                    List<IdNameInfo> workIdNameInfo = null;
+                    List<IdNameInfo> adeptIdNameInfo = null;
+                    if (jsonObject.containsKey("workingCity")) {
+                        workIdNameInfo = JSONObject.parseArray(jsonObject.getString("workingCity"), IdNameInfo.class);
+                    }
+
+                    if (jsonObject.containsKey("adeptWorks")) {
+                        adeptIdNameInfo = JSONObject.parseArray(jsonObject.getString("adeptWorks"), IdNameInfo.class);
+                    }
+                    view.getOptionsSuccess(workIdNameInfo, adeptIdNameInfo);
+                }
+
             }
 
             @Override

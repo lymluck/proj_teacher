@@ -106,6 +106,18 @@ public interface ApiService {
     Observable<ResponseInfo> getAuditResult(@HeaderMap Map<String, String> header);
 
 
+    /**
+     * 个人信息
+     *
+     * @return
+     */
+
+    @GET(HttpUrlUtils.COUNSELLOR_PROFILE_OPTIONS)
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
+    Observable<ResponseInfo> getOptions(@HeaderMap Map<String, String> header);
+
+
+
     @GET(HttpUrlUtils.URL_COUNSELLOR_PROFILE)
     @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
     Observable<ResponseInfo> getMyInfo(@HeaderMap Map<String, String> header);

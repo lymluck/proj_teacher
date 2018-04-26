@@ -1,11 +1,10 @@
-package com.smartstudy.commonlib.mvp.contract;
+package com.smartstudy.counselor_t.mvp.contract;
 
 import android.content.Context;
 
-import com.smartstudy.commonlib.entity.IdNameInfo;
-import com.smartstudy.commonlib.entity.PersonalParamsInfo;
-import com.smartstudy.commonlib.mvp.base.BasePresenter;
-import com.smartstudy.commonlib.mvp.base.BaseView;
+import com.smartstudy.counselor_t.entity.IdNameInfo;
+import com.smartstudy.counselor_t.mvp.base.BasePresenter;
+import com.smartstudy.counselor_t.mvp.base.BaseView;
 
 import java.util.List;
 
@@ -14,23 +13,25 @@ import java.util.List;
  */
 
 public interface ChooseListContract {
-    interface View extends BaseView<ChooseListContract.Presenter> {
+
+    interface View extends BaseView {
 
         void editMyInfoSuccess(String jsonObject, IdNameInfo nameInfo);
 
         void refreshItems();
 
-        void editData(IdNameInfo nameInfo, PersonalParamsInfo paramsModel);
+//        void editData(IdNameInfo nameInfo, PersonalParamsInfo paramsModel);
 
         void showEmptyView(android.view.View view);
 
         void reload();
 
+
     }
 
     interface Presenter extends BasePresenter {
 
-        void editMyInfo(PersonalParamsInfo myInfo, IdNameInfo nameInfo);
+//        void editMyInfo(PersonalParamsInfo myInfo, IdNameInfo nameInfo);
 
         void getOptionsData(String type, String value, String flag, List<IdNameInfo> nameInfos);
 

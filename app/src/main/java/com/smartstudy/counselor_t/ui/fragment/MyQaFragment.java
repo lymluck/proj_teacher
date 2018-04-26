@@ -71,7 +71,7 @@ public class MyQaFragment extends UIFragment<MyQaFragmentContract.Presenter> imp
     @Override
     protected View getLayoutView() {
         return mActivity.getLayoutInflater().inflate(
-                R.layout.fragment_qa, null);
+            R.layout.fragment_qa, null);
     }
 
     @Override
@@ -146,7 +146,7 @@ public class MyQaFragment extends UIFragment<MyQaFragmentContract.Presenter> imp
         mLayoutManager.setScrollEnabled(true);
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rclv_qa.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity())
-                .size(DensityUtils.dip2px(10f)).colorResId(R.color.bg_recent_user).build());
+            .size(DensityUtils.dip2px(10f)).colorResId(R.color.bg_recent_user).build());
         rclv_qa.setLayoutManager(mLayoutManager);
         initAdapter();
         initEvent();
@@ -170,18 +170,19 @@ public class MyQaFragment extends UIFragment<MyQaFragmentContract.Presenter> imp
                 holder.setText(R.id.tv_qa_name, askName);
                 holder.setText(R.id.tv_qa, questionInfo.getContent());
                 TextView answerCounnt = holder.getView(R.id.tv_answer_count);
-                if (questionInfo.getAnswerCount() == 0) {
-                    answerCounnt.setText("暂无人回答");
-                    answerCounnt.setTextColor(Color.parseColor("#078CF1"));
-                    holder.getView(R.id.v_cricle).setVisibility(View.GONE);
+
+                if (questionInfo.getSubQuestionCount() != 0) {
+                    answerCounnt.setText("对你有 " + questionInfo.getSubQuestionCount() + " 追问");
+                    answerCounnt.setTextColor(Color.parseColor("#F6611D"));
+                    holder.getView(R.id.v_cricle).setVisibility(View.VISIBLE);
                 } else {
-                    if (questionInfo.getSubQuestionCount() != 0) {
-                        answerCounnt.setText("对你有 " + questionInfo.getSubQuestionCount() + " 追问");
-                        answerCounnt.setTextColor(Color.parseColor("#F6611D"));
-                        holder.getView(R.id.v_cricle).setVisibility(View.VISIBLE);
-                    } else {
-                        answerCounnt.setText(questionInfo.getAnswerCount() + " 回答");
+                    if (!questionInfo.isHasUnreadAnswersOfMe()) {
+                        answerCounnt.setText("已看");
                         answerCounnt.setTextColor(Color.parseColor("#949BA1"));
+                        holder.getView(R.id.v_cricle).setVisibility(View.GONE);
+                    } else {
+                        answerCounnt.setText(" 未看");
+                        answerCounnt.setTextColor(Color.parseColor("#078CF1"));
                         holder.getView(R.id.v_cricle).setVisibility(View.GONE);
                     }
                 }

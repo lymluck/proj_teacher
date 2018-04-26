@@ -35,4 +35,58 @@ public class MyInfoModel extends BaseModel {
 
         apiSubscribe(ApiManager.getApiService().updatePersonInfo(getHeadersMap(), HttpUrlUtils.URL_COUNSELLOR_PROFILE, builder.build()), listener);
     }
+
+
+    public void getLogOut(ObserverListener listener) {
+        apiSubscribe(ApiManager.getApiService().getLogOut(getHeadersMap()), listener);
+    }
+
+
+    public void getOptions(ObserverListener listener) {
+        apiSubscribe(ApiManager.getApiService().getOptions(getHeadersMap()), listener);
+    }
+
+
+    public void updateMyInfo(String name, File avatar, String title, String school, String yearsOfWorking,
+                             String email, String realName, String introduction, String workingCityKey,
+                             String adeptWorksKey, ObserverListener listener) {
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        if (!TextUtils.isEmpty(name)) {
+            builder.addFormDataPart("name", name);
+        }
+
+        if (!TextUtils.isEmpty(title)) {
+            builder.addFormDataPart("title", title);
+        }
+
+        if (!TextUtils.isEmpty(school)) {
+            builder.addFormDataPart("school", school);
+        }
+
+        if (!TextUtils.isEmpty(email)) {
+            builder.addFormDataPart("email", email);
+        }
+
+        if (!TextUtils.isEmpty(realName)) {
+            builder.addFormDataPart("realName", realName);
+        }
+
+        if (!TextUtils.isEmpty(yearsOfWorking)) {
+            builder.addFormDataPart("yearsOfWorking", yearsOfWorking);
+        }
+        if (!TextUtils.isEmpty(introduction)) {
+            builder.addFormDataPart("introduction", introduction);
+        }
+        if (!TextUtils.isEmpty(workingCityKey)) {
+            builder.addFormDataPart("workingCityKey", workingCityKey);
+        }
+
+        if (!TextUtils.isEmpty(adeptWorksKey)) {
+            builder.addFormDataPart("adeptWorksKey", adeptWorksKey);
+        }
+        if (avatar != null) {
+            builder.addFormDataPart("avatar", avatar.getName(), RequestBody.create(MediaType.parse("image/*"), avatar));
+        }
+        apiSubscribe(ApiManager.getApiService().updatePersonInfo(getHeadersMap(), HttpUrlUtils.URL_COUNSELLOR_PROFILE, builder.build()), listener);
+    }
 }

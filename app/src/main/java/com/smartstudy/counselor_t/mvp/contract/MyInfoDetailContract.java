@@ -16,16 +16,11 @@ public interface MyInfoDetailContract {
 
         void getAuditResult(TeacherInfo teacherInfo);
 
-        void getLogOutSuccess();
-
-
     }
 
     interface Presenter extends BasePresenter {
 
         void getAuditResult();
-
-        void getLogOut();
 
     }
 }

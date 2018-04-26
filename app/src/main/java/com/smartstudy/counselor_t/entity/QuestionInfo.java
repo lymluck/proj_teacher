@@ -21,6 +21,16 @@ public class QuestionInfo {
     private String platform;
     private String userLocation;
     private String schoolName;
+    private boolean hasUnreadAnswersOfMe;
+
+
+    public boolean isHasUnreadAnswersOfMe() {
+        return hasUnreadAnswersOfMe;
+    }
+
+    public void setHasUnreadAnswersOfMe(boolean hasUnreadAnswersOfMe) {
+        this.hasUnreadAnswersOfMe = hasUnreadAnswersOfMe;
+    }
 
     public String getPlatform() {
         return platform;
