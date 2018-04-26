@@ -87,6 +87,7 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
     long secondClick = 0;
     private DragPointView mUnreadNumView;
     private Conversation.ConversationType[] mConversationsTypes = null;
+    private String mLastVersion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -246,6 +247,7 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
         //继续下载apk
         if (isDestroy && BaseApplication.getInstance().isDownload()) {
             Intent it = new Intent(MainActivity.this, VersionUpdateService.class);
+            it.putExtra("version", mLastVersion);
             startService(it);
             bindService(it, conn, Context.BIND_AUTO_CREATE);
         }
@@ -273,6 +275,7 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
         }
         if (binder != null && binder.isCanceled()) {
             Intent it = new Intent(this, VersionUpdateService.class);
+            it.putExtra("version", mLastVersion);
             stopService(it);
             binder = null;
         }
@@ -379,7 +382,8 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
     };
 
     @Override
-    public void updateable(final String downUrl, final String lastVersion, String des) {
+    public void updateable(final String downUrl, String lastVersion, String des) {
+        this.mLastVersion = lastVersion;
         update_type = ParameterUtils.FLAG_UPDATE;
         //提示当前有版本更新
         String isToUpdate = (String) SPCacheUtils.get("isToUpdate", "");
@@ -394,7 +398,7 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
                                     BaseApplication.getInstance().setDownLoadUrl(downUrl);
                                     //开始下载
                                     Intent it = new Intent(MainActivity.this, VersionUpdateService.class);
-                                    it.putExtra("version", lastVersion);
+                                    it.putExtra("version", mLastVersion);
                                     startService(it);
                                     bindService(it, conn, Context.BIND_AUTO_CREATE);
                                     updateDialog.dismiss();
@@ -417,7 +421,8 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
     }
 
     @Override
-    public void forceUpdate(final String downUrl, final String lastVersion, String des) {
+    public void forceUpdate(final String downUrl, String lastVersion, String des) {
+        this.mLastVersion = lastVersion;
         update_type = ParameterUtils.FLAG_UPDATE_NOW;
         String title = getString(R.string.update_vs_now);
         updateDialog = DialogCreator.createBaseCustomDialog(MainActivity.this, title, des, new View.OnClickListener() {
@@ -430,7 +435,7 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
                     BaseApplication.getInstance().setDownLoadUrl(downUrl);
                     //开始下载
                     Intent it = new Intent(MainActivity.this, VersionUpdateService.class);
-                    it.putExtra("version", lastVersion);
+                    it.putExtra("version", mLastVersion);
                     startService(it);
                     bindService(it, conn, Context.BIND_AUTO_CREATE);
                 }

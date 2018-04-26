@@ -61,6 +61,7 @@ dependencies {
     compile project(':imlib')
     compile project(':image')
     compile project(':qrcode')
+    compile project(':slideback')
     compile 'com.squareup.retrofit2:retrofit:+'
     compile 'io.reactivex.rxjava2:rxandroid:+'
     compile 'io.reactivex.rxjava2:rxjava:+'
