@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +23,7 @@ import com.smartstudy.counselor_t.base.tools.SystemBarTintManager;
 import com.smartstudy.counselor_t.mvp.base.BasePresenter;
 import com.smartstudy.counselor_t.mvp.base.BaseView;
 import com.smartstudy.counselor_t.util.ParameterUtils;
+import com.smartstudy.counselor_t.util.ScreenUtils;
 import com.smartstudy.counselor_t.util.StringUtis;
 import com.smartstudy.counselor_t.util.ToastUtils;
 import com.smartstudy.permissions.AfterPermissionGranted;
@@ -50,16 +50,14 @@ public abstract class BaseActivity<P extends BasePresenter> extends SlideBackAct
     protected TextView topdefaultRighttext;
     private AppSettingsDialog permissionDialog;
     protected LayoutInflater mInflater;
-    private boolean changeStatusTrans = false;
     private SystemBarTintManager tintManager;
     private boolean darkMode = true;
-    private int statusColor = R.color.app_top_color;
     private View mView;
     private View topLine;
     protected boolean hasBasePer = false;
     protected P presenter;
     private static String[] mDenyPerms = StringUtis.concatAll(
-            Permission.STORAGE, Permission.PHONE, Permission.MICROPHONE);
+        Permission.STORAGE, Permission.PHONE, Permission.MICROPHONE);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,13 +65,11 @@ public abstract class BaseActivity<P extends BasePresenter> extends SlideBackAct
         super.setContentView(R.layout.activity_base);
         presenter = initPresenter();
         mInflater = getLayoutInflater();
-        if (!changeStatusTrans) {
-            initSystemBar();
-        }
     }
 
     @Override
     protected void onResume() {
+        initSystemBar();
         requestPermissions();
         super.onResume();
     }
@@ -84,7 +80,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends SlideBackAct
             hasBasePer = false;
             //申请基本的权限
             PermissionUtil.requestPermissions(this, Permission.getPermissionContent(Arrays.asList(mDenyPerms)),
-                    ParameterUtils.REQUEST_CODE_PERMISSIONS, mDenyPerms);
+                ParameterUtils.REQUEST_CODE_PERMISSIONS, mDenyPerms);
         } else {
             hasBasePer = true;
             hasRequestPermission();
@@ -113,12 +109,17 @@ public abstract class BaseActivity<P extends BasePresenter> extends SlideBackAct
 
     @Override
     public void setContentView(View view) {
-        init();
+        initTopBar();
+        initSystemBar();
         mView = view;
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1);
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1);
         contentView.addView(mView, lp);
         initView();
+        // 初始化view后，如果不是自定义titlebar
+        if (rlytTop.getVisibility() == View.VISIBLE) {
+            transTitleBar(rlytTop);
+        }
         initEvent();
     }
 
@@ -132,7 +133,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends SlideBackAct
         setContentView(mView);
     }
 
-    public void init() {
+    public void initTopBar() {
         contentView = findViewById(R.id.content_view);
         rlytTop = findViewById(R.id.rlyt_top);
         topdefaultLeftbutton = findViewById(R.id.topdefault_leftbutton);
@@ -146,7 +147,6 @@ public abstract class BaseActivity<P extends BasePresenter> extends SlideBackAct
     public void initEvent() {
         topdefaultLeftbutton.setOnClickListener(this);
         topdefaultRightbutton.setOnClickListener(this);
-//        topdefaultLefttext.setOnClickListener(this);
     }
 
     @Override
@@ -178,6 +178,9 @@ public abstract class BaseActivity<P extends BasePresenter> extends SlideBackAct
      */
     public abstract P initPresenter();
 
+    /**
+     * 初始化view
+     */
     public abstract void initView();
 
     //获取了100%的基本权限
@@ -224,7 +227,9 @@ public abstract class BaseActivity<P extends BasePresenter> extends SlideBackAct
         topLine.setVisibility(visible);
     }
 
-    public View getHeadView(){return  rlytTop;}
+    public View getHeadView() {
+        return rlytTop;
+    }
 
     public void setTopdefaultLefttextVisible(int visible) {
         topdefaultLefttext.setVisibility(visible);
@@ -261,7 +266,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends SlideBackAct
         if (PermissionUtil.shouldShowRationale(this, mDenyPerms)) {
             //继续申请被拒绝了的基本权限
             PermissionUtil.requestPermissions(this, Permission.getPermissionContent(denyPerms),
-                    requestCode, mDenyPerms);
+                requestCode, mDenyPerms);
         } else {
             verifyPermission(denyPerms);
         }
@@ -287,27 +292,18 @@ public abstract class BaseActivity<P extends BasePresenter> extends SlideBackAct
             if (tintManager == null) {
                 tintManager = new SystemBarTintManager(this);
             }
-            if (darkMode) {
-                tintManager.setStatusBarLightMode(this, true);
-            }
+            tintManager.setStatusBarLightMode(this, true);
             tintManager.setStatusBarTintEnabled(true);
-            tintManager.setStatusBarTintResource(statusColor);
+            tintManager.setStatusBarTintResource(R.color.app_top_color);
         }
     }
 
-    protected void setChangeStatusTrans(boolean changeStatusTrans) {
-        this.changeStatusTrans = changeStatusTrans;
-    }
-
-    protected void setStatusColor(int color) {
-        this.statusColor = color;
-    }
     /**
      * 透明状态栏
      *
      * @param on
      */
-    @TargetApi(19)
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     protected void setTranslucentStatus(boolean on) {
         Window win = getWindow();
         WindowManager.LayoutParams winParams = win.getAttributes();
@@ -320,5 +316,18 @@ public abstract class BaseActivity<P extends BasePresenter> extends SlideBackAct
         win.setAttributes(winParams);
     }
 
+    /**
+     * 初始化标题栏,LinearLayout.LayoutParams代表标题栏的父view为LinearLayout
+     */
+    public void transTitleBar(View titleBar) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            SystemBarTintManager.SystemBarConfig config = tintManager.getConfig();
+            titleBar.setPadding(0, config.getPixelInsetTop(true), 0, config.getPixelInsetBottom());
+            int topHeight = getResources().getDimensionPixelSize(R.dimen.app_top_height);
+            int statusBarHeight = ScreenUtils.getStatusHeight(getApplicationContext());
+            titleBar.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, statusBarHeight + topHeight));
+            titleBar.setPadding(titleBar.getPaddingLeft(), statusBarHeight, titleBar.getPaddingRight(), 0);
+        }
+    }
 
 }
