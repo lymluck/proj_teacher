@@ -11,13 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smartstudy.counselor_t.R;
-import com.smartstudy.counselor_t.entity.ItemOnClick;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.entity.TotalSubQuestion;
 import com.smartstudy.counselor_t.mvp.contract.MyQaActivityContract;
 import com.smartstudy.counselor_t.mvp.presenter.MyQaActivityPresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
-import com.smartstudy.counselor_t.ui.fragment.MyFragment;
 import com.smartstudy.counselor_t.ui.fragment.MyQaFragment;
 import com.smartstudy.counselor_t.ui.fragment.QaFragment;
 import com.smartstudy.counselor_t.util.ConstantUtils;
@@ -64,13 +62,8 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
 
     @Override
     public void initView() {
-        setLeftImgVisible(View.GONE);
-        setTopdefaultLefttextVisible(View.GONE);
-        setTitleLineVisible(View.GONE);
-        setTitle("答疑");
-        setRightImg(R.drawable.ic_my_info);
-        setRightImgVisible(View.VISIBLE);
         setHeadVisible(View.GONE);
+        transTitleBar(findViewById(R.id.layout_qa_title));
         tv_subcount = findViewById(R.id.tv_subcount);
         all_answer = findViewById(R.id.all_answer);
         my_answer = findViewById(R.id.my_answer);
@@ -115,7 +108,6 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
             case R.id.user_icon:
                 startActivity(new Intent(this, MyInfoDetailActivity.class));
                 break;
-
             case R.id.all_answer:
                 presenter.showFragment(mfragmentManager, ParameterUtils.FRAGMENT_ONE);
                 break;
@@ -168,7 +160,7 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
         Utils.removeCookie(this);
         Intent to_login = new Intent(this, LoginActivity.class);
         to_login.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(to_login);
     }
 
@@ -181,7 +173,7 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
                 fragment.setUserVisibleHint(false);
                 if (fragment.isAdded()) {
                     fragmentManager.beginTransaction().hide(fragment)
-                            .commitAllowingStateLoss();
+                        .commitAllowingStateLoss();
                 }
             }
         }
