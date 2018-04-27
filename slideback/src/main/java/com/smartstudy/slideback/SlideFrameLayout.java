@@ -657,7 +657,6 @@ class SlideFrameLayout extends ViewGroup {
         if (mEdgeSize > 0) {
             if (ev.getAction() == MotionEvent.ACTION_DOWN && ev.getX() > mEdgeSize) {
                 int dragState = mDragHelper.getViewDragState();
-                // FIXBUG by lihong 2016/07/10
                 // 如果正在拖放的话，截断所有事件
                 if (dragState == ViewDragHelper.STATE_DRAGGING
                         || dragState == ViewDragHelper.STATE_SETTLING) {

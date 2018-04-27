@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -41,7 +40,7 @@ import java.util.List;
 
 public abstract class BaseActivity<P extends BasePresenter> extends SlideBackActivity implements BaseView, View.OnClickListener, PermissionUtil.PermissionCallbacks {
 
-    private FrameLayout contentView;
+    private ViewGroup rootView;
     private RelativeLayout rlytTop;
     protected ImageView topdefaultLeftbutton;
     protected ImageView topdefaultRightbutton;
@@ -52,7 +51,6 @@ public abstract class BaseActivity<P extends BasePresenter> extends SlideBackAct
     protected LayoutInflater mInflater;
     private SystemBarTintManager tintManager;
     private boolean darkMode = true;
-    private View mView;
     private View topLine;
     protected boolean hasBasePer = false;
     protected P presenter;
@@ -62,9 +60,9 @@ public abstract class BaseActivity<P extends BasePresenter> extends SlideBackAct
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        super.setContentView(R.layout.activity_base);
+        mInflater = LayoutInflater.from(this);
+        rootView = (ViewGroup) mInflater.inflate(R.layout.activity_base, null);
         presenter = initPresenter();
-        mInflater = getLayoutInflater();
     }
 
     @Override
@@ -108,13 +106,17 @@ public abstract class BaseActivity<P extends BasePresenter> extends SlideBackAct
     }
 
     @Override
+    public void setContentView(int layoutResID) {
+        setContentView(mInflater.inflate(layoutResID, null));
+    }
+
+    @Override
     public void setContentView(View view) {
         initTopBar();
         initSystemBar();
-        mView = view;
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1);
-        contentView.addView(mView, lp);
+        FrameLayout contentView = rootView.findViewById(R.id.content_view);
+        contentView.addView(view);
+        super.setContentView(rootView);
         initView();
         // 初始化view后，如果不是自定义titlebar
         if (rlytTop.getVisibility() == View.VISIBLE) {
@@ -123,25 +125,14 @@ public abstract class BaseActivity<P extends BasePresenter> extends SlideBackAct
         initEvent();
     }
 
-    protected <T extends View> T _id(@IdRes int id) {
-        return mView.findViewById(id);
-    }
-
-    @Override
-    public void setContentView(int layoutResID) {
-        mView = LayoutInflater.from(this).inflate(layoutResID, null);
-        setContentView(mView);
-    }
-
     public void initTopBar() {
-        contentView = findViewById(R.id.content_view);
-        rlytTop = findViewById(R.id.rlyt_top);
-        topdefaultLeftbutton = findViewById(R.id.topdefault_leftbutton);
-        topdefaultRightbutton = findViewById(R.id.topdefault_rightbutton);
-        topdefaultLefttext = findViewById(R.id.topdefault_lefttext);
-        topdefaultCentertitle = findViewById(R.id.topdefault_centertitle);
-        topdefaultRighttext = findViewById(R.id.topdefault_righttext);
-        topLine = findViewById(R.id.top_line);
+        rlytTop = rootView.findViewById(R.id.rlyt_top);
+        topdefaultLeftbutton = rootView.findViewById(R.id.topdefault_leftbutton);
+        topdefaultRightbutton = rootView.findViewById(R.id.topdefault_rightbutton);
+        topdefaultLefttext = rootView.findViewById(R.id.topdefault_lefttext);
+        topdefaultCentertitle = rootView.findViewById(R.id.topdefault_centertitle);
+        topdefaultRighttext = rootView.findViewById(R.id.topdefault_righttext);
+        topLine = rootView.findViewById(R.id.top_line);
     }
 
     public void initEvent() {
@@ -188,7 +179,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends SlideBackAct
     }
 
     public void setTitleLineVisible(int visible) {
-        findViewById(R.id.title_line).setVisibility(visible);
+        rootView.findViewById(R.id.title_line).setVisibility(visible);
     }
 
     public void setHeadVisible(int visible) {
@@ -292,9 +283,10 @@ public abstract class BaseActivity<P extends BasePresenter> extends SlideBackAct
             if (tintManager == null) {
                 tintManager = new SystemBarTintManager(this);
             }
-            tintManager.setStatusBarLightMode(this, true);
+            tintManager.setStatusBarLightMode(this, darkMode);
             tintManager.setStatusBarTintEnabled(true);
-            tintManager.setStatusBarTintResource(R.color.app_top_color);
+            // 透明statusbar
+            tintManager.setStatusBarTintResource(R.color.transparent);
         }
     }
 

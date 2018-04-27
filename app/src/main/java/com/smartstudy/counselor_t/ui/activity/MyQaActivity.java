@@ -74,7 +74,6 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
             finish();
         } else {
             presenter.getAuditResult();
-
         }
         all_answer.setSelected(true);
         mfragmentManager = getSupportFragmentManager();
@@ -100,7 +99,6 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
             }
         }
     }
-
 
     @Override
     public void onClick(View v) {
@@ -215,7 +213,6 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
         ft = null;
     }
 
-
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onDataSynEvent(TotalSubQuestion totalSubQuestion) {
         if (totalSubQuestion != null) {
@@ -253,4 +250,5 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
     public TextView getSubCountTextView() {
         return tv_subcount;
     }
+
 }

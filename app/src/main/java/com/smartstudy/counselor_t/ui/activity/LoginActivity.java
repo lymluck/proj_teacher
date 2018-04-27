@@ -14,7 +14,6 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
@@ -82,15 +81,15 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
         setLeftImgVisible(View.GONE);
         setRightImg(R.drawable.ic_cha);
         setRightImgVisible(View.VISIBLE);
-        img_logo = _id(R.id.img_logo);
-        flt_logo = _id(R.id.flt_logo);
-        tv_xxd_contract = _id(R.id.tv_xxd_contract);
+        img_logo = findViewById(R.id.img_logo);
+        flt_logo = findViewById(R.id.flt_logo);
+        tv_xxd_contract = findViewById(R.id.tv_xxd_contract);
         tv_xxd_contract.setText(Html.fromHtml("登录即表示同意" + "<font color=#078CF1>"
-                + "选校帝用户协议" + "</font>"));
-        tv_yzm = _id(R.id.tv_yzm);
-        btn_login = _id(R.id.btn_login);
-        etcmobile = _id(R.id.etc_mobile);
-        etc_yzm = _id(R.id.etc_yzm);
+            + "选校帝用户协议" + "</font>"));
+        tv_yzm = findViewById(R.id.tv_yzm);
+        btn_login = findViewById(R.id.btn_login);
+        etcmobile = findViewById(R.id.etc_mobile);
+        etc_yzm = findViewById(R.id.etc_yzm);
         etc_yzm.setInputType(InputType.TYPE_CLASS_NUMBER);
         etc_yzm.setImeOptions(EditorInfo.IME_ACTION_DONE);
         etc_yzm.setHint("请输入验证码");
@@ -140,75 +139,75 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
         //当键盘弹起的时候用屏幕的高度减去布局的高度，同时获取到键盘的高度，用键盘的高度和剩余的高度做对比
         SoftKeyBoardListener.setListener(LoginActivity.this, new
 
-                SoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
+            SoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
 
-                    @Override
-                    public void keyBoardShow(int height) {
-                        set.addListener(new AnimatorListenerAdapter() {
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                super.onAnimationEnd(animation);
-                                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) flt_logo.getLayoutParams();
-                                layoutParams.height = 0;
-                                flt_logo.setLayoutParams(layoutParams);
-                            }
+                @Override
+                public void keyBoardShow(int height) {
+                    set.addListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) flt_logo.getLayoutParams();
+                            layoutParams.height = 0;
+                            flt_logo.setLayoutParams(layoutParams);
+                        }
 
-                        });
-                        set.playTogether(
-                                ObjectAnimator.ofFloat(flt_logo, "scaleX", 1, 0f),
-                                ObjectAnimator.ofFloat(flt_logo, "scaleY", 1, 0f),
-                                ObjectAnimator.ofFloat(flt_logo, "alpha", 1, 0.25f, 1)
-                        );
-                        set.setDuration(300).start();
-                    }
+                    });
+                    set.playTogether(
+                        ObjectAnimator.ofFloat(flt_logo, "scaleX", 1, 0f),
+                        ObjectAnimator.ofFloat(flt_logo, "scaleY", 1, 0f),
+                        ObjectAnimator.ofFloat(flt_logo, "alpha", 1, 0.25f, 1)
+                    );
+                    set.setDuration(300).start();
+                }
 
-                    @Override
-                    public void keyBoardHide(int height) {
-                        AnimatorSet set = new AnimatorSet();
-                        set.addListener(new AnimatorListenerAdapter() {
-                            @Override
-                            public void onAnimationStart(Animator animation) {
-                                super.onAnimationStart(animation);
-                                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) flt_logo.getLayoutParams();
-                                layoutParams.height = getResources().getDimensionPixelOffset(R.dimen.login_logo_wh);
-                                flt_logo.setLayoutParams(layoutParams);
-                            }
+                @Override
+                public void keyBoardHide(int height) {
+                    AnimatorSet set = new AnimatorSet();
+                    set.addListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            super.onAnimationStart(animation);
+                            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) flt_logo.getLayoutParams();
+                            layoutParams.height = getResources().getDimensionPixelOffset(R.dimen.login_logo_wh);
+                            flt_logo.setLayoutParams(layoutParams);
+                        }
 
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                super.onAnimationStart(animation);
-                            }
-                        });
-                        set.playTogether(
-                                ObjectAnimator.ofFloat(flt_logo, "scaleX", 0, 1f),
-                                ObjectAnimator.ofFloat(flt_logo, "scaleY", 0, 1f),
-                                ObjectAnimator.ofFloat(flt_logo, "alpha", 1, 0.25f, 1)
-                        );
-                        set.setDuration(300).start();
-                    }
-                });
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationStart(animation);
+                        }
+                    });
+                    set.playTogether(
+                        ObjectAnimator.ofFloat(flt_logo, "scaleX", 0, 1f),
+                        ObjectAnimator.ofFloat(flt_logo, "scaleY", 0, 1f),
+                        ObjectAnimator.ofFloat(flt_logo, "alpha", 1, 0.25f, 1)
+                    );
+                    set.setDuration(300).start();
+                }
+            });
     }
 
     private void forTest() {
         //测试用
         if (isDebug) {
             img_logo.setOnClickListener(this);
-            _id(R.id.btn_master).setOnClickListener(this);
-            _id(R.id.btn_test).setOnClickListener(this);
-            _id(R.id.btn_dev).setOnClickListener(this);
+            findViewById(R.id.btn_master).setOnClickListener(this);
+            findViewById(R.id.btn_test).setOnClickListener(this);
+            findViewById(R.id.btn_dev).setOnClickListener(this);
             list = new ArrayList<>();
-            list.add(_id(R.id.btn_master));
-            list.add(_id(R.id.btn_test));
-            list.add(_id(R.id.btn_dev));
+            list.add(findViewById(R.id.btn_master));
+            list.add(findViewById(R.id.btn_test));
+            list.add(findViewById(R.id.btn_dev));
             final DisplayMetrics displayMetrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
             img_logo.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
                     ToastUtils.shortToast(LoginActivity.this, "手机屏幕分辨率:" + displayMetrics.widthPixels + "X" + displayMetrics.heightPixels + "\n" + "密度:"
-                            + displayMetrics.density + "\n" + "使用每英寸的像素点来显示密度:" + displayMetrics.densityDpi + "\n" + "xdpi"
-                            + displayMetrics.xdpi + "\n" + "ydpi" + displayMetrics.ydpi + "\n" + "scaledDensity"
-                            + displayMetrics.scaledDensity);
+                        + displayMetrics.density + "\n" + "使用每英寸的像素点来显示密度:" + displayMetrics.densityDpi + "\n" + "xdpi"
+                        + displayMetrics.xdpi + "\n" + "ydpi" + displayMetrics.ydpi + "\n" + "scaledDensity"
+                        + displayMetrics.scaledDensity);
                     return false;
                 }
             });

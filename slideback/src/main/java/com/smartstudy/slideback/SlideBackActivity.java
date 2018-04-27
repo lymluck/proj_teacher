@@ -145,10 +145,6 @@ public class SlideBackActivity extends ActivityInterfaceImpl implements SlideFra
             mNeedFinishActivityFlag = true;
             // 作一个延迟任务，确保当前 activity 是始终能被关闭的
             mSlideFrameLayout.postDelayed(mFinishTask, 500);
-            //finish();
-            //overridePendingTransition(0, 0);
-            //
-            // Modified by lihong 2016/09/11 end
         }
     }
 
@@ -306,7 +302,7 @@ public class SlideBackActivity extends ActivityInterfaceImpl implements SlideFra
             mPreviousActivity = getPreviousPreviewActivity();
 
             if (DEBUG) {
-                Log.i(TAG , "    try to find previous activity = "
+                Log.i(TAG, "    try to find previous activity = "
                     + ((mPreviousActivity != null) ? mPreviousActivity.getLocalClassName() : "null"));
             }
 
@@ -328,7 +324,6 @@ public class SlideBackActivity extends ActivityInterfaceImpl implements SlideFra
                 ((ActivityInterface) mPreviousActivity).setActivityLifecycleCallbacks(null);
             }
         }
-
         mPreviousActivity = null;
     }
 }

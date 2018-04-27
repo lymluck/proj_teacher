@@ -117,7 +117,6 @@ public interface ApiService {
     Observable<ResponseInfo> getOptions(@HeaderMap Map<String, String> header);
 
 
-
     @GET(HttpUrlUtils.URL_COUNSELLOR_PROFILE)
     @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
     Observable<ResponseInfo> getMyInfo(@HeaderMap Map<String, String> header);
@@ -130,13 +129,14 @@ public interface ApiService {
     Observable<ResponseInfo> checkVersion(@HeaderMap Map<String, String> header, @Url() String url);
 
     /**
-     *用户注销
+     * 用户注销
      */
     @POST(HttpUrlUtils.URL_USER_LOGOUT)
     Observable<ResponseInfo> getLogOut(@HeaderMap Map<String, String> header);
 
     /**
      * 文件下载
+     *
      * @param url
      * @return
      */
@@ -146,40 +146,42 @@ public interface ApiService {
 
 
     /**
-     *问题列表
+     * 问题列表
      */
     @GET(HttpUrlUtils.URL_QUESTS)
-    Observable<ResponseInfo> getQuestions(@HeaderMap Map<String, String> header,@QueryMap Map<String, String> params);
+    Observable<ResponseInfo> getQuestions(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
     /**
      * 问答详情
+     *
      * @param header
      * @param url
      * @param params
      * @return
      */
     @GET()
-    Observable<ResponseInfo> getQaDetail(@HeaderMap Map<String, String> header, @Url() String url,@QueryMap Map<String, String> params);
+    Observable<ResponseInfo> getQaDetail(@HeaderMap Map<String, String> header, @Url() String url, @QueryMap Map<String, String> params);
 
 
     /**
      * 文本消息提交
+     *
      * @param header
      * @param params
      * @return
      */
     @POST()
-    Observable<ResponseInfo> postQuestion(@HeaderMap Map<String, String> header,@Url() String url, @QueryMap Map<String, String> params);
+    Observable<ResponseInfo> postQuestion(@HeaderMap Map<String, String> header, @Url() String url, @QueryMap Map<String, String> params);
 
 
     @POST()
-    Observable<ResponseInfo> postAnswerVoice(@HeaderMap Map<String, String> header,@Url() String url, @Body RequestBody Body);
+    Observable<ResponseInfo> postAnswerVoice(@HeaderMap Map<String, String> header, @Url() String url, @Body RequestBody Body);
 
     /**
-     *用户注销
+     * 用户注销
      */
     @GET(HttpUrlUtils.URL_MY_ANSWER)
-    Observable<ResponseInfo> getMyQuestion(@HeaderMap Map<String, String> header,@QueryMap Map<String, String> params);
+    Observable<ResponseInfo> getMyQuestion(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
 
 }

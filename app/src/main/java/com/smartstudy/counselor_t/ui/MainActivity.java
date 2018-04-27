@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -19,9 +18,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -46,7 +44,6 @@ import com.smartstudy.counselor_t.util.IMUtils;
 import com.smartstudy.counselor_t.util.ParameterUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
 import com.smartstudy.counselor_t.util.ScreenUtils;
-import com.smartstudy.counselor_t.util.Utils;
 import com.smartstudy.counselor_t.util.ToastUtils;
 import com.smartstudy.counselor_t.util.Utils;
 
@@ -60,8 +57,7 @@ import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 
 public class MainActivity extends BaseActivity<MainActivityContract.Presenter> implements DragPointView.OnDragListencer,
-        MainActivityContract.View, ViewPager.OnPageChangeListener {
-    private FragmentManager mfragmentManager;
+    MainActivityContract.View, ViewPager.OnPageChangeListener {
     private ConversationListFragment mConversationListFragment = null;
     private int update_type;
     private AppBasicDialog updateDialog;
@@ -300,16 +296,16 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
         if (mConversationListFragment == null) {
             ConversationListFragment listFragment = new ConversationListFragment();
             Uri uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
-                    .appendPath("conversationlist")
-                    .appendQueryParameter(Conversation.ConversationType.PRIVATE.getName(), "false") //设置私聊会话是否聚合显示
-                    .appendQueryParameter(Conversation.ConversationType.GROUP.getName(), "true")
-                    .appendQueryParameter(Conversation.ConversationType.DISCUSSION.getName(), "false")
-                    .appendQueryParameter(Conversation.ConversationType.SYSTEM.getName(), "true")
-                    .build();
+                .appendPath("conversationlist")
+                .appendQueryParameter(Conversation.ConversationType.PRIVATE.getName(), "false") //设置私聊会话是否聚合显示
+                .appendQueryParameter(Conversation.ConversationType.GROUP.getName(), "true")
+                .appendQueryParameter(Conversation.ConversationType.DISCUSSION.getName(), "false")
+                .appendQueryParameter(Conversation.ConversationType.SYSTEM.getName(), "true")
+                .build();
             mConversationsTypes = new Conversation.ConversationType[]{Conversation.ConversationType.PRIVATE,
-                    Conversation.ConversationType.GROUP,
-                    Conversation.ConversationType.DISCUSSION,
-                    Conversation.ConversationType.SYSTEM
+                Conversation.ConversationType.GROUP,
+                Conversation.ConversationType.DISCUSSION,
+                Conversation.ConversationType.SYSTEM
             };
             listFragment.setUri(uri);
             mConversationListFragment = listFragment;
@@ -389,29 +385,29 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
         String isToUpdate = (String) SPCacheUtils.get("isToUpdate", "");
         if ("".equals(isToUpdate) || "yes".equals(isToUpdate)) {
             updateDialog = DialogCreator.createAppBasicDialog(this, getString(R.string.version_update), des,
-                    getString(R.string.update_vs_now), getString(R.string.not_update), new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            switch (v.getId()) {
-                                case R.id.positive_btn:
-                                    BaseApplication.getInstance().setDownload(true);
-                                    BaseApplication.getInstance().setDownLoadUrl(downUrl);
-                                    //开始下载
-                                    Intent it = new Intent(MainActivity.this, VersionUpdateService.class);
-                                    it.putExtra("version", mLastVersion);
-                                    startService(it);
-                                    bindService(it, conn, Context.BIND_AUTO_CREATE);
-                                    updateDialog.dismiss();
-                                    break;
-                                case R.id.negative_btn:
-                                    SPCacheUtils.put("isToUpdate", "no");
-                                    updateDialog.dismiss();
-                                    break;
-                                default:
-                                    break;
-                            }
+                getString(R.string.update_vs_now), getString(R.string.not_update), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        switch (v.getId()) {
+                            case R.id.positive_btn:
+                                BaseApplication.getInstance().setDownload(true);
+                                BaseApplication.getInstance().setDownLoadUrl(downUrl);
+                                //开始下载
+                                Intent it = new Intent(MainActivity.this, VersionUpdateService.class);
+                                it.putExtra("version", mLastVersion);
+                                startService(it);
+                                bindService(it, conn, Context.BIND_AUTO_CREATE);
+                                updateDialog.dismiss();
+                                break;
+                            case R.id.negative_btn:
+                                SPCacheUtils.put("isToUpdate", "no");
+                                updateDialog.dismiss();
+                                break;
+                            default:
+                                break;
                         }
-                    });
+                    }
+                });
             ((TextView) updateDialog.findViewById(R.id.dialog_info)).setGravity(Gravity.CENTER_VERTICAL);
             WindowManager.LayoutParams p = updateDialog.getWindow().getAttributes();
             p.width = (int) (ScreenUtils.getScreenWidth() * 0.85);
@@ -531,7 +527,7 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
         Utils.removeCookie(this);
         Intent to_login = new Intent(this, LoginActivity.class);
         to_login.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(to_login);
     }
 
