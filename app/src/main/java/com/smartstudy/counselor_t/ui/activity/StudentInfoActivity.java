@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.smartstudy.counselor_t.R;
@@ -18,6 +19,7 @@ import com.smartstudy.counselor_t.ui.adapter.base.ViewHolder;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.ui.widget.HorizontalDividerItemDecoration;
 import com.smartstudy.counselor_t.ui.widget.NoScrollLinearLayoutManager;
+import com.smartstudy.counselor_t.ui.widget.slidinglayout.SlidingLayout;
 import com.smartstudy.counselor_t.util.DensityUtils;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
 
@@ -109,6 +111,8 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
 
     private TextView tv_count_school;
 
+    private ScrollView slStudentInfo;
+
     private CommonAdapter<StudentPageInfo.WatchSchools.SchoolData> mAdapter;
 
     private List<StudentPageInfo.WatchSchools.SchoolData> schoolDataList;
@@ -151,6 +155,7 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
         llyt_activity_research = findViewById(R.id.llyt_activity_research);
         llyt_activity_community = findViewById(R.id.llyt_activity_community);
         rv_school = findViewById(R.id.rv_school);
+        slStudentInfo = findViewById(R.id.sl_student_info);
         v_backline = findViewById(R.id.v_backline);
         tv_count_school = findViewById(R.id.tv_count_school);
         rv_school.setNestedScrollingEnabled(false);
@@ -171,7 +176,7 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
         rv_school.setNestedScrollingEnabled(false);
 
         rv_school.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
-                .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.horizontal_line_color).build());
+            .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.horizontal_line_color).build());
 
     }
 
@@ -216,6 +221,7 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
         /**
          * 个人信息头像等基本信息设置
          */
+        slStudentInfo.setVisibility(View.VISIBLE);
         DisplayImageUtils.formatPersonImgUrl(this, studentInfo.getAvatar(), ivAvatar);
         tvName.setText(studentInfo.getName());
         if (TextUtils.isEmpty(studentInfo.getGenderId())) {

@@ -201,7 +201,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
-                .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.bg_home_search).build());
+            .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.bg_home_search).build());
         recyclerView.setFocusable(false);
         initAdapter();
         initHeaderAndFooter();
@@ -272,6 +272,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
     @Override
     public void getQaDetails(QaDetailInfo data) {
         swipeRefreshLayout.setRefreshing(false);
+        headView.setVisibility(View.VISIBLE);
         this.detailInfo = data;
         if (data.getAsker() != null) {
             DisplayImageUtils.formatPersonImgUrl(getApplicationContext(), data.getAsker().getAvatar(), ivAsker);

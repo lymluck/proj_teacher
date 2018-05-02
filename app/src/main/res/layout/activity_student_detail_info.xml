@@ -6,6 +6,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
+        android:visibility="gone"
+        android:id="@+id/sl_student_info"
         android:layout_height="match_parent">
 
         <LinearLayout
