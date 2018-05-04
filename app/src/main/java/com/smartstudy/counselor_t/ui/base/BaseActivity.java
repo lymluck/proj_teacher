@@ -67,7 +67,6 @@ public abstract class BaseActivity<P extends BasePresenter> extends SlideBackAct
 
     @Override
     protected void onResume() {
-        initSystemBar();
         requestPermissions();
         super.onResume();
     }
@@ -283,10 +282,14 @@ public abstract class BaseActivity<P extends BasePresenter> extends SlideBackAct
             if (tintManager == null) {
                 tintManager = new SystemBarTintManager(this);
             }
-            tintManager.setStatusBarLightMode(this, darkMode);
-            tintManager.setStatusBarTintEnabled(true);
-            // 透明statusbar
-            tintManager.setStatusBarTintResource(R.color.transparent);
+            if (darkMode && !tintManager.isDarkMode()) {
+                tintManager.setStatusBarLightMode(this, true);
+            }
+            if (!tintManager.isStatusBarTintEnabled()) {
+                tintManager.setStatusBarTintEnabled(true);
+                // 透明statusbar
+                tintManager.setStatusBarTintResource(R.color.transparent);
+            }
         }
     }
 

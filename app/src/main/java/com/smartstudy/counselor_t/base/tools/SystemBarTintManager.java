@@ -56,6 +56,7 @@ public class SystemBarTintManager {
     private boolean mNavBarAvailable;
     private boolean mStatusBarTintEnabled;
     private boolean mNavBarTintEnabled;
+    private boolean darkMode;
     private View mStatusBarTintView;
     private View mNavBarTintView;
 
@@ -76,7 +77,7 @@ public class SystemBarTintManager {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // check theme attrs
             int[] attrs = {android.R.attr.windowTranslucentStatus,
-                    android.R.attr.windowTranslucentNavigation};
+                android.R.attr.windowTranslucentNavigation};
             TypedArray a = activity.obtainStyledAttributes(attrs);
             try {
                 mStatusBarAvailable = a.getBoolean(0, false);
@@ -292,6 +293,10 @@ public class SystemBarTintManager {
      */
     public boolean isStatusBarTintEnabled() {
         return mStatusBarTintEnabled;
+    }
+
+    public boolean isDarkMode() {
+        return darkMode;
     }
 
     /**
@@ -552,6 +557,7 @@ public class SystemBarTintManager {
      * @return 1:MIUUI 2:Flyme 3:android6.0
      */
     public int setStatusBarLightMode(Activity activity, boolean darkmode) {
+        this.darkMode = darkmode;
         int result = 0;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             if (MIUISetStatusBarLightMode(activity.getWindow(), darkmode)) {
@@ -560,7 +566,8 @@ public class SystemBarTintManager {
                 result = 2;
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (darkmode) {
-                    activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                    activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
                 } else {
                     activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
                 }
@@ -585,9 +592,9 @@ public class SystemBarTintManager {
             try {
                 WindowManager.LayoutParams lp = window.getAttributes();
                 Field darkFlag = WindowManager.LayoutParams.class
-                        .getDeclaredField("MEIZU_FLAG_DARK_STATUS_BAR_ICON");
+                    .getDeclaredField("MEIZU_FLAG_DARK_STATUS_BAR_ICON");
                 Field meizuFlags = WindowManager.LayoutParams.class
-                        .getDeclaredField("meizuFlags");
+                    .getDeclaredField("meizuFlags");
                 darkFlag.setAccessible(true);
                 meizuFlags.setAccessible(true);
                 int bit = darkFlag.getInt(null);

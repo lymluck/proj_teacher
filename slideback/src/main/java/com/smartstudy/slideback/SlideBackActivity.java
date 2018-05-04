@@ -236,7 +236,6 @@ public class SlideBackActivity extends ActivityInterfaceImpl implements SlideFra
         if (null != previousActivity) {
             return previousActivity.findViewById(android.R.id.content);
         }
-
         return null;
     }
 
