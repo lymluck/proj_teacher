@@ -272,9 +272,6 @@ public class SlideBackActivity extends ActivityInterfaceImpl implements SlideFra
      */
     private void offsetPreviousSnapshot(float translateX) {
         View view = getPreviousActivityContentView();
-        if (view == null) {
-            throw new NullPointerException("NullPointerException");
-        }
         if (view != null && mSlideFrameLayout != null) {
             // 如果前一个界面不跟随一起滑动的话，把平移的值设置为0
             if (!mPreviousActivitySlideFollow) {
