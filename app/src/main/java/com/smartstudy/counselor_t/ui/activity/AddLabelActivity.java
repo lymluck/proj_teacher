@@ -282,7 +282,7 @@ public class AddLabelActivity extends BaseActivity<AddLabelContract.Presenter> i
                     label_list.remove(curIndex);
                     labelStates.remove(curIndex);
                     for (int i = 0; i < label_list.size(); i++) {
-                        for (int j = 0; j < labels.size(); j++) {
+                        for (int j = 0; j < all_label_List.size(); j++) {
                             if (label_list.get(i).equals(
                                 all_label_List.get(j))) {
                                 tagAdapter.setSelectedList(j);
