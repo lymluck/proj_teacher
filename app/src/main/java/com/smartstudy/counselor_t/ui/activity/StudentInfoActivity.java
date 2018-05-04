@@ -1,5 +1,6 @@
 package com.smartstudy.counselor_t.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.StudentPageInfo;
+import com.smartstudy.counselor_t.mvp.contract.AddLabelContract;
 import com.smartstudy.counselor_t.mvp.contract.StudentActivityContract;
 import com.smartstudy.counselor_t.mvp.presenter.StudentInfoActivityPresenter;
 import com.smartstudy.counselor_t.ui.adapter.CommonAdapter;
@@ -19,7 +21,7 @@ import com.smartstudy.counselor_t.ui.adapter.base.ViewHolder;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.ui.widget.HorizontalDividerItemDecoration;
 import com.smartstudy.counselor_t.ui.widget.NoScrollLinearLayoutManager;
-import com.smartstudy.counselor_t.ui.widget.slidinglayout.SlidingLayout;
+import com.smartstudy.counselor_t.ui.widget.TagsLayout;
 import com.smartstudy.counselor_t.util.DensityUtils;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
 
@@ -113,6 +115,14 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
 
     private ScrollView slStudentInfo;
 
+    private TagsLayout tlTags;
+
+    private TextView tvOtherTag;
+
+    private StudentPageInfo studentInfo;
+
+    private TextView tvAddTags;
+
     private CommonAdapter<StudentPageInfo.WatchSchools.SchoolData> mAdapter;
 
     private List<StudentPageInfo.WatchSchools.SchoolData> schoolDataList;
@@ -121,6 +131,41 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_detail_info);
+
+    }
+
+
+    private void initAdapter() {
+        schoolDataList = new ArrayList<>();
+        mAdapter = new CommonAdapter<StudentPageInfo.WatchSchools.SchoolData>(this, R.layout.item_studetn_school, schoolDataList) {
+
+            @Override
+            protected void convert(ViewHolder holder, StudentPageInfo.WatchSchools.SchoolData schoolData, int position) {
+                holder.setText(R.id.tv_school, schoolData.getSchool().getChineseName());
+                if (schoolData.getMatchTypeId().equals("MS_MATCH_TYPE_TOP")) {
+                    holder.setText(R.id.tv_status, "冲");
+                    holder.setBackgroundRes(R.id.tv_status, R.drawable.bg_oval_red_size);
+                } else if (schoolData.getMatchTypeId().equals("MS_MATCH_TYPE_MIDDLE")) {
+                    holder.setText(R.id.tv_status, "核");
+                    holder.setBackgroundRes(R.id.tv_status, R.drawable.bg_oval_blue_size);
+                } else {
+                    holder.setText(R.id.tv_status, "保");
+                    holder.setBackgroundRes(R.id.tv_status, R.drawable.bg_oval_green_size);
+                }
+
+            }
+        };
+    }
+
+    @Override
+    public StudentActivityContract.Presenter initPresenter() {
+        return new StudentInfoActivityPresenter(this);
+    }
+
+    @Override
+    public void initView() {
+        targeId = getIntent().getStringExtra("ids");
+
         ivAvatar = findViewById(R.id.iv_avatar);
         tvName = findViewById(R.id.tv_name);
         ivSex = findViewById(R.id.iv_sex);
@@ -132,6 +177,8 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
         llIntentionInformation = findViewById(R.id.ll_intention_information);
         tvTime = findViewById(R.id.tv_time);
         tv_gre = findViewById(R.id.tv_gre);
+        tlTags = findViewById(R.id.tl_tags);
+        tvAddTags = findViewById(R.id.tv_add_tags);
         ll_student = findViewById(R.id.ll_student);
         tvTargeCountry = findViewById(R.id.tv_targe_country);
         tvTargetDegree = findViewById(R.id.tv_target_degree);
@@ -145,6 +192,7 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
         ll_target_direction = findViewById(R.id.ll_target_direction);
         tvCurrentSchool = findViewById(R.id.tv_current_school);
         ll_bg = findViewById(R.id.ll_bg);
+        tvOtherTag = findViewById(R.id.tv_other_tag);
         tvScore = findViewById(R.id.tv_score);
         tvScoreLanguage = findViewById(R.id.tv_score_language);
         tvGreGmat = findViewById(R.id.tv_gre_gmat);
@@ -181,38 +229,35 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
     }
 
 
-    private void initAdapter() {
-        schoolDataList = new ArrayList<>();
-        mAdapter = new CommonAdapter<StudentPageInfo.WatchSchools.SchoolData>(this, R.layout.item_studetn_school, schoolDataList) {
-
-            @Override
-            protected void convert(ViewHolder holder, StudentPageInfo.WatchSchools.SchoolData schoolData, int position) {
-                holder.setText(R.id.tv_school, schoolData.getSchool().getChineseName());
-                if (schoolData.getMatchTypeId().equals("MS_MATCH_TYPE_TOP")) {
-                    holder.setText(R.id.tv_status, "冲");
-                    holder.setBackgroundRes(R.id.tv_status, R.drawable.bg_oval_red_size);
-                } else if (schoolData.getMatchTypeId().equals("MS_MATCH_TYPE_MIDDLE")) {
-                    holder.setText(R.id.tv_status, "核");
-                    holder.setBackgroundRes(R.id.tv_status, R.drawable.bg_oval_blue_size);
-                } else {
-                    holder.setText(R.id.tv_status, "保");
-                    holder.setBackgroundRes(R.id.tv_status, R.drawable.bg_oval_green_size);
-                }
-
-            }
-        };
-    }
-
     @Override
-    public StudentActivityContract.Presenter initPresenter() {
-        return new StudentInfoActivityPresenter(this);
-    }
-
-    @Override
-    public void initView() {
-        targeId = getIntent().getStringExtra("ids");
+    protected void onResume() {
+        super.onResume();
         if (!TextUtils.isEmpty(targeId)) {
             presenter.getStudentDetailInfo(targeId);
+        }
+    }
+
+    @Override
+    public void initEvent() {
+        super.initEvent();
+        tvOtherTag.setOnClickListener(this);
+        tvAddTags.setOnClickListener(this);
+    }
+
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.tv_other_tag:
+                startActivity(new Intent(this, OtherTeacherTagActivity.class).putExtra("id", studentInfo.getId()));
+                break;
+
+            case R.id.tv_add_tags:
+                startActivity(new Intent(this, AddLabelActivity.class).putExtra("id", studentInfo.getId()));
+                break;
+            default:
+                break;
         }
     }
 
@@ -221,7 +266,12 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
         /**
          * 个人信息头像等基本信息设置
          */
+        this.studentInfo = studentInfo;
         slStudentInfo.setVisibility(View.VISIBLE);
+        if (studentInfo.getTags() != null && studentInfo.getTags().size() > 0) {
+            tlTags.setBackGroup(R.drawable.bg_good_bussienss_border);
+            tlTags.createTab(this, studentInfo.getTags());
+        }
         DisplayImageUtils.formatPersonImgUrl(this, studentInfo.getAvatar(), ivAvatar);
         tvName.setText(studentInfo.getName());
         if (TextUtils.isEmpty(studentInfo.getGenderId())) {

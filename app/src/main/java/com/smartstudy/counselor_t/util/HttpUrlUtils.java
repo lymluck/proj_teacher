@@ -5,6 +5,10 @@ public class HttpUrlUtils {
     /**************************** api ***************************/
     public static final String URL_APP_VERSION = "app/android/version/%1$s/check";  //版本检测
     public static final String URL_QUESTS = "questions/list"; //问答列表
+    public static final String URL_QUESTS_MARK = "questions/list/marked"; //关注问答列表
+    public static final String URL_QUESTS_OTHER_TAGS = " counsellor/student/%1$s/tags/others"; //学生标签
+    public static final String URL_QUESTS_MY_TAGS = "counsellor/student/%1$s/tags"; //学生标签
+    public static final String URL_QUESTS_HISTORY_TAGS = "counsellor/student/tags/history";//提交历史的标签
     public static final String URL_QUESTS_LINK = "questions/%1$s"; //问答详情
 
     public static final String URL_PHONE_CODE = "counsellor/captcha";  //获取验证码
@@ -20,13 +24,15 @@ public class HttpUrlUtils {
     /**************************** web ***************************/
     public static final String URL_USER_CONTRACT = "/user-agreement.html";  //用户协议
     public static final String URL_POST_ANSWER = "questions/%1$s/answer";//提交追问
+    public static final String URL_QUESTION_MARK = "questions/%1$s/mark";//提交追问
     public static final String URL_MY_ANSWER = "questions/list/answered_by_me";//我的问答
 
 
     /*********获取api接口url***********/
     public static String getBaseUrl() {
-        String SERVER = "https://slx.smartstudy.com/api/";
-//        String SERVER = "http://slx.staging.smartstudy.com/api/"; //test
+//        String SERVER = "https://slx.smartstudy.com/api/";
+//        String SERVER = "http://172.17.7.102:3234/";
+        String SERVER = "http://slx.staging.smartstudy.com/api/"; //test
         String api = (String) SPCacheUtils.get(ConstantUtils.API_SERVER, "");
         switch (api) {
             case "master":
@@ -36,6 +42,7 @@ public class HttpUrlUtils {
             case "test":
 //               SERVER = "https://slx.smartstudy.com/api/";
                 SERVER = "http://slx.staging.smartstudy.com/api/"; //test
+//                SERVER = "http://172.17.7.102:3234/";
                 break;
             case "dev":
                 SERVER = "http://blog.smartstudy.com:3234/";

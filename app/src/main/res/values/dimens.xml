@@ -56,8 +56,8 @@
     <dimen name="app_text_size7">11sp</dimen>
 
 
-    <dimen name="qa_title_padding_left">98dp</dimen>
-    <dimen name="qa_title_padding_right">98dp</dimen>
-    <dimen name="qa_title_circle_padding_right">90dp</dimen>
+    <dimen name="qa_title_padding_left">43dp</dimen>
+    <dimen name="qa_title_padding_right">43dp</dimen>
+    <dimen name="qa_title_circle_padding_right">35dp</dimen>
 
 </resources>

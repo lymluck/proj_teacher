@@ -1,12 +1,13 @@
 package com.smartstudy.counselor_t.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by yqy on 2017/12/4.
  */
 
-public class QaDetailInfo {
+public class QaDetailInfo implements Serializable {
     private String id;
 
     private String userId;
@@ -40,6 +41,17 @@ public class QaDetailInfo {
     private String userLocation;
 
     private String schoolName;
+
+    private boolean marked;
+
+
+    public boolean isMarked() {
+        return marked;
+    }
+
+    public void setMarked(boolean marked) {
+        this.marked = marked;
+    }
 
     public String getPlatform() {
         return platform;

@@ -75,7 +75,47 @@ public class QaDetailPresenter extends BasePresenterImpl<QaDetailContract.View> 
 
             @Override
             public void onError(String msg) {
-                view.showTip(msg);
+                view.postAnswerFail(msg);
+            }
+        });
+    }
+
+    @Override
+    public void questionAddMark(String questionId) {
+        qaDetailModel.questionAddMark(questionId, new ObserverListener<String>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                addDisposable(disposable);
+            }
+
+            @Override
+            public void onNext(String result) {
+                view.questionAddMarkSuccess();
+            }
+
+            @Override
+            public void onError(String msg) {
+                view.postAnswerFail(msg);
+            }
+        });
+    }
+
+    @Override
+    public void questionDeleteMark(String questionId) {
+        qaDetailModel.questionDeleteMark(questionId, new ObserverListener<String>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                addDisposable(disposable);
+            }
+
+            @Override
+            public void onNext(String result) {
+                view.questionDeleteMarkSuccess();
+            }
+
+            @Override
+            public void onError(String msg) {
+                view.postAnswerFail(msg);
             }
         });
     }

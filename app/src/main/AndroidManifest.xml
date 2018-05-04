@@ -412,7 +412,7 @@
         <activity
             android:name=".ui.activity.QaDetailActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
+            android:windowSoftInputMode="stateUnchanged|adjustPan" />
 
         <activity
             android:name=".ui.activity.ReloadQaActivity"
@@ -425,6 +425,21 @@
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.activity.ChooseListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.activity.QaDetailGuideActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/AppDialogActivityTheme"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
+        <activity
+            android:name=".ui.activity.AddLabelActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
+        <activity
+            android:name=".ui.activity.OtherTeacherTagActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 

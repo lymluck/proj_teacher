@@ -26,6 +26,16 @@ public class StudentPageInfo {
     private TargetSection targetSection;
     private BackgroundSection backgroundSection;
     private WatchSchools watchSchools;
+    private List<String> tags;
+
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
 
     public class TargetSection {
         private AdmissionTime admissionTime;

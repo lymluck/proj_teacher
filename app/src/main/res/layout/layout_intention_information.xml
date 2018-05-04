@@ -3,7 +3,6 @@
     android:id="@+id/ll_intention_information"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="12dp"
     android:background="@color/white"
     android:orientation="vertical">
 
@@ -40,8 +39,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:ellipsize="end"
-            android:maxLines="1"
             android:gravity="center"
+            android:maxLines="1"
             android:textColor="@color/app_text_color2"
             android:textSize="16sp" />
 
@@ -71,8 +70,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:ellipsize="end"
-            android:maxLines="1"
             android:gravity="center"
+            android:maxLines="1"
             android:textColor="@color/app_text_color2"
             android:textSize="16sp" />
 
@@ -103,8 +102,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:ellipsize="end"
-            android:maxLines="1"
             android:gravity="center"
+            android:maxLines="1"
             android:textColor="@color/app_text_color2"
             android:textSize="16sp" />
 
@@ -142,8 +141,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:ellipsize="end"
-                android:maxLines="1"
                 android:gravity="center"
+                android:maxLines="1"
                 android:textColor="@color/app_text_color2"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -179,8 +178,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:ellipsize="end"
-                android:maxLines="1"
                 android:gravity="center"
+                android:maxLines="1"
                 android:textColor="@color/app_text_color2"
                 android:textSize="16sp" />
 

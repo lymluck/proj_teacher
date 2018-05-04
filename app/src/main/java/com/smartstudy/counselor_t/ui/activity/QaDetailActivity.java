@@ -2,13 +2,17 @@ package com.smartstudy.counselor_t.ui.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -24,12 +28,14 @@ import com.smartstudy.counselor_t.mvp.presenter.QaDetailPresenter;
 import com.smartstudy.counselor_t.ui.adapter.QaDetailAdapter;
 import com.smartstudy.counselor_t.ui.adapter.wrapper.HeaderAndFooterWrapper;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
+import com.smartstudy.counselor_t.ui.widget.DrawableTextView;
 import com.smartstudy.counselor_t.ui.widget.HorizontalDividerItemDecoration;
 import com.smartstudy.counselor_t.ui.widget.NoScrollLinearLayoutManager;
 import com.smartstudy.counselor_t.ui.widget.audio.AudioRecorder;
 import com.smartstudy.counselor_t.util.DensityUtils;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
 import com.smartstudy.counselor_t.util.KeyBoardUtils;
+import com.smartstudy.counselor_t.util.SPCacheUtils;
 import com.smartstudy.counselor_t.util.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -77,11 +83,18 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
     private TextView tv_schoolName;
 
-    QaDetailInfo detailInfo;
+    private QaDetailInfo detailInfo;
 
     private HeaderAndFooterWrapper mHeader;
 
     private View headView;
+
+    private DrawableTextView dtvFocus;
+
+    private boolean isFocus = false;
+
+    private DrawableTextView dtvCallout;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -94,6 +107,10 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
     public void initEvent() {
 
         iv_audio.setOnClickListener(this);
+
+        dtvFocus.setOnClickListener(this);
+
+        dtvCallout.setOnClickListener(this);
 
         etAnswer.addTextChangedListener(new TextWatcher() {
             @Override
@@ -215,10 +232,12 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         headView = mInflater.inflate(R.layout.layout_question_list, null, false);
         ll_student = headView.findViewById(R.id.ll_student);
         ivAsker = headView.findViewById(R.id.iv_asker);
+        dtvCallout = headView.findViewById(R.id.dtv_callout);
         tvAskerName = headView.findViewById(R.id.tv_asker_name);
         tv_location = headView.findViewById(R.id.tv_location);
         tv_platform = headView.findViewById(R.id.tv_platform);
         tv_schoolName = headView.findViewById(R.id.tv_schoolName);
+        dtvFocus = headView.findViewById(R.id.dtv_focus);
         tvQuestion = headView.findViewById(R.id.tv_question);
         tvAskerTime = headView.findViewById(R.id.tv_ask_time);
         answer = headView.findViewById(R.id.answer);
@@ -231,11 +250,19 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.dtv_focus:
+                if (!isFocus) {
+                    presenter.questionAddMark(questionId);
+                } else {
+                    presenter.questionDeleteMark(questionId);
+                }
+                break;
             case R.id.tv_post:
                 if (TextUtils.isEmpty(etAnswer.getText().toString().trim())) {
                     ToastUtils.shortToast(this, "发送消息不能为空");
                     return;
                 }
+                tvPost.setClickable(false);
                 presenter.postAnswerText(questionId, etAnswer.getText().toString());
                 break;
 
@@ -243,6 +270,9 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
                 finish();
                 break;
 
+            case R.id.dtv_callout:
+                startActivity(new Intent(this, AddLabelActivity.class).putExtra("id", detailInfo.getAsker().getId()));
+                break;
 
             case R.id.ll_student:
                 if (detailInfo != null && detailInfo.getAsker() != null) {
@@ -273,6 +303,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
     public void getQaDetails(QaDetailInfo data) {
         swipeRefreshLayout.setRefreshing(false);
         headView.setVisibility(View.VISIBLE);
+        isFocus = data.isMarked();
         this.detailInfo = data;
         if (data.getAsker() != null) {
             DisplayImageUtils.formatPersonImgUrl(getApplicationContext(), data.getAsker().getAvatar(), ivAsker);
@@ -280,6 +311,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
             tvAskerTime.setText(data.getCreateTimeText());
             tvQuestion.setText(data.getContent());
             etAnswer.setHint("回复 @" + data.getAsker().getName());
+            Log.w("kim", "--->" + data.getAsker().getPhone());
         }
 
         if (data.getAnswers() != null && data.getAnswers().size() > 0) {
@@ -313,6 +345,19 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
             tv_schoolName.setText(data.getSchoolName());
         }
 
+        if (isFocus) {
+            Drawable leftDrawable = getResources().getDrawable(R.drawable.ic_followin_red);
+            leftDrawable.setBounds(0, 0, leftDrawable.getMinimumWidth(), leftDrawable.getMinimumHeight());
+            dtvFocus.setCompoundDrawables(leftDrawable, null, null, null);
+        } else {
+            Drawable leftDrawable = getResources().getDrawable(R.drawable.ic_follow_gray);
+            leftDrawable.setBounds(0, 0, leftDrawable.getMinimumWidth(), leftDrawable.getMinimumHeight());
+            dtvFocus.setCompoundDrawables(leftDrawable, null, null, null);
+        }
+        if (!(boolean) SPCacheUtils.get("is_guide", false)) {
+            startActivity(new Intent(this, QaDetailGuideActivity.class).putExtra("ansewer", data));
+            SPCacheUtils.put("is_guide", true);
+        }
         data = null;
     }
 
@@ -327,7 +372,34 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
     public void postAnswerSuccess() {
         KeyBoardUtils.closeKeybord(etAnswer, QaDetailActivity.this);
         hideAudioView();
+        tvPost.setClickable(true);
+        etAnswer.setText("");
         presenter.getQaDetails(questionId);
+    }
+
+    @Override
+    public void postAnswerFail(String message) {
+        ToastUtils.shortToast(this, message);
+        tvPost.setClickable(true);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public void questionAddMarkSuccess() {
+        Drawable leftDrawable = getResources().getDrawable(R.drawable.ic_followin_red);
+        leftDrawable.setBounds(0, 0, leftDrawable.getMinimumWidth(), leftDrawable.getMinimumHeight());
+        dtvFocus.setCompoundDrawables(leftDrawable, null, null, null);
+        isFocus = true;
+        ToastUtils.shortToast(this, "关注成功");
+    }
+
+    @Override
+    public void questionDeleteMarkSuccess() {
+        Drawable leftDrawable = getResources().getDrawable(R.drawable.ic_follow_gray);
+        leftDrawable.setBounds(0, 0, leftDrawable.getMinimumWidth(), leftDrawable.getMinimumHeight());
+        dtvFocus.setCompoundDrawables(leftDrawable, null, null, null);
+        isFocus = false;
+        ToastUtils.shortToast(this, "取消关注成功");
     }
 
 

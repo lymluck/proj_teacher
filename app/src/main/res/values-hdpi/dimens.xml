@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="qa_title_padding_left">98dp</dimen>
-    <dimen name="qa_title_padding_right">98dp</dimen>
-    <dimen name="qa_title_circle_padding_right">90dp</dimen>
+    <dimen name="qa_title_padding_left">43dp</dimen>
+    <dimen name="qa_title_padding_right">43dp</dimen>
+    <dimen name="qa_title_circle_padding_right">35dp</dimen>
     <dimen name="login_logo_margin_t">30dp</dimen><!--登录页面logo上边距  -->
     <dimen name="login_logo_wh">65dp</dimen><!--登录页面logo宽高  -->
     <dimen name="login_edittext_margin_t">33dp</dimen><!--登录页面edittext距logo上边距  -->

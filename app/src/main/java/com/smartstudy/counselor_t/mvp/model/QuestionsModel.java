@@ -19,26 +19,4 @@ public class QuestionsModel extends BaseModel {
         apiSubscribe(ApiManager.getApiService().getQuestions(getHeadersMap(), params), listener);
     }
 
-    public void getQuestions(final String keyword, final boolean answered, final int page,
-                             ObserverListener listener) {
-        Map<String, String> params = new HashMap<>();
-        params.put("answered", answered + "");
-        params.put("keyword", keyword);
-        params.put("page", page + "");
-        apiSubscribe(ApiManager.getApiService().getQuestions(getHeadersMap(), params), listener);
-    }
-
-    public void getMyQuestions(final int page, ObserverListener listener) {
-        Map<String, String> params = new HashMap<>();
-        params.put("page", page + "");
-//        apiSubscribe(ApiManager.getApiService().getMyQuestions(getHeadersMap(), params), listener);
-    }
-
-    public void getSchoolQa(final String schoolId, final int page, ObserverListener listener) {
-        Map<String, String> params = new HashMap<>();
-        params.put("page", page + "");
-        params.put("answered", true + "");
-        params.put("schoolId", schoolId);
-        apiSubscribe(ApiManager.getApiService().getQuestions(getHeadersMap(), params), listener);
-    }
 }

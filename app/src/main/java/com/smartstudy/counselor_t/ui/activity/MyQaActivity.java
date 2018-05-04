@@ -16,6 +16,7 @@ import com.smartstudy.counselor_t.entity.TotalSubQuestion;
 import com.smartstudy.counselor_t.mvp.contract.MyQaActivityContract;
 import com.smartstudy.counselor_t.mvp.presenter.MyQaActivityPresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
+import com.smartstudy.counselor_t.ui.fragment.MyFocusFragment;
 import com.smartstudy.counselor_t.ui.fragment.MyQaFragment;
 import com.smartstudy.counselor_t.ui.fragment.QaFragment;
 import com.smartstudy.counselor_t.util.ConstantUtils;
@@ -37,15 +38,17 @@ import io.rong.imkit.RongIM;
  * @email yeqingyu@innobuddy.com
  */
 public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> implements MyQaActivityContract.View {
-    private TextView all_answer;
-    private TextView my_answer;
+    private TextView allAnswer;
+    private TextView myAnswer;
+    private TextView myFocus;
     private Bundle state;
     private QaFragment qaFragment;
+    private MyFocusFragment myFocusFragment;
     private FragmentManager mfragmentManager;
     private MyQaFragment myFragment;
-    private TextView tv_subcount;
+    private TextView tvSubcount;
+    private ImageView userIcon;
 
-    private ImageView user_icon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +67,11 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
     public void initView() {
         setHeadVisible(View.GONE);
         transTitleBar(findViewById(R.id.layout_qa_title));
-        tv_subcount = findViewById(R.id.tv_subcount);
-        all_answer = findViewById(R.id.all_answer);
-        my_answer = findViewById(R.id.my_answer);
-        user_icon = findViewById(R.id.user_icon);
+        tvSubcount = findViewById(R.id.tv_subcount);
+        allAnswer = findViewById(R.id.all_answer);
+        myAnswer = findViewById(R.id.my_answer);
+        myFocus = findViewById(R.id.tv_focus);
+        userIcon = findViewById(R.id.user_icon);
         String ticket = (String) SPCacheUtils.get("ticket", ConstantUtils.CACHE_NULL);
         if (!TextUtils.isEmpty(ticket) && ConstantUtils.CACHE_NULL.equals(ticket)) {
             startActivity(new Intent(this, LoginActivity.class));
@@ -75,7 +79,7 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
         } else {
             presenter.getAuditResult();
         }
-        all_answer.setSelected(true);
+        allAnswer.setSelected(true);
         mfragmentManager = getSupportFragmentManager();
         hideFragment(mfragmentManager);
         if (state == null) {
@@ -85,9 +89,10 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
 
     @Override
     public void initEvent() {
-        all_answer.setOnClickListener(this);
-        my_answer.setOnClickListener(this);
-        user_icon.setOnClickListener(this);
+        allAnswer.setOnClickListener(this);
+        myAnswer.setOnClickListener(this);
+        userIcon.setOnClickListener(this);
+        myFocus.setOnClickListener(this);
     }
 
     @Override
@@ -111,6 +116,9 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
                 break;
             case R.id.my_answer:
                 presenter.showFragment(mfragmentManager, ParameterUtils.FRAGMENT_TWO);
+                break;
+            case R.id.tv_focus:
+                presenter.showFragment(mfragmentManager, ParameterUtils.FRAGMENT_THREE);
                 break;
             default:
                 break;
@@ -175,13 +183,14 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
                 }
             }
         }
-        all_answer.setSelected(false);
-        my_answer.setSelected(false);
+        allAnswer.setSelected(false);
+        myAnswer.setSelected(false);
+        myFocus.setSelected(false);
     }
 
     @Override
     public void showQaFragment(FragmentTransaction ft) {
-        all_answer.setSelected(true);
+        allAnswer.setSelected(true);
         /**
          * 如果Fragment为空，就新建一个实例
          * 如果不为空，就将它从栈中显示出来
@@ -198,7 +207,7 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
 
     @Override
     public void showMyQaFragment(FragmentTransaction ft) {
-        my_answer.setSelected(true);
+        myAnswer.setSelected(true);
         /**
          * 如果Fragment为空，就新建一个实例
          * 如果不为空，就将它从栈中显示出来
@@ -213,23 +222,36 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
         ft = null;
     }
 
+    @Override
+    public void showMyFocus(FragmentTransaction ft) {
+        myFocus.setSelected(true);
+        if (myFocusFragment == null) {
+            myFocusFragment = new MyFocusFragment();
+            ft.add(R.id.flyt_qa, myFocusFragment);
+        } else {
+            ft.show(myFocusFragment);
+        }
+        myFocusFragment.setUserVisibleHint(true);
+        ft = null;
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onDataSynEvent(TotalSubQuestion totalSubQuestion) {
         if (totalSubQuestion != null) {
             if (totalSubQuestion.getTotalSubQuestionCount() == 0) {
-                tv_subcount.setVisibility(View.GONE);
+                tvSubcount.setVisibility(View.GONE);
             } else {
-                tv_subcount.setVisibility(View.VISIBLE);
+                tvSubcount.setVisibility(View.VISIBLE);
                 if (totalSubQuestion.getTotalSubQuestionCount() < 100) {
                     if (totalSubQuestion.getTotalSubQuestionCount() < 10) {
-                        tv_subcount.setBackgroundResource(R.drawable.bg_circle_answer_count);
+                        tvSubcount.setBackgroundResource(R.drawable.bg_circle_answer_count);
                     } else {
-                        tv_subcount.setBackgroundResource(R.drawable.bg_count_answer);
+                        tvSubcount.setBackgroundResource(R.drawable.bg_count_answer);
                     }
-                    tv_subcount.setText(totalSubQuestion.getTotalSubQuestionCount() + "");
+                    tvSubcount.setText(totalSubQuestion.getTotalSubQuestionCount() + "");
                 } else {
-                    tv_subcount.setBackgroundResource(R.drawable.bg_count_answer);
-                    tv_subcount.setText("99+");
+                    tvSubcount.setBackgroundResource(R.drawable.bg_count_answer);
+                    tvSubcount.setText("99+");
                 }
             }
         }
@@ -248,7 +270,7 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
     }
 
     public TextView getSubCountTextView() {
-        return tv_subcount;
+        return tvSubcount;
     }
 
 }

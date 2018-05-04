@@ -95,6 +95,9 @@ public class MyQaActivityPresenter extends BasePresenterImpl<MyQaActivityContrac
             case ParameterUtils.FRAGMENT_TWO:
                 view.showMyQaFragment(ft);
                 break;
+            case ParameterUtils.FRAGMENT_THREE:
+                view.showMyFocus(ft);
+                break;
             default:
                 view.showQaFragment(ft);
                 break;

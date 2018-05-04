@@ -1,15 +1,27 @@
 package com.smartstudy.counselor_t.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by yqy on 2017/12/4.
  */
 
-public class Asker {
+public class Asker implements Serializable {
     private String id;
 
     private String name;
 
     private String avatar;
+
+    private String phone;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public String getId() {
         return id;

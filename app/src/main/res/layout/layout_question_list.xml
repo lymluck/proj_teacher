@@ -2,10 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:visibility="gone"
     android:background="@color/white"
     android:orientation="vertical">
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -127,6 +125,60 @@
                 android:textSize="12sp" />
 
         </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#E4E5E6" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+        <com.smartstudy.counselor_t.ui.widget.DrawableTextView
+            android:id="@+id/dtv_focus"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/ic_follow_gray"
+            android:gravity="center_vertical"
+            android:text="重点关注" />
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="12dp"
+            android:background="#E4E5E6" />
+
+        <com.smartstudy.counselor_t.ui.widget.DrawableTextView
+            android:id="@+id/dtv_callout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/ic_qa_tag"
+            android:gravity="center_vertical"
+            android:text="标注用户" />
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="12dp"
+            android:background="#E4E5E6" />
+
+        <com.smartstudy.counselor_t.ui.widget.DrawableTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/ic_telephone"
+            android:gravity="center_vertical"
+            android:text="联系对方" />
     </LinearLayout>
 
     <LinearLayout

@@ -36,6 +36,20 @@
                 android:textColor="@drawable/text_study_consultants"
                 android:textSize="13sp" />
 
+            <TextView
+                android:id="@+id/tv_focus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_study_consultans_select_border14"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:text="重点关注"
+                android:textColor="@drawable/text_study_consultants"
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/my_answer"

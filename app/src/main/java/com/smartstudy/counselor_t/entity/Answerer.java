@@ -4,13 +4,14 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by yqy on 2017/12/4.
  */
 
-public class Answerer {
+public class Answerer implements Serializable {
     private String id;
 
     private int commenterId;

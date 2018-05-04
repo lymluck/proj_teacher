@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
+
+    <com.smartstudy.counselor_t.ui.widget.TagsLayout
+        android:id="@+id/tl_tags"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:padding_bottom_top="6dp"
+        app:padding_left_right="16dp"
+        app:tagHorizontalSpace="8dp"
+        app:tagVerticalSpace="8dp"
+        app:textChildSize="@dimen/app_text_size3"
+        app:textColor="#58646E" />
+</LinearLayout>

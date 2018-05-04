@@ -37,4 +37,11 @@ public class QaDetailModel extends BaseModel {
     }
 
 
+    public void questionAddMark(final String questionId, ObserverListener listener) {
+        apiSubscribe(ApiManager.getApiService().questionAddMark(getHeadersMap(), String.format(HttpUrlUtils.URL_QUESTION_MARK, questionId)), listener);
+    }
+
+    public void questionDeleteMark(final String questionId, ObserverListener listener) {
+        apiSubscribe(ApiManager.getApiService().questionDeleteMark(getHeadersMap(), String.format(HttpUrlUtils.URL_QUESTION_MARK, questionId)), listener);
+    }
 }

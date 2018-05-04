@@ -21,6 +21,12 @@ public interface QaDetailContract {
         void getQaDetailFail(String message);
 
         void postAnswerSuccess();
+
+        void postAnswerFail(String message);
+
+        void questionAddMarkSuccess();
+
+        void questionDeleteMarkSuccess();
     }
 
     interface Presenter extends BasePresenter {
@@ -28,6 +34,10 @@ public interface QaDetailContract {
         void getQaDetails(String id);
 
         void postAnswerText(String id, String answer);
+
+        void questionAddMark(String questionId);
+
+        void questionDeleteMark(String questionId);
 
     }
 }

@@ -27,6 +27,8 @@ public interface MyQaActivityContract {
 
         void showMyQaFragment(FragmentTransaction ft);
 
+        void showMyFocus(FragmentTransaction ft);
+
     }
 
     interface Presenter extends BasePresenter {

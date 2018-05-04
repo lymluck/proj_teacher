@@ -12,6 +12,7 @@ import io.reactivex.annotations.NonNull;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.Headers;
@@ -151,6 +152,41 @@ public interface ApiService {
     @GET(HttpUrlUtils.URL_QUESTS)
     Observable<ResponseInfo> getQuestions(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
+
+    /**
+     * 我关注问题列表
+     */
+    @GET(HttpUrlUtils.URL_QUESTS_MARK)
+    Observable<ResponseInfo> getMyFocusQuestions(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+
+
+    /**
+     * 获取我关注的学生的标签
+     */
+    @GET()
+    Observable<ResponseInfo> getMyStudentTag(@HeaderMap Map<String, String> header, @Url() String url);
+
+
+    /**
+     * 提交标签
+     */
+    @PUT()
+    Observable<ResponseInfo> submitMyStudentTag(@HeaderMap Map<String, String> header, @Url() String url, @QueryMap Map<String, String> params);
+
+
+    /**
+     * 提交历史标签
+     */
+    @POST(HttpUrlUtils.URL_QUESTS_HISTORY_TAGS)
+    Observable<ResponseInfo> postHistoryTag(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+
+
+    /**
+     * 获取历史标签
+     */
+    @GET(HttpUrlUtils.URL_QUESTS_HISTORY_TAGS)
+    Observable<ResponseInfo> getHisToryTag(@HeaderMap Map<String, String> header);
+
     /**
      * 问答详情
      *
@@ -172,6 +208,27 @@ public interface ApiService {
      */
     @POST()
     Observable<ResponseInfo> postQuestion(@HeaderMap Map<String, String> header, @Url() String url, @QueryMap Map<String, String> params);
+
+    /**
+     * 重点关注
+     *
+     * @param header
+     * @param url
+     * @return
+     */
+    @POST()
+    Observable<ResponseInfo> questionAddMark(@HeaderMap Map<String, String> header, @Url() String url);
+
+
+    /**
+     * 取消重点关注
+     *
+     * @param header
+     * @param url
+     * @return
+     */
+    @DELETE()
+    Observable<ResponseInfo> questionDeleteMark(@HeaderMap Map<String, String> header, @Url() String url);
 
 
     @POST()
