@@ -60,6 +60,8 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // 首页禁用滑动返回
+        setSlideable(false);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
     }
