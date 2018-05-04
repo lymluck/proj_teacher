@@ -646,4 +646,5 @@ public class SystemBarTintManager {
         }
         return result;
     }
+
 }

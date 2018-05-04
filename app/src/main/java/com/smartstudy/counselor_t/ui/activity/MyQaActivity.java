@@ -49,6 +49,8 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // 首页禁用滑动返回
+        setSlideable(false);
         super.onCreate(savedInstanceState);
         state = savedInstanceState;
         setContentView(R.layout.activity_qa_list);
