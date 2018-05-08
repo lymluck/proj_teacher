@@ -184,7 +184,7 @@ public class Answerer implements Serializable {
         this.comments = comments;
     }
 
-    public static class Comments {
+    public static class Comments implements Serializable{
         private String id;
         private String commenterId;
         private String commenterRole;

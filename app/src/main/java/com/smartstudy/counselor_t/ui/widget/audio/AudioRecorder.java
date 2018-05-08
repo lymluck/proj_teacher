@@ -113,7 +113,6 @@ public class AudioRecorder {
             mPlayer.start();
             isPlaying = true;
         } catch (IOException e) {
-            Log.e("kim", "prepare() failed");
         }
 
     }
@@ -141,7 +140,6 @@ public class AudioRecorder {
             mPlayer.start();
             isPlaying = true;
         } catch (IOException e) {
-            Log.e("kim", "prepare() failed");
         }
     }
 

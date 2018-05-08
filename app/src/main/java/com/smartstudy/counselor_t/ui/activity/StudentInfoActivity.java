@@ -24,6 +24,9 @@ import com.smartstudy.counselor_t.ui.widget.NoScrollLinearLayoutManager;
 import com.smartstudy.counselor_t.ui.widget.TagsLayout;
 import com.smartstudy.counselor_t.util.DensityUtils;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
+import com.zhy.view.flowlayout.FlowLayout;
+import com.zhy.view.flowlayout.TagAdapter;
+import com.zhy.view.flowlayout.TagFlowLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,8 +118,6 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
 
     private ScrollView slStudentInfo;
 
-    private TagsLayout tlTags;
-
     private TextView tvOtherTag;
 
     private StudentPageInfo studentInfo;
@@ -127,13 +128,16 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
 
     private List<StudentPageInfo.WatchSchools.SchoolData> schoolDataList;
 
+    private TagFlowLayout tagFlowLayout;//所有标签的TagFlowLayout
+    private List<String> all_label_List = new ArrayList<>();//所有标签列表
+    private TagAdapter<String> tagAdapter;//标签适配器
+    private LinearLayout llOtherTag;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_detail_info);
-
     }
-
 
     private void initAdapter() {
         schoolDataList = new ArrayList<>();
@@ -165,19 +169,18 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
     @Override
     public void initView() {
         targeId = getIntent().getStringExtra("ids");
-
         ivAvatar = findViewById(R.id.iv_avatar);
         tvName = findViewById(R.id.tv_name);
         ivSex = findViewById(R.id.iv_sex);
         tvGrade = findViewById(R.id.tv_grade);
         tvLocation = findViewById(R.id.tv_location);
         vLine = findViewById(R.id.v_line);
+        llOtherTag = findViewById(R.id.ll_other_tag);
         tv_targe_school = findViewById(R.id.tv_targe_school);
         llInfoDetail = findViewById(R.id.ll_info_detail);
         llIntentionInformation = findViewById(R.id.ll_intention_information);
         tvTime = findViewById(R.id.tv_time);
         tv_gre = findViewById(R.id.tv_gre);
-        tlTags = findViewById(R.id.tl_tags);
         tvAddTags = findViewById(R.id.tv_add_tags);
         ll_student = findViewById(R.id.ll_student);
         tvTargeCountry = findViewById(R.id.tv_targe_country);
@@ -208,7 +211,7 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
         tv_count_school = findViewById(R.id.tv_count_school);
         rv_school.setNestedScrollingEnabled(false);
         rv_school.setHasFixedSize(true);
-
+        tagFlowLayout = findViewById(R.id.id_flowlayout_two);
         mLayoutManager = new NoScrollLinearLayoutManager(this);
 
         mLayoutManager.setScrollEnabled(true);
@@ -219,6 +222,7 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
 
         initAdapter();
 
+        initAllLeblLayout();
         rv_school.setAdapter(mAdapter);
 
         rv_school.setNestedScrollingEnabled(false);
@@ -240,8 +244,9 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
     @Override
     public void initEvent() {
         super.initEvent();
-        tvOtherTag.setOnClickListener(this);
         tvAddTags.setOnClickListener(this);
+        llOtherTag.setOnClickListener(this);
+        topdefaultLeftbutton.setOnClickListener(this);
     }
 
 
@@ -249,12 +254,16 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case R.id.tv_other_tag:
+            case R.id.ll_other_tag:
                 startActivity(new Intent(this, OtherTeacherTagActivity.class).putExtra("id", studentInfo.getId()));
                 break;
 
             case R.id.tv_add_tags:
                 startActivity(new Intent(this, AddLabelActivity.class).putExtra("id", studentInfo.getId()));
+                break;
+
+            case R.id.topdefault_leftbutton:
+                finish();
                 break;
             default:
                 break;
@@ -269,8 +278,12 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
         this.studentInfo = studentInfo;
         slStudentInfo.setVisibility(View.VISIBLE);
         if (studentInfo.getTags() != null && studentInfo.getTags().size() > 0) {
-            tlTags.setBackGroup(R.drawable.bg_good_bussienss_border);
-            tlTags.createTab(this, studentInfo.getTags());
+            tagFlowLayout.setVisibility(View.VISIBLE);
+            all_label_List.clear();
+            all_label_List.addAll(studentInfo.getTags());
+            tagAdapter.notifyDataChanged();
+        } else {
+            tagFlowLayout.setVisibility(View.GONE);
         }
         DisplayImageUtils.formatPersonImgUrl(this, studentInfo.getAvatar(), ivAvatar);
         tvName.setText(studentInfo.getName());
@@ -448,5 +461,24 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
                 v_backline.setVisibility(View.VISIBLE);
             }
         }
+    }
+
+
+    /**
+     * 初始化所有标签列表
+     */
+    private void initAllLeblLayout() {
+        //初始化适配器
+        tagAdapter = new TagAdapter<String>(all_label_List) {
+            @Override
+            public View getView(FlowLayout parent, int position, String s) {
+                TextView tv = (TextView) getLayoutInflater().inflate(R.layout.layout_tag_other_item,
+                    tagFlowLayout, false);
+                tv.setText(s);
+                return tv;
+            }
+        };
+
+        tagFlowLayout.setAdapter(tagAdapter);
     }
 }

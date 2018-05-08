@@ -125,5 +125,6 @@
         android:layout_marginTop="@dimen/login_contract_margin_t"
         android:text="登录即表示同意选校帝用户协议"
         android:textColor="@color/app_text_color"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        android:visibility="gone" />
 </LinearLayout>

@@ -8,7 +8,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="45dp">
 
         <LinearLayout
             android:id="@+id/llyt_tab"
@@ -75,10 +75,9 @@
             android:layout_gravity="right"
             android:layout_marginRight="@dimen/qa_title_circle_padding_right"
             android:layout_marginTop="5dp"
-            android:background="@drawable/bg_count_answer"
-            android:gravity="center"
             android:minHeight="18dp"
             android:minWidth="18dp"
+            android:gravity="center"
             android:textColor="@color/white"
             android:textSize="12sp"
             android:visibility="gone" />
@@ -86,7 +85,7 @@
         <ImageView
             android:id="@+id/user_icon"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|right"
             android:clickable="true"
             android:paddingLeft="@dimen/app_top_right_btn_marginleftright"

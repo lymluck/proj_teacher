@@ -1,14 +1,17 @@
 package com.smartstudy.counselor_t.ui.activity;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,6 +20,8 @@ import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.mvp.contract.AddLabelContract;
 import com.smartstudy.counselor_t.mvp.presenter.AddLabelPresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
+import com.smartstudy.counselor_t.util.DensityUtils;
+import com.smartstudy.counselor_t.util.KeyBoardUtils;
 import com.smartstudy.counselor_t.util.ToastUtils;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
@@ -48,6 +53,7 @@ public class AddLabelActivity extends BaseActivity<AddLabelContract.Presenter> i
     private TextView tvSubmit;
     private String id;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,28 +75,31 @@ public class AddLabelActivity extends BaseActivity<AddLabelContract.Presenter> i
         flowLayout = (FlowLayout) findViewById(R.id.id_flowlayout);
         allFlowLayout = (TagFlowLayout) findViewById(R.id.id_flowlayout_two);
         params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(0, 16, 16, 16);
+        params.setMargins(0, 16, 16, 8);
         presenter.getMyStudentTag(id);
     }
 
 
-    @Override
-    public void initEvent() {
-        flowLayout.setOnClickListener(new View.OnClickListener() {
+    public void initOnclick() {
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onClick(View view) {
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 String editTextContent = editText.getText().toString();
                 if (TextUtils.isEmpty(editTextContent)) {
 //                    tagNormal();
+                    return false;
                 } else {
                     label_list.add(editTextContent);
                     addLabel(editText);
                     addTest(editTextContent);
+                    editText.clearFocus();
+                    KeyBoardUtils.closeKeybord(editText,AddLabelActivity.this);
                 }
+                return false;
             }
         });
 
-
+        topdefaultLeftbutton.setOnClickListener(this);
         tvSubmit.setOnClickListener(this);
     }
 
@@ -98,33 +107,33 @@ public class AddLabelActivity extends BaseActivity<AddLabelContract.Presenter> i
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_submit:
-                if (label_list != null && label_list.size() > 0) {
-                    presenter.submitMyStudentTag(id, label_list);
-                }
+                presenter.submitMyStudentTag(id, label_list);
                 break;
 
+            case R.id.topdefault_leftbutton:
+                finish();
+                break;
             default:
                 break;
         }
     }
 
 
-    //
-//    /**
-//     * 标签恢复到正常状态
-//     */
-//    private void tagNormal() {
-//        //输入文字时取消已经选中的标签
-//        for (int i = 0; i < labelStates.size(); i++) {
-//            if (labelStates.get(i)) {
-//                TextView tmp = labels.get(i);
-//                tmp.setText(tmp.getText().toString().replace(" ×", ""));
-//                labelStates.set(i, false);
-//                tmp.setBackgroundResource(R.drawable.label_normal);
-//                tmp.setTextColor(Color.parseColor("#00FF00"));
-//            }
-//        }
-//    }
+    /**
+     * 标签恢复到正常状态
+     */
+    private void tagNormal() {
+        //输入文字时取消已经选中的标签
+        for (int i = 0; i < labelStates.size(); i++) {
+            if (labelStates.get(i)) {
+                if (labels.size() < i) {
+                    TextView tmp = labels.get(i);
+                    tmp.setCompoundDrawables(null, null, null, null);
+                    labelStates.set(i, false);
+                }
+            }
+        }
+    }
 
     /**
      * 初始化默认的添加标签
@@ -137,7 +146,16 @@ public class AddLabelActivity extends BaseActivity<AddLabelContract.Presenter> i
         editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(18)});
         editText.setTextSize(15);
         editText.setSingleLine();
-        //设置shape
+        try {
+            java.lang.reflect.Field f = TextView.class.getDeclaredField("mCursorDrawableRes");
+            f.setAccessible(true);
+            f.set(editText, R.drawable.edit_cursor_color);
+        } catch (Exception e) {
+        }
+        Drawable leftDrawable = getResources().getDrawable(R.drawable.ic_add_tag);
+        leftDrawable.setBounds(0, 0, leftDrawable.getMinimumWidth(), leftDrawable.getMinimumHeight());
+        editText.setCompoundDrawables(null, null, leftDrawable, null);
+        editText.setCompoundDrawablePadding(DensityUtils.dip2px(3));
         editText.setBackgroundResource(R.drawable.label_add);
         editText.setHintTextColor(Color.parseColor("#078CF1"));
         editText.setTextColor(Color.parseColor("#078CF1"));
@@ -173,6 +191,13 @@ public class AddLabelActivity extends BaseActivity<AddLabelContract.Presenter> i
             public View getView(FlowLayout parent, int position, String s) {
                 TextView tv = (TextView) getLayoutInflater().inflate(R.layout.layout_flag_adapter,
                     allFlowLayout, false);
+
+                ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                lp.setMargins(DensityUtils.dip2px(3),
+                    DensityUtils.dip2px(3),
+                    DensityUtils.dip2px(3),
+                    DensityUtils.dip2px(3));
+                tv.setLayoutParams(lp);
                 tv.setText(s);
                 return tv;
             }
@@ -186,11 +211,11 @@ public class AddLabelActivity extends BaseActivity<AddLabelContract.Presenter> i
                 if (label_list.get(i).equals(
                     all_label_List.get(j))) {
                     tagAdapter.setSelectedList(j);//设为选中
+                    set.add(i);
                 }
             }
         }
         tagAdapter.notifyDataChanged();
-
 
         //给下面的标签添加监听
         allFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
@@ -215,13 +240,11 @@ public class AddLabelActivity extends BaseActivity<AddLabelContract.Presenter> i
                             label_list.remove(i);
                         }
                     }
-
                 } else {
                     editText.setText(all_label_List.get(position));
                     label_list.add(all_label_List.get(position));
                     addLabel(editText);
                 }
-
                 return false;
             }
         });
@@ -233,6 +256,7 @@ public class AddLabelActivity extends BaseActivity<AddLabelContract.Presenter> i
             public void onSelected(Set<Integer> selectPosSet) {
                 set.clear();
                 set.addAll(selectPosSet);
+                tagAdapter.setSelectedList(set);
             }
         });
     }
@@ -270,9 +294,12 @@ public class AddLabelActivity extends BaseActivity<AddLabelContract.Presenter> i
                 int curIndex = labels.indexOf(temp);
                 if (!labelStates.get(curIndex)) {
                     //显示 ×号删除
-                    temp.setText(temp.getText() + " ×");
-//                    temp.setBackgroundResource(R.drawable.label_del);
+                    temp.setText(temp.getText());
+                    Drawable leftDrawable = getResources().getDrawable(R.drawable.ic_detele_tags);
+                    leftDrawable.setBounds(0, 0, leftDrawable.getMinimumWidth(), leftDrawable.getMinimumHeight());
+                    temp.setCompoundDrawables(null, null, leftDrawable, null);
                     temp.setTextColor(Color.parseColor("#ffffff"));
+                    temp.setCompoundDrawablePadding(DensityUtils.dip2px(4));
                     //修改选中状态
                     labelStates.set(curIndex, true);
                 } else {
@@ -281,15 +308,6 @@ public class AddLabelActivity extends BaseActivity<AddLabelContract.Presenter> i
                     labels.remove(curIndex);
                     label_list.remove(curIndex);
                     labelStates.remove(curIndex);
-                    for (int i = 0; i < label_list.size(); i++) {
-                        for (int j = 0; j < all_label_List.size(); j++) {
-                            if (label_list.get(i).equals(
-                                all_label_List.get(j))) {
-                                tagAdapter.setSelectedList(j);
-                            }
-                        }
-                    }
-                    tagAdapter.notifyDataChanged();
                 }
             }
         });
@@ -298,7 +316,6 @@ public class AddLabelActivity extends BaseActivity<AddLabelContract.Presenter> i
         editText.bringToFront();
         //清空编辑框
         editText.setText("");
-        editText.requestFocus();
         return true;
 
     }
@@ -310,9 +327,8 @@ public class AddLabelActivity extends BaseActivity<AddLabelContract.Presenter> i
      * @param text
      */
     private void delByTest(String text) {
-
         for (int i = 0; i < all_label_List.size(); i++) {
-            String a = all_label_List.get(i) + " ×";
+            String a = all_label_List.get(i);
             if (a.equals(text)) {
                 set.remove(i);
             }
@@ -332,7 +348,6 @@ public class AddLabelActivity extends BaseActivity<AddLabelContract.Presenter> i
                 tagAdapter.setSelectedList(i);//重置选中的标签/*/
             }
         }
-
     }
 
     /**
@@ -385,5 +400,6 @@ public class AddLabelActivity extends BaseActivity<AddLabelContract.Presenter> i
         }
         initEdittext();
         initAllLeblLayout();
+        initOnclick();
     }
 }

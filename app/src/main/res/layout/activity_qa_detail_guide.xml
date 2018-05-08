@@ -3,7 +3,7 @@
     android:id="@+id/ll_focus"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black15"
+    android:background="@color/black50"
     android:orientation="vertical">
 
     <LinearLayout
@@ -13,6 +13,7 @@
         android:paddingBottom="20dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
+        android:visibility="invisible"
         android:paddingTop="20dp">
 
         <LinearLayout
@@ -23,6 +24,7 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:visibility="invisible"
                 android:id="@+id/iv_asker"
                 android:layout_width="40dp"
                 android:layout_height="40dp" />
@@ -96,7 +98,8 @@
                 android:gravity="center"
                 android:text="问"
                 android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:visibility="invisible" />
 
             <TextView
                 android:id="@+id/tv_question"

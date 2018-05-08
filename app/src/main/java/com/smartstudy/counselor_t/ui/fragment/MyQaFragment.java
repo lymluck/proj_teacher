@@ -3,7 +3,10 @@ package com.smartstudy.counselor_t.ui.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -170,6 +173,11 @@ public class MyQaFragment extends UIFragment<MyQaFragmentContract.Presenter> imp
                 holder.setText(R.id.tv_qa_name, askName);
                 holder.setText(R.id.tv_qa, questionInfo.getContent());
                 TextView answerCounnt = holder.getView(R.id.tv_answer_count);
+                if (questionInfo.getAsker().isCanContact()) {
+                    holder.getView(R.id.iv_phone).setVisibility(View.VISIBLE);
+                } else {
+                    holder.getView(R.id.iv_phone).setVisibility(View.GONE);
+                }
 
                 if (questionInfo.getSubQuestionCount() != 0) {
                     answerCounnt.setText("对你有 " + questionInfo.getSubQuestionCount() + " 追问");

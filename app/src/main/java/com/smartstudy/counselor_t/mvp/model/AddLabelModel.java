@@ -26,7 +26,6 @@ public class AddLabelModel extends BaseModel {
 
     public void submitMyStudentTag(String studentId, List<String> tags, ObserverListener listener) {
         Map<String, String> params = new HashMap<>();
-        Log.w("kim", "--->" + JSONArray.toJSONString(tags).toString());
         params.put("tags", JSONArray.toJSONString(tags).toString());
         apiSubscribe(ApiManager.getApiService().submitMyStudentTag(getHeadersMap(), String.format(HttpUrlUtils.URL_QUESTS_MY_TAGS, studentId), params), listener);
     }

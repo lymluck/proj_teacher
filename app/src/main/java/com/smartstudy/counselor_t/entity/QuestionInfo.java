@@ -60,6 +60,15 @@ public class QuestionInfo {
         private String id;
         private String name;
         private String avatar;
+        private boolean canContact;
+
+        public boolean isCanContact() {
+            return canContact;
+        }
+
+        public void setCanContact(boolean canContact) {
+            this.canContact = canContact;
+        }
 
         public String getId() {
             return id;

@@ -3,6 +3,7 @@ package com.smartstudy.counselor_t.ui.activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -95,6 +96,9 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
     private DrawableTextView dtvCallout;
 
+    private DrawableTextView dtvPhone;
+
+    private String telephone;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -111,6 +115,8 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         dtvFocus.setOnClickListener(this);
 
         dtvCallout.setOnClickListener(this);
+
+        dtvPhone.setOnClickListener(this);
 
         etAnswer.addTextChangedListener(new TextWatcher() {
             @Override
@@ -204,6 +210,13 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         iv_speak = findViewById(R.id.iv_speak);
         recyclerView = findViewById(R.id.rv_qa);
         swipeRefreshLayout = findViewById(R.id.srlt_qa);
+
+        if (!(boolean) SPCacheUtils.get("is_guide", false)) {
+            startActivity(new Intent(this, QaDetailGuideActivity.class));
+            SPCacheUtils.put("is_guide", true);
+            overridePendingTransition(0, 0);
+        }
+
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.app_main_color));
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -241,6 +254,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         tvQuestion = headView.findViewById(R.id.tv_question);
         tvAskerTime = headView.findViewById(R.id.tv_ask_time);
         answer = headView.findViewById(R.id.answer);
+        dtvPhone = headView.findViewById(R.id.dtv_phone);
         mHeader = new HeaderAndFooterWrapper(qaDetailAdapter);
         mHeader.addHeaderView(headView);
         recyclerView.setAdapter(mHeader);
@@ -255,6 +269,14 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
                     presenter.questionAddMark(questionId);
                 } else {
                     presenter.questionDeleteMark(questionId);
+                }
+                break;
+
+            case R.id.dtv_phone:
+                if (!TextUtils.isEmpty(telephone)) {
+                    Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + telephone));//跳转到拨号界面，同时传递电话号码
+                    startActivity(dialIntent);
+
                 }
                 break;
             case R.id.tv_post:
@@ -310,8 +332,25 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
             tvAskerName.setText(data.getAsker().getName());
             tvAskerTime.setText(data.getCreateTimeText());
             tvQuestion.setText(data.getContent());
-            etAnswer.setHint("回复 @" + data.getAsker().getName());
-            Log.w("kim", "--->" + data.getAsker().getPhone());
+            String name = data.getAsker().getName();
+            if (!TextUtils.isEmpty(name)) {
+                if (name.length() > 15) {
+                    name = name.substring(0, 12) + "...";
+                }
+            }
+            etAnswer.setHint("回复 @" + name);
+            if (TextUtils.isEmpty(data.getAsker().getPhone())) {
+                Drawable leftDrawable = getResources().getDrawable(R.drawable.ic_phone_disabled);
+                leftDrawable.setBounds(0, 0, leftDrawable.getMinimumWidth(), leftDrawable.getMinimumHeight());
+                dtvPhone.setCompoundDrawables(leftDrawable, null, null, null);
+                dtvPhone.setTextColor(Color.parseColor("#C4C9CC"));
+            } else {
+                telephone = data.getAsker().getPhone();
+                Drawable leftDrawable = getResources().getDrawable(R.drawable.ic_telephone);
+                leftDrawable.setBounds(0, 0, leftDrawable.getMinimumWidth(), leftDrawable.getMinimumHeight());
+                dtvPhone.setCompoundDrawables(leftDrawable, null, null, null);
+                dtvPhone.setTextColor(Color.parseColor("#58646E"));
+            }
         }
 
         if (data.getAnswers() != null && data.getAnswers().size() > 0) {
@@ -354,10 +393,9 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
             leftDrawable.setBounds(0, 0, leftDrawable.getMinimumWidth(), leftDrawable.getMinimumHeight());
             dtvFocus.setCompoundDrawables(leftDrawable, null, null, null);
         }
-        if (!(boolean) SPCacheUtils.get("is_guide", false)) {
-            startActivity(new Intent(this, QaDetailGuideActivity.class).putExtra("ansewer", data));
-            SPCacheUtils.put("is_guide", true);
-        }
+
+        EventBus.getDefault().post(data);
+
         data = null;
     }
 

@@ -244,7 +244,7 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
                 tvSubcount.setVisibility(View.VISIBLE);
                 if (totalSubQuestion.getTotalSubQuestionCount() < 100) {
                     if (totalSubQuestion.getTotalSubQuestionCount() < 10) {
-                        tvSubcount.setBackgroundResource(R.drawable.bg_circle_answer_count);
+                        tvSubcount.setBackgroundResource(R.drawable.bg_circle_red);
                     } else {
                         tvSubcount.setBackgroundResource(R.drawable.bg_count_answer);
                     }

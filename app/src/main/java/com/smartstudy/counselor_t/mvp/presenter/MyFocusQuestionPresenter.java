@@ -99,7 +99,7 @@ public class MyFocusQuestionPresenter extends BasePresenterImpl<MyFocusContract.
         ImageView iv_err = (ImageView) emptyView.findViewById(R.id.iv_err);
         TextView tv_err_tip = (TextView) emptyView.findViewById(R.id.tv_err_tip);
         iv_err.setImageResource(R.drawable.ic_no_collection);
-        tv_err_tip.setText("你还没有重点关注过用户哦");
+        tv_err_tip.setText("你还没有重点关注过问答哦");
         view.showEmptyView(emptyView);
         context = null;
         emptyView = null;

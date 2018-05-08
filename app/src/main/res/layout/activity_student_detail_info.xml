@@ -65,8 +65,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:orientation="horizontal"
-                    android:paddingBottom="24dp">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/tv_grade"
@@ -95,39 +94,59 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
                     android:gravity="center_horizontal"
                     android:orientation="vertical">
 
-                    <com.smartstudy.counselor_t.ui.widget.TagsLayout
-                        android:id="@+id/tl_tags"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:padding_bottom_top="6dp"
-                        app:padding_left_right="16dp"
-                        app:tagHorizontalSpace="8dp"
-                        app:tagVerticalSpace="8dp"
-                        app:textChildSize="@dimen/app_text_size3"
-                        app:textColor="#58646E" />
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/tv_other_tag"
+                        <com.zhy.view.flowlayout.TagFlowLayout
+                            android:id="@+id/id_flowlayout_two"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginTop="24dp"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            app:max_select="1" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_other_tag"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingTop="16dp"
-                        android:text="查看其他老师标注"
-                        android:textColor="#949BA1"
-                        android:textSize="13sp" />
+                        android:orientation="horizontal"
+                        android:paddingTop="16dp">
 
+                        <TextView
+                            android:id="@+id/tv_other_tag"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="查看其他老师标注"
+                            android:textColor="#949BA1"
+                            android:textSize="13sp" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="4dp"
+                            android:paddingTop="1dp"
+                            android:src="@drawable/ic_home_arrow_rg" />
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/tv_add_tags"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
                         android:background="@drawable/bg_add_tag"
                         android:drawableLeft="@drawable/ic_qa_tag"
-                        android:layout_marginTop="20dp"
+                        android:gravity="center"
                         android:text="添加标签"
                         android:textColor="@color/app_main_color"
                         android:textSize="15sp" />
