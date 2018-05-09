@@ -61,13 +61,10 @@ import static me.kareluo.imaging.IMGEditActivity.REQUEST_SHARE;
  * 2，加载会话页面
  * 3，push 和 通知 判断
  */
-public class ConversationActivity extends BaseActivity implements
-        View.OnClickListener, RongIM.OnSendMessageListener, RongIM.ConversationClickListener {
-
+public class ConversationActivity extends BaseActivity implements View.OnClickListener, RongIM.OnSendMessageListener, RongIM.ConversationClickListener {
     private TextView tvTitle;
     private String targeId;
     private TextView tvTitleTag;
-
     private MyConversationFragment fragment;
     private WeakHandler mHandler;
     private Conversation.ConversationType mConversationType;
@@ -116,8 +113,8 @@ public class ConversationActivity extends BaseActivity implements
         } else {
             fragment = new MyConversationFragment();
             Uri uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
-                    .appendPath("conversation").appendPath(mConversationType.getName().toLowerCase())
-                    .appendQueryParameter("targetId", targeId).build();
+                .appendPath("conversation").appendPath(mConversationType.getName().toLowerCase())
+                .appendQueryParameter("targetId", targeId).build();
 
             fragment.setUri(uri);
             transaction.add(R.id.rong_content, fragment);
@@ -138,7 +135,7 @@ public class ConversationActivity extends BaseActivity implements
         tvTitle.setText(uri.getQueryParameter("title"));
         targeId = uri.getQueryParameter("targetId");
         mConversationType = Conversation.ConversationType.valueOf(uri
-                .getLastPathSegment().toUpperCase(Locale.US));
+            .getLastPathSegment().toUpperCase(Locale.US));
         mHandler = new WeakHandler(new Handler.Callback() {
             @Override
             public boolean handleMessage(android.os.Message msg) {
@@ -326,8 +323,8 @@ public class ConversationActivity extends BaseActivity implements
                     }
                 } else if (TextMessage.class.isAssignableFrom(message.getContent().getClass())) {
                     startActivityForResult(new Intent(context, MsgShareActivity.class)
-                            .putExtra("content", ((TextMessage) message.getMessage().getContent()).getContent())
-                            .putExtra("type", "text"), REQUEST_SHARE);
+                        .putExtra("content", ((TextMessage) message.getMessage().getContent()).getContent())
+                        .putExtra("type", "text"), REQUEST_SHARE);
                 }
                 return true;
             }
@@ -355,11 +352,11 @@ public class ConversationActivity extends BaseActivity implements
             if (msg.getLocalPath().toString().startsWith("file")) {
                 if ("share".equals(action)) {
                     startActivityForResult(new Intent(this, MsgShareActivity.class)
-                            .putExtra("uri", msg.getLocalPath())
-                            .putExtra("type", "image"), REQUEST_SHARE);
+                        .putExtra("uri", msg.getLocalPath())
+                        .putExtra("type", "image"), REQUEST_SHARE);
                 } else if ("edit".equals(action)) {
                     startActivityForResult(new Intent(this, IMGEditActivity.class)
-                            .putExtra("uri", msg.getLocalPath()), REQUEST_EDIT);
+                        .putExtra("uri", msg.getLocalPath()), REQUEST_EDIT);
                 }
             } else {
                 handleRemoteUrl(msg.getLocalPath().toString(), action);
@@ -377,11 +374,11 @@ public class ConversationActivity extends BaseActivity implements
             Uri uri = Uri.fromFile(file);
             if ("share".equals(action)) {
                 startActivityForResult(new Intent(this, MsgShareActivity.class)
-                        .putExtra("uri", uri)
-                        .putExtra("type", "image"), REQUEST_SHARE);
+                    .putExtra("uri", uri)
+                    .putExtra("type", "image"), REQUEST_SHARE);
             } else if ("edit".equals(action)) {
                 startActivityForResult(new Intent(this, IMGEditActivity.class)
-                        .putExtra("uri", uri), REQUEST_EDIT);
+                    .putExtra("uri", uri), REQUEST_EDIT);
             }
         } else {
             DisplayImageUtils.displayImage(this, url, new SimpleTarget<Bitmap>() {
@@ -394,13 +391,13 @@ public class ConversationActivity extends BaseActivity implements
                         Uri uri = Uri.parse("file://" + savePath + File.separator + fileName);
                         if ("share".equals(action)) {
                             startActivityForResult(new Intent(ConversationActivity.this, MsgShareActivity.class)
-                                    .putExtra("uri", uri)
-                                    .putExtra("path", savePath + File.separator + fileName)
-                                    .putExtra("type", "image"), REQUEST_SHARE);
+                                .putExtra("uri", uri)
+                                .putExtra("path", savePath + File.separator + fileName)
+                                .putExtra("type", "image"), REQUEST_SHARE);
                         } else if ("edit".equals(action)) {
                             startActivityForResult(new Intent(ConversationActivity.this, IMGEditActivity.class)
-                                    .putExtra("uri", uri)
-                                    .putExtra("path", savePath + File.separator + fileName), REQUEST_EDIT);
+                                .putExtra("uri", uri)
+                                .putExtra("path", savePath + File.separator + fileName), REQUEST_EDIT);
                         }
                     } else {
                         ToastUtils.shortToast(ConversationActivity.this, "获取图片失败！");

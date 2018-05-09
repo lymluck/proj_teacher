@@ -49,7 +49,6 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
     private TextView tvSubcount;
     private ImageView userIcon;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // 首页禁用滑动返回
@@ -138,7 +137,6 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
         super.onSaveInstanceState(outState);
     }
 
-
     /**
      * 复位fragment状态
      *
@@ -152,7 +150,6 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
         }
         super.onRestoreInstanceState(savedInstanceState);
     }
-
 
     @Override
     public void getLogOutSuccess() {

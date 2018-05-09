@@ -51,26 +51,22 @@ import io.rong.imlib.model.UserInfo;
  * @email yeqingyu@innobuddy.com
  */
 public class FillPersonActivity extends BaseActivity<FillPersonContract.Presenter> implements FillPersonContract.View {
-
     private ImageView ivAvatar;
-    private ImageView ivPhoto;
     private TextView btPostInfo;
-    private EditText tv_nick_name;
-    private EditText tv_work_name;
-    private EditText tv_work_experience;
-    private EditText tv_graduated_school;
-    private EditText tv_email;
-    private EditText tv_name;
+    private EditText tvNickName;
+    private EditText tvWorkName;
+    private EditText tvWorkExperience;
+    private EditText tvGraduatedSchool;
+    private EditText tvEmail;
+    private EditText tvName;
     private File photoFile;
     private File photoSaveFile;// 保存文件夹
     private String photoSaveName = null;// 图片名
-    private String selected_path = null;
     private boolean isImage = false;
     private SwipeRefreshLayout swipeRefreshLayout;
     private LinearLayout llCity;
     private TextView tvCity;
     private LinearLayout llGoodBusiness;
-    private TextView tvGoodBusiness;
     private TagsLayout tlyTags;
     private String cityValue;
     private String bussinessValue;
@@ -164,14 +160,13 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
     @Override
     public void initView() {
         ivAvatar = findViewById(R.id.iv_avatar);
-        ivPhoto = findViewById(R.id.iv_photo);
         btPostInfo = findViewById(R.id.bt_post_info);
-        tv_nick_name = findViewById(R.id.tv_nick_name);
-        tv_work_name = findViewById(R.id.tv_work_name);
-        tv_work_experience = findViewById(R.id.tv_work_experience);
-        tv_graduated_school = findViewById(R.id.tv_graduated_school);
-        tv_name = findViewById(R.id.tv_name);
-        tv_email = findViewById(R.id.tv_email);
+        tvNickName = findViewById(R.id.tv_nick_name);
+        tvWorkName = findViewById(R.id.tv_work_name);
+        tvWorkExperience = findViewById(R.id.tv_work_experience);
+        tvGraduatedSchool = findViewById(R.id.tv_graduated_school);
+        tvName = findViewById(R.id.tv_name);
+        tvEmail = findViewById(R.id.tv_email);
         llCity = findViewById(R.id.ll_city);
         tvCity = findViewById(R.id.tv_work_city);
         llGoodBusiness = findViewById(R.id.ll_good_business);
@@ -287,22 +282,22 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
             DisplayImageUtils.formatPersonImgUrl(this, teacherInfo.getAvatar(), ivAvatar);
         }
         if (!TextUtils.isEmpty(teacherInfo.getName()) && TextUtils.isEmpty(getNickName())) {
-            tv_nick_name.setText(teacherInfo.getName());
+            tvNickName.setText(teacherInfo.getName());
         }
         if (!TextUtils.isEmpty(teacherInfo.getTitle()) && TextUtils.isEmpty(getWorkTitle())) {
-            tv_work_name.setText(teacherInfo.getTitle());
+            tvWorkName.setText(teacherInfo.getTitle());
         }
         if (!TextUtils.isEmpty(teacherInfo.getYearsOfWorking()) && TextUtils.isEmpty(getWorkExperience())) {
-            tv_work_experience.setText(teacherInfo.getYearsOfWorking());
+            tvWorkExperience.setText(teacherInfo.getYearsOfWorking());
         }
         if (!TextUtils.isEmpty(teacherInfo.getSchool()) && TextUtils.isEmpty(getGraduatedSchool())) {
-            tv_graduated_school.setText(teacherInfo.getSchool());
+            tvGraduatedSchool.setText(teacherInfo.getSchool());
         }
         if (!TextUtils.isEmpty(teacherInfo.getEmail()) && TextUtils.isEmpty(getEmail())) {
-            tv_email.setText(teacherInfo.getEmail());
+            tvEmail.setText(teacherInfo.getEmail());
         }
         if (!TextUtils.isEmpty(teacherInfo.getRealName()) && TextUtils.isEmpty(getRealName())) {
-            tv_name.setText(teacherInfo.getRealName());
+            tvName.setText(teacherInfo.getRealName());
         }
 
         if (!TextUtils.isEmpty(teacherInfo.getWorkingCityKey()) && TextUtils.isEmpty(getCity())) {
@@ -346,27 +341,27 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
     }
 
     private String getNickName() {
-        return tv_nick_name.getText().toString().trim();
+        return tvNickName.getText().toString().trim();
     }
 
     private String getWorkTitle() {
-        return tv_work_name.getText().toString().trim();
+        return tvWorkName.getText().toString().trim();
     }
 
     private String getWorkExperience() {
-        return tv_work_experience.getText().toString().trim();
+        return tvWorkExperience.getText().toString().trim();
     }
 
     private String getGraduatedSchool() {
-        return tv_graduated_school.getText().toString().trim();
+        return tvGraduatedSchool.getText().toString().trim();
     }
 
     private String getRealName() {
-        return tv_name.getText().toString().trim();
+        return tvName.getText().toString().trim();
     }
 
     private String getEmail() {
-        return tv_email.getText().toString().trim();
+        return tvEmail.getText().toString().trim();
     }
 
     private String getCity() {
@@ -402,7 +397,6 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
         return true;
     }
 
-
     private String getCityValue(String key) {
         if (workIdNameInfos != null) {
             for (IdNameInfo idNameInfo : workIdNameInfos) {
@@ -413,7 +407,6 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
         }
         return "";
     }
-
 
     private String getBussinessValue(String key) {
         String[] ids = key.split(",");

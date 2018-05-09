@@ -26,7 +26,6 @@ public class MyInfoDetailActivity extends BaseActivity<BasePresenter> {
         setContentView(R.layout.activity_my_info);
     }
 
-
     @Override
     public void initEvent() {
         topdefaultLeftbutton.setOnClickListener(this);

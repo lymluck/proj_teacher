@@ -19,9 +19,7 @@ import com.smartstudy.counselor_t.util.ParameterUtils;
 import com.smartstudy.counselor_t.util.ToastUtils;
 
 public class CommonEditNameActivity extends BaseActivity<CommonEditNameContract.Presenter> implements CommonEditNameContract.View {
-
     private EditText etname;
-
     private String flag;
 
     @Override
@@ -29,7 +27,6 @@ public class CommonEditNameActivity extends BaseActivity<CommonEditNameContract.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_name);
     }
-
 
     @Override
     public void initView() {
@@ -61,10 +58,8 @@ public class CommonEditNameActivity extends BaseActivity<CommonEditNameContract.
         return new CommonEditNamePresenter(this);
     }
 
-
     @Override
     public void onClick(View v) {
-
         switch (v.getId()) {
             case R.id.topdefault_leftbutton:
                 KeyBoardUtils.closeKeybord(etname, this);
@@ -105,7 +100,6 @@ public class CommonEditNameActivity extends BaseActivity<CommonEditNameContract.
 
     @Override
     public void updateMyInfoSuccesee(TeacherInfo teacherInfo) {
-
         Intent data = new Intent();
         data.putExtra(ParameterUtils.TRANSITION_FLAG, flag);
         data.putExtra("new_value", etname.getText().toString());

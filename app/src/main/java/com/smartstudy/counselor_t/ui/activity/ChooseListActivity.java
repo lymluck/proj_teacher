@@ -29,7 +29,6 @@ import java.util.List;
  */
 public class ChooseListActivity extends BaseActivity {
     private String flag;
-    private String from;
     private boolean isChange;
     private String value;
     private RecyclerView rcvList;
@@ -46,7 +45,6 @@ public class ChooseListActivity extends BaseActivity {
     public BasePresenter initPresenter() {
         return null;
     }
-
 
     @Override
     public void initEvent() {
@@ -111,8 +109,6 @@ public class ChooseListActivity extends BaseActivity {
     public void initView() {
         Intent data = getIntent();
         flag = data.getStringExtra(ParameterUtils.TRANSITION_FLAG);
-        from = data.getStringExtra("from");
-        isChange = data.getBooleanExtra("ischange", false);
         value = data.getStringExtra("value");
         findViewById(R.id.top_line).setVisibility(View.VISIBLE);
         topdefaultCentertitle.setText(data.getStringExtra("title"));

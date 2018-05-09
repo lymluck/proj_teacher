@@ -13,7 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -45,59 +44,32 @@ import org.greenrobot.eventbus.EventBus;
  * Created by yqy on 2017/12/4.
  */
 public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> implements QaDetailContract.View {
-
     private String questionId;
-
     private NoScrollLinearLayoutManager mLayoutManager;
-
     private RecyclerView recyclerView;
-
     private ImageView ivAsker;
-
     private TextView tvAskerName;
-
     private TextView tvQuestion;
-
     private TextView tvAskerTime;
-
     private TextView answer;
-
     private QaDetailAdapter qaDetailAdapter;
-
     private TextView tvPost;
-
     private EditText etAnswer;
-
-    private ImageView iv_speak;
-
-    private ImageView iv_audio;
-
-    private LinearLayout ll_speak;
-
+    private ImageView ivSpeak;
+    private ImageView ivAudio;
+    private LinearLayout llSpeak;
     private SwipeRefreshLayout swipeRefreshLayout;
-
-    private LinearLayout ll_student;
-
-    private TextView tv_location;
-
-    private TextView tv_platform;
-
-    private TextView tv_schoolName;
-
+    private LinearLayout llStudent;
+    private TextView tvLocation;
+    private TextView tvPlatform;
+    private TextView tvSchoolName;
     private QaDetailInfo detailInfo;
-
     private HeaderAndFooterWrapper mHeader;
-
     private View headView;
-
     private DrawableTextView dtvFocus;
-
     private boolean isFocus = false;
-
     private DrawableTextView dtvCallout;
-
     private DrawableTextView dtvPhone;
-
     private String telephone;
 
     @Override
@@ -109,15 +81,10 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
     @Override
     public void initEvent() {
-
-        iv_audio.setOnClickListener(this);
-
+        ivAudio.setOnClickListener(this);
         dtvFocus.setOnClickListener(this);
-
         dtvCallout.setOnClickListener(this);
-
         dtvPhone.setOnClickListener(this);
-
         etAnswer.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -140,57 +107,49 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
                 }
             }
         });
-
-        ll_student.setOnClickListener(this);
-
-        iv_speak.setOnClickListener(new View.OnClickListener() {
+        llStudent.setOnClickListener(this);
+        ivSpeak.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Integer integer = (Integer) iv_speak.getTag();
+                Integer integer = (Integer) ivSpeak.getTag();
                 integer = integer == null ? 0 : integer;
                 switch (integer) {
                     case R.drawable.rc_audio_toggle:
-                        iv_speak.setImageResource(R.drawable.rc_keyboard);
-                        iv_speak.setTag(R.drawable.rc_keyboard);
-                        ll_speak.setVisibility(View.VISIBLE);
+                        ivSpeak.setImageResource(R.drawable.rc_keyboard);
+                        ivSpeak.setTag(R.drawable.rc_keyboard);
+                        llSpeak.setVisibility(View.VISIBLE);
                         KeyBoardUtils.closeKeybord(etAnswer, QaDetailActivity.this);
                         break;
                     case R.drawable.rc_keyboard:
-                        iv_speak.setImageResource(R.drawable.rc_audio_toggle);
-                        iv_speak.setTag(R.drawable.rc_audio_toggle);
-                        ll_speak.setVisibility(View.GONE);
+                        ivSpeak.setImageResource(R.drawable.rc_audio_toggle);
+                        ivSpeak.setTag(R.drawable.rc_audio_toggle);
+                        llSpeak.setVisibility(View.GONE);
                         KeyBoardUtils.openKeybord(etAnswer, QaDetailActivity.this);
                         break;
                     default:
-                        iv_speak.setImageResource(R.drawable.rc_keyboard);
-                        iv_speak.setTag(R.drawable.rc_keyboard);
+                        ivSpeak.setImageResource(R.drawable.rc_keyboard);
+                        ivSpeak.setTag(R.drawable.rc_keyboard);
                         KeyBoardUtils.closeKeybord(etAnswer, QaDetailActivity.this);
-                        ll_speak.setVisibility(View.VISIBLE);
+                        llSpeak.setVisibility(View.VISIBLE);
                         break;
                 }
             }
         });
-
         etAnswer.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-
                 // 此处为得到焦点时的处理内容
-                iv_speak.setImageResource(R.drawable.rc_audio_toggle);
-                iv_speak.setTag(R.drawable.rc_audio_toggle);
+                ivSpeak.setImageResource(R.drawable.rc_audio_toggle);
+                ivSpeak.setTag(R.drawable.rc_audio_toggle);
                 etAnswer.setFocusable(true);
                 etAnswer.setFocusableInTouchMode(true);
-                ll_speak.setVisibility(View.GONE);
+                llSpeak.setVisibility(View.GONE);
                 return false;
             }
 
         });
-
-
         topdefaultLeftbutton.setOnClickListener(this);
-
     }
-
 
     @Override
     public QaDetailContract.Presenter initPresenter() {
@@ -205,18 +164,16 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         setTopLineVisibility(View.VISIBLE);
         tvPost = findViewById(R.id.tv_post);
         etAnswer = findViewById(R.id.et_answer);
-        iv_audio = findViewById(R.id.iv_audio);
-        ll_speak = findViewById(R.id.ll_speak);
-        iv_speak = findViewById(R.id.iv_speak);
+        ivAudio = findViewById(R.id.iv_audio);
+        llSpeak = findViewById(R.id.ll_speak);
+        ivSpeak = findViewById(R.id.iv_speak);
         recyclerView = findViewById(R.id.rv_qa);
         swipeRefreshLayout = findViewById(R.id.srlt_qa);
-
         if (!(boolean) SPCacheUtils.get("is_guide", false)) {
             startActivity(new Intent(this, QaDetailGuideActivity.class));
             SPCacheUtils.put("is_guide", true);
             overridePendingTransition(0, 0);
         }
-
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.app_main_color));
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -224,7 +181,6 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
                 presenter.getQaDetails(questionId);
             }
         });
-
         recyclerView.setHasFixedSize(true);
         mLayoutManager = new NoScrollLinearLayoutManager(this);
         mLayoutManager.setScrollEnabled(true);
@@ -237,19 +193,18 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         initHeaderAndFooter();
         if (!TextUtils.isEmpty(questionId)) {
             presenter.getQaDetails(questionId);
-
         }
     }
 
     private void initHeaderAndFooter() {
         headView = mInflater.inflate(R.layout.layout_question_list, null, false);
-        ll_student = headView.findViewById(R.id.ll_student);
+        llStudent = headView.findViewById(R.id.ll_student);
         ivAsker = headView.findViewById(R.id.iv_asker);
         dtvCallout = headView.findViewById(R.id.dtv_callout);
         tvAskerName = headView.findViewById(R.id.tv_asker_name);
-        tv_location = headView.findViewById(R.id.tv_location);
-        tv_platform = headView.findViewById(R.id.tv_platform);
-        tv_schoolName = headView.findViewById(R.id.tv_schoolName);
+        tvLocation = headView.findViewById(R.id.tv_location);
+        tvPlatform = headView.findViewById(R.id.tv_platform);
+        tvSchoolName = headView.findViewById(R.id.tv_schoolName);
         dtvFocus = headView.findViewById(R.id.dtv_focus);
         tvQuestion = headView.findViewById(R.id.tv_question);
         tvAskerTime = headView.findViewById(R.id.tv_ask_time);
@@ -259,7 +214,6 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         mHeader.addHeaderView(headView);
         recyclerView.setAdapter(mHeader);
     }
-
 
     @Override
     public void onClick(View v) {
@@ -271,12 +225,10 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
                     presenter.questionDeleteMark(questionId);
                 }
                 break;
-
             case R.id.dtv_phone:
                 if (!TextUtils.isEmpty(telephone)) {
                     Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + telephone));//跳转到拨号界面，同时传递电话号码
                     startActivity(dialIntent);
-
                 }
                 break;
             case R.id.tv_post:
@@ -287,15 +239,12 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
                 tvPost.setClickable(false);
                 presenter.postAnswerText(questionId, etAnswer.getText().toString());
                 break;
-
             case R.id.topdefault_leftbutton:
                 finish();
                 break;
-
             case R.id.dtv_callout:
                 startActivity(new Intent(this, AddLabelActivity.class).putExtra("id", detailInfo.getAsker().getId()));
                 break;
-
             case R.id.ll_student:
                 if (detailInfo != null && detailInfo.getAsker() != null) {
                     Intent intentStudent = new Intent();
@@ -304,7 +253,6 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
                     startActivity(intentStudent);
                 }
                 break;
-
             case R.id.iv_audio:
                 Intent intent = new Intent();
                 intent.putExtra("question_id", questionId);
@@ -352,7 +300,6 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
                 dtvPhone.setTextColor(Color.parseColor("#58646E"));
             }
         }
-
         if (data.getAnswers() != null && data.getAnswers().size() > 0) {
             if (qaDetailAdapter != null && data.getAsker() != null) {
                 qaDetailAdapter.setAnswers(data.getAnswers(), data.getAsker().getName());
@@ -362,28 +309,24 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         } else {
             answer.setText("暂时还没有人回答哦，快来抢答吧！");
         }
-
         if (TextUtils.isEmpty(data.getUserLocation())) {
-            tv_location.setVisibility(View.GONE);
+            tvLocation.setVisibility(View.GONE);
         } else {
-            tv_location.setVisibility(View.VISIBLE);
-            tv_location.setText(data.getUserLocation());
+            tvLocation.setVisibility(View.VISIBLE);
+            tvLocation.setText(data.getUserLocation());
         }
-
         if (TextUtils.isEmpty(data.getPlatform())) {
-            tv_platform.setVisibility(View.GONE);
+            tvPlatform.setVisibility(View.GONE);
         } else {
-            tv_platform.setVisibility(View.VISIBLE);
-            tv_platform.setText(data.getPlatform());
+            tvPlatform.setVisibility(View.VISIBLE);
+            tvPlatform.setText(data.getPlatform());
         }
-
         if (TextUtils.isEmpty(data.getSchoolName())) {
-            tv_schoolName.setVisibility(View.GONE);
+            tvSchoolName.setVisibility(View.GONE);
         } else {
-            tv_schoolName.setVisibility(View.VISIBLE);
-            tv_schoolName.setText(data.getSchoolName());
+            tvSchoolName.setVisibility(View.VISIBLE);
+            tvSchoolName.setText(data.getSchoolName());
         }
-
         if (isFocus) {
             Drawable leftDrawable = getResources().getDrawable(R.drawable.ic_followin_red);
             leftDrawable.setBounds(0, 0, leftDrawable.getMinimumWidth(), leftDrawable.getMinimumHeight());
@@ -393,9 +336,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
             leftDrawable.setBounds(0, 0, leftDrawable.getMinimumWidth(), leftDrawable.getMinimumHeight());
             dtvFocus.setCompoundDrawables(leftDrawable, null, null, null);
         }
-
         EventBus.getDefault().post(data);
-
         data = null;
     }
 
@@ -404,7 +345,6 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         ToastUtils.shortToast(this, message);
         swipeRefreshLayout.setRefreshing(false);
     }
-
 
     @Override
     public void postAnswerSuccess() {
@@ -440,7 +380,6 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         ToastUtils.shortToast(this, "取消关注成功");
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -452,13 +391,11 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         recyclerView.setAdapter(qaDetailAdapter);
     }
 
-
     private void hideAudioView() {
         etAnswer.setText("");
         etAnswer.clearFocus();
-        ll_speak.setVisibility(View.GONE);
+        llStudent.setVisibility(View.GONE);
     }
-
 
     @Override
     protected void onDestroy() {
@@ -469,16 +406,12 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         if (qaDetailAdapter != null) {
             qaDetailAdapter = null;
         }
-
         if (presenter != null) {
             presenter = null;
         }
-
         if (AudioRecorder.getInstance() != null) {
             AudioRecorder.getInstance().setReset();
         }
-
         super.onDestroy();
     }
-
 }

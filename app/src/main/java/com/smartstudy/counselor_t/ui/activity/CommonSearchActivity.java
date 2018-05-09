@@ -45,8 +45,8 @@ import java.util.List;
 
 public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Presenter> implements CommonSearchContract.View {
     private EditTextWithClear searchView;
-    private LinearLayout llyt_top_search;
-    private LoadMoreRecyclerView rclv_search;
+    private LinearLayout llytTopSearch;
+    private LoadMoreRecyclerView rclvSearch;
     private SwipeRefreshLayout swipeRefreshLayout;
     private CommonAdapter<ChatUserInfo> mSchoolAdapter;
     private LoadMoreWrapper loadMoreWrapper;
@@ -74,9 +74,9 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
     }
 
     private void releaseRes() {
-        if (rclv_search != null) {
-            rclv_search.removeAllViews();
-            rclv_search = null;
+        if (rclvSearch != null) {
+            rclvSearch.removeAllViews();
+            rclvSearch = null;
         }
         if (swipeRefreshLayout != null) {
             swipeRefreshLayout.removeAllViews();
@@ -92,7 +92,7 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
 
     //item分割线匹配
     private void initItemDecoration() {
-        rclv_search.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
+        rclvSearch.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
                 .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.horizontal_line_color).build());
     }
 
@@ -113,17 +113,17 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
     @Override
     public void initView() {
         setHeadVisible(View.GONE);
-        llyt_top_search = (LinearLayout) findViewById(R.id.llyt_top_search);
+        llytTopSearch = (LinearLayout) findViewById(R.id.llyt_top_search);
         Intent data = getIntent();
         flag_value = data.getStringExtra(ParameterUtils.TRANSITION_FLAG);
         keyword = data.getStringExtra("keyword");
-        rclv_search = (LoadMoreRecyclerView) findViewById(R.id.rclv_search);
-        rclv_search.setHasFixedSize(true);
+        rclvSearch = (LoadMoreRecyclerView) findViewById(R.id.rclv_search);
+        rclvSearch.setHasFixedSize(true);
         //这里做layoutmanager匹配
         mLayoutManager = new NoScrollLinearLayoutManager(this);
         mLayoutManager.setScrollEnabled(true);
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        rclv_search.setLayoutManager(mLayoutManager);
+        rclvSearch.setLayoutManager(mLayoutManager);
         initItemDecoration();
         initAdapter();
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.srlt_search);
@@ -136,7 +136,7 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
             public boolean handleMessage(Message msg) {
                 switch (msg.what) {
                     case 1:
-                        llyt_top_search.setBackgroundResource(0);
+                        llytTopSearch.setBackgroundResource(0);
                         break;
                 }
                 return false;
@@ -171,18 +171,17 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
     }
 
     private void pullRefresh(int cacheMode, int pullTo) {
-
         //默认搜索学校
         presenter.getSchools(cacheMode, getIntent().getStringExtra("countryId"), keyword, mPage, pullTo, flag_value);
     }
 
     private void initLoadMore() {
-        rclv_search.SetOnLoadMoreLister(new LoadMoreRecyclerView.OnLoadMoreListener() {
+        rclvSearch.SetOnLoadMoreLister(new LoadMoreRecyclerView.OnLoadMoreListener() {
             @Override
             public void OnLoad() {
                 if (swipeRefreshLayout.isRefreshing()) {
-                    if (rclv_search != null) {
-                        rclv_search.loadComplete(true);
+                    if (rclvSearch != null) {
+                        rclvSearch.loadComplete(true);
                     }
                     return;
                 }
@@ -233,14 +232,14 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
                 } else {
                     //这里做清空操作
                     clearList();
-                    rclv_search.loadComplete(true);
+                    rclvSearch.loadComplete(true);
                     loadMoreWrapper.notifyDataSetChanged();
                     Utils.convertActivityToTranslucent(CommonSearchActivity.this);
                     if (!ParameterUtils.MYSCHOOL_FLAG.equals(flag_value)) {
                         showEmptyView(null);
                         mHandler.sendEmptyMessageDelayed(1, 250);
                     } else {
-                        llyt_top_search.setBackgroundResource(R.color.main_bg);
+                        llytTopSearch.setBackgroundResource(R.color.main_bg);
                     }
                 }
             }
@@ -273,7 +272,7 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
         //这里做列表adapter匹配
         //默认适配搜索学校
         initSchoolAdapter();
-        rclv_search.setAdapter(loadMoreWrapper);
+        rclvSearch.setAdapter(loadMoreWrapper);
     }
 
     private void initSchoolAdapter() {
@@ -322,8 +321,8 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
 
     @Override
     public void showResult(List data, int request_state, String flag) {
-        llyt_top_search.setBackgroundResource(R.color.main_bg);
-        presenter.setEmptyView(mInflater, this, rclv_search, flag_value);
+        llytTopSearch.setBackgroundResource(R.color.main_bg);
+        presenter.setEmptyView(mInflater, this, rclvSearch, flag_value);
         mLayoutManager.setScrollEnabled(true);
         List datas = getNowList();
         int len = data.size();
@@ -331,7 +330,7 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
             if (request_state == ParameterUtils.PULL_DOWN) {
                 //下拉刷新
                 if (len <= 0) {
-                    rclv_search.loadComplete(true);
+                    rclvSearch.loadComplete(true);
                     mLayoutManager.setScrollEnabled(false);
                     if (ParameterUtils.MYSCHOOL_FLAG.equals(flag_value)) {
 //                        llyt_choose.setVisibility(View.VISIBLE);
@@ -352,7 +351,7 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
 //                        llyt_choose.setVisibility(View.GONE);
                     }
                 } else {
-                    rclv_search.loadComplete(true);
+                    rclvSearch.loadComplete(true);
                     mLayoutManager.setScrollEnabled(false);
                     if (ParameterUtils.MYSCHOOL_FLAG.equals(flag_value)) {
 //                        llyt_choose.setVisibility(View.VISIBLE);
@@ -366,15 +365,15 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
                         mPage = mPage - 1;
                     }
                     if (datas.size() > 0) {
-                        rclv_search.loadComplete(false);
+                        rclvSearch.loadComplete(false);
                     } else {
-                        rclv_search.loadComplete(true);
+                        rclvSearch.loadComplete(true);
                     }
                 } else {
                     if (ParameterUtils.MYSCHOOL_FLAG.equals(flag_value)) {
 //                        llyt_choose.setVisibility(View.GONE);
                     }
-                    rclv_search.loadComplete(true);
+                    rclvSearch.loadComplete(true);
                     datas.addAll(data);
                     loadMoreWrapper.notifyDataSetChanged();
                 }
@@ -392,7 +391,7 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
     public void showEmptyView(View view) {
         emptyWrapper.setEmptyView(view);
         loadMoreWrapper.notifyDataSetChanged();
-        rclv_search.loadComplete(true);
+        rclvSearch.loadComplete(true);
         mLayoutManager.setScrollEnabled(false);
     }
 
@@ -400,10 +399,10 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
     public void showTip(String message) {
         super.showTip(message);
         if (!Utils.isNetworkConnected()) {
-            llyt_top_search.setBackgroundResource(R.color.main_bg);
-            presenter.setEmptyView(mInflater, this, rclv_search, flag_value);
+            llytTopSearch.setBackgroundResource(R.color.main_bg);
+            presenter.setEmptyView(mInflater, this, rclvSearch, flag_value);
         }
         swipeRefreshLayout.setRefreshing(false);
-        rclv_search.loadComplete(true);
+        rclvSearch.loadComplete(true);
     }
 }

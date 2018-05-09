@@ -2,7 +2,6 @@ package com.smartstudy.counselor_t.ui.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.EventLog;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,7 +9,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.smartstudy.counselor_t.R;
-import com.smartstudy.counselor_t.entity.ItemOnClick;
 import com.smartstudy.counselor_t.entity.QaDetailInfo;
 import com.smartstudy.counselor_t.mvp.base.BasePresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
@@ -76,7 +74,6 @@ public class QaDetailGuideActivity extends BaseActivity {
                     dtvCallout.setBackgroundColor(Color.parseColor("#FFFFFF"));
                     break;
                 }
-
                 if (step == 2) {
                     step = 3;
                     ivStep2.setVisibility(View.GONE);
@@ -87,7 +84,6 @@ public class QaDetailGuideActivity extends BaseActivity {
                     dtvTelephone.setBackgroundColor(Color.parseColor("#FFFFFF"));
                     break;
                 }
-
                 if (step == 3) {
                     finish();
                     break;

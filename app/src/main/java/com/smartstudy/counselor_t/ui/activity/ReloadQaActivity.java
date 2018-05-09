@@ -24,11 +24,8 @@ import java.io.File;
  */
 public class ReloadQaActivity extends BaseActivity<ReloadQaContract.Presenter> implements ReloadQaContract.View {
     private AudioRecordView audioRecordView;
-
     private String questionId;
-
     ProgressDialog pdDialog;
-
     File file;
 
     @Override
@@ -44,7 +41,6 @@ public class ReloadQaActivity extends BaseActivity<ReloadQaContract.Presenter> i
         audioRecordView = findViewById(R.id.arv);
         setFinishOnTouchOutside(false);
         audioRecordView.startRecord();
-
         audioRecordView.setsendOnClickListener(new AudioRecordView.SendOnClickListener() {
             @Override
             public void sendOnClick(String path) {
@@ -54,11 +50,9 @@ public class ReloadQaActivity extends BaseActivity<ReloadQaContract.Presenter> i
                     pdDialog.setMessage("正在上传中");
                     pdDialog.show();
                     presenter.postAnswerVoice(questionId, file);
-
                 }
             }
         });
-
         audioRecordView.setAgainRecordOnclick(new AudioRecordView.AgainRecordOnclick() {
             @Override
             public void againRecordOnclick() {
@@ -73,16 +67,13 @@ public class ReloadQaActivity extends BaseActivity<ReloadQaContract.Presenter> i
         super.onPause();
     }
 
-
     @Override
     protected void onDestroy() {
-
         if (presenter != null) {
             presenter = null;
         }
         if (AudioRecorder.getInstance() != null) {
             AudioRecorder.getInstance().setReset();
-
         }
         super.onDestroy();
     }
@@ -102,7 +93,6 @@ public class ReloadQaActivity extends BaseActivity<ReloadQaContract.Presenter> i
             file.delete();
         }
         finish();
-
     }
 
     @Override
