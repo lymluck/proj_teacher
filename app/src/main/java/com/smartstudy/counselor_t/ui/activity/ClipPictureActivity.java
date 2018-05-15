@@ -79,7 +79,6 @@ public class ClipPictureActivity extends BaseActivity {
         return null;
     }
 
-
     @Override
     public void onClick(View v) {
         int id = v.getId();
