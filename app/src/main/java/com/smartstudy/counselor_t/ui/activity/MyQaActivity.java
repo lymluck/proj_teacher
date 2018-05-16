@@ -112,7 +112,7 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.user_icon:
-//                startActivity(new Intent(this, MyInfoDetailActivity.class));
+                startActivity(new Intent(this, MyInfoDetailActivity.class));
 //                DialogCreator.createVedioDialog(this, new OnSendMsgDialogClickListener() {
 //                    @Override
 //                    public void onPositive(String word) {
@@ -133,7 +133,7 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
 //
 //                    }
 //                });
-                startActivity(new Intent(this, AddGoodDetailActivity.class));
+//                startActivity(new Intent(this, AddGoodDetailActivity.class));
                 break;
             case R.id.all_answer:
                 presenter.showFragment(mfragmentManager, ParameterUtils.FRAGMENT_ONE);
