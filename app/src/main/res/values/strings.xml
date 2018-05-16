@@ -40,8 +40,8 @@
     <string name="no_qa_tip">还没有提过问题哦～</string>
     <string name="visit_count">%1$s人看过</string>
     <string name="qa_detail_title">问题详情</string>
+    <string name="ad_loop">跳过 %1$d</string>
     <string name="dialog_vedio">1.我是谁\n2.毕业院校(不做强制要求，如果有过国外留学经历，建议加进去，是个加分项)\n3.熟悉哪个城市或者院校或专业\n4.擅长留学领域哪块工作\n5.向留学用户们发出问答邀请(如：各位留学小伙伴，我是***(中文，英文，外号等个性化名称) + 我在选校帝等你来撩/聊；大体结构就这样)</string>
     <string name="dialog_vedio_claim">1.着装整洁，声音清晰\n2.场景不限\n3.时长在1-3分钟之间\n4.建议使用VUE App录制，自己配音乐，视屏长宽比采用9：16的格式</string>
 
 </resources>
-

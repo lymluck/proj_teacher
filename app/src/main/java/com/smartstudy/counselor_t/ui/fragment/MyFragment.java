@@ -23,24 +23,18 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.IdNameInfo;
-import com.smartstudy.counselor_t.entity.ItemOnClick;
 import com.smartstudy.counselor_t.entity.SaveItem;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.mvp.contract.MyInfoContract;
 import com.smartstudy.counselor_t.mvp.presenter.MyInfoActivityPresenter;
 import com.smartstudy.counselor_t.ui.activity.ChooseListActivity;
-import com.smartstudy.counselor_t.ui.activity.ClipPictureActivity;
-import com.smartstudy.counselor_t.ui.activity.CommonEditNameActivity;
-import com.smartstudy.counselor_t.ui.activity.FillPersonActivity;
 import com.smartstudy.counselor_t.ui.activity.LoginActivity;
 import com.smartstudy.counselor_t.ui.activity.SelectMyPhotoActivity;
 import com.smartstudy.counselor_t.ui.base.UIFragment;
-import com.smartstudy.counselor_t.ui.widget.ClipImageLayout;
 import com.smartstudy.counselor_t.ui.widget.TagsLayout;
 import com.smartstudy.counselor_t.util.CheckUtil;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
 import com.smartstudy.counselor_t.util.ParameterUtils;
-import com.smartstudy.counselor_t.util.SDCardUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
 import com.smartstudy.counselor_t.util.ToastUtils;
 import com.smartstudy.counselor_t.util.Utils;
@@ -55,7 +49,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import io.rong.imkit.RongIM;
-import io.rong.imlib.model.UserInfo;
 
 /**
  * @author yqy
@@ -66,6 +59,7 @@ import io.rong.imlib.model.UserInfo;
  */
 public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements MyInfoContract.View {
     private ImageView ivAvatar;
+    private ImageView ivTeacherBg;
     private EditText tvNickName;
     private EditText tvWorkName;
     private EditText tvWorkExperience;
@@ -73,8 +67,6 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
     private EditText tvEmail;
     private EditText tvName;
     private File photoFile;
-    private File photoSaveFile;// 保存文件夹
-    private String photoSaveName = null;// 图片名
     private LinearLayout llCity;
     private TextView tvCity;
     private LinearLayout llGoodBusiness;
@@ -101,6 +93,7 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
     @Override
     protected void initView(View rootView) {
         ivAvatar = rootView.findViewById(R.id.iv_avatar);
+        ivTeacherBg = rootView.findViewById(R.id.iv_teacher_bg);
         tvNickName = rootView.findViewById(R.id.tv_nick_name);
         tvWorkName = rootView.findViewById(R.id.tv_work_name);
         tvWorkExperience = rootView.findViewById(R.id.tv_work_experience);
@@ -179,6 +172,7 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
         if (teacherInfo != null) {
             this.teacherInfo = teacherInfo;
             if (!TextUtils.isEmpty(teacherInfo.getAvatar()) && photoFile == null) {
+                DisplayImageUtils.displayBlurImage(mActivity, teacherInfo.getAvatar(), ivTeacherBg);
                 DisplayImageUtils.formatPersonImgUrl(mActivity, teacherInfo.getAvatar(), ivAvatar);
             }
             tvNickName.setText(teacherInfo.getName());
@@ -262,18 +256,10 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
                     public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
                         photoFile = resource;
                         DisplayImageUtils.displayPersonRes(mActivity, resource, ivAvatar);
+                        DisplayImageUtils.displayBlurImage(mActivity, resource, ivTeacherBg);
                     }
                 });
                 break;
-
-            case ParameterUtils.REQUEST_CODE_CAMERA:
-                String path_capture = photoSaveFile.getAbsolutePath() + "/" + photoSaveName;
-                Intent toClipImage = new Intent(mActivity.getApplicationContext(), ClipPictureActivity.class);
-                toClipImage.putExtra("path", path_capture);
-                toClipImage.putExtra("clipType", ClipImageLayout.SQUARE);
-                startActivityForResult(toClipImage, ParameterUtils.REQUEST_CODE_CLIP_OVER);
-                break;
-
             case ParameterUtils.REQUEST_CODE_EDIT_MYINFO:
                 String flag = data.getStringExtra(ParameterUtils.TRANSITION_FLAG);
 

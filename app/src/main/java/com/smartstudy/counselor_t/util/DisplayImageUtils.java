@@ -1,6 +1,5 @@
 package com.smartstudy.counselor_t.util;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -17,6 +16,7 @@ import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.base.config.CustomShapeTransformation;
 import com.smartstudy.counselor_t.base.config.GlideApp;
 import com.smartstudy.counselor_t.base.config.glideprogress.ProgressTarget;
+import com.smartstudy.counselor_t.ui.widget.GlideBlurformation;
 
 import java.io.File;
 
@@ -32,35 +32,40 @@ public class DisplayImageUtils {
 
     public static void displayImage(Context context, String url, ImageView view) {
         GlideApp.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.DATA).placeholder(R.drawable.ic_img_default)
-                .error(R.drawable.ic_img_default).centerCrop().dontAnimate().into(view);
+            .error(R.drawable.ic_img_default).centerCrop().dontAnimate().into(view);
+    }
+
+    public static void displayBlurImage(Context context, Object url, ImageView view) {
+        GlideApp.with(context).load(url).transform(new GlideBlurformation(context)).diskCacheStrategy(DiskCacheStrategy.DATA)
+            .placeholder(R.drawable.ic_img_default).error(R.drawable.ic_img_default).dontAnimate().into(view);
     }
 
     public static void displayBubbleImage(Context context, String url, ImageView view) {
         GlideApp.with(context).load(url).transform(new CustomShapeTransformation(context, R.drawable.bg_msg_img_left))
-                .placeholder(R.drawable.bg_msg_img_left).error(R.drawable.bg_msg_img_left)
-                .into(view);
+            .placeholder(R.drawable.bg_msg_img_left).error(R.drawable.bg_msg_img_left)
+            .into(view);
     }
 
     public static void displayImageNoHolder(Context context, String url, ImageView view) {
         GlideApp.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.DATA)
-                .centerCrop().dontAnimate().into(view);
+            .centerCrop().dontAnimate().into(view);
     }
 
     public static void displayImage(Context context, String url, ProgressTarget<String, Drawable> progressTarget) {
         GlideApp.with(context)
-                .load(url)
-                .dontAnimate()
-                .into(progressTarget);
+            .load(url)
+            .dontAnimate()
+            .into(progressTarget);
     }
 
     public static void displayLocationImage(Context context, String url, ImageView view) {
         GlideApp.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.DATA)
-                .error(R.drawable.location_default).centerCrop().dontAnimate().into(view);
+            .error(R.drawable.location_default).centerCrop().dontAnimate().into(view);
     }
 
     public static void displayImage(Context context, String url, SimpleTarget<Bitmap> simpleTarget) {
         GlideApp.with(context).asBitmap().load(url).diskCacheStrategy(DiskCacheStrategy.DATA)
-                .error(R.drawable.ic_img_default).centerCrop().dontAnimate().into(simpleTarget);
+            .error(R.drawable.ic_img_default).centerCrop().dontAnimate().into(simpleTarget);
     }
 
     public static void displayImage(Context context, String url, ImageView view, RequestListener<Drawable> listener) {
@@ -89,47 +94,47 @@ public class DisplayImageUtils {
 
     public static void displayCircleImage(Context context, String url, ImageView view) {
         GlideApp.with(context).load(url).circleCrop().diskCacheStrategy(DiskCacheStrategy.DATA).placeholder(R.drawable.ic_circleimg_default)
-                .error(R.drawable.ic_circleimg_default)
-                .dontAnimate().into(view);
+            .error(R.drawable.ic_circleimg_default)
+            .dontAnimate().into(view);
     }
 
 
     public static void displayRoundImage(Context context, String url, ImageView view, int radius_dp) {
         GlideApp.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.DATA)
-                .centerCrop().transform(new RoundedCorners(radius_dp))
-                .dontAnimate().into(view);
+            .centerCrop().transform(new RoundedCorners(radius_dp))
+            .dontAnimate().into(view);
     }
 
     public static void displayRoundImageNoHolder(Context context, String url, ImageView view, int radius_dp) {
         GlideApp.with(context).load(url).centerCrop().diskCacheStrategy(DiskCacheStrategy.DATA)
-                .transform(new RoundedCorners(radius_dp))
-                .dontAnimate().into(view);
+            .transform(new RoundedCorners(radius_dp))
+            .dontAnimate().into(view);
     }
 
     public static void displayCircleImageWithborder(Context context, String url, ImageView view,
                                                     int border_width, int border_color) {
         GlideApp.with(context).load(url).circleCrop().diskCacheStrategy(DiskCacheStrategy.DATA).placeholder(R.drawable.ic_circleimg_default)
-                .error(R.drawable.ic_circleimg_default)
-                .dontAnimate().into(view);
+            .error(R.drawable.ic_circleimg_default)
+            .dontAnimate().into(view);
     }
 
     public static void displayPersonImageWithborder(Context context, String url, ImageView view,
                                                     int border_width, int border_color) {
         GlideApp.with(context).load(url).circleCrop().diskCacheStrategy(DiskCacheStrategy.DATA).placeholder(R.drawable.rc_default_portrait)
-                .error(R.drawable.rc_default_portrait)
-                .dontAnimate().into(view);
+            .error(R.drawable.rc_default_portrait)
+            .dontAnimate().into(view);
     }
 
     public static void displayPersonImage(Context context, String url, ImageView view) {
         GlideApp.with(context).load(url).circleCrop().diskCacheStrategy(DiskCacheStrategy.DATA).placeholder(R.drawable.rc_default_portrait)
-                .error(R.drawable.rc_default_portrait)
-                .dontAnimate().into(view);
+            .error(R.drawable.rc_default_portrait)
+            .dontAnimate().into(view);
     }
 
     public static void displayPersonImage(Context context, String url, ImageView view, RequestListener<Drawable> listener) {
         GlideApp.with(context).load(url).circleCrop().diskCacheStrategy(DiskCacheStrategy.DATA).listener(listener).placeholder(R.drawable.rc_default_portrait)
-                .error(R.drawable.rc_default_portrait)
-                .dontAnimate().into(view);
+            .error(R.drawable.rc_default_portrait)
+            .dontAnimate().into(view);
     }
 
     public static void displayPersonRes(Context context, int id, ImageView view) {
@@ -142,7 +147,7 @@ public class DisplayImageUtils {
 
     public static void displayPersonRes(Context context, Bitmap bmp, ImageView view) {
         GlideApp.with(context).load(BitmapUtils.compressBitmap2Byte(bmp)).circleCrop().error(R.drawable.rc_default_portrait)
-                .dontAnimate().into(view);
+            .dontAnimate().into(view);
     }
 
     public static String formatPersonImgUrl(final Context context, final String url, final ImageView iv) {

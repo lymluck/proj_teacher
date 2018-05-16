@@ -75,9 +75,9 @@
             android:layout_gravity="right"
             android:layout_marginRight="@dimen/qa_title_circle_padding_right"
             android:layout_marginTop="5dp"
+            android:gravity="center"
             android:minHeight="18dp"
             android:minWidth="18dp"
-            android:gravity="center"
             android:textColor="@color/white"
             android:textSize="12sp"
             android:visibility="gone" />

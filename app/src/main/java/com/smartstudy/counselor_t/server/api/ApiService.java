@@ -247,5 +247,10 @@ public interface ApiService {
     @GET(HttpUrlUtils.URL_MY_ANSWER)
     Observable<ResponseInfo> getMyQuestion(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
+    /**
+     * 用户注销
+     */
+    @GET(HttpUrlUtils.URL_START_AD)
+    Observable<ResponseInfo> getAdInfo(@HeaderMap Map<String, String> header);
 
 }

@@ -47,7 +47,6 @@ public class MainActivityPresenter extends BasePresenterImpl<MainActivityContrac
                 if (teacherInfo != null) {
                     view.getAuditResult(teacherInfo);
                 }
-
             }
 
             @Override
