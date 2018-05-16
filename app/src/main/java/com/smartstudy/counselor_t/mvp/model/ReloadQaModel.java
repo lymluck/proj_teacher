@@ -18,7 +18,8 @@ import okhttp3.RequestBody;
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */
-public class ReloadQaModel extends BaseModel{
+public class ReloadQaModel extends BaseModel {
+
     public void postAnswerVoice(final String id, File voice, ObserverListener listener) {
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.setType(MultipartBody.FORM);

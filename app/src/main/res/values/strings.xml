@@ -40,4 +40,5 @@
     <string name="no_qa_tip">还没有提过问题哦～</string>
     <string name="visit_count">%1$s人看过</string>
     <string name="qa_detail_title">问题详情</string>
+    <string name="ad_loop">跳过 %1$d</string>
 </resources>

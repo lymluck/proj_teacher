@@ -6,6 +6,12 @@
         <item name="android:windowBackground">@null</item>
     </style>
 
+    <style name="AppSplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
     <!-- app全局横向分割线样式 -->
     <style name="horizontal_line">
         <item name="android:layout_width">match_parent</item>
