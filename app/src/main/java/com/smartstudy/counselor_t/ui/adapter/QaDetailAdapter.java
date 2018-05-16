@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.Answerer;
 import com.smartstudy.counselor_t.entity.ItemOnClick;
 import com.smartstudy.counselor_t.ui.widget.HorizontalDividerItemDecoration;
+import com.smartstudy.counselor_t.ui.widget.RatingBar;
 import com.smartstudy.counselor_t.ui.widget.audio.AudioRecorder;
 import com.smartstudy.counselor_t.util.DensityUtils;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
@@ -94,6 +96,20 @@ public class QaDetailAdapter extends RecyclerView.Adapter<QaDetailAdapter.MyView
         DisplayImageUtils.formatPersonImgUrl(mContext, entity.getCommenter().getAvatar(), holder.ivAssignee);
         holder.tv_assignee.setText(entity.getCommenter().getName());
         holder.tvAnswer.setText(entity.getContent());
+
+        if (TextUtils.isEmpty(entity.getRatingScore())) {
+            holder.llCommentDetail.setVisibility(View.GONE);
+        } else {
+            holder.llCommentDetail.setVisibility(View.VISIBLE);
+            holder.rbCourseRate.setStar(TextUtils.isEmpty(entity.getRatingScore()) ? 0f : Float.parseFloat(entity.getRatingScore()));
+            if (TextUtils.isEmpty(entity.getRatingComment())) {
+                holder.tvComment.setVisibility(View.GONE);
+            } else {
+                holder.tvComment.setVisibility(View.VISIBLE);
+                holder.tvComment.setText(entity.getRatingComment());
+            }
+        }
+
         if (entity.getVoiceUrl() != null) {
             holder.ll_voice.setVisibility(View.VISIBLE);
             holder.tv_voice_time.setText(entity.getVoiceDuration());
@@ -177,7 +193,7 @@ public class QaDetailAdapter extends RecyclerView.Adapter<QaDetailAdapter.MyView
         holder.rvDetailAnswer.setLayoutManager(linearLayoutManager);
 
         holder.rvDetailAnswer.addItemDecoration(new HorizontalDividerItemDecoration.Builder(mContext)
-                .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.bg_home_search).margin(DensityUtils.dip2px(64), 0).build());
+            .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.bg_home_search).margin(DensityUtils.dip2px(64), 0).build());
 
         holder.rvDetailAnswer.setAdapter(qadetailAnswerItemAdapter);
         if (entity.getComments() != null && entity.getComments().size() > 0) {
@@ -208,6 +224,9 @@ public class QaDetailAdapter extends RecyclerView.Adapter<QaDetailAdapter.MyView
         LinearLayout ll_voice;
         ImageView iv_voice;
         View v_line;
+        private LinearLayout llCommentDetail;
+        private RatingBar rbCourseRate;
+        private TextView tvComment;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -220,6 +239,9 @@ public class QaDetailAdapter extends RecyclerView.Adapter<QaDetailAdapter.MyView
             iv_voice = itemView.findViewById(R.id.iv_voice);
             ll_voice = itemView.findViewById(R.id.ll_voice);
             v_line = itemView.findViewById(R.id.v_line);
+            llCommentDetail = itemView.findViewById(R.id.ll_comment_detail);
+            rbCourseRate = itemView.findViewById(R.id.rb_course_rate);
+            tvComment = itemView.findViewById(R.id.tv_comment);
         }
     }
 

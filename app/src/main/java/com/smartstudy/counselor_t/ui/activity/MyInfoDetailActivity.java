@@ -1,13 +1,16 @@
 package com.smartstudy.counselor_t.ui.activity;
 
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.SaveItem;
+import com.smartstudy.counselor_t.listener.OnSendMsgDialogClickListener;
 import com.smartstudy.counselor_t.mvp.base.BasePresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
+import com.smartstudy.counselor_t.ui.dialog.DialogCreator;
 import com.smartstudy.counselor_t.ui.fragment.MyFragment;
 
 import org.greenrobot.eventbus.EventBus;

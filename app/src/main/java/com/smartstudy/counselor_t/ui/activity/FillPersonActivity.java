@@ -60,8 +60,6 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
     private EditText tvEmail;
     private EditText tvName;
     private File photoFile;
-    private File photoSaveFile;// 保存文件夹
-    private String photoSaveName = null;// 图片名
     private boolean isImage = false;
     private SwipeRefreshLayout swipeRefreshLayout;
     private LinearLayout llCity;
@@ -112,6 +110,10 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
             case R.id.bt_post_info:
                 if (!CheckUtil.checkEmail(getEmail())) {
                     ToastUtils.shortToast(this, "邮箱不合法");
+                    return;
+                }
+                if (photoFile == null && !isImage) {
+                    ToastUtils.shortToast(this, "头像不能为空");
                     return;
                 }
                 if (!checkInput()) {
@@ -192,13 +194,7 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
                     }
                 });
                 break;
-            case ParameterUtils.REQUEST_CODE_CAMERA:
-                String path_capture = photoSaveFile.getAbsolutePath() + "/" + photoSaveName;
-                Intent toClipImage = new Intent(getApplicationContext(), ClipPictureActivity.class);
-                toClipImage.putExtra("path", path_capture);
-                toClipImage.putExtra("clipType", ClipImageLayout.SQUARE);
-                startActivityForResult(toClipImage, ParameterUtils.REQUEST_CODE_CLIP_OVER);
-                break;
+
             case ParameterUtils.REQUEST_CODE_EDIT_MYINFO:
                 String flag = data.getStringExtra(ParameterUtils.TRANSITION_FLAG);
                 if (flag.equals(ParameterUtils.WORK_CITY)) {
@@ -387,7 +383,7 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
     }
 
     private boolean checkInput() {
-        if ((photoFile == null && !isImage) || TextUtils.isEmpty(getNickName()) || TextUtils.isEmpty(getWorkTitle()) ||
+        if (TextUtils.isEmpty(getNickName()) || TextUtils.isEmpty(getWorkTitle()) ||
             TextUtils.isEmpty(getWorkExperience()) || TextUtils.isEmpty(getWorkExperience()) ||
             TextUtils.isEmpty(getGraduatedSchool()) || TextUtils.isEmpty(getRealName()) ||
             TextUtils.isEmpty(getEmail()) || TextUtils.isEmpty(getCity()) || TextUtils.isEmpty(getBussiness())

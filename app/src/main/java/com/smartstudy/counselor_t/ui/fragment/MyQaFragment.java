@@ -202,13 +202,6 @@ public class MyQaFragment extends UIFragment<MyQaFragmentContract.Presenter> imp
                     holder.setText(R.id.tv_location, questionInfo.getUserLocation());
                 }
 
-                if (TextUtils.isEmpty(questionInfo.getPlatform())) {
-                    holder.getView(R.id.tv_platform).setVisibility(View.GONE);
-                } else {
-                    holder.getView(R.id.tv_platform).setVisibility(View.VISIBLE);
-                    holder.setText(R.id.tv_platform, questionInfo.getPlatform());
-                }
-
 
                 if (TextUtils.isEmpty(questionInfo.getSchoolName())) {
                     holder.getView(R.id.tv_schoolName).setVisibility(View.GONE);

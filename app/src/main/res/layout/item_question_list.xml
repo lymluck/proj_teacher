@@ -45,7 +45,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="8dp"
                 android:ellipsize="end"
-                android:maxWidth="210dp"
+                android:maxWidth="150dp"
                 android:paddingTop="2dp"
                 android:singleLine="true"
                 android:textColor="@color/app_text_color2"

@@ -5,9 +5,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
@@ -195,5 +198,61 @@ public class DialogCreator {
                 return true;
             }
         });
+    }
+
+
+    public static void createVedioDialog(final Activity context, final OnSendMsgDialogClickListener onClickListener) {
+        final AppBasicDialog dialog = new AppBasicDialog(context, R.style.appBasicDialog);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.dialog_vedio, null);
+        dialog.setContentView(view);
+        TextView tvNext = view.findViewById(R.id.tv_next);
+        tvNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                onClickListener.onPositive(null);
+            }
+        });
+        WindowManager.LayoutParams p = dialog.getWindow().getAttributes();
+        p.width = (int) (ScreenUtils.getScreenWidth() * 0.85);
+        dialog.getWindow().setAttributes(p);
+        Window dialogWindow = dialog.getWindow();
+        dialogWindow.setWindowAnimations(R.style.DialogNextAnim);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
+
+
+    public static void createVedioClaimDialog(final Activity context, final OnSendMsgDialogClickListener onClickListener) {
+        final AppBasicDialog dialog = new AppBasicDialog(context, R.style.appBasicDialog);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.dialog_vedio_claim, null);
+        dialog.setContentView(view);
+        TextView tvUrl = view.findViewById(R.id.tv_url);
+        TextView tvNext = view.findViewById(R.id.tv_next);
+        tvUrl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setData(Uri.parse("https://xxd.smartstudy.com/article/1/"));//Url 就是你要打开的网址
+                intent.setAction(Intent.ACTION_VIEW);
+                context.startActivity(intent); //启动浏览器
+            }
+        });
+        tvNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                onClickListener.onPositive(null);
+            }
+        });
+        WindowManager.LayoutParams p = dialog.getWindow().getAttributes();
+        p.width = (int) (ScreenUtils.getScreenWidth() * 0.85);
+        dialog.getWindow().setAttributes(p);
+        Window dialogWindow = dialog.getWindow();
+        dialogWindow.setWindowAnimations(R.style.DialogEndAnim);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
 }

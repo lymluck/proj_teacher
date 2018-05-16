@@ -13,9 +13,11 @@ import android.widget.TextView;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.entity.TotalSubQuestion;
+import com.smartstudy.counselor_t.listener.OnSendMsgDialogClickListener;
 import com.smartstudy.counselor_t.mvp.contract.MyQaActivityContract;
 import com.smartstudy.counselor_t.mvp.presenter.MyQaActivityPresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
+import com.smartstudy.counselor_t.ui.dialog.DialogCreator;
 import com.smartstudy.counselor_t.ui.fragment.MyFocusFragment;
 import com.smartstudy.counselor_t.ui.fragment.MyQaFragment;
 import com.smartstudy.counselor_t.ui.fragment.QaFragment;
@@ -110,7 +112,28 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.user_icon:
-                startActivity(new Intent(this, MyInfoDetailActivity.class));
+//                startActivity(new Intent(this, MyInfoDetailActivity.class));
+//                DialogCreator.createVedioDialog(this, new OnSendMsgDialogClickListener() {
+//                    @Override
+//                    public void onPositive(String word) {
+//                        DialogCreator.createVedioClaimDialog(MyQaActivity.this, new OnSendMsgDialogClickListener() {
+//                            @Override
+//                            public void onPositive(String word) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onNegative() {
+//
+//                            }
+//                        });
+//                    }
+//                    @Override
+//                    public void onNegative() {
+//
+//                    }
+//                });
+                startActivity(new Intent(this, AddGoodDetailActivity.class));
                 break;
             case R.id.all_answer:
                 presenter.showFragment(mfragmentManager, ParameterUtils.FRAGMENT_ONE);

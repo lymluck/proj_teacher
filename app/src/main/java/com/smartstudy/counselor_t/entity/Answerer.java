@@ -42,6 +42,26 @@ public class Answerer implements Serializable {
 
     private String voiceDuration;
 
+    private String ratingScore;
+
+    private String ratingComment;
+
+    public String getRatingScore() {
+        return ratingScore;
+    }
+
+    public void setRatingScore(String ratingScore) {
+        this.ratingScore = ratingScore;
+    }
+
+    public String getRatingComment() {
+        return ratingComment;
+    }
+
+    public void setRatingComment(String ratingComment) {
+        this.ratingComment = ratingComment;
+    }
+
     public String getVoiceDuration() {
         if (!TextUtils.isEmpty(voiceDuration)) {
             if (voiceDuration.contains(".")) {

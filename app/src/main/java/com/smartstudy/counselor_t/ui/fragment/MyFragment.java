@@ -262,7 +262,6 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
                     public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
                         photoFile = resource;
                         DisplayImageUtils.displayPersonRes(mActivity, resource, ivAvatar);
-//                        presenter.updateMyAvatarInfo(resource, ivAvatar);
                     }
                 });
                 break;

@@ -315,12 +315,12 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
             tvLocation.setVisibility(View.VISIBLE);
             tvLocation.setText(data.getUserLocation());
         }
-        if (TextUtils.isEmpty(data.getPlatform())) {
-            tvPlatform.setVisibility(View.GONE);
-        } else {
-            tvPlatform.setVisibility(View.VISIBLE);
-            tvPlatform.setText(data.getPlatform());
-        }
+//        if (TextUtils.isEmpty(data.getPlatform())) {
+//            tvPlatform.setVisibility(View.GONE);
+//        } else {
+//            tvPlatform.setVisibility(View.VISIBLE);
+//            tvPlatform.setText(data.getPlatform());
+//        }
         if (TextUtils.isEmpty(data.getSchoolName())) {
             tvSchoolName.setVisibility(View.GONE);
         } else {

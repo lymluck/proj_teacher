@@ -5,6 +5,7 @@ public class HttpUrlUtils {
     /**************************** api ***************************/
     public static final String URL_APP_VERSION = "app/android/version/%1$s/check";  //版本检测
     public static final String URL_QUESTS = "questions/list"; //问答列表
+    public static final String URL_ADD_GOODS_LIST = "counsellor/like/likers"; //问答列表
     public static final String URL_QUESTS_MARK = "questions/list/marked"; //关注问答列表
     public static final String URL_QUESTS_OTHER_TAGS = " counsellor/student/%1$s/tags/others"; //学生标签
     public static final String URL_QUESTS_MY_TAGS = "counsellor/student/%1$s/tags"; //学生标签
@@ -18,14 +19,13 @@ public class HttpUrlUtils {
     public static final String URL_COUNSELLOR_PROFILE = "counsellor/profile";//获取老师个人信息
     public static final String URL_REFRESH_TOKEN = "counsellor/im/refresh";  //获取教师token
     public static final String URL_USER_LOGOUT = "counsellor/logout";  //退出登录
-    public static final String COUNSELLOR_PROFILE_OPTIONS = "counsellor/profile/options";
-
+    public static final String COUNSELLOR_PROFILE_OPTIONS = "counsellor/profile/options";//个人信息中获取个人选项操作
+    public static final String URL_POST_ANSWER = "questions/%1$s/answer";//提交追问
+    public static final String URL_QUESTION_MARK = "questions/%1$s/mark";//关注问题
+    public static final String URL_MY_ANSWER = "questions/list/answered_by_me";//我的问答
 
     /**************************** web ***************************/
     public static final String URL_USER_CONTRACT = "/user-agreement.html";  //用户协议
-    public static final String URL_POST_ANSWER = "questions/%1$s/answer";//提交追问
-    public static final String URL_QUESTION_MARK = "questions/%1$s/mark";//提交追问
-    public static final String URL_MY_ANSWER = "questions/list/answered_by_me";//我的问答
 
 
     /*********获取api接口url***********/

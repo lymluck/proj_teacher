@@ -84,6 +84,7 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
     private List<String> allLabelList = new ArrayList<>();//所有标签列表
     private TagAdapter<String> tagAdapter;//标签适配器
     private LinearLayout llOtherTag;
+    private TextView tvCapitalBudget;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,6 +158,7 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
         llytActivityCommunity = findViewById(R.id.llyt_activity_community);
         rvSchool = findViewById(R.id.rv_school);
         slStudentInfo = findViewById(R.id.sl_student_info);
+        tvCapitalBudget = findViewById(R.id.tv_capital_budget);
         vBackline = findViewById(R.id.v_backline);
         tvCountSchool = findViewById(R.id.tv_count_school);
         rvSchool.setNestedScrollingEnabled(false);

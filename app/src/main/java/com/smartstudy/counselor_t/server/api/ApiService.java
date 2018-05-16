@@ -108,7 +108,7 @@ public interface ApiService {
 
 
     /**
-     * 个人信息
+     * 个人信息中获取个人选项操作
      *
      * @return
      */
@@ -151,6 +151,13 @@ public interface ApiService {
      */
     @GET(HttpUrlUtils.URL_QUESTS)
     Observable<ResponseInfo> getQuestions(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+
+
+    /**
+     * 点赞列表
+     */
+    @GET(HttpUrlUtils.URL_ADD_GOODS_LIST)
+    Observable<ResponseInfo> getAddGoodDetail(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
 
     /**
