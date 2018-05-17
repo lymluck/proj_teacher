@@ -30,5 +30,9 @@ ext {
             palette        : 'com.android.support:palette-v7:27.+',
             okhttp         : 'com.squareup.okhttp3:okhttp:+',
             javapoet       : 'com.squareup:javapoet:1.8.0',
+            ijkjava        : 'tv.danmaku.ijk.media:ijkplayer-java:+',
+            ijkx86         : 'tv.danmaku.ijk.media:ijkplayer-x86:+',
+            ijkv7          : 'tv.danmaku.ijk.media:ijkplayer-armv7a:+',
+            ijkv5          : 'tv.danmaku.ijk.media:ijkplayer-armv5:+',
     ]
 }
