@@ -113,27 +113,6 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
         switch (v.getId()) {
             case R.id.user_icon:
                 startActivity(new Intent(this, MyInfoDetailActivity.class));
-//                DialogCreator.createVedioDialog(this, new OnSendMsgDialogClickListener() {
-//                    @Override
-//                    public void onPositive(String word) {
-//                        DialogCreator.createVedioClaimDialog(MyQaActivity.this, new OnSendMsgDialogClickListener() {
-//                            @Override
-//                            public void onPositive(String word) {
-//
-//                            }
-//
-//                            @Override
-//                            public void onNegative() {
-//
-//                            }
-//                        });
-//                    }
-//                    @Override
-//                    public void onNegative() {
-//
-//                    }
-//                });
-//                startActivity(new Intent(this, AddGoodDetailActivity.class));
                 break;
             case R.id.all_answer:
                 presenter.showFragment(mfragmentManager, ParameterUtils.FRAGMENT_ONE);
