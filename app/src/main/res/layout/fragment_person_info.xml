@@ -22,6 +22,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="210dp"
                 android:scaleType="centerCrop" />
+            <include
+                layout="@layout/layout_play_video"
+                android:layout_width="match_parent"
+                android:layout_height="211dp" />
 
             <FrameLayout
                 android:layout_width="90dp"

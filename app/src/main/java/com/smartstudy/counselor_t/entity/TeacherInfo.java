@@ -48,6 +48,7 @@ public class TeacherInfo implements Serializable {
     private String workingCityKey;
     private String adeptWorksKey;
     private String introduction;
+    private String video;
 
     public String getIntroduction() {
         return introduction;
@@ -223,6 +224,14 @@ public class TeacherInfo implements Serializable {
 
     public boolean getVisible() {
         return visible;
+    }
+
+    public String getVideo() {
+        return video;
+    }
+
+    public void setVideo(String video) {
+        this.video = video;
     }
 
     public static class OrganizationEntity implements Serializable {

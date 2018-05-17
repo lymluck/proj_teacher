@@ -5,15 +5,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -171,8 +167,12 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
     public void getMyInfoSuccess(TeacherInfo teacherInfo) {
         if (teacherInfo != null) {
             this.teacherInfo = teacherInfo;
-            if (!TextUtils.isEmpty(teacherInfo.getAvatar()) && photoFile == null) {
+            if (TextUtils.isEmpty(teacherInfo.getVideo())) {
                 DisplayImageUtils.displayBlurImage(mActivity, teacherInfo.getAvatar(), ivTeacherBg);
+            } else {
+                // 播放视频
+            }
+            if (!TextUtils.isEmpty(teacherInfo.getAvatar()) && photoFile == null) {
                 DisplayImageUtils.formatPersonImgUrl(mActivity, teacherInfo.getAvatar(), ivAvatar);
             }
             tvNickName.setText(teacherInfo.getName());
