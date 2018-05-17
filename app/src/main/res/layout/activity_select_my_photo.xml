@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="33dp"
-            android:layout_toRightOf="@+id/id_choose_dir"
+            android:layout_toRightOf="@id/id_choose_dir"
             android:src="@drawable/ic_dir_arrow" />
 
         <TextView

@@ -1,15 +1,15 @@
 package com.smartstudy.counselor_t.entity;
 
-public class ImageFloderInfo {
+public class FloderInfo {
     /**
-     * 图片的文件夹路径
+     * 文件夹路径
      */
     private String dir;
 
     /**
-     * 第一张图片的路径
+     * 第一张的路径
      */
-    private String firstImagePath;
+    private String firstPath;
 
     /**
      * 文件夹的名称
@@ -17,7 +17,7 @@ public class ImageFloderInfo {
     private String name;
 
     /**
-     * 图片的数量
+     * 数量
      */
     private int count;
 
@@ -37,12 +37,12 @@ public class ImageFloderInfo {
         }
     }
 
-    public String getFirstImagePath() {
-        return firstImagePath;
+    public String getFirstPath() {
+        return firstPath;
     }
 
-    public void setFirstImagePath(String firstImagePath) {
-        this.firstImagePath = firstImagePath;
+    public void setFirstPath(String firstPath) {
+        this.firstPath = firstPath;
     }
 
     public String getName() {
@@ -64,4 +64,5 @@ public class ImageFloderInfo {
     public void setIsSelected(boolean isSelected) {
         this.isSelected = isSelected;
     }
+
 }

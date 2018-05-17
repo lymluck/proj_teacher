@@ -5,10 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -31,12 +27,12 @@ import com.smartstudy.counselor_t.ui.activity.AddGoodDetailActivity;
 import com.smartstudy.counselor_t.ui.activity.ChooseListActivity;
 import com.smartstudy.counselor_t.ui.activity.LoginActivity;
 import com.smartstudy.counselor_t.ui.activity.SelectMyPhotoActivity;
+import com.smartstudy.counselor_t.ui.activity.SelectMyVideoActivity;
 import com.smartstudy.counselor_t.ui.base.UIFragment;
 import com.smartstudy.counselor_t.ui.dialog.DialogCreator;
 import com.smartstudy.counselor_t.ui.widget.TagsLayout;
 import com.smartstudy.counselor_t.util.CheckUtil;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
-import com.smartstudy.counselor_t.util.FastBlur;
 import com.smartstudy.counselor_t.util.ParameterUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
 import com.smartstudy.counselor_t.util.ToastUtils;
@@ -77,11 +73,12 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
     private String bussinessValue;
     private TeacherInfo teacherInfo;
     private TextView tvLoginOut;
-    List<IdNameInfo> workIdNameInfos = new ArrayList<>();
-    List<IdNameInfo> adeptIdNameInfos = new ArrayList<>();
+    private List<IdNameInfo> workIdNameInfos = new ArrayList<>();
+    private List<IdNameInfo> adeptIdNameInfos = new ArrayList<>();
     private EditText tvPersonalProfile;
     private TextView tvAddGood;
     private ImageView ivVideoInfo;
+    private ImageView ivUpLoad;
 
     @Override
     public void onAttach(Context context) {
@@ -110,6 +107,7 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
         tvLoginOut = rootView.findViewById(R.id.tv_login_out);
         tlyTags = rootView.findViewById(R.id.tly_tags);
         ivVideoInfo = rootView.findViewById(R.id.iv_video_info);
+        ivUpLoad = rootView.findViewById(R.id.iv_upLoad);
         tvPersonalProfile = rootView.findViewById(R.id.tv_personal_profile);
         presenter.getOptions();
         if (presenter != null) {
@@ -161,6 +159,11 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
                     }
                 });
                 break;
+            case R.id.iv_upLoad:
+                Intent toVideo = new Intent(mActivity, SelectMyVideoActivity.class);
+                toVideo.putExtra("singlePic", true);
+                startActivityForResult(toVideo, ParameterUtils.REQUEST_VIDEO);
+                break;
             default:
                 break;
         }
@@ -174,6 +177,7 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
         tvLoginOut.setOnClickListener(this);
         tvAddGood.setOnClickListener(this);
         ivVideoInfo.setOnClickListener(this);
+        ivUpLoad.setOnClickListener(this);
     }
 
     @Override

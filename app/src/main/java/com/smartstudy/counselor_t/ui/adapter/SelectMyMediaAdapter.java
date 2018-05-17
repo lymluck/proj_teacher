@@ -10,8 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.smartstudy.counselor_t.R;
+import com.smartstudy.counselor_t.entity.MediaInfo;
 import com.smartstudy.counselor_t.ui.adapter.base.ViewHolder;
 import com.smartstudy.counselor_t.util.Utils;
 
@@ -19,12 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class SelectMyPhotoAdapter extends CommonAdapter<String> {
+public class SelectMyMediaAdapter extends CommonAdapter<MediaInfo> {
 
-    /**
-     * 文件夹路径
-     */
-    private String mDirPath;
     private TextView mOKBtn;
     private boolean mChecked;
     /**
@@ -32,21 +28,27 @@ public class SelectMyPhotoAdapter extends CommonAdapter<String> {
      */
     private SparseBooleanArray mSelectMap = new SparseBooleanArray();
 
-    public SelectMyPhotoAdapter(Context context, List<String> mDatas, int itemLayoutId, String dirPath) {
+    public SelectMyMediaAdapter(Context context, List<MediaInfo> mDatas, int itemLayoutId) {
         super(context, itemLayoutId, mDatas);
-        this.mDirPath = dirPath;
         mOKBtn = (TextView) ((Activity) context).findViewById(R.id.topdefault_righttext);
     }
 
     @Override
-    public void convert(final ViewHolder helper, final String item, final int position) {
-        // 设置图片
-        String imageUrl = mDirPath + "/" + item;
-        if (mDirPath == null) {
-            imageUrl = item;
-        }
+    public void convert(final ViewHolder helper, final MediaInfo info, final int position) {
         ImageView imageView = helper.getView(R.id.id_item_image);
-        helper.setImageUrl(imageView, imageUrl);
+        LinearLayout mCheckBoxLl = helper.getView(R.id.llyt_check_pic);
+        final TextView mCapture = helper.getView(R.id.photo_item_one);
+        // 设置图片
+        if (info != null) {
+            helper.setImageUrl(imageView, info.getPath());
+            imageView.setVisibility(View.VISIBLE);
+            mCapture.setVisibility(View.GONE);
+        } else {
+            imageView.setVisibility(View.GONE);
+            mCapture.setVisibility(View.VISIBLE);
+            mCheckBoxLl.setVisibility(View.GONE);
+        }
+
         final CheckBox mCheckBox = helper.getView(R.id.child_checkbox);
         mCheckBox.setChecked(mSelectMap.get(position));
         mCheckBox.setOnClickListener(new View.OnClickListener() {
@@ -76,7 +78,6 @@ public class SelectMyPhotoAdapter extends CommonAdapter<String> {
                 }
             }
         });
-        LinearLayout mCheckBoxLl = helper.getView(R.id.llyt_check_pic);
         mCheckBoxLl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,18 +107,9 @@ public class SelectMyPhotoAdapter extends CommonAdapter<String> {
                 }
             }
         });
-        final TextView mCapture = helper.getView(R.id.photo_item_one);
         if (mOKBtn.getVisibility() == View.VISIBLE) {
             mCheckBoxLl.setVisibility(View.VISIBLE);
         } else if (mOKBtn.getVisibility() == View.GONE) {
-            mCheckBoxLl.setVisibility(View.GONE);
-        }
-        if (!"".equals(item)) {
-            imageView.setVisibility(View.VISIBLE);
-            mCapture.setVisibility(View.GONE);
-        } else {
-            imageView.setVisibility(View.GONE);
-            mCapture.setVisibility(View.VISIBLE);
             mCheckBoxLl.setVisibility(View.GONE);
         }
     }

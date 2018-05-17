@@ -7,7 +7,7 @@ import android.widget.ImageView;
 
 
 import com.smartstudy.counselor_t.R;
-import com.smartstudy.counselor_t.entity.ImageFloderInfo;
+import com.smartstudy.counselor_t.entity.FloderInfo;
 import com.smartstudy.counselor_t.ui.adapter.CommonAdapter;
 import com.smartstudy.counselor_t.ui.adapter.MultiItemTypeAdapter;
 import com.smartstudy.counselor_t.ui.adapter.base.ViewHolder;
@@ -15,10 +15,10 @@ import com.smartstudy.counselor_t.ui.adapter.base.ViewHolder;
 import java.util.List;
 
 
-public class ListImageDirPopupWindow extends BasePopupWindowForListView<ImageFloderInfo> {
+public class ListDirPopupWindow extends BasePopupWindowForListView<FloderInfo> {
     private RecyclerView mListDir;
     private String DirName;
-    private CommonAdapter<ImageFloderInfo> mAdapter;
+    private CommonAdapter<FloderInfo> mAdapter;
 
     public String getDirName() {
         return DirName;
@@ -28,7 +28,7 @@ public class ListImageDirPopupWindow extends BasePopupWindowForListView<ImageFlo
         DirName = dirName;
     }
 
-    public ListImageDirPopupWindow(int width, int height, List<ImageFloderInfo> datas, View convertView) {
+    public ListDirPopupWindow(int width, int height, List<FloderInfo> datas, View convertView) {
         super(convertView, width, height, true, datas);
     }
 
@@ -38,9 +38,9 @@ public class ListImageDirPopupWindow extends BasePopupWindowForListView<ImageFlo
         mListDir.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(context);
         mListDir.setLayoutManager(mLayoutManager);
-        mAdapter = new CommonAdapter<ImageFloderInfo>(context, R.layout.list_dir_item, mDatas) {
+        mAdapter = new CommonAdapter<FloderInfo>(context, R.layout.list_dir_item, mDatas) {
             @Override
-            public void convert(ViewHolder helper, ImageFloderInfo item, int position) {
+            public void convert(ViewHolder helper, FloderInfo item, int position) {
                 helper.setText(R.id.id_dir_item_name, item.getName());
                 ImageView imageView = helper.getView(R.id.iv_select_dirs);
                 if (item.isSelected()) {
@@ -48,7 +48,7 @@ public class ListImageDirPopupWindow extends BasePopupWindowForListView<ImageFlo
                 } else {
                     imageView.setVisibility(View.GONE);
                 }
-                helper.setImageUrl(R.id.id_dir_item_image, item.getFirstImagePath());
+                helper.setImageUrl(R.id.id_dir_item_image, item.getFirstPath());
                 helper.setText(R.id.id_dir_item_count, item.getCount() + "张");
             }
         };
@@ -56,7 +56,7 @@ public class ListImageDirPopupWindow extends BasePopupWindowForListView<ImageFlo
     }
 
     public interface OnImageDirSelected {
-        void selected(ImageFloderInfo floder);
+        void selected(FloderInfo floder);
     }
 
     private OnImageDirSelected mImageDirSelected;

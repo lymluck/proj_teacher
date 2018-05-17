@@ -128,6 +128,11 @@ public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> i
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
+
     /**
      * 保存fragment状态
      *

@@ -8,6 +8,7 @@
     <string name="send_again">重新发送</string>
     <string name="enter_phone">请输入正确的手机号码</string>
     <string name="choose_pic">选择图片</string>
+    <string name="choose_video">选择视频</string>
     <string name="sure">确定</string>
     <string name="cancle">取消</string>
     <string name="word">留言</string>
@@ -15,7 +16,9 @@
     <string name="no_external_storage">暂无外部存储</string>
     <string name="loading">正在加载...</string>
     <string name="scan_no_picture">没扫描到图片</string>
+    <string name="scan_no_video">没扫描到视频</string>
     <string name="picture_unit">张</string>
+    <string name="video_unit">个</string>
     <string name="take_photo">拍摄照片</string>
     <string name="picture_max">最多只能同时上传9张图片</string>
     <string name="move_and_zoom">移动和缩放</string>

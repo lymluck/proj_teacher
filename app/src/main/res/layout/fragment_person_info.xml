@@ -62,6 +62,7 @@
                 android:paddingRight="16dp">
 
                 <ImageView
+                    android:id="@+id/iv_upLoad"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_upload" />

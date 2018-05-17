@@ -20,6 +20,7 @@ public class ParameterUtils {
     public static final String UPLOAD_ERR = "上传失败!";
     public static final String DOWNLOAD_ERR = "下载失败!";
     public static final String ALL_PICS = "所有图片";
+    public static final String ALL_VIDEOS = "所有视频";
     public static final String MEIQIA_KEY = "11342702eacdcfdc64e67be582aebbf5";
     //无网络连接错误码
     public static final String RESPONE_CODE_NETERR = "net_err";
@@ -71,6 +72,7 @@ public class ParameterUtils {
     public static final int GET_ORDER_DATE = 34;
     public static final int GET_ORDER_TIME = 35;
     public static final int REQUEST_CODE_CARD_QA = 36;
+    public static final int REQUEST_VIDEO = 37;
 
     public static final String MATCH_TOP = "MS_MATCH_TYPE_TOP";
     public static final String MATCH_MID = "MS_MATCH_TYPE_MIDDLE";

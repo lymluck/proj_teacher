@@ -251,6 +251,19 @@ public class SplashActivity extends BaseActivity<SplashContract.Presenter> imple
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (mHandler != null) {
+            mHandler.removeMessages(ParameterUtils.EMPTY_WHAT);
+            mHandler = null;
+        }
+        super.onBackPressed();
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+            countDownTimer = null;
+        }
+    }
+
     protected void startTimer() {
         countDownTimer = new CountDownTimer(3500, 1000) {
 
