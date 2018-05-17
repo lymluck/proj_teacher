@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="40dp"
-            android:text="视屏拍摄要求"
+            android:text="视频拍摄要求"
             android:textColor="#26343F"
             android:textSize="19sp" />
 
@@ -58,7 +58,7 @@
             android:layout_marginTop="27dp"
             android:drawableLeft="@drawable/ic_detail_vedio"
             android:drawablePadding="4dp"
-            android:text="新上传的视屏将覆盖原来的视屏"
+            android:text="新上传的视频将覆盖原来的视屏"
             android:textColor="#949BA1"
             android:textSize="12sp" />
     </LinearLayout>

@@ -224,7 +224,9 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
         } else {
             tagFlowLayout.setVisibility(View.GONE);
         }
-        DisplayImageUtils.formatPersonImgUrl(this, studentInfo.getAvatar(), ivAvatar);
+        if (!TextUtils.isEmpty(studentInfo.getAvatar())) {
+            DisplayImageUtils.formatPersonImgUrl(this, studentInfo.getAvatar() == null ? "" : studentInfo.getAvatar(), ivAvatar);
+        }
         tvName.setText(studentInfo.getName());
         if (TextUtils.isEmpty(studentInfo.getGenderId())) {
             ivSex.setVisibility(View.GONE);
@@ -315,6 +317,11 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
             StudentPageInfo.TargetSection.TargetMajorDirection targetMajorDirection = studentInfo.getTargetSection().getTargetMajorDirection();
             if (targetMajorDirection != null) {
                 tvTargetMajorDirection.setText(targetMajorDirection.getName());
+            }
+
+            StudentPageInfo.TargetSection.Budget budget = studentInfo.getTargetSection().getBudget();
+            if (budget != null) {
+                tvCapitalBudget.setText(budget.getName());
             }
         }
 

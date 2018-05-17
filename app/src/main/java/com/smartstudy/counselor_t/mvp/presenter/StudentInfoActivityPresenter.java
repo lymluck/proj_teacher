@@ -2,6 +2,7 @@ package com.smartstudy.counselor_t.mvp.presenter;
 
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.smartstudy.counselor_t.entity.StudentPageInfo;
@@ -51,6 +52,7 @@ public class StudentInfoActivityPresenter extends BasePresenterImpl<StudentActiv
 
             @Override
             public void onNext(String s) {
+                Log.w("kim","------->"+s);
                 StudentPageInfo studentPageInfo = JSON.parseObject(s, StudentPageInfo.class);
                 if (studentPageInfo != null) {
 //                    String cacheUrl = DisplayImageUtils.formatImgUrl(studentPageInfo.getAvatar(), 90, 90);
