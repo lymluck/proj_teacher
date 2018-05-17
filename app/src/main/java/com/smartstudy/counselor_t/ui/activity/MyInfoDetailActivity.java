@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.SaveItem;
@@ -24,6 +25,7 @@ public class MyInfoDetailActivity extends BaseActivity<BasePresenter> {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_my_info);
     }
 
