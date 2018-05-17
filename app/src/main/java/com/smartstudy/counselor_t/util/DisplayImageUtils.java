@@ -16,7 +16,6 @@ import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.base.config.CustomShapeTransformation;
 import com.smartstudy.counselor_t.base.config.GlideApp;
 import com.smartstudy.counselor_t.base.config.glideprogress.ProgressTarget;
-import com.smartstudy.counselor_t.ui.widget.GlideBlurformation;
 
 import java.io.File;
 
@@ -33,11 +32,6 @@ public class DisplayImageUtils {
     public static void displayImage(Context context, String url, ImageView view) {
         GlideApp.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.DATA).placeholder(R.drawable.ic_img_default)
             .error(R.drawable.ic_img_default).centerCrop().dontAnimate().into(view);
-    }
-
-    public static void displayBlurImage(Context context, Object url, ImageView view) {
-        GlideApp.with(context).load(url).transform(new GlideBlurformation(context)).diskCacheStrategy(DiskCacheStrategy.DATA)
-            .placeholder(R.drawable.ic_img_default).error(R.drawable.ic_img_default).dontAnimate().into(view);
     }
 
     public static void displayBubbleImage(Context context, String url, ImageView view) {

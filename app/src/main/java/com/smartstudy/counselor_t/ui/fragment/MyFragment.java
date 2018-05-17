@@ -5,6 +5,10 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -32,6 +36,7 @@ import com.smartstudy.counselor_t.ui.dialog.DialogCreator;
 import com.smartstudy.counselor_t.ui.widget.TagsLayout;
 import com.smartstudy.counselor_t.util.CheckUtil;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
+import com.smartstudy.counselor_t.util.FastBlur;
 import com.smartstudy.counselor_t.util.ParameterUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
 import com.smartstudy.counselor_t.util.ToastUtils;
@@ -51,7 +56,7 @@ import io.rong.imkit.RongIM;
 /**
  * @author yqy
  * @date on 2018/2/6
- * @describe TODO
+ * @describe 教师主页
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */
@@ -410,4 +415,5 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
         }
         return true;
     }
+
 }
