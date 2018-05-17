@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -125,11 +126,9 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
             case R.id.tv_login_out:
                 showNormalDialog();
                 break;
-
             case R.id.tv_add_good:
                 startActivity(new Intent(mActivity, AddGoodDetailActivity.class));
                 break;
-
             case R.id.ll_city:
                 Intent toCity = new Intent(mActivity, ChooseListActivity.class);
                 toCity.putExtra("value", tvCity.getText());
@@ -176,183 +175,13 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
         tvLoginOut.setOnClickListener(this);
         tvAddGood.setOnClickListener(this);
         ivVideoInfo.setOnClickListener(this);
-        tvNickName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (!TextUtils.isEmpty(editable.toString())) {
-                    if (teacherInfo != null) {
-                        if (!editable.toString().equals(teacherInfo.getName())) {
-                            myInfoDetailActivity.setPostClick();
-                        } else {
-                            myInfoDetailActivity.setPostUnClick();
-                        }
-                    }
-                }
-            }
-        });
-
-
-        tvWorkName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (!TextUtils.isEmpty(editable.toString())) {
-                    if (teacherInfo != null) {
-                        if (!editable.toString().equals(teacherInfo.getTitle())) {
-                            myInfoDetailActivity.setPostClick();
-                        } else {
-                            myInfoDetailActivity.setPostUnClick();
-                        }
-                    }
-                }
-            }
-        });
-
-
-        tvWorkExperience.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (!TextUtils.isEmpty(editable.toString())) {
-                    if (teacherInfo != null) {
-                        if (!editable.toString().equals(teacherInfo.getYearsOfWorking())) {
-                            myInfoDetailActivity.setPostClick();
-                        } else {
-                            myInfoDetailActivity.setPostUnClick();
-                        }
-                    }
-                }
-            }
-        });
-
-
-        tvGraduatedSchool.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (!TextUtils.isEmpty(editable.toString())) {
-                    if (teacherInfo != null) {
-                        if (!editable.toString().equals(teacherInfo.getSchool())) {
-                            myInfoDetailActivity.setPostClick();
-                        } else {
-                            myInfoDetailActivity.setPostUnClick();
-                        }
-                    }
-                }
-            }
-        });
-
-
-        tvEmail.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (!TextUtils.isEmpty(editable.toString())) {
-                    if (teacherInfo != null) {
-                        if (!editable.toString().equals(teacherInfo.getEmail())) {
-                            myInfoDetailActivity.setPostClick();
-                        } else {
-                            myInfoDetailActivity.setPostUnClick();
-                        }
-                    }
-                }
-            }
-        });
-
-        tvName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (!TextUtils.isEmpty(editable.toString())) {
-                    if (teacherInfo != null) {
-                        if (!editable.toString().equals(teacherInfo.getRealName())) {
-                            myInfoDetailActivity.setPostClick();
-                        } else {
-                            myInfoDetailActivity.setPostUnClick();
-                        }
-                    }
-                }
-            }
-        });
-
-        tvPersonalProfile.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (!TextUtils.isEmpty(editable.toString())) {
-                    if (teacherInfo != null) {
-                        if (!editable.toString().equals(teacherInfo.getIntroduction())) {
-                            myInfoDetailActivity.setPostClick();
-                        } else {
-                            myInfoDetailActivity.setPostUnClick();
-                        }
-                    }
-                }
-            }
-        });
+        setEditTextTextWatch(tvNickName);
+        setEditTextTextWatch(tvWorkName);
+        setEditTextTextWatch(tvWorkExperience);
+        setEditTextTextWatch(tvGraduatedSchool);
+        setEditTextTextWatch(tvEmail);
+        setEditTextTextWatch(tvName);
+        setEditTextTextWatch(tvPersonalProfile);
     }
 
     @Override
@@ -594,14 +423,12 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
     public void onDataSynEvent(SaveItem saveItem) {
         if (!CheckUtil.checkEmail(getEmail())) {
             ToastUtils.shortToast(mActivity, "邮箱不合法");
-//            myInfoDetailActivity.setPostClick();
             return;
         }
         if (checkInput()) {
             presenter.updateMyInfo(getNickName(), photoFile, getWorkTitle(), getGraduatedSchool(), getWorkExperience(),
                 getEmail(), getRealName(), getIntroduction(), cityValue, bussinessValue);
         } else {
-//            myInfoDetailActivity.setPostClick();
             ToastUtils.shortToast(mActivity, "信息不能为空");
         }
     }
@@ -614,6 +441,52 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
             return false;
         }
         return true;
+    }
+
+
+    private void setEditTextTextWatch(final EditText editText) {
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (!TextUtils.isEmpty(editable.toString())) {
+                    if (teacherInfo != null) {
+                        String beforeValue = "";
+                        if (editText.getId() == tvNickName.getId()) {
+                            beforeValue = teacherInfo.getName();
+                        } else if (editText.getId() == tvWorkName.getId()) {
+                            beforeValue = teacherInfo.getTitle();
+                        } else if (editText.getId() == tvWorkExperience.getId()) {
+                            beforeValue = teacherInfo.getYearsOfWorking();
+                        } else if (editText.getId() == tvGraduatedSchool.getId()) {
+                            beforeValue = teacherInfo.getSchool();
+                        } else if (editText.getId() == tvEmail.getId()) {
+                            beforeValue = teacherInfo.getEmail();
+                        } else if (editText.getId() == tvName.getId()) {
+                            beforeValue = teacherInfo.getRealName();
+                        } else if (editText.getId() == tvPersonalProfile.getId()) {
+                            beforeValue = teacherInfo.getIntroduction();
+                        } else {
+                            return;
+                        }
+                        if (!editable.toString().equals(beforeValue)) {
+                            myInfoDetailActivity.setPostClick();
+                        } else {
+                            myInfoDetailActivity.setPostUnClick();
+                        }
+                    }
+                }
+            }
+        });
     }
 
 }
