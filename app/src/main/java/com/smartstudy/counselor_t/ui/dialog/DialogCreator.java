@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -201,7 +200,7 @@ public class DialogCreator {
     }
 
 
-    public static void createVedioDialog(final Activity context, final OnSendMsgDialogClickListener onClickListener) {
+    public static void createVedioDialog(final Activity context, final DialogInterface.OnClickListener listener) {
         final AppBasicDialog dialog = new AppBasicDialog(context, R.style.appBasicDialog);
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.dialog_vedio, null);
@@ -211,7 +210,7 @@ public class DialogCreator {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                onClickListener.onPositive(null);
+                listener.onClick(dialog, R.id.tv_next);
             }
         });
         WindowManager.LayoutParams p = dialog.getWindow().getAttributes();
@@ -224,7 +223,7 @@ public class DialogCreator {
     }
 
 
-    public static void createVedioClaimDialog(final Activity context, final OnSendMsgDialogClickListener onClickListener) {
+    public static void createVedioClaimDialog(final Activity context) {
         final AppBasicDialog dialog = new AppBasicDialog(context, R.style.appBasicDialog);
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.dialog_vedio_claim, null);
@@ -234,17 +233,19 @@ public class DialogCreator {
         tvUrl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                dialog.dismiss();
                 Intent intent = new Intent();
-                intent.setData(Uri.parse("https://xxd.smartstudy.com/article/1/"));//Url 就是你要打开的网址
+                //Url 就是你要打开的网址
+                intent.setData(Uri.parse("https://xxd.smartstudy.com/article/1/"));
                 intent.setAction(Intent.ACTION_VIEW);
-                context.startActivity(intent); //启动浏览器
+                //启动浏览器
+                context.startActivity(intent);
             }
         });
         tvNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                onClickListener.onPositive(null);
             }
         });
         WindowManager.LayoutParams p = dialog.getWindow().getAttributes();

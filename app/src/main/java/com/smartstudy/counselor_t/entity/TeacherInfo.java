@@ -49,6 +49,15 @@ public class TeacherInfo implements Serializable {
     private String adeptWorksKey;
     private String introduction;
     private String video;
+    private String likesCount;
+
+    public String getLikesCount() {
+        return likesCount;
+    }
+
+    public void setLikesCount(String likesCount) {
+        this.likesCount = likesCount;
+    }
 
     public String getIntroduction() {
         return introduction;

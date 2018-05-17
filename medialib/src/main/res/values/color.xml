@@ -2,4 +2,9 @@
 <resources>
     <color name="simple_player_stream_name_playing">#ff0043bd</color>
     <color name="simple_player_stream_name_normal">#ffffffff</color>
+    <color name="black80">#cc000000</color><!-- 80%的黑色 -->
+    <color name="black20">#38000000</color><!--20%的黑色 -->
+    <color name="transparent">#00ffffff</color> <!-- 透明色 -->
+    <color name="app_main_color">#078CF1</color>     <!-- 主色调颜色 -->
+    <color name="black50">#7f000000</color><!-- 50%的黑色 -->
 </resources>

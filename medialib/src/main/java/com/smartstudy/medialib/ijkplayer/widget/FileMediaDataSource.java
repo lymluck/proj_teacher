@@ -34,11 +34,13 @@ public class FileMediaDataSource implements IMediaDataSource {
 
     @Override
     public int readAt(long position, byte[] buffer, int offset, int size) throws IOException {
-        if (mFile.getFilePointer() != position)
+        if (mFile.getFilePointer() != position) {
             mFile.seek(position);
+        }
 
-        if (size == 0)
+        if (size == 0) {
             return 0;
+        }
 
         return mFile.read(buffer, 0, size);
     }

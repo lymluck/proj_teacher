@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="50%"
-            android:textColor="@color/white"
+            android:textColor="@android:color/white"
             android:textSize="18sp" />
     </LinearLayout>
     <!-- 亮度-->
@@ -52,7 +52,7 @@
             android:layout_below="@+id/operation_bg"
             android:paddingTop="8dp"
             android:text="50%"
-            android:textColor="@color/white"
+            android:textColor="@android:color/white"
             android:textSize="18sp" />
     </LinearLayout>
     <!-- 快进快退-->
@@ -72,7 +72,7 @@
             android:layout_below="@+id/operation_bg"
             android:paddingTop="8dp"
             android:text="50%"
-            android:textColor="@color/white"
+            android:textColor="@android:color/white"
             android:textSize="18sp" />
 
         <LinearLayout
@@ -94,7 +94,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="50%"
-                android:textColor="@color/white"
+                android:textColor="@android:color/white"
                 android:textSize="18sp" />
 
         </LinearLayout>

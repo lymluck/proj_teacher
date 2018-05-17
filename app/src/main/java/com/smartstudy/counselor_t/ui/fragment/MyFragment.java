@@ -23,10 +23,12 @@ import com.smartstudy.counselor_t.entity.SaveItem;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.mvp.contract.MyInfoContract;
 import com.smartstudy.counselor_t.mvp.presenter.MyInfoActivityPresenter;
+import com.smartstudy.counselor_t.ui.activity.AddGoodDetailActivity;
 import com.smartstudy.counselor_t.ui.activity.ChooseListActivity;
 import com.smartstudy.counselor_t.ui.activity.LoginActivity;
 import com.smartstudy.counselor_t.ui.activity.SelectMyPhotoActivity;
 import com.smartstudy.counselor_t.ui.base.UIFragment;
+import com.smartstudy.counselor_t.ui.dialog.DialogCreator;
 import com.smartstudy.counselor_t.ui.widget.TagsLayout;
 import com.smartstudy.counselor_t.util.CheckUtil;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
@@ -55,7 +57,6 @@ import io.rong.imkit.RongIM;
  */
 public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements MyInfoContract.View {
     private ImageView ivAvatar;
-    private ImageView ivTeacherBg;
     private EditText tvNickName;
     private EditText tvWorkName;
     private EditText tvWorkExperience;
@@ -74,6 +75,8 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
     List<IdNameInfo> workIdNameInfos = new ArrayList<>();
     List<IdNameInfo> adeptIdNameInfos = new ArrayList<>();
     private EditText tvPersonalProfile;
+    private TextView tvAddGood;
+    private ImageView ivVideoInfo;
 
     @Override
     public void onAttach(Context context) {
@@ -89,7 +92,6 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
     @Override
     protected void initView(View rootView) {
         ivAvatar = rootView.findViewById(R.id.iv_avatar);
-        ivTeacherBg = rootView.findViewById(R.id.iv_teacher_bg);
         tvNickName = rootView.findViewById(R.id.tv_nick_name);
         tvWorkName = rootView.findViewById(R.id.tv_work_name);
         tvWorkExperience = rootView.findViewById(R.id.tv_work_experience);
@@ -97,10 +99,12 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
         tvName = rootView.findViewById(R.id.tv_name);
         tvEmail = rootView.findViewById(R.id.tv_email);
         llCity = rootView.findViewById(R.id.ll_city);
+        tvAddGood = rootView.findViewById(R.id.tv_add_good);
         tvCity = rootView.findViewById(R.id.tv_work_city);
         llGoodBusiness = rootView.findViewById(R.id.ll_good_business);
         tvLoginOut = rootView.findViewById(R.id.tv_login_out);
         tlyTags = rootView.findViewById(R.id.tly_tags);
+        ivVideoInfo = rootView.findViewById(R.id.iv_video_info);
         tvPersonalProfile = rootView.findViewById(R.id.tv_personal_profile);
         presenter.getOptions();
         if (presenter != null) {
@@ -114,6 +118,11 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
             case R.id.tv_login_out:
                 showNormalDialog();
                 break;
+
+            case R.id.tv_add_good:
+                startActivity(new Intent(mActivity, AddGoodDetailActivity.class));
+                break;
+
             case R.id.ll_city:
                 Intent toCity = new Intent(mActivity, ChooseListActivity.class);
                 toCity.putExtra("value", tvCity.getText());
@@ -139,6 +148,14 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
                 intent.putExtra("singlePic", true);
                 startActivityForResult(intent, ParameterUtils.REQUEST_CODE_CHANGEPHOTO);
                 break;
+            case R.id.iv_video_info:
+                DialogCreator.createVedioDialog(mActivity, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DialogCreator.createVedioClaimDialog(mActivity);
+                    }
+                });
+                break;
             default:
                 break;
         }
@@ -150,7 +167,8 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
         llGoodBusiness.setOnClickListener(this);
         ivAvatar.setOnClickListener(this);
         tvLoginOut.setOnClickListener(this);
-
+        tvAddGood.setOnClickListener(this);
+        ivVideoInfo.setOnClickListener(this);
     }
 
     @Override
@@ -168,19 +186,21 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
         if (teacherInfo != null) {
             this.teacherInfo = teacherInfo;
             if (TextUtils.isEmpty(teacherInfo.getVideo())) {
-                DisplayImageUtils.displayBlurImage(mActivity, teacherInfo.getAvatar(), ivTeacherBg);
+                // 展示封面
             } else {
                 // 播放视频
             }
             if (!TextUtils.isEmpty(teacherInfo.getAvatar()) && photoFile == null) {
                 DisplayImageUtils.formatPersonImgUrl(mActivity, teacherInfo.getAvatar(), ivAvatar);
             }
+
             tvNickName.setText(teacherInfo.getName());
             tvWorkName.setText(teacherInfo.getTitle());
             tvWorkExperience.setText(teacherInfo.getYearsOfWorking());
             tvGraduatedSchool.setText(teacherInfo.getSchool());
             tvEmail.setText(teacherInfo.getEmail());
             tvName.setText(teacherInfo.getRealName());
+            tvAddGood.setText(teacherInfo.getLikesCount());
             tvCity.setText(getCityValue(teacherInfo.getWorkingCityKey()));
             if (!TextUtils.isEmpty(teacherInfo.getAdeptWorksKey())) {
                 List<String> list = Arrays.asList(getBussinessValue(teacherInfo.getAdeptWorksKey()).split(","));
@@ -256,7 +276,7 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
                     public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
                         photoFile = resource;
                         DisplayImageUtils.displayPersonRes(mActivity, resource, ivAvatar);
-                        DisplayImageUtils.displayBlurImage(mActivity, resource, ivTeacherBg);
+                        // 如果没有视频，则要同步改变封面
                     }
                 });
                 break;

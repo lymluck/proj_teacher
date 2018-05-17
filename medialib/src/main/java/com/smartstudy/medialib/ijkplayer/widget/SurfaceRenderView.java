@@ -131,6 +131,7 @@ public class SurfaceRenderView extends SurfaceView implements IRenderView {
             mSurfaceHolder = surfaceHolder;
         }
 
+        @Override
         public void bindToMediaPlayer(IMediaPlayer mp) {
             if (mp != null) {
                 if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) &&
@@ -163,8 +164,9 @@ public class SurfaceRenderView extends SurfaceView implements IRenderView {
         @Nullable
         @Override
         public Surface openSurface() {
-            if (mSurfaceHolder == null)
+            if (mSurfaceHolder == null) {
                 return null;
+            }
             return mSurfaceHolder.getSurface();
         }
     }
@@ -204,14 +206,16 @@ public class SurfaceRenderView extends SurfaceView implements IRenderView {
 
             ISurfaceHolder surfaceHolder = null;
             if (mSurfaceHolder != null) {
-                if (surfaceHolder == null)
+                if (surfaceHolder == null) {
                     surfaceHolder = new InternalSurfaceHolder(mWeakSurfaceView.get(), mSurfaceHolder);
+                }
                 callback.onSurfaceCreated(surfaceHolder, mWidth, mHeight);
             }
 
             if (mIsFormatChanged) {
-                if (surfaceHolder == null)
+                if (surfaceHolder == null) {
                     surfaceHolder = new InternalSurfaceHolder(mWeakSurfaceView.get(), mSurfaceHolder);
+                }
                 callback.onSurfaceChanged(surfaceHolder, mFormat, mWidth, mHeight);
             }
         }

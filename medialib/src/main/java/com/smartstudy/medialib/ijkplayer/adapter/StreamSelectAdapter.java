@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.smartstudy.commonlib.entity.VideoijkInfo;
 import com.smartstudy.medialib.R;
+import com.smartstudy.medialib.ijkplayer.entity.VideoijkInfo;
 
 import java.util.List;
 
@@ -33,18 +33,22 @@ public class StreamSelectAdapter extends BaseAdapter {
         this.layoutInflater = LayoutInflater.from(context);
     }
 
+    @Override
     public int getCount() {
         return listVideos.size();
     }
 
+    @Override
     public Object getItem(int position) {
         return listVideos.get(position);
     }
 
+    @Override
     public long getItemId(int position) {
         return (long) position;
     }
 
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {

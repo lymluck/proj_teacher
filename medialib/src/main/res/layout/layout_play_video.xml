@@ -3,7 +3,7 @@
     android:id="@+id/app_video_box"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@android:color/black"
     android:orientation="vertical">
 
 
@@ -13,28 +13,21 @@
         android:layout_height="match_parent" />
 
     <!-- 封面显示-->
-    <LinearLayout
-        android:id="@+id/ll_bg"
+    <ImageView
+        android:id="@+id/iv_trumb"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black"
-        android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/iv_trumb"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:visibility="visible" />
-    </LinearLayout>
+        android:background="@android:color/black"
+        android:scaleType="centerCrop"
+        android:visibility="visible" />
 
     <!--重新播放-->
     <LinearLayout
         android:id="@+id/app_video_replay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
         android:background="@color/black80"
+        android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone">
         <!-- 播放状态-->
@@ -73,7 +66,7 @@
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:text="您正在使用移动网络播放视频\n可能产生较高流量费用"
-            android:textColor="@color/white"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/app_text_size3" />
 
         <TextView
@@ -88,45 +81,8 @@
             android:paddingRight="24dp"
             android:paddingTop="4dp"
             android:text="继续"
-            android:textColor="@color/white"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/app_text_size3" />
-    </LinearLayout>
-
-    <!-- 未登录最大试看时长提示-->
-    <LinearLayout
-        android:id="@+id/app_video_nologinT"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/black80"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:gravity="center"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:text="试看时间已到请登录后继续观看"
-            android:textColor="@color/white"
-            android:textSize="@dimen/app_textsize" />
-
-        <TextView
-            android:id="@+id/app_video_nologin_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/bg_app_trans_btn_blue_border5"
-            android:gravity="center"
-            android:paddingBottom="4dp"
-            android:paddingLeft="24dp"
-            android:paddingRight="24dp"
-            android:paddingTop="4dp"
-            android:text="登录"
-            android:textColor="@color/white"
-            android:textSize="@dimen/app_textsize" />
     </LinearLayout>
 
     <!-- 为付费最大试看时长提示-->
@@ -147,7 +103,7 @@
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:text="试看时间已到请购买继续观看"
-            android:textColor="@color/white"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/app_textsize" />
 
         <TextView
@@ -162,7 +118,7 @@
             android:paddingRight="24dp"
             android:paddingTop="4dp"
             android:text="购买"
-            android:textColor="@color/white"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/app_textsize" />
     </LinearLayout>
 
@@ -189,7 +145,7 @@
             android:layout_marginTop="4dp"
             android:gravity="center"
             android:text="188Kb/s"
-            android:textColor="@color/white"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/app_text_size3"
             android:visibility="gone" />
     </LinearLayout>
@@ -200,7 +156,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
-
 
     <!--分辨率选择-->
     <LinearLayout
@@ -218,7 +173,6 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
-
     <ImageView
         android:id="@+id/play_icon"
         android:layout_width="wrap_content"
@@ -227,8 +181,6 @@
         android:layout_marginTop="8dp"
         android:src="@drawable/simple_player_center_play" />
 
-    <!-- 顶部栏-->
-    <include layout="@layout/simple_player_topbar" />
     <!-- 底部栏-->
     <include
         layout="@layout/simple_player_controlbar"

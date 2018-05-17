@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="app_text_size3">14sp</dimen>  <!-- 全局按钮背景可点击文字字体大小 -->
+    <dimen name="app_textsize">16sp</dimen>    <!-- app正文文本大小 -->
+    <dimen name="app_text_size1">17sp</dimen>  <!-- app头部标题文本大小 -->
+</resources>

@@ -25,21 +25,19 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.smartstudy.commonlib.base.handler.WeakHandler;
-import com.smartstudy.commonlib.entity.VideoijkInfo;
-import com.smartstudy.commonlib.ui.dialog.DialogCreator;
-import com.smartstudy.commonlib.utils.LogUtils;
-import com.smartstudy.commonlib.utils.NetUtils;
-import com.smartstudy.commonlib.utils.ParameterUtils;
-import com.smartstudy.commonlib.utils.ToastUtils;
 import com.smartstudy.medialib.R;
+import com.smartstudy.medialib.ijkplayer.WeakHandler;
 import com.smartstudy.medialib.ijkplayer.adapter.StreamSelectAdapter;
+import com.smartstudy.medialib.ijkplayer.entity.VideoijkInfo;
 import com.smartstudy.medialib.ijkplayer.listener.OnControlPanelVisibilityChangeListener;
 import com.smartstudy.medialib.ijkplayer.listener.OnPlayComplete;
 import com.smartstudy.medialib.ijkplayer.listener.OnPlayerBackListener;
 import com.smartstudy.medialib.ijkplayer.listener.OnShowThumbnailListener;
 import com.smartstudy.medialib.ijkplayer.listener.OnToggleFullScreenListener;
+import com.smartstudy.medialib.ijkplayer.util.LogUtils;
+import com.smartstudy.medialib.ijkplayer.util.NetUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -233,11 +231,7 @@ public class PlayerView {
      */
     private boolean isCharge;
     private int maxPlaytime;
-    /**
-     * 登录
-     */
-    private boolean isLogin;
-    private int mPlayTime;
+
     /**
      * 是否只有全屏，默认非全屏，true为全屏，false为非全屏
      */
@@ -390,7 +384,7 @@ public class PlayerView {
                 /**视频全屏切换*/
                 toggleFullScreen();
             } else if (v.getId() == R.id.play_icon) {
-                LogUtils.d("开始======");
+                LogUtils.d(mContext, "开始======");
                 /**视频播放和暂停*/
                 if (NetUtils.isConnected(mContext)) {
                     if (videoView.isPlaying()) {
@@ -407,7 +401,7 @@ public class PlayerView {
                     }
                     updatePausePlay();
                 } else {
-                    ToastUtils.showToast(mContext, ParameterUtils.NET_ERR);
+                    Toast.makeText(mContext, "请检查网络连接状态!", Toast.LENGTH_SHORT).show();
                 }
             } else if (v.getId() == R.id.app_video_finish) {
                 /**返回*/
@@ -428,21 +422,18 @@ public class PlayerView {
                 updatePausePlay();
             } else if (v.getId() == R.id.app_video_replay_icon) {
                 /**重新播放*/
-                LogUtils.d("重新======");
-                LogUtils.d("position======" + currentPosition);
+                LogUtils.d(mContext, "重新======");
+                LogUtils.d(mContext, "position======" + currentPosition);
                 if (NetUtils.isConnected(mContext)) {
 //                    status = PlayStateParams.STATE_ERROR;
                     hideStatusUI();
                     startPlay();
                     updatePausePlay();
                 } else {
-                    ToastUtils.showToast(mContext, ParameterUtils.NET_ERR);
+                    Toast.makeText(mContext, "请检查网络连接状态!", Toast.LENGTH_SHORT).show();
                 }
             } else if (v.getId() == R.id.app_video_freeTie_icon) {
                 //去付费
-            } else if (v.getId() == R.id.app_video_nologin_icon) {
-                //去登录
-                DialogCreator.createLoginDialog(mActivity);
             }
         }
     };
@@ -495,15 +486,18 @@ public class PlayerView {
      */
     private final SeekBar.OnSeekBarChangeListener onBrightnessControllerChangeListener = new SeekBar.OnSeekBarChangeListener() {
         /**数值的改变*/
+        @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             setBrightness(progress);
         }
 
         /**开始拖动*/
+        @Override
         public void onStartTrackingTouch(SeekBar seekBar) {
         }
 
         /**停止拖动*/
+        @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
             brightness = -1;
         }
@@ -541,22 +535,26 @@ public class PlayerView {
     private final SeekBar.OnSeekBarChangeListener onVolumeControllerChangeListener = new SeekBar.OnSeekBarChangeListener() {
 
         /**数值的改变*/
+        @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
             int index = (int) (mMaxVolume * progress * 0.01);
-            if (index > mMaxVolume)
+            if (index > mMaxVolume) {
                 index = mMaxVolume;
-            else if (index < 0)
+            } else if (index < 0) {
                 index = 0;
+            }
             // 变更声音
             audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, index, 0);
         }
 
         /**开始拖动*/
+        @Override
         public void onStartTrackingTouch(SeekBar seekBar) {
         }
 
         /**停止拖动*/
+        @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
             volume = -1;
         }
@@ -619,7 +617,6 @@ public class PlayerView {
         query.id(R.id.app_video_netTie_icon).clicked(onClickListener);
         query.id(R.id.app_video_replay_icon).clicked(onClickListener);
         query.id(R.id.app_video_freeTie_icon).clicked(onClickListener);
-        query.id(R.id.app_video_nologin_icon).clicked(onClickListener);
         videoView.setOnInfoListener(new IMediaPlayer.OnInfoListener() {
             @Override
             public boolean onInfo(IMediaPlayer mp, int what, int extra) {
@@ -642,11 +639,6 @@ public class PlayerView {
                     pausePlay();
                     disablePlayStatus();
                 }
-                if (isLogin && mPlayTime <= getCurrentPosition()) {
-                    query.id(R.id.app_video_nologinT).visible();
-                    pausePlay();
-                    disablePlayStatus();
-                }
 
                 return true;
             }
@@ -654,6 +646,7 @@ public class PlayerView {
         this.streamSelectAdapter = new StreamSelectAdapter(mContext, listVideos);
         this.streamSelectListView.setAdapter(this.streamSelectAdapter);
         this.streamSelectListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 hideStreamSelectView();
                 if (currentSelect == position) {
@@ -685,8 +678,9 @@ public class PlayerView {
                         }
                         break;
                 }
-                if (gestureDetector.onTouchEvent(motionEvent))
+                if (gestureDetector.onTouchEvent(motionEvent)) {
                     return true;
+                }
                 // 处理手势结束
                 switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
                     case MotionEvent.ACTION_UP:
@@ -724,7 +718,7 @@ public class PlayerView {
         if (!playerSupport) {
             showStatus(mActivity.getResources().getString(R.string.not_support));
         } else {
-            query.id(R.id.ll_bg).visible();
+            query.id(R.id.iv_trumb).visible();
         }
     }
 
@@ -976,7 +970,7 @@ public class PlayerView {
      */
 
     public PlayerView startPlay() {
-        LogUtils.d("start=======" + status);
+        LogUtils.d(mContext, "start=======" + status);
         seekBar.setEnabled(true);
         if (isLive) {
             videoView.setVideoPath(currentUrl);
@@ -997,9 +991,6 @@ public class PlayerView {
             if (isCharge && maxPlaytime <= getCurrentPosition()) {
                 query.id(R.id.app_video_freeTie).visible();
                 disablePlayStatus();
-            } else if (isLogin && mPlayTime <= getCurrentPosition()) {
-                query.id(R.id.app_video_nologinT).visible();
-                disablePlayStatus();
             } else {
                 if (playerSupport) {
                     updatePausePlay();
@@ -1013,7 +1004,7 @@ public class PlayerView {
                         }
                     }
                     if (status == PlayStateParams.MEDIA_INFO_BUFFERING_END ||
-                            status == PlayStateParams.STATE_PLAYING) {
+                        status == PlayStateParams.STATE_PLAYING) {
                         query.id(R.id.app_video_loading).gone();
                         iv_player.setVisibility(View.VISIBLE);
                     }
@@ -1129,18 +1120,6 @@ public class PlayerView {
         return this;
     }
 
-    /**
-     * 设置未登录最大观看时长
-     *
-     * @param isLogin  true为登录 false为不做限制
-     * @param Playtime 最大能播放时长，单位秒
-     */
-    public PlayerView setLoginTime(boolean isLogin, int Playtime) {
-        this.isLogin = isLogin;
-        this.mPlayTime = Playtime * 1000;
-        return this;
-    }
-
 
     /**
      * 是否仅仅为全屏
@@ -1177,8 +1156,8 @@ public class PlayerView {
      */
     public boolean isLive() {
         if (currentUrl != null
-                && (currentUrl.startsWith("rtmp://")
-                || (currentUrl.startsWith("http://") && currentUrl.endsWith(".flv")))) {
+            && (currentUrl.startsWith("rtmp://")
+            || (currentUrl.startsWith("http://") && currentUrl.endsWith(".flv")))) {
             isLive = true;
         } else {
             isLive = false;
@@ -1346,11 +1325,11 @@ public class PlayerView {
      * 显示或隐藏操作面板
      */
     public PlayerView operatorPanl() {
-        LogUtils.d("operator=====" + status);
+        LogUtils.d(mContext, "operator=====" + status);
         isShowControlPanl = !isShowControlPanl;
         query.id(R.id.simple_player_select_stream_container).gone();
         if (isShowControlPanl) {
-            LogUtils.d("展示操作面板=========");
+            LogUtils.d(mContext, "展示操作面板=========");
             ll_topbar.setVisibility(isHideTopBar ? View.GONE : View.VISIBLE);
             ll_bottombar.setVisibility(isHideBottonBar ? View.GONE : View.VISIBLE);
             if (isLive) {
@@ -1363,9 +1342,9 @@ public class PlayerView {
             }
             /**显示面板的时候再根据状态显示播放按钮*/
             if (status == PlayStateParams.STATE_PLAYING
-                    || status == PlayStateParams.STATE_PREPARED
-                    || status == PlayStateParams.STATE_PREPARING
-                    || status == PlayStateParams.STATE_PAUSED) {
+                || status == PlayStateParams.STATE_PREPARED
+                || status == PlayStateParams.STATE_PREPARING
+                || status == PlayStateParams.STATE_PAUSED) {
                 if (isGNetWork && (NetUtils.getNetworkType(mContext) == 4 || NetUtils.getNetworkType(mContext) == 5 || NetUtils.getNetworkType(mContext) == 6)) {
                     iv_player.setVisibility(View.GONE);
                 } else {
@@ -1382,7 +1361,7 @@ public class PlayerView {
             mHandler.sendEmptyMessage(MESSAGE_SHOW_PROGRESS);
             mAutoPlayRunnable.start();
         } else {
-            LogUtils.d("隐藏操作面板=========");
+            LogUtils.d(mContext, "隐藏操作面板=========");
             if (isHideTopBar) {
                 ll_topbar.setVisibility(View.GONE);
             } else {
@@ -1448,9 +1427,9 @@ public class PlayerView {
         int orientation;
         // if the device's natural orientation is portrait:
         if ((rotation == Surface.ROTATION_0
-                || rotation == Surface.ROTATION_180) && height > width ||
-                (rotation == Surface.ROTATION_90
-                        || rotation == Surface.ROTATION_270) && width > height) {
+            || rotation == Surface.ROTATION_180) && height > width ||
+            (rotation == Surface.ROTATION_90
+                || rotation == Surface.ROTATION_270) && width > height) {
             switch (rotation) {
                 case Surface.ROTATION_0:
                     orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
@@ -1460,11 +1439,11 @@ public class PlayerView {
                     break;
                 case Surface.ROTATION_180:
                     orientation =
-                            ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
+                        ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
                     break;
                 case Surface.ROTATION_270:
                     orientation =
-                            ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
+                        ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
                     break;
                 default:
                     orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
@@ -1483,11 +1462,11 @@ public class PlayerView {
                     break;
                 case Surface.ROTATION_180:
                     orientation =
-                            ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
+                        ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
                     break;
                 case Surface.ROTATION_270:
                     orientation =
-                            ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
+                        ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
                     break;
                 default:
                     orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
@@ -1511,8 +1490,8 @@ public class PlayerView {
      * 状态改变同步UI
      */
     private void statusChange(int newStatus) {
-        LogUtils.d("status=====" + newStatus);
-        LogUtils.d("currentPosition=====" + currentPosition);
+        LogUtils.d(mContext, "status=====" + newStatus);
+        LogUtils.d(mContext, "currentPosition=====" + currentPosition);
         if (newStatus == PlayStateParams.STATE_NET_ERR) {
             currentPosition = getCurrentPosition();
             status = PlayStateParams.STATE_NET_ERR;
@@ -1530,18 +1509,18 @@ public class PlayerView {
             hideAll();
             showStatus("播放结束");
         } else if (newStatus == PlayStateParams.STATE_PREPARING
-                || newStatus == PlayStateParams.MEDIA_INFO_BUFFERING_START) {
+            || newStatus == PlayStateParams.MEDIA_INFO_BUFFERING_START) {
             status = PlayStateParams.STATE_PREPARING;
-            LogUtils.d("开始缓冲=========");
+            LogUtils.d(mContext, "开始缓冲=========");
             /**视频缓冲*/
             hideStatusUI();
             query.id(R.id.app_video_loading).visible();
         } else if (newStatus == PlayStateParams.MEDIA_INFO_VIDEO_RENDERING_START
-                || newStatus == PlayStateParams.STATE_PLAYING
-                || newStatus == PlayStateParams.STATE_PREPARED
-                || newStatus == PlayStateParams.MEDIA_INFO_BUFFERING_END
-                || newStatus == PlayStateParams.STATE_PAUSED) {
-            LogUtils.d("缓冲结束，播放=========");
+            || newStatus == PlayStateParams.STATE_PLAYING
+            || newStatus == PlayStateParams.STATE_PREPARED
+            || newStatus == PlayStateParams.MEDIA_INFO_BUFFERING_END
+            || newStatus == PlayStateParams.STATE_PAUSED) {
+            LogUtils.d(mContext, "缓冲结束，播放=========");
             if (status == PlayStateParams.STATE_PAUSED) {
                 status = PlayStateParams.STATE_PAUSED;
             } else {
@@ -1551,7 +1530,7 @@ public class PlayerView {
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    LogUtils.d("播放时隐藏视图=========");
+                    LogUtils.d(mContext, "播放时隐藏视图=========");
                     hideAll();
                     /**显示控制bar*/
                     isShowControlPanl = false;
@@ -1562,21 +1541,18 @@ public class PlayerView {
                         operatorPanl();
                     }
                     /**延迟0.5秒隐藏视频封面隐藏*/
-                    query.id(R.id.ll_bg).gone();
+                    query.id(R.id.iv_trumb).gone();
                 }
             }, 500);
         } else if (newStatus == PlayStateParams.MEDIA_INFO_VIDEO_INTERRUPT) {
             /**直播停止推流*/
             status = PlayStateParams.STATE_ERROR;
             if (!(isGNetWork &&
-                    (NetUtils.getNetworkType(mContext) == 4
-                            || NetUtils.getNetworkType(mContext) == 5
-                            || NetUtils.getNetworkType(mContext) == 6))) {
+                (NetUtils.getNetworkType(mContext) == 4
+                    || NetUtils.getNetworkType(mContext) == 5
+                    || NetUtils.getNetworkType(mContext) == 6))) {
                 if (isCharge && maxPlaytime <= getCurrentPosition()) {
                     query.id(R.id.app_video_freeTie).visible();
-                    disablePlayStatus();
-                } else if (isLogin && mPlayTime <= getCurrentPosition()) {
-                    query.id(R.id.app_video_nologinT).visible();
                     disablePlayStatus();
                 } else {
                     hideAll();
@@ -1597,19 +1573,16 @@ public class PlayerView {
             }
 
         } else if (newStatus == PlayStateParams.STATE_ERROR
-                || newStatus == PlayStateParams.MEDIA_INFO_UNKNOWN
-                || newStatus == PlayStateParams.MEDIA_ERROR_IO
-                || newStatus == PlayStateParams.MEDIA_ERROR_MALFORMED
-                || newStatus == PlayStateParams.MEDIA_ERROR_UNSUPPORTED
-                || newStatus == PlayStateParams.MEDIA_ERROR_TIMED_OUT
-                || newStatus == PlayStateParams.MEDIA_ERROR_SERVER_DIED) {
+            || newStatus == PlayStateParams.MEDIA_INFO_UNKNOWN
+            || newStatus == PlayStateParams.MEDIA_ERROR_IO
+            || newStatus == PlayStateParams.MEDIA_ERROR_MALFORMED
+            || newStatus == PlayStateParams.MEDIA_ERROR_UNSUPPORTED
+            || newStatus == PlayStateParams.MEDIA_ERROR_TIMED_OUT
+            || newStatus == PlayStateParams.MEDIA_ERROR_SERVER_DIED) {
             status = PlayStateParams.STATE_ERROR;
             if (!(isGNetWork && (NetUtils.getNetworkType(mContext) == 4 || NetUtils.getNetworkType(mContext) == 5 || NetUtils.getNetworkType(mContext) == 6))) {
                 if (isCharge && maxPlaytime <= getCurrentPosition()) {
                     query.id(R.id.app_video_freeTie).visible();
-                    disablePlayStatus();
-                } else if (isLogin && mPlayTime <= getCurrentPosition()) {
-                    query.id(R.id.app_video_nologinT).visible();
                     disablePlayStatus();
                 } else {
                     hideStatusUI();
@@ -1717,7 +1690,6 @@ public class PlayerView {
         query.id(R.id.app_video_replay).gone();
         query.id(R.id.app_video_netTie).gone();
         query.id(R.id.app_video_freeTie).gone();
-        query.id(R.id.app_video_nologinT).gone();
         query.id(R.id.app_video_loading).gone();
         if (onControlPanelVisibilityChangeListener != null) {
             onControlPanelVisibilityChangeListener.change(false);
@@ -1804,10 +1776,6 @@ public class PlayerView {
             query.id(R.id.app_video_freeTie).visible();
             pausePlay();
             disablePlayStatus();
-        } else if (isLogin && mPlayTime + 1000 <= getCurrentPosition()) {
-            query.id(R.id.app_video_nologinT).visible();
-            pausePlay();
-            disablePlayStatus();
         } else {
             query.id(R.id.app_video_currentTime).text(generateTime(currentPosition));
             query.id(R.id.app_video_endTime).text(generateTime(duration));
@@ -1883,14 +1851,16 @@ public class PlayerView {
     private void onVolumeSlide(float percent) {
         if (volume == -1) {
             volume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-            if (volume < 0)
+            if (volume < 0) {
                 volume = 0;
+            }
         }
         int index = (int) (percent * mMaxVolume) + volume;
-        if (index > mMaxVolume)
+        if (index > mMaxVolume) {
             index = mMaxVolume;
-        else if (index < 0)
+        } else if (index < 0) {
             index = 0;
+        }
 
         // 变更声音
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, index, 0);
@@ -1987,7 +1957,7 @@ public class PlayerView {
 
         public void start() {
             if (!mShouldAutoPlay) {
-                LogUtils.d("线程启动==========");
+                LogUtils.d(mContext, "线程启动==========");
                 mShouldAutoPlay = true;
                 mHandler.removeCallbacks(this);
                 mHandler.postDelayed(this, AUTO_PLAY_INTERVAL);
@@ -1996,7 +1966,7 @@ public class PlayerView {
 
         public void stop() {
             if (mShouldAutoPlay) {
-                LogUtils.d("线程停止==========");
+                LogUtils.d(mContext, "线程停止==========");
                 mHandler.removeCallbacks(this);
                 mShouldAutoPlay = false;
             }
@@ -2006,7 +1976,7 @@ public class PlayerView {
         public void run() {
             if (mShouldAutoPlay && !isForbidHideControlPanl) {
                 mHandler.removeCallbacks(this);
-                LogUtils.d("线程执行==========");
+                LogUtils.d(mContext, "线程执行==========");
                 operatorPanl();
             }
         }
@@ -2095,7 +2065,7 @@ public class PlayerView {
         public boolean onSingleTapUp(MotionEvent e) {
             /**视频视窗单击事件*/
             if (!isForbidHideControlPanl) {
-                LogUtils.d("单击==========");
+                LogUtils.d(mContext, "单击==========");
                 operatorPanl();
             }
             return true;

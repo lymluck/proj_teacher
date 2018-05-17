@@ -7,8 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.smartstudy.commonlib.utils.DensityUtils;
-
 public class LayoutQuery {
     private Context context;
     private Activity activity;
@@ -97,7 +95,7 @@ public class LayoutQuery {
 
 
             if (n > 0 && dip) {
-                n = DensityUtils.dip2px(n);
+                n = dip2px(n);
             }
 
             if (width) {
@@ -114,5 +112,10 @@ public class LayoutQuery {
 
     public void height(int height, boolean dip) {
         size(false, height, dip);
+    }
+
+    public int dip2px(float dipValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dipValue * scale + 0.5f);
     }
 }
