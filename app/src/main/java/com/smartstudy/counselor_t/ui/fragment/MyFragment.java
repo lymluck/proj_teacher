@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,6 +28,7 @@ import com.smartstudy.counselor_t.mvp.presenter.MyInfoActivityPresenter;
 import com.smartstudy.counselor_t.ui.activity.AddGoodDetailActivity;
 import com.smartstudy.counselor_t.ui.activity.ChooseListActivity;
 import com.smartstudy.counselor_t.ui.activity.LoginActivity;
+import com.smartstudy.counselor_t.ui.activity.MyInfoDetailActivity;
 import com.smartstudy.counselor_t.ui.activity.SelectMyPhotoActivity;
 import com.smartstudy.counselor_t.ui.activity.SelectMyVideoActivity;
 import com.smartstudy.counselor_t.ui.base.UIFragment;
@@ -73,17 +76,20 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
     private String bussinessValue;
     private TeacherInfo teacherInfo;
     private TextView tvLoginOut;
-    private List<IdNameInfo> workIdNameInfos = new ArrayList<>();
-    private List<IdNameInfo> adeptIdNameInfos = new ArrayList<>();
+    List<IdNameInfo> workIdNameInfos = new ArrayList<>();
+    List<IdNameInfo> adeptIdNameInfos = new ArrayList<>();
     private EditText tvPersonalProfile;
     private TextView tvAddGood;
     private ImageView ivVideoInfo;
     private ImageView ivUpLoad;
+    private MyInfoDetailActivity myInfoDetailActivity;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         EventBus.getDefault().register(this);
+        myInfoDetailActivity = (MyInfoDetailActivity) mActivity;
+
     }
 
     @Override
@@ -178,6 +184,183 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
         tvAddGood.setOnClickListener(this);
         ivVideoInfo.setOnClickListener(this);
         ivUpLoad.setOnClickListener(this);
+        tvNickName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (!TextUtils.isEmpty(editable.toString())) {
+                    if (teacherInfo != null) {
+                        if (!editable.toString().equals(teacherInfo.getName())) {
+                            myInfoDetailActivity.setPostClick();
+                        } else {
+                            myInfoDetailActivity.setPostUnClick();
+                        }
+                    }
+                }
+            }
+        });
+
+
+        tvWorkName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (!TextUtils.isEmpty(editable.toString())) {
+                    if (teacherInfo != null) {
+                        if (!editable.toString().equals(teacherInfo.getTitle())) {
+                            myInfoDetailActivity.setPostClick();
+                        } else {
+                            myInfoDetailActivity.setPostUnClick();
+                        }
+                    }
+                }
+            }
+        });
+
+
+        tvWorkExperience.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (!TextUtils.isEmpty(editable.toString())) {
+                    if (teacherInfo != null) {
+                        if (!editable.toString().equals(teacherInfo.getYearsOfWorking())) {
+                            myInfoDetailActivity.setPostClick();
+                        } else {
+                            myInfoDetailActivity.setPostUnClick();
+                        }
+                    }
+                }
+            }
+        });
+
+
+        tvGraduatedSchool.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (!TextUtils.isEmpty(editable.toString())) {
+                    if (teacherInfo != null) {
+                        if (!editable.toString().equals(teacherInfo.getSchool())) {
+                            myInfoDetailActivity.setPostClick();
+                        } else {
+                            myInfoDetailActivity.setPostUnClick();
+                        }
+                    }
+                }
+            }
+        });
+
+
+        tvEmail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (!TextUtils.isEmpty(editable.toString())) {
+                    if (teacherInfo != null) {
+                        if (!editable.toString().equals(teacherInfo.getEmail())) {
+                            myInfoDetailActivity.setPostClick();
+                        } else {
+                            myInfoDetailActivity.setPostUnClick();
+                        }
+                    }
+                }
+            }
+        });
+
+        tvName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (!TextUtils.isEmpty(editable.toString())) {
+                    if (teacherInfo != null) {
+                        if (!editable.toString().equals(teacherInfo.getRealName())) {
+                            myInfoDetailActivity.setPostClick();
+                        } else {
+                            myInfoDetailActivity.setPostUnClick();
+                        }
+                    }
+                }
+            }
+        });
+
+        tvPersonalProfile.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (!TextUtils.isEmpty(editable.toString())) {
+                    if (teacherInfo != null) {
+                        if (!editable.toString().equals(teacherInfo.getIntroduction())) {
+                            myInfoDetailActivity.setPostClick();
+                        } else {
+                            myInfoDetailActivity.setPostUnClick();
+                        }
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -266,8 +449,10 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
 
     @Override
     public void updateMyInfoSuccess() {
-        ToastUtils.shortToast(mActivity, "更新成功");
-        mActivity.finish();
+        if (mActivity != null) {
+            ToastUtils.shortToast(mActivity, "更新成功");
+            mActivity.finish();
+        }
     }
 
 
@@ -286,25 +471,43 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
                         photoFile = resource;
                         DisplayImageUtils.displayPersonRes(mActivity, resource, ivAvatar);
                         // 如果没有视频，则要同步改变封面
+                        myInfoDetailActivity.setPostClick();
                     }
                 });
                 break;
             case ParameterUtils.REQUEST_CODE_EDIT_MYINFO:
                 String flag = data.getStringExtra(ParameterUtils.TRANSITION_FLAG);
-
                 if (flag.equals(ParameterUtils.WORK_CITY)) {
                     cityValue = data.getStringExtra("new_value");
                     if (!TextUtils.isEmpty(cityValue)) {
                         tvCity.setText(getCityValue(cityValue));
+                        //监听是否发生改变
+                        if (teacherInfo != null) {
+                            if (!getCityValue(cityValue).equals(getCityValue(teacherInfo.getWorkingCityKey()))) {
+                                myInfoDetailActivity.setPostClick();
+                            } else {
+                                myInfoDetailActivity.setPostUnClick();
+                            }
+                        }
                     }
                 } else {
                     bussinessValue = data.getStringExtra("new_value");
+                    if (!TextUtils.isEmpty(bussinessValue)) {
+                        if (teacherInfo != null) {
+                            if (!bussinessValue.equals(teacherInfo.getAdeptWorksKey())) {
+                                myInfoDetailActivity.setPostClick();
+                            } else {
+                                myInfoDetailActivity.setPostUnClick();
+                            }
+                        }
+                    }
                     List<String> list = Arrays.asList(getBussinessValue(bussinessValue).split(","));
                     tlyTags.setBackGroup(R.drawable.bg_good_bussienss_border);
                     tlyTags.createTab(mActivity, list);
                 }
                 break;
-
+            case ParameterUtils.REQUEST_VIDEO:
+                break;
             default:
                 break;
         }

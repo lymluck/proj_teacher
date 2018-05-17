@@ -35,6 +35,7 @@ import com.smartstudy.counselor_t.ui.widget.audio.AudioRecorder;
 import com.smartstudy.counselor_t.util.DensityUtils;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
 import com.smartstudy.counselor_t.util.KeyBoardUtils;
+import com.smartstudy.counselor_t.util.NoDoubleClickUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
 import com.smartstudy.counselor_t.util.ToastUtils;
 
@@ -247,10 +248,12 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
                 break;
             case R.id.ll_student:
                 if (detailInfo != null && detailInfo.getAsker() != null) {
-                    Intent intentStudent = new Intent();
-                    intentStudent.putExtra("ids", detailInfo.getAsker().getId());
-                    intentStudent.setClass(this, StudentInfoActivity.class);
-                    startActivity(intentStudent);
+                    if (!NoDoubleClickUtils.isDoubleClick()) {
+                        Intent intentStudent = new Intent();
+                        intentStudent.putExtra("ids", detailInfo.getAsker().getId());
+                        intentStudent.setClass(this, StudentInfoActivity.class);
+                        startActivity(intentStudent);
+                    }
                 }
                 break;
             case R.id.iv_audio:
@@ -315,12 +318,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
             tvLocation.setVisibility(View.VISIBLE);
             tvLocation.setText(data.getUserLocation());
         }
-//        if (TextUtils.isEmpty(data.getPlatform())) {
-//            tvPlatform.setVisibility(View.GONE);
-//        } else {
-//            tvPlatform.setVisibility(View.VISIBLE);
-//            tvPlatform.setText(data.getPlatform());
-//        }
+
         if (TextUtils.isEmpty(data.getSchoolName())) {
             tvSchoolName.setVisibility(View.GONE);
         } else {

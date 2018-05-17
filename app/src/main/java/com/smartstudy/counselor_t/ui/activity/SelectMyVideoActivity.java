@@ -1,6 +1,5 @@
 package com.smartstudy.counselor_t.ui.activity;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -11,7 +10,6 @@ import android.os.Environment;
 import android.os.Handler.Callback;
 import android.os.Message;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -33,15 +31,11 @@ import com.smartstudy.counselor_t.ui.adapter.MultiItemTypeAdapter;
 import com.smartstudy.counselor_t.ui.adapter.SelectMyMediaAdapter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.ui.popupwindow.ListDirPopupWindow;
-import com.smartstudy.counselor_t.ui.widget.ClipImageLayout;
 import com.smartstudy.counselor_t.ui.widget.DividerGridItemDecoration;
 import com.smartstudy.counselor_t.util.DensityUtils;
 import com.smartstudy.counselor_t.util.ParameterUtils;
-import com.smartstudy.counselor_t.util.SDCardUtils;
 import com.smartstudy.counselor_t.util.ScreenUtils;
 import com.smartstudy.counselor_t.util.Utils;
-import com.smartstudy.permissions.Permission;
-import com.smartstudy.permissions.PermissionUtil;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -209,36 +203,19 @@ public class SelectMyVideoActivity extends BaseActivity<BasePresenter> implement
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 if (ParameterUtils.ALL_VIDEOS.equals(mChooseDir.getText().toString())) {
-                    if (position == 0 && mVideos.get(position) == null) {
-                        if (PermissionUtil.hasPermissions(SelectMyVideoActivity.this, Permission.CAMERA)) {
-                            toVideo();
-                        } else {
-                            PermissionUtil.requestPermissions(SelectMyVideoActivity.this, Permission.getPermissionContent(Arrays.asList(Permission.CAMERA)),
-                                ParameterUtils.REQUEST_CODE_CAMERA, Permission.CAMERA);
-                        }
+                    String photo_path = mVideos.get(position).getPath();
+                    if (!TextUtils.isEmpty(photo_path)) {
+                        // 选择视频
+                        setResult(RESULT_OK, new Intent().putExtra("path", photo_path));
+                        finish();
                     } else {
-                        String photo_path = mVideos.get(position).getPath();
-                        if (!TextUtils.isEmpty(photo_path)) {
-                            // 选择视频
-
-
-//                            Intent toClipImage = new Intent(SelectMyVideoActivity.this, ClipPictureActivity.class);
-//                            toClipImage.putExtra("path", photo_path);
-//                            toClipImage.putExtra("clipType", ClipImageLayout.SQUARE);
-//                            startActivityForResult(toClipImage, ParameterUtils.REQUEST_CODE_CLIP_OVER);
-                        } else {
-                            showTip(getString(R.string.picture_load_failure));
-                        }
+                        showTip(getString(R.string.picture_load_failure));
                     }
                 } else {
                     // 选择视频
-
-
-//                    String photo_path = mDirImgs.get(position);
-//                    Intent toClipImage = new Intent(SelectMyVideoActivity.this, ClipPictureActivity.class);
-//                    toClipImage.putExtra("path", photo_path);
-//                    toClipImage.putExtra("clipType", ClipImageLayout.SQUARE);
-//                    startActivityForResult(toClipImage, ParameterUtils.REQUEST_CODE_CLIP_OVER);
+                    String photo_path = mDirVideos.get(position).getPath();
+                    setResult(RESULT_OK, new Intent().putExtra("path", photo_path));
+                    finish();
                 }
             }
 
@@ -258,7 +235,6 @@ public class SelectMyVideoActivity extends BaseActivity<BasePresenter> implement
         totalCount = 0;
         mChooseDir.setText(ParameterUtils.ALL_VIDEOS);
         mVideos = new LinkedList<>();
-        mVideos.addFirst(null);
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             Toast.makeText(this, getString(R.string.no_external_storage), Toast.LENGTH_SHORT).show();
             return;
@@ -420,79 +396,5 @@ public class SelectMyVideoActivity extends BaseActivity<BasePresenter> implement
         }
         mListDirPopupWindow.dismiss();
 
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != Activity.RESULT_OK) {
-            return;
-        }
-        switch (requestCode) {
-            case ParameterUtils.REQUEST_CODE_CAMERA:
-                if (imageUri != null) {
-                    Intent localIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, imageUri);
-                    sendBroadcast(localIntent);
-                    mVideos.removeFirst();
-                    mVideos.addFirst(new MediaInfo(imageUri.getPath(), 0));
-                    mVideos.addFirst(null);
-                    mAdapter.notifyDataSetChanged();
-                    imageUri = null;
-                } else {
-                    String path_capture = saveFile.getAbsolutePath() + "/" + saveName;
-                    Intent toClipImage = new Intent(SelectMyVideoActivity.this, ClipPictureActivity.class);
-                    toClipImage.putExtra("path", path_capture);
-                    toClipImage.putExtra("clipType", ClipImageLayout.SQUARE);
-                    startActivityForResult(toClipImage, ParameterUtils.REQUEST_CODE_CLIP_OVER);
-                }
-                break;
-            case ParameterUtils.REQUEST_CODE_CLIP_OVER:
-                setResult(RESULT_OK, data);
-                finish();
-                break;
-            default:
-                break;
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        PermissionUtil.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
-
-    @Override
-    public void onPermissionsGranted(int requestCode, List<String> perms) {
-        switch (requestCode) {
-            case ParameterUtils.REQUEST_CODE_CAMERA:
-                toVideo();
-                break;
-            default:
-                break;
-        }
-    }
-
-    @Override
-    public void onPermissionsDenied(int requestCode, List<String> perms) {
-        verifyPermission(perms);
-    }
-
-    private void toVideo() {
-        if (getIntent().getBooleanExtra("singlePic", true)) {
-            saveName = System.currentTimeMillis() + ".png";
-            // 存放照片的文件夹
-            saveFile = SDCardUtils.getFileDirPath("Xxd_im" + File.separator + "videos");
-            Utils.startActionCapture(SelectMyVideoActivity.this, new File(saveFile.getAbsolutePath(), saveName), ParameterUtils.REQUEST_CODE_CAMERA);
-        } else {
-            saveName = System.currentTimeMillis() + ".png";
-            // 存放照片的文件夹
-            saveFile = SDCardUtils.getFileDirPath("Xxd_im" + File.separator + "videos");
-            Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            if (saveFile != null) {
-                imageUri = Uri.fromFile(new File(saveFile.getAbsolutePath(), saveName));
-            }
-            openCameraIntent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
-            openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-            startActivityForResult(openCameraIntent, ParameterUtils.REQUEST_CODE_CAMERA);
-        }
     }
 }

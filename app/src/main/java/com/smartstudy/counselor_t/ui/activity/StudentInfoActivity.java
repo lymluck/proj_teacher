@@ -215,7 +215,7 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
          * 个人信息头像等基本信息设置
          */
         this.studentInfo = studentInfo;
-        slStudentInfo.setVisibility(View.VISIBLE);
+//        slStudentInfo.setVisibility(View.VISIBLE);
         if (studentInfo.getTags() != null && studentInfo.getTags().size() > 0) {
             tagFlowLayout.setVisibility(View.VISIBLE);
             allLabelList.clear();
@@ -224,7 +224,7 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
         } else {
             tagFlowLayout.setVisibility(View.GONE);
         }
-        DisplayImageUtils.formatPersonImgUrl(this, studentInfo.getAvatar(), ivAvatar);
+        DisplayImageUtils.formatPersonImgUrl(this, studentInfo.getAvatar() == null ? "" : studentInfo.getAvatar(), ivAvatar);
         tvName.setText(studentInfo.getName());
         if (TextUtils.isEmpty(studentInfo.getGenderId())) {
             ivSex.setVisibility(View.GONE);
@@ -315,6 +315,11 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
             StudentPageInfo.TargetSection.TargetMajorDirection targetMajorDirection = studentInfo.getTargetSection().getTargetMajorDirection();
             if (targetMajorDirection != null) {
                 tvTargetMajorDirection.setText(targetMajorDirection.getName());
+            }
+
+            StudentPageInfo.TargetSection.Budget budget = studentInfo.getTargetSection().getBudget();
+            if (budget != null) {
+                tvCapitalBudget.setText(budget.getName());
             }
         }
 

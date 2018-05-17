@@ -37,6 +37,7 @@ public class StudentPageInfo {
         this.tags = tags;
     }
 
+
     public class TargetSection {
         private AdmissionTime admissionTime;
 
@@ -48,8 +49,14 @@ public class StudentPageInfo {
 
         private TargetSchoolRank targetSchoolRank;
 
+        private Budget budget;
+
         public class AdmissionTime extends CommonTarge {
 
+
+        }
+
+        public class Budget extends CommonTarge {
 
         }
 
@@ -82,6 +89,15 @@ public class StudentPageInfo {
 
         public void setTargetCountry(TargetCountry targetCountry) {
             this.targetCountry = targetCountry;
+        }
+
+
+        public Budget getBudget() {
+            return budget;
+        }
+
+        public void setBudget(Budget budget) {
+            this.budget = budget;
         }
 
         public TargetSchoolRank getTargetSchoolRank() {
