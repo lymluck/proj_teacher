@@ -58,7 +58,7 @@
             android:layout_marginTop="27dp"
             android:drawableLeft="@drawable/ic_detail_vedio"
             android:drawablePadding="4dp"
-            android:text="新上传的视频将覆盖原来的视屏"
+            android:text="新上传的视频将覆盖原来的视频"
             android:textColor="#949BA1"
             android:textSize="12sp" />
     </LinearLayout>

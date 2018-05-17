@@ -52,7 +52,6 @@ public class StudentInfoActivityPresenter extends BasePresenterImpl<StudentActiv
 
             @Override
             public void onNext(String s) {
-                Log.w("kim","------->"+s);
                 StudentPageInfo studentPageInfo = JSON.parseObject(s, StudentPageInfo.class);
                 if (studentPageInfo != null) {
 //                    String cacheUrl = DisplayImageUtils.formatImgUrl(studentPageInfo.getAvatar(), 90, 90);

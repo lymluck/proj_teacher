@@ -21,6 +21,7 @@ import com.smartstudy.counselor_t.ui.widget.HorizontalDividerItemDecoration;
 import com.smartstudy.counselor_t.ui.widget.LoadMoreRecyclerView;
 import com.smartstudy.counselor_t.ui.widget.NoScrollLinearLayoutManager;
 import com.smartstudy.counselor_t.util.DensityUtils;
+import com.smartstudy.counselor_t.util.NoDoubleClickUtils;
 import com.smartstudy.counselor_t.util.ParameterUtils;
 
 import java.util.ArrayList;
@@ -119,7 +120,7 @@ public class AddGoodDetailActivity extends BaseActivity<AddGoodDetailContract.Pr
         mAdapter = new CommonAdapter<AddGoodInfo>(this, R.layout.item_add_goods, addGoodInfoList,
             mInflater) {
             @Override
-            protected void convert(ViewHolder holder, final AddGoodInfo addGoodInfo, int position) {
+            protected void convert(final ViewHolder holder, final AddGoodInfo addGoodInfo, int position) {
                 if (addGoodInfo != null) {
                     holder.setPersonImageUrl(R.id.iv_avatar, addGoodInfo.getAvatar(), true);
                     holder.setText(R.id.tv_name, addGoodInfo.getName());
@@ -151,7 +152,9 @@ public class AddGoodDetailActivity extends BaseActivity<AddGoodDetailContract.Pr
                     holder.getView(R.id.iv_avatar).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            startActivity(new Intent(AddGoodDetailActivity.this, StudentInfoActivity.class).putExtra("ids", addGoodInfo.getId()));
+                            if (!NoDoubleClickUtils.isDoubleClick()) {
+                                startActivity(new Intent(AddGoodDetailActivity.this, StudentInfoActivity.class).putExtra("ids", addGoodInfo.getId()));
+                            }
                         }
                     });
                 }

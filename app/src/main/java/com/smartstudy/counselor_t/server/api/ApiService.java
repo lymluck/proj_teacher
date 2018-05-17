@@ -157,6 +157,7 @@ public interface ApiService {
      * 点赞列表
      */
     @GET(HttpUrlUtils.URL_ADD_GOODS_LIST)
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
     Observable<ResponseInfo> getAddGoodDetail(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
 
@@ -192,6 +193,7 @@ public interface ApiService {
      * 获取历史标签
      */
     @GET(HttpUrlUtils.URL_QUESTS_HISTORY_TAGS)
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
     Observable<ResponseInfo> getHisToryTag(@HeaderMap Map<String, String> header);
 
     /**

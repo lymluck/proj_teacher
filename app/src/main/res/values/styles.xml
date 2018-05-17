@@ -68,7 +68,7 @@
 
     <style name="DialogNextAnim">
         <item name="@android:windowEnterAnimation">@anim/base_dialog_in</item>
-        <item name="@android:windowExitAnimation">@anim/dialog_exit</item>
+        <!--<item name="@android:windowExitAnimation">@anim/dialog_exit</item>-->
     </style>
 
     <style name="DialogEndAnim">

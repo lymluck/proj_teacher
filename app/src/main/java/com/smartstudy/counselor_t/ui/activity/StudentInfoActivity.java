@@ -215,7 +215,7 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
          * 个人信息头像等基本信息设置
          */
         this.studentInfo = studentInfo;
-        slStudentInfo.setVisibility(View.VISIBLE);
+//        slStudentInfo.setVisibility(View.VISIBLE);
         if (studentInfo.getTags() != null && studentInfo.getTags().size() > 0) {
             tagFlowLayout.setVisibility(View.VISIBLE);
             allLabelList.clear();
@@ -224,9 +224,7 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
         } else {
             tagFlowLayout.setVisibility(View.GONE);
         }
-        if (!TextUtils.isEmpty(studentInfo.getAvatar())) {
-            DisplayImageUtils.formatPersonImgUrl(this, studentInfo.getAvatar() == null ? "" : studentInfo.getAvatar(), ivAvatar);
-        }
+        DisplayImageUtils.formatPersonImgUrl(this, studentInfo.getAvatar() == null ? "" : studentInfo.getAvatar(), ivAvatar);
         tvName.setText(studentInfo.getName());
         if (TextUtils.isEmpty(studentInfo.getGenderId())) {
             ivSex.setVisibility(View.GONE);
