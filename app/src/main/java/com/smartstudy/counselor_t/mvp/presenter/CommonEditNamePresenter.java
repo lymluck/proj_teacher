@@ -1,25 +1,13 @@
 package com.smartstudy.counselor_t.mvp.presenter;
 
-import android.net.Uri;
-import android.text.TextUtils;
-import android.widget.ImageView;
-
 import com.alibaba.fastjson.JSON;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
 import com.smartstudy.counselor_t.mvp.contract.CommonEditNameContract;
-import com.smartstudy.counselor_t.mvp.contract.MyInfoContract;
 import com.smartstudy.counselor_t.mvp.model.CommonEditNameModel;
-import com.smartstudy.counselor_t.mvp.model.MyInfoModel;
-import com.smartstudy.counselor_t.util.DisplayImageUtils;
-import com.smartstudy.counselor_t.util.SPCacheUtils;
-
-import java.io.File;
 
 import io.reactivex.disposables.Disposable;
-import io.rong.imkit.RongIM;
-import io.rong.imlib.model.UserInfo;
 
 /**
  * @author yqy
