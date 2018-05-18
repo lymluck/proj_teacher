@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
-
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.FloderInfo;
 import com.smartstudy.counselor_t.ui.adapter.CommonAdapter;
@@ -49,7 +48,11 @@ public class ListDirPopupWindow extends BasePopupWindowForListView<FloderInfo> {
                     imageView.setVisibility(View.GONE);
                 }
                 helper.setImageUrl(R.id.id_dir_item_image, item.getFirstPath());
-                helper.setText(R.id.id_dir_item_count, item.getCount() + "张");
+                if ("video".equals(item.getType())) {
+                    helper.setText(R.id.id_dir_item_count, item.getCount() + context.getString(R.string.video_unit));
+                } else {
+                    helper.setText(R.id.id_dir_item_count, item.getCount() + context.getString(R.string.picture_unit));
+                }
             }
         };
         mListDir.setAdapter(mAdapter);

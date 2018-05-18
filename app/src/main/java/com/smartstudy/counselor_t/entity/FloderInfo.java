@@ -1,6 +1,7 @@
 package com.smartstudy.counselor_t.entity;
 
 public class FloderInfo {
+    private String type;
     /**
      * 文件夹路径
      */
@@ -29,9 +30,7 @@ public class FloderInfo {
 
     public void setDir(String dir) {
         this.dir = dir;
-        if (dir == null) {
-            this.name = "所有图片";
-        } else {
+        if (dir != null) {
             int lastIndexOf = this.dir.lastIndexOf("/");
             this.name = this.dir.substring(lastIndexOf + 1);
         }
@@ -47,6 +46,10 @@ public class FloderInfo {
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getCount() {
@@ -65,4 +68,11 @@ public class FloderInfo {
         this.isSelected = isSelected;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }

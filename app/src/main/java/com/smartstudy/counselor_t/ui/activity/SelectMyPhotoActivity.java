@@ -111,7 +111,7 @@ public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implement
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        super.setContentView(R.layout.activity_select_my_photo);
+        super.setContentView(R.layout.activity_select_my_media);
     }
 
     @Override
@@ -152,7 +152,8 @@ public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implement
     public void initEvent() {
         findViewById(R.id.topdefault_leftbutton).setOnClickListener(this);
         findViewById(R.id.topdefault_righttext).setOnClickListener(this);
-        findViewById(R.id.id_choose_dir).setOnClickListener(this);
+        mChooseDir.setText(ParameterUtils.ALL_PICS);
+        mChooseDir.setOnClickListener(this);
     }
 
     @Override
@@ -330,11 +331,14 @@ public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implement
                     while (mCursor.moveToNext()) {
                         // 获取图片的路径
                         String path = mCursor.getString(mCursor.getColumnIndex(MediaStore.Images.Media.DATA));
-                        mImgs.add(new MediaInfo(path, 0));
+                        long size = mCursor.getLong(mCursor.getColumnIndex(MediaStore.Images.Media.SIZE));
+                        mImgs.add(new MediaInfo(path, Utils.getFormatSize(size), "image"));
                         // 拿到第一张图片的路径
                         if (firstImage == null) {
                             firstImage = path;
                             mAllPics.setFirstPath(firstImage);
+                            mAllPics.setName(ParameterUtils.ALL_PICS);
+                            mAllPics.setType("image");
                             mImageFloders.add(mAllPics);
                         }
 
@@ -372,6 +376,7 @@ public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implement
                         totalCount += picSize;
 
                         imageFloder.setCount(picSize);
+                        imageFloder.setType("image");
                         mImageFloders.add(imageFloder);
 
                         if (picSize > mPicsSize) {
@@ -456,7 +461,8 @@ public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implement
             mImageCount.setText(floder.getCount() + getString(R.string.picture_unit));
             mDirImgs.clear();
             for (String name : Imgs_name) {
-                mDirImgs.add(new MediaInfo(mImgDir + "/" + name, 0));
+                // size不显示故设置默认值
+                mDirImgs.add(new MediaInfo(mImgDir + "/" + name, "0", "image"));
             }
             mAdapter = new SelectMyMediaAdapter(SelectMyPhotoActivity.this, mDirImgs, R.layout.item_my_select_pic_grid);
             initItemClick();
@@ -466,7 +472,8 @@ public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implement
             mChooseDir.setText(floder.getName());
         } else {
             mDirPaths = new HashSet<>();
-            getImages();
+            mChooseDir.setText(ParameterUtils.ALL_PICS);
+            dataToView();
         }
         mListImageDirPopupWindow.dismiss();
 
@@ -484,7 +491,8 @@ public class SelectMyPhotoActivity extends BaseActivity<BasePresenter> implement
                     Intent localIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, imageUri);
                     sendBroadcast(localIntent);
                     mImgs.removeFirst();
-                    mImgs.addFirst(new MediaInfo(imageUri.getPath(), 0));
+                    // size不显示故设置默认值
+                    mImgs.addFirst(new MediaInfo(imageUri.getPath(), "0", "image"));
                     mImgs.addFirst(null);
                     mAdapter.notifyDataSetChanged();
                     imageUri = null;
