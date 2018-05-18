@@ -74,7 +74,9 @@ public class MyInfoDetailPresenter extends BasePresenterImpl<MyInfoDetailContrac
         myInfoDetailModel.uploadVideo(file, new OnUploadFileListener() {
             @Override
             public void onProgress(int progress) {
-                view.onLoading(progress);
+                if (view != null) {
+                    view.onLoading(progress);
+                }
             }
         });
     }
