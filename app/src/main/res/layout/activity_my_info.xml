@@ -6,12 +6,11 @@
     android:background="@color/white"
     android:clipChildren="false">
 
-    <com.smartstudy.counselor_t.ui.widget.ReboundScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <android.support.v4.widget.NestedScrollView
         android:id="@+id/sv_info"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="285dp"
+        android:paddingTop="210dp"
         android:scrollbars="none">
 
         <LinearLayout
@@ -22,6 +21,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
+                android:layout_marginTop="75dp"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:orientation="horizontal"
@@ -347,15 +347,15 @@
                 android:textSize="16sp" />
         </LinearLayout>
 
-    </com.smartstudy.counselor_t.ui.widget.ReboundScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
     <LinearLayout
         android:id="@+id/ll_progress"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_alignParentTop="true"
-        android:visibility="gone"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
@@ -396,12 +396,17 @@
             android:id="@+id/iv_avatar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/rc_default_portrait" />
+            android:scaleType="centerCrop"
+            android:src="@drawable/rc_default_portrait"
+            app:border_color="@color/white"
+            app:border_width="2dp" />
 
         <ImageView
             android:id="@+id/iv_photo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:padding="2dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/ic_photo_image" />
     </FrameLayout>
 
