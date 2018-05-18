@@ -195,7 +195,10 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                             llProgress.setVisibility(View.GONE);
                             llUpload.setVisibility(View.VISIBLE);
                             tvAddGood.setVisibility(View.VISIBLE);
-                            presenter.getMyInfo();
+                            if (player != null) {
+                                videoUrl = (String) msg.obj;
+                                player.autoPlay(videoUrl);
+                            }
                         }
                         break;
                     default:
@@ -373,26 +376,24 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                     public void onResourceReady(@NonNull final Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                         if (TextUtils.isEmpty(videoUrl)) {
                             // 如果没有视频，展示封面
-                            if (TextUtils.isEmpty(videoUrl)) {
-                                ivThumb.setImageBitmap(resource);
-                                ViewTreeObserver vto = ivThumb.getViewTreeObserver();
-                                vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                            ivThumb.setImageBitmap(resource);
+                            ViewTreeObserver vto = ivThumb.getViewTreeObserver();
+                            vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 
-                                    @Override
-                                    public void onGlobalLayout() {
-                                        ViewTreeObserver obs = ivThumb.getViewTreeObserver();
-                                        ivThumb.buildDrawingCache();
-                                        Bitmap bmp = ivThumb.getDrawingCache();
-                                        FastBlur.blur(bmp, ivThumb);
-                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                            obs.removeOnGlobalLayoutListener(this);
-                                        } else {
-                                            obs.removeGlobalOnLayoutListener(this);
-                                        }
+                                @Override
+                                public void onGlobalLayout() {
+                                    ViewTreeObserver obs = ivThumb.getViewTreeObserver();
+                                    ivThumb.buildDrawingCache();
+                                    Bitmap bmp = ivThumb.getDrawingCache();
+                                    FastBlur.blur(bmp, ivThumb);
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                        obs.removeOnGlobalLayoutListener(this);
+                                    } else {
+                                        obs.removeGlobalOnLayoutListener(this);
                                     }
+                                }
 
-                                });
-                            }
+                            });
                         }
                         ivAvatar.setImageBitmap(resource);
                     }
@@ -404,10 +405,9 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                     player.hideControlPanl(false)
                         .hideSteam(true)
                         .hideTopBar(true)
-                        .setPlaySource(videoUrl)
+                        .autoPlay(videoUrl)
                         .hideCenterPlayer(false)
                         .hidePlayUI();
-                    player.startPlay();
                     this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 }
             }
@@ -480,10 +480,11 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
     }
 
     @Override
-    public void onLoading(int progress) {
+    public void onLoading(int progress, String url) {
         Message msg = Message.obtain();
         msg.what = ParameterUtils.EMPTY_WHAT;
         msg.arg1 = progress;
+        msg.obj = url;
         mHandler.sendMessage(msg);
     }
 
@@ -495,6 +496,14 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (player != null) {
+            player.onResume();
+            player.hideCenterPlayer(true);
+        }
+    }
 
     @Override
     public void onPause() {

@@ -30,7 +30,7 @@ public interface MyInfoDetailContract {
 
         void updateMyInfoSuccess();
 
-        void onLoading(int progress);
+        void onLoading(int progress, String url);
     }
 
     interface Presenter extends BasePresenter {
