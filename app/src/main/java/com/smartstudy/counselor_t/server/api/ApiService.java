@@ -255,4 +255,12 @@ public interface ApiService {
     @GET(HttpUrlUtils.URL_START_AD)
     Observable<ResponseInfo> getAdInfo(@HeaderMap Map<String, String> header);
 
+    /**
+     * 上传视频
+     *
+     * @return
+     */
+    @POST(HttpUrlUtils.URL_PROFILE_VIDEO)
+    Observable<ResponseInfo> upLoadTeacherVideo(@HeaderMap Map<String, String> header, @Body RequestBody Body);
+
 }

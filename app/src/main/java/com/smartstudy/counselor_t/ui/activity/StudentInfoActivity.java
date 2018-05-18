@@ -215,7 +215,6 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
          * 个人信息头像等基本信息设置
          */
         this.studentInfo = studentInfo;
-//        slStudentInfo.setVisibility(View.VISIBLE);
         if (studentInfo.getTags() != null && studentInfo.getTags().size() > 0) {
             tagFlowLayout.setVisibility(View.VISIBLE);
             allLabelList.clear();

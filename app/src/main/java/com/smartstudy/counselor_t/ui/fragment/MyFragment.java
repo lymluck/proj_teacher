@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,9 +14,12 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -35,11 +40,18 @@ import com.smartstudy.counselor_t.ui.base.UIFragment;
 import com.smartstudy.counselor_t.ui.dialog.DialogCreator;
 import com.smartstudy.counselor_t.ui.widget.TagsLayout;
 import com.smartstudy.counselor_t.util.CheckUtil;
+import com.smartstudy.counselor_t.util.DensityUtils;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
+import com.smartstudy.counselor_t.util.FastBlur;
+import com.smartstudy.counselor_t.util.MediaUtils;
 import com.smartstudy.counselor_t.util.ParameterUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
 import com.smartstudy.counselor_t.util.ToastUtils;
 import com.smartstudy.counselor_t.util.Utils;
+import com.smartstudy.medialib.ijkplayer.listener.OnPlayComplete;
+import com.smartstudy.medialib.ijkplayer.listener.OnToggleFullScreenListener;
+import com.smartstudy.medialib.ijkplayer.widget.PlayStateParams;
+import com.smartstudy.medialib.ijkplayer.widget.PlayerView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -83,6 +95,11 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
     private ImageView ivVideoInfo;
     private ImageView ivUpLoad;
     private MyInfoDetailActivity myInfoDetailActivity;
+    public PlayerView player;
+    private ImageView iv_player;
+    private RelativeLayout.LayoutParams params;
+    private ImageView iVideoBg;
+
 
     @Override
     public void onAttach(Context context) {
@@ -99,6 +116,8 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
 
     @Override
     protected void initView(View rootView) {
+        rootView.findViewById(R.id.app_video_box).setVisibility(View.GONE);
+        iVideoBg = rootView.findViewById(R.id.iv_video_bg);
         ivAvatar = rootView.findViewById(R.id.iv_avatar);
         tvNickName = rootView.findViewById(R.id.tv_nick_name);
         tvWorkName = rootView.findViewById(R.id.tv_work_name);
@@ -119,6 +138,34 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
         if (presenter != null) {
             presenter.getMyInfo();
         }
+        initPlayer();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (player != null) {
+            player.onDestroy();
+            player = null;
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (player != null) {
+            player.onPause();
+        }
+        /**恢复系统其它媒体的状态*/
+        MediaUtils.muteAudioFocus(mActivity, true);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (player != null) {
+            player.onConfigurationChanged(newConfig);
+        }
     }
 
     @Override
@@ -127,11 +174,9 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
             case R.id.tv_login_out:
                 showNormalDialog();
                 break;
-
             case R.id.tv_add_good:
                 startActivity(new Intent(mActivity, AddGoodDetailActivity.class));
                 break;
-
             case R.id.ll_city:
                 Intent toCity = new Intent(mActivity, ChooseListActivity.class);
                 toCity.putExtra("value", tvCity.getText());
@@ -184,183 +229,61 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
         tvAddGood.setOnClickListener(this);
         ivVideoInfo.setOnClickListener(this);
         ivUpLoad.setOnClickListener(this);
-        tvNickName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
+        setEditTextTextWatch(tvNickName);
+        setEditTextTextWatch(tvWorkName);
+        setEditTextTextWatch(tvWorkExperience);
+        setEditTextTextWatch(tvGraduatedSchool);
+        setEditTextTextWatch(tvEmail);
+        setEditTextTextWatch(tvName);
+        setEditTextTextWatch(tvPersonalProfile);
+    }
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (!TextUtils.isEmpty(editable.toString())) {
-                    if (teacherInfo != null) {
-                        if (!editable.toString().equals(teacherInfo.getName())) {
-                            myInfoDetailActivity.setPostClick();
-                        } else {
-                            myInfoDetailActivity.setPostUnClick();
-                        }
-                    }
+    private void initPlayer() {
+        player = new PlayerView(mActivity, rootView);
+        if (player != null) {
+            player.setOnPlayComplete(new OnPlayComplete() {
+                @Override
+                public void onComplete() {
+                    // 播放完成
+                    player.startPlay();
                 }
-            }
-        });
-
-
-        tvWorkName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (!TextUtils.isEmpty(editable.toString())) {
-                    if (teacherInfo != null) {
-                        if (!editable.toString().equals(teacherInfo.getTitle())) {
-                            myInfoDetailActivity.setPostClick();
-                        } else {
-                            myInfoDetailActivity.setPostUnClick();
-                        }
-                    }
+            });
+            player.setOnToggleFullScreenListener(new OnToggleFullScreenListener() {
+                @Override
+                public void onLandScape() {
+                    player.forbidScroll(false).hideBottomBar(false).hideCenterPlayer(false);
+                    params.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    iv_player.setLayoutParams(params);
+                    rootView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
                 }
-            }
-        });
 
-
-        tvWorkExperience.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (!TextUtils.isEmpty(editable.toString())) {
-                    if (teacherInfo != null) {
-                        if (!editable.toString().equals(teacherInfo.getYearsOfWorking())) {
-                            myInfoDetailActivity.setPostClick();
-                        } else {
-                            myInfoDetailActivity.setPostUnClick();
-                        }
-                    }
+                @Override
+                public void onPortrait() {
+                    player.forbidScroll(true).hideBottomBar(true).hideCenterPlayer(true);
+                    params.width = DensityUtils.dip2px(45);
+                    params.height = DensityUtils.dip2px(45);
+                    iv_player.setLayoutParams(params);
+                    rootView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
                 }
-            }
-        });
-
-
-        tvGraduatedSchool.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (!TextUtils.isEmpty(editable.toString())) {
-                    if (teacherInfo != null) {
-                        if (!editable.toString().equals(teacherInfo.getSchool())) {
-                            myInfoDetailActivity.setPostClick();
-                        } else {
-                            myInfoDetailActivity.setPostUnClick();
-                        }
-                    }
-                }
-            }
-        });
-
-
-        tvEmail.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (!TextUtils.isEmpty(editable.toString())) {
-                    if (teacherInfo != null) {
-                        if (!editable.toString().equals(teacherInfo.getEmail())) {
-                            myInfoDetailActivity.setPostClick();
-                        } else {
-                            myInfoDetailActivity.setPostUnClick();
-                        }
-                    }
-                }
-            }
-        });
-
-        tvName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (!TextUtils.isEmpty(editable.toString())) {
-                    if (teacherInfo != null) {
-                        if (!editable.toString().equals(teacherInfo.getRealName())) {
-                            myInfoDetailActivity.setPostClick();
-                        } else {
-                            myInfoDetailActivity.setPostUnClick();
-                        }
-                    }
-                }
-            }
-        });
-
-        tvPersonalProfile.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (!TextUtils.isEmpty(editable.toString())) {
-                    if (teacherInfo != null) {
-                        if (!editable.toString().equals(teacherInfo.getIntroduction())) {
-                            myInfoDetailActivity.setPostClick();
-                        } else {
-                            myInfoDetailActivity.setPostUnClick();
-                        }
-                    }
-                }
-            }
-        });
+            });
+            player.setScaleType(PlayStateParams.fillparent)
+                .hideControlPanl(true)
+                .hideCenterPlayer(true)
+                .hideTopBar(true)
+                .hideBottomBar(true)
+                .hideCenterPlayer(true)
+                .hideRotation(true);
+            iv_player = player.getPlayerView();
+            params = (RelativeLayout.LayoutParams) iv_player.getLayoutParams();
+            params.topMargin = DensityUtils.dip2px(8);
+            params.addRule(RelativeLayout.CENTER_IN_PARENT);
+            //初始小屏模式
+            player.forbidScroll(true);
+            params.width = DensityUtils.dip2px(45);
+            params.height = DensityUtils.dip2px(45);
+            iv_player.setLayoutParams(params);
+        }
     }
 
     @Override
@@ -374,17 +297,39 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
     }
 
     @Override
-    public void getMyInfoSuccess(TeacherInfo teacherInfo) {
+    public void getMyInfoSuccess(final TeacherInfo teacherInfo) {
         if (teacherInfo != null) {
             this.teacherInfo = teacherInfo;
-            if (TextUtils.isEmpty(teacherInfo.getVideo())) {
-                // 展示封面
-            } else {
-                // 播放视频
-            }
             if (!TextUtils.isEmpty(teacherInfo.getAvatar()) && photoFile == null) {
-                DisplayImageUtils.formatPersonImgUrl(mActivity, teacherInfo.getAvatar(), ivAvatar);
+                if (mActivity != null && isAdded()) {
+                    DisplayImageUtils.displayImage(mActivity, teacherInfo.getAvatar(), new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                            if (TextUtils.isEmpty(teacherInfo.getVideo())) {
+                                // 展示封面
+                                iVideoBg.setImageBitmap(FastBlur.blur(resource, iVideoBg));
+                            }
+                            ivAvatar.setImageBitmap(resource);
+                        }
+                    });
+                }
             }
+//            if (!TextUtils.isEmpty(teacherInfo.getVideo())) {
+            rootView.findViewById(R.id.app_video_box).setVisibility(View.VISIBLE);
+            iVideoBg.setVisibility(View.GONE);
+            // 播放视频
+            if (player != null) {
+                player.hideControlPanl(false)
+                    .hideSteam(true)
+                    .hideTopBar(true)
+//                        .setPlaySource(teacherInfo.getVideo())
+                    .setPlaySource("http://medialx.smartstudy.com/counsellor/video/05/89/058961785a022e6632dcece272b27356.mp4")
+                    .hideCenterPlayer(false)
+                    .hidePlayUI();
+                player.startPlay();
+                mActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            }
+//            }
 
             tvNickName.setText(teacherInfo.getName());
             tvWorkName.setText(teacherInfo.getTitle());
@@ -507,6 +452,8 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
                 }
                 break;
             case ParameterUtils.REQUEST_VIDEO:
+                String videoPath = data.getStringExtra("path");
+                presenter.uploadVideo(new File(videoPath));
                 break;
             default:
                 break;
@@ -621,6 +568,52 @@ public class MyFragment extends UIFragment<MyInfoContract.Presenter> implements 
             return false;
         }
         return true;
+    }
+
+
+    private void setEditTextTextWatch(final EditText editText) {
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (!TextUtils.isEmpty(editable.toString())) {
+                    if (teacherInfo != null) {
+                        String beforeValue = "";
+                        if (editText.getId() == tvNickName.getId()) {
+                            beforeValue = teacherInfo.getName();
+                        } else if (editText.getId() == tvWorkName.getId()) {
+                            beforeValue = teacherInfo.getTitle();
+                        } else if (editText.getId() == tvWorkExperience.getId()) {
+                            beforeValue = teacherInfo.getYearsOfWorking();
+                        } else if (editText.getId() == tvGraduatedSchool.getId()) {
+                            beforeValue = teacherInfo.getSchool();
+                        } else if (editText.getId() == tvEmail.getId()) {
+                            beforeValue = teacherInfo.getEmail();
+                        } else if (editText.getId() == tvName.getId()) {
+                            beforeValue = teacherInfo.getRealName();
+                        } else if (editText.getId() == tvPersonalProfile.getId()) {
+                            beforeValue = teacherInfo.getIntroduction();
+                        } else {
+                            return;
+                        }
+                        if (!editable.toString().equals(beforeValue)) {
+                            myInfoDetailActivity.setPostClick();
+                        } else {
+                            myInfoDetailActivity.setPostUnClick();
+                        }
+                    }
+                }
+            }
+        });
     }
 
 }

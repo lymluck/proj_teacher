@@ -40,7 +40,7 @@ import java.util.List;
 
 public abstract class BaseActivity<P extends BasePresenter> extends SlideBackActivity implements BaseView, View.OnClickListener, PermissionUtil.PermissionCallbacks {
 
-    private ViewGroup rootView;
+    protected ViewGroup rootView;
     private RelativeLayout rlytTop;
     protected ImageView topdefaultLeftbutton;
     protected ImageView topdefaultRightbutton;

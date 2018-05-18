@@ -36,6 +36,8 @@ public interface MyInfoContract {
 
         void getMyInfo();
 
+        void uploadVideo(File file);
+
         void updateMyAvatarInfo(File avatar, ImageView ivAvatar);
 
         void getLogOut();

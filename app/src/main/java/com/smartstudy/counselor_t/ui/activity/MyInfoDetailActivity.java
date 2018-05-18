@@ -21,6 +21,7 @@ import org.greenrobot.eventbus.EventBus;
  * @email yeqingyu@innobuddy.com
  */
 public class MyInfoDetailActivity extends BaseActivity<BasePresenter> {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

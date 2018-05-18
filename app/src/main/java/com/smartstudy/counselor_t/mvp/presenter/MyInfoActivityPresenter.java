@@ -2,6 +2,7 @@ package com.smartstudy.counselor_t.mvp.presenter;
 
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSON;
@@ -9,6 +10,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.smartstudy.counselor_t.entity.IdNameInfo;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.listener.ObserverListener;
+import com.smartstudy.counselor_t.listener.OnUploadFileListener;
 import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
 import com.smartstudy.counselor_t.mvp.contract.MyInfoContract;
 import com.smartstudy.counselor_t.mvp.model.MyInfoModel;
@@ -65,6 +67,16 @@ public class MyInfoActivityPresenter extends BasePresenterImpl<MyInfoContract.Vi
             @Override
             public void onError(String msg) {
                 view.showTip(msg);
+            }
+        });
+    }
+
+    @Override
+    public void uploadVideo(File file) {
+        myInfoModel.uploadVideo(file, new OnUploadFileListener() {
+            @Override
+            public void onProgress(int progress) {
+                Log.d("pro=====", progress + "");
             }
         });
     }

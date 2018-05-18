@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="circleimageview">
+        <attr name="border_width" format="dimension" />
+        <attr name="border_color" format="color" />
+    </declare-styleable>
     <declare-styleable name="TagsLayout">
         <attr name="tagVerticalSpace" format="dimension" />
         <attr name="tagHorizontalSpace" format="dimension" />

@@ -34,7 +34,6 @@ import com.smartstudy.medialib.ijkplayer.entity.VideoijkInfo;
 import com.smartstudy.medialib.ijkplayer.listener.OnControlPanelVisibilityChangeListener;
 import com.smartstudy.medialib.ijkplayer.listener.OnPlayComplete;
 import com.smartstudy.medialib.ijkplayer.listener.OnPlayerBackListener;
-import com.smartstudy.medialib.ijkplayer.listener.OnShowThumbnailListener;
 import com.smartstudy.medialib.ijkplayer.listener.OnToggleFullScreenListener;
 import com.smartstudy.medialib.ijkplayer.util.LogUtils;
 import com.smartstudy.medialib.ijkplayer.util.NetUtils;
@@ -80,10 +79,6 @@ public class PlayerView {
      * 播放器底部控制bar
      */
     private final View ll_bottombar;
-    /**
-     * 播放器封面，播放前的封面或者缩列图
-     */
-    private final ImageView iv_trumb;
     /**
      * 视频方向旋转按钮
      */
@@ -347,11 +342,6 @@ public class PlayerView {
      */
     private OnControlPanelVisibilityChangeListener onControlPanelVisibilityChangeListener;
     /**
-     * 视频封面显示监听
-     */
-    private OnShowThumbnailListener mOnShowThumbnailListener;
-
-    /**
      * 播放结束监听
      */
     private OnPlayComplete mOnPlayComplete;
@@ -597,7 +587,6 @@ public class PlayerView {
         streamSelectListView = (ListView) rootView.findViewById(R.id.simple_player_select_streams_list);
         ll_topbar = rootView.findViewById(R.id.app_video_top_box);
         ll_bottombar = rootView.findViewById(R.id.ll_bottom_bar);
-        iv_trumb = (ImageView) rootView.findViewById(R.id.iv_trumb);
         iv_back = (ImageView) rootView.findViewById(R.id.app_video_finish);
         iv_menu = (ImageView) rootView.findViewById(R.id.app_video_menu);
         iv_player = (ImageView) rootView.findViewById(R.id.play_icon);
@@ -810,17 +799,6 @@ public class PlayerView {
      * ==========================================对外的方法=============================
      */
 
-
-    /**
-     * 显示缩略图
-     */
-    public PlayerView showThumbnail(OnShowThumbnailListener onShowThumbnailListener) {
-        this.mOnShowThumbnailListener = onShowThumbnailListener;
-        if (mOnShowThumbnailListener != null && iv_trumb != null) {
-            mOnShowThumbnailListener.onShowThumbnail(iv_trumb);
-        }
-        return this;
-    }
 
     /**
      * 设置播放信息监听回调

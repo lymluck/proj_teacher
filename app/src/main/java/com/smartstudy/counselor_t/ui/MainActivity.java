@@ -352,10 +352,6 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
                 updateTitle.setText("开始更新");
                 binder.setOnProgressListener(new OnProgressListener() {
                     @Override
-                    public void onStart() {
-                    }
-
-                    @Override
                     public void onProgress(int progress) {
                         if (progress < 100) {
                             Message msg = Message.obtain();

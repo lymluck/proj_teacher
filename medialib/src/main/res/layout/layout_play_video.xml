@@ -180,7 +180,8 @@
         android:layout_centerInParent="true"
         android:layout_marginTop="8dp"
         android:src="@drawable/simple_player_center_play" />
-
+    <!-- 顶部栏-->
+    <include layout="@layout/simple_player_topbar" />
     <!-- 底部栏-->
     <include
         layout="@layout/simple_player_controlbar"

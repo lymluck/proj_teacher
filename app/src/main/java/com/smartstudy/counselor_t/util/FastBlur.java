@@ -14,7 +14,7 @@ import android.view.View;
  */
 public class FastBlur {
 
-    public static Bitmap doBlur(Bitmap sentBitmap, int radius, boolean canReuseInBitmap) {
+    private static Bitmap doBlur(Bitmap sentBitmap, int radius, boolean canReuseInBitmap) {
 
         // Stack Blur v1.0 from
         // http://www.quasimondo.com/StackBlurForCanvas/StackBlurDemo.html
@@ -249,9 +249,9 @@ public class FastBlur {
         return (bitmap);
     }
 
-    private void blur(Bitmap bkg, View view) {
-        float scaleFactor = 8;
-        float radius = 2;
+    public static Bitmap blur(Bitmap bkg, View view) {
+        float scaleFactor = 1;
+        float radius = 20;
 
         Bitmap overlay = Bitmap.createBitmap((int) (view.getMeasuredWidth() / scaleFactor),
             (int) (view.getMeasuredHeight() / scaleFactor), Bitmap.Config.ARGB_8888);
@@ -262,6 +262,6 @@ public class FastBlur {
         paint.setFlags(Paint.FILTER_BITMAP_FLAG);
         canvas.drawBitmap(bkg, 0, 0, paint);
 
-        overlay = FastBlur.doBlur(overlay, (int) radius, true);
+        return doBlur(overlay, (int) radius, true);
     }
 }
