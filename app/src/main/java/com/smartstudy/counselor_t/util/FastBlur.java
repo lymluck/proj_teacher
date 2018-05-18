@@ -250,8 +250,8 @@ public class FastBlur {
     }
 
     public static void blur(final Bitmap bkg, final ImageView view) {
-        final float scaleFactor = 1;
-        final float radius = 20;
+        final float scaleFactor = 8;
+        final float radius = 6;
         if (view.getMeasuredWidth() > 0) {
             Bitmap overlay = Bitmap.createBitmap((int) (view.getMeasuredWidth() / scaleFactor),
                 (int) (view.getMeasuredHeight() / scaleFactor), Bitmap.Config.ARGB_8888);

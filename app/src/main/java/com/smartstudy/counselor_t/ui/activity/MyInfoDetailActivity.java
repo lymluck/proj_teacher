@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -104,6 +103,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
     private LinearLayout llProgress;
     private ProgressBar pb;
     private WeakHandler mHandler;
+    private String videoUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,8 +121,6 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         setRightTxt("保存");
         topdefaultRighttext.setTextColor(Color.parseColor("#E4E5E6"));
 
-
-        findViewById(R.id.app_video_box).setVisibility(View.GONE);
         flAvatar = findViewById(R.id.fl_avatar);
         ivAvatar = findViewById(R.id.iv_avatar);
         tvNickName = findViewById(R.id.tv_nick_name);
@@ -245,21 +243,6 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                 }
             });
             ivThumb = player.getIv_trumb();
-            ViewTreeObserver vto = ivThumb.getViewTreeObserver();
-            vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-
-                @Override
-                public void onGlobalLayout() {
-                    ViewTreeObserver obs = ivThumb.getViewTreeObserver();
-                    FastBlur.blur(BitmapFactory.decodeResource(getResources(), R.drawable.ic_person_default), ivThumb);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        obs.removeOnGlobalLayoutListener(this);
-                    } else {
-                        obs.removeGlobalOnLayoutListener(this);
-                    }
-                }
-
-            });
             player.setScaleType(PlayStateParams.fillparent)
                 .hideControlPanl(true)
                 .hideCenterPlayer(true)
@@ -379,47 +362,51 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
     public void getMyInfoSuccess(final TeacherInfo teacherInfo) {
         if (teacherInfo != null) {
             this.teacherInfo = teacherInfo;
+            videoUrl = teacherInfo.getVideo();
             if (!TextUtils.isEmpty(teacherInfo.getAvatar()) && photoFile == null) {
                 DisplayImageUtils.displayImage(this, teacherInfo.getAvatar(), new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(@NonNull final Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                        if (TextUtils.isEmpty(teacherInfo.getVideo())) {
-                            // 展示封面
-                            ViewTreeObserver vto = ivThumb.getViewTreeObserver();
-                            vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                        if (TextUtils.isEmpty(videoUrl)) {
+                            // 如果没有视频，展示封面
+                            if (TextUtils.isEmpty(videoUrl)) {
+                                ivThumb.setImageBitmap(resource);
+                                ViewTreeObserver vto = ivThumb.getViewTreeObserver();
+                                vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 
-                                @Override
-                                public void onGlobalLayout() {
-                                    ViewTreeObserver obs = ivThumb.getViewTreeObserver();
-                                    FastBlur.blur(resource, ivThumb);
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                        obs.removeOnGlobalLayoutListener(this);
-                                    } else {
-                                        obs.removeGlobalOnLayoutListener(this);
+                                    @Override
+                                    public void onGlobalLayout() {
+                                        ViewTreeObserver obs = ivThumb.getViewTreeObserver();
+                                        ivThumb.buildDrawingCache();
+                                        Bitmap bmp = ivThumb.getDrawingCache();
+                                        FastBlur.blur(bmp, ivThumb);
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                            obs.removeOnGlobalLayoutListener(this);
+                                        } else {
+                                            obs.removeGlobalOnLayoutListener(this);
+                                        }
                                     }
-                                }
 
-                            });
+                                });
+                            }
                         }
                         ivAvatar.setImageBitmap(resource);
                     }
                 });
             }
-//            if (!TextUtils.isEmpty(teacherInfo.getVideo())) {
-            rootView.findViewById(R.id.app_video_box).setVisibility(View.VISIBLE);
-            // 播放视频
-            if (player != null) {
-                player.hideControlPanl(false)
-                    .hideSteam(true)
-                    .hideTopBar(true)
-//                        .setPlaySource(teacherInfo.getVideo())
-                    .setPlaySource("http://medialx.smartstudy.com/counsellor/video/05/89/058961785a022e6632dcece272b27356.mp4")
-                    .hideCenterPlayer(false)
-                    .hidePlayUI();
-                player.startPlay();
-                this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            if (!TextUtils.isEmpty(videoUrl)) {
+                // 播放视频
+                if (player != null) {
+                    player.hideControlPanl(false)
+                        .hideSteam(true)
+                        .hideTopBar(true)
+                        .setPlaySource(videoUrl)
+                        .hideCenterPlayer(false)
+                        .hidePlayUI();
+                    player.startPlay();
+                    this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                }
             }
-//            }
 
             tvNickName.setText(teacherInfo.getName());
             tvWorkName.setText(teacherInfo.getTitle());
@@ -527,7 +514,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
 
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(final int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_OK) {
             return;
@@ -541,6 +528,26 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                         photoFile = resource;
                         // 如果没有视频，则要同步改变封面
                         DisplayImageUtils.displayPersonRes(MyInfoDetailActivity.this, resource, ivAvatar);
+                        if (TextUtils.isEmpty(videoUrl)) {
+                            DisplayImageUtils.displayImageRes(MyInfoDetailActivity.this, resource, ivThumb);
+                            ViewTreeObserver vto = ivThumb.getViewTreeObserver();
+                            vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+
+                                @Override
+                                public void onGlobalLayout() {
+                                    ViewTreeObserver obs = ivThumb.getViewTreeObserver();
+                                    ivThumb.buildDrawingCache();
+                                    Bitmap bmp = ivThumb.getDrawingCache();
+                                    FastBlur.blur(bmp, ivThumb);
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                        obs.removeOnGlobalLayoutListener(this);
+                                    } else {
+                                        obs.removeGlobalOnLayoutListener(this);
+                                    }
+                                }
+
+                            });
+                        }
                         presenter.updateMyAvatarInfo(photoFile, ivAvatar);
                     }
                 });

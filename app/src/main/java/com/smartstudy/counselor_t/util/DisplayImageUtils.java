@@ -78,6 +78,10 @@ public class DisplayImageUtils {
         GlideApp.with(context).load(id).error(R.drawable.ic_img_default).centerCrop().into(view);
     }
 
+    public static void displayImageRes(Context context, File file, ImageView view) {
+        GlideApp.with(context).load(file).error(R.drawable.ic_img_default).centerCrop().into(view);
+    }
+
     public static void displayImageRes(Context context, Drawable drawable, ImageView view) {
         GlideApp.with(context).load(drawable).error(R.drawable.ic_img_default).centerCrop().into(view);
     }
