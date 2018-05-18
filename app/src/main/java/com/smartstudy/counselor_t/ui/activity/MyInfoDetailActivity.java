@@ -14,6 +14,8 @@ import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -33,6 +35,7 @@ import com.smartstudy.counselor_t.mvp.contract.MyInfoDetailContract;
 import com.smartstudy.counselor_t.mvp.presenter.MyInfoDetailPresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.ui.dialog.DialogCreator;
+import com.smartstudy.counselor_t.ui.widget.ReboundScrollView;
 import com.smartstudy.counselor_t.ui.widget.TagsLayout;
 import com.smartstudy.counselor_t.util.CheckUtil;
 import com.smartstudy.counselor_t.util.DensityUtils;
@@ -91,6 +94,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
     private ImageView iv_player;
     private RelativeLayout.LayoutParams params;
     private ImageView iVideoBg;
+    private ReboundScrollView rslInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +122,19 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         setEditTextTextWatch(tvEmail);
         setEditTextTextWatch(tvName);
         setEditTextTextWatch(tvPersonalProfile);
+
+        rslInfo.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (rslInfo.getChildAt(0).getHeight() - rslInfo.getHeight() == rslInfo.getScrollY()) {
+                    if (tvPersonalProfile.isFocused()) {
+                        tvPersonalProfile.setSelection(tvPersonalProfile.getText().toString().length());
+                    }
+                }
+                return false;
+            }
+        });
+
     }
 
     private void initPlayer() {
@@ -270,6 +287,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         tlyTags = findViewById(R.id.tly_tags);
         ivVideoInfo = findViewById(R.id.iv_video_info);
         ivUpLoad = findViewById(R.id.iv_upLoad);
+        rslInfo = findViewById(R.id.sv_info);
         tvPersonalProfile = findViewById(R.id.tv_personal_profile);
         presenter.getOptions();
         if (presenter != null) {
