@@ -194,15 +194,13 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
 
     @Override
     public void onClick(View v) {
+        super.onClick(v);
         switch (v.getId()) {
             case R.id.ll_other_tag:
                 startActivity(new Intent(this, OtherTeacherTagActivity.class).putExtra("id", studentInfo.getId()));
                 break;
             case R.id.tv_add_tags:
                 startActivity(new Intent(this, AddLabelActivity.class).putExtra("id", studentInfo.getId()));
-                break;
-            case R.id.topdefault_leftbutton:
-                finish();
                 break;
             default:
                 break;

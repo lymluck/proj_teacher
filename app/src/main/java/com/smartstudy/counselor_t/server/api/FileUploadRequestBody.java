@@ -1,5 +1,7 @@
 package com.smartstudy.counselor_t.server.api;
 
+import android.util.Log;
+
 import com.smartstudy.counselor_t.listener.OnUploadFileListener;
 
 import java.io.IOException;
@@ -83,7 +85,7 @@ public class FileUploadRequestBody<T> extends RequestBody {
                 //增加当前写入的字节数
                 bytesWritten += byteCount;
                 //回调
-                callback.onProgress((int) (bytesWritten / contentLength));
+                callback.onProgress((int) (bytesWritten * 100 / contentLength));
             }
         };
     }

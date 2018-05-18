@@ -1,7 +1,9 @@
 package com.smartstudy.counselor_t.mvp.model;
 
 import android.text.TextUtils;
+import android.util.Log;
 
+import com.smartstudy.counselor_t.entity.ResponseInfo;
 import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.listener.OnUploadFileListener;
 import com.smartstudy.counselor_t.mvp.base.BaseModel;
@@ -10,11 +12,21 @@ import com.smartstudy.counselor_t.server.api.FileUploadRequestBody;
 import com.smartstudy.counselor_t.util.AppUtils;
 import com.smartstudy.counselor_t.util.HttpUrlUtils;
 
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
+
 import java.io.File;
 
+import io.reactivex.Observer;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 
 /**
  * @author yqy
@@ -26,10 +38,31 @@ import okhttp3.RequestBody;
 public class MyInfoDetailModel extends BaseModel {
 
     public void uploadVideo(File file, OnUploadFileListener listener) {
-        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        final RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         FileUploadRequestBody fileUploadRequestBody = new FileUploadRequestBody(requestBody, listener);
-        fileObservalbe(ApiManager.getApiService().upLoadTeacherVideo(getHeadersMap(), fileUploadRequestBody));
+        fileObservalbe(ApiManager.getApiService().upLoadTeacherVideo(getHeadersMap(), fileUploadRequestBody)).subscribe(new Observer<ResponseBody>() {
+
+            @Override
+            public void onSubscribe(Disposable disposable) {
+
+            }
+
+            @Override
+            public void onNext(ResponseBody responseBody) {
+                Log.w("kim", "-----" + requestBody.toString());
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                Log.w("kim", "错误======");
+            }
+
+            @Override
+            public void onComplete() {
+            }
+        });
     }
+
 
     public void getAuditResult(ObserverListener listener) {
         apiSubscribe(ApiManager.getApiService().getMyInfo(getHeadersMap()), listener);

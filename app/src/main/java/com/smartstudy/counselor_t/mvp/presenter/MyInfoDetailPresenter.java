@@ -77,6 +77,7 @@ public class MyInfoDetailPresenter extends BasePresenterImpl<MyInfoDetailContrac
             @Override
             public void onProgress(int progress) {
                 Log.d("pro=====", progress + "");
+                Log.w("kim","返回进度---->"+progress+"");
             }
         });
     }
