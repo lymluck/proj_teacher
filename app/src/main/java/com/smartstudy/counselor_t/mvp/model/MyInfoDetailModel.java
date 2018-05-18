@@ -28,7 +28,8 @@ public class MyInfoDetailModel extends BaseModel {
     public void uploadVideo(File file, OnUploadFileListener listener) {
         RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         FileUploadRequestBody fileUploadRequestBody = new FileUploadRequestBody(requestBody, listener);
-        fileObservalbe(ApiManager.getApiService().upLoadTeacherVideo(getHeadersMap(), fileUploadRequestBody));
+        fileObservalbe(ApiManager.getApiService().upLoadTeacherVideo(getHeadersMap(), fileUploadRequestBody))
+        .subscribe();
     }
 
     public void getAuditResult(ObserverListener listener) {

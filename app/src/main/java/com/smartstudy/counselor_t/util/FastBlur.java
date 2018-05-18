@@ -3,7 +3,7 @@ package com.smartstudy.counselor_t.util;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.view.View;
+import android.widget.ImageView;
 
 /**
  * @author louis
@@ -249,19 +249,20 @@ public class FastBlur {
         return (bitmap);
     }
 
-    public static Bitmap blur(Bitmap bkg, View view) {
-        float scaleFactor = 1;
-        float radius = 20;
-
-        Bitmap overlay = Bitmap.createBitmap((int) (view.getMeasuredWidth() / scaleFactor),
-            (int) (view.getMeasuredHeight() / scaleFactor), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(overlay);
-        canvas.translate(-view.getLeft() / scaleFactor, -view.getTop() / scaleFactor);
-        canvas.scale(1 / scaleFactor, 1 / scaleFactor);
-        Paint paint = new Paint();
-        paint.setFlags(Paint.FILTER_BITMAP_FLAG);
-        canvas.drawBitmap(bkg, 0, 0, paint);
-
-        return doBlur(overlay, (int) radius, true);
+    public static void blur(final Bitmap bkg, final ImageView view) {
+        final float scaleFactor = 1;
+        final float radius = 20;
+        if (view.getMeasuredWidth() > 0) {
+            Bitmap overlay = Bitmap.createBitmap((int) (view.getMeasuredWidth() / scaleFactor),
+                (int) (view.getMeasuredHeight() / scaleFactor), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(overlay);
+            canvas.translate(-view.getLeft() / scaleFactor, -view.getTop() / scaleFactor);
+            canvas.scale(1 / scaleFactor, 1 / scaleFactor);
+            Paint paint = new Paint();
+            paint.setFlags(Paint.FILTER_BITMAP_FLAG);
+            canvas.drawBitmap(bkg, 0, 0, paint);
+            DisplayImageUtils.displayImageRes(view.getContext(),
+                doBlur(overlay, (int) radius, true), view);
+        }
     }
 }

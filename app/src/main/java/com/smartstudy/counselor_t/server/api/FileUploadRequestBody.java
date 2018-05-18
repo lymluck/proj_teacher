@@ -83,7 +83,7 @@ public class FileUploadRequestBody<T> extends RequestBody {
                 //增加当前写入的字节数
                 bytesWritten += byteCount;
                 //回调
-                callback.onProgress((int) (bytesWritten / contentLength));
+                callback.onProgress((int) (bytesWritten * 100 / contentLength));
             }
         };
     }

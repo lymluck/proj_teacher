@@ -2,7 +2,6 @@ package com.smartstudy.counselor_t.mvp.presenter;
 
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSON;
@@ -76,7 +75,7 @@ public class MyInfoDetailPresenter extends BasePresenterImpl<MyInfoDetailContrac
         myInfoDetailModel.uploadVideo(file, new OnUploadFileListener() {
             @Override
             public void onProgress(int progress) {
-                Log.d("pro=====", progress + "");
+                view.onLoading(progress);
             }
         });
     }
