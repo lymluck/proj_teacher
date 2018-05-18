@@ -121,7 +121,6 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         setTopdefaultRighttextVisible(View.VISIBLE);
         setRightTxt("保存");
         topdefaultRighttext.setTextColor(Color.parseColor("#E4E5E6"));
-
         flAvatar = findViewById(R.id.fl_avatar);
         ivAvatar = findViewById(R.id.iv_avatar);
         tvNickName = findViewById(R.id.tv_nick_name);
