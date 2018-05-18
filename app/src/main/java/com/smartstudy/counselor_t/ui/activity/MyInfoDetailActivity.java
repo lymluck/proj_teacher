@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -529,7 +530,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                         // 如果没有视频，则要同步改变封面
                         DisplayImageUtils.displayPersonRes(MyInfoDetailActivity.this, resource, ivAvatar);
                         if (TextUtils.isEmpty(videoUrl)) {
-                            DisplayImageUtils.displayImageRes(MyInfoDetailActivity.this, resource, ivThumb);
+                            ivThumb.setImageBitmap(BitmapFactory.decodeFile(resource.getAbsolutePath()));
                             ViewTreeObserver vto = ivThumb.getViewTreeObserver();
                             vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 
