@@ -740,6 +740,5 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
             }
         });
     }
-
 }
 
