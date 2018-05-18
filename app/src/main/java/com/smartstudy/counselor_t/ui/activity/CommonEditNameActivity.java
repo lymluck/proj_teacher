@@ -11,7 +11,6 @@ import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.mvp.contract.CommonEditNameContract;
 import com.smartstudy.counselor_t.mvp.presenter.CommonEditNamePresenter;
-import com.smartstudy.counselor_t.mvp.presenter.MyInfoActivityPresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.util.CheckUtil;
 import com.smartstudy.counselor_t.util.KeyBoardUtils;

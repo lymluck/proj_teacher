@@ -36,7 +36,6 @@ import com.smartstudy.counselor_t.ui.activity.LoginActivity;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.ui.dialog.AppBasicDialog;
 import com.smartstudy.counselor_t.ui.dialog.DialogCreator;
-import com.smartstudy.counselor_t.ui.fragment.MyFragment;
 import com.smartstudy.counselor_t.ui.fragment.QaFragment;
 import com.smartstudy.counselor_t.ui.widget.DragPointView;
 import com.smartstudy.counselor_t.util.ConstantUtils;
@@ -113,7 +112,7 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
         mUnreadNumView = findViewById(R.id.xxd_num);
         mFragment.add(conversationList);
         mFragment.add(new QaFragment());
-        mFragment.add(new MyFragment());
+//        mFragment.add(new MyFragment());
         changeTextViewColor();
         changeSelectedTabState(0);
         String ticket = (String) SPCacheUtils.get("ticket", ConstantUtils.CACHE_NULL);
