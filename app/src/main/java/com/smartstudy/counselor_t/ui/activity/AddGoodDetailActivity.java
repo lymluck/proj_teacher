@@ -148,7 +148,6 @@ public class AddGoodDetailActivity extends BaseActivity<AddGoodDetailContract.Pr
                     holder.setText(R.id.tv_time, addGoodInfo.getLikeTimeText());
                     String addCount = "赞了你<font color='#078CF1'>" + addGoodInfo.getLikesCount() + "</font>次";
                     ((TextView) holder.getView(R.id.tv_add_count)).setText(Html.fromHtml(addCount));
-
                     holder.getView(R.id.iv_avatar).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -166,18 +165,8 @@ public class AddGoodDetailActivity extends BaseActivity<AddGoodDetailContract.Pr
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.topdefault_leftbutton:
-                finish();
-                break;
-            default:
-                break;
-        }
-    }
-
-    @Override
     public void initEvent() {
+        super.initEvent();
         rclvAddGood.SetOnLoadMoreLister(new LoadMoreRecyclerView.OnLoadMoreListener() {
             @Override
             public void OnLoad() {
@@ -185,8 +174,6 @@ public class AddGoodDetailActivity extends BaseActivity<AddGoodDetailContract.Pr
                 presenter.getAddGoodDetail(mPage, ParameterUtils.PULL_UP);
             }
         });
-
-        topdefaultLeftbutton.setOnClickListener(this);
     }
 
     @Override

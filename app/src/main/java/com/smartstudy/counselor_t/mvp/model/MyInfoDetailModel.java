@@ -1,6 +1,7 @@
 package com.smartstudy.counselor_t.mvp.model;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.listener.OnUploadFileListener;
@@ -12,9 +13,12 @@ import com.smartstudy.counselor_t.util.HttpUrlUtils;
 
 import java.io.File;
 
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 
 /**
  * @author yqy
@@ -26,10 +30,9 @@ import okhttp3.RequestBody;
 public class MyInfoDetailModel extends BaseModel {
 
     public void uploadVideo(File file, OnUploadFileListener listener) {
-        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        final RequestBody requestBody = RequestBody.create(MediaType.parse("video/mp4"), file);
         FileUploadRequestBody fileUploadRequestBody = new FileUploadRequestBody(requestBody, listener);
-        fileObservalbe(ApiManager.getApiService().upLoadTeacherVideo(getHeadersMap(), fileUploadRequestBody))
-        .subscribe();
+        fileObservalbe(ApiManager.getApiService().upLoadTeacherVideo(getHeadersMap(), fileUploadRequestBody)).subscribe();
     }
 
     public void getAuditResult(ObserverListener listener) {

@@ -2,6 +2,7 @@ package com.smartstudy.counselor_t.mvp.presenter;
 
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSON;
@@ -39,13 +40,11 @@ public class MyInfoDetailPresenter extends BasePresenterImpl<MyInfoDetailContrac
         myInfoDetailModel = new MyInfoDetailModel();
     }
 
-
     @Override
     public void detach() {
         super.detach();
         myInfoDetailModel = null;
     }
-
 
     @Override
     public void getMyInfo() {

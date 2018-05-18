@@ -193,6 +193,9 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                             pb.setProgress(progress);
                         } else {
                             llProgress.setVisibility(View.GONE);
+                            llUpload.setVisibility(View.VISIBLE);
+                            tvAddGood.setVisibility(View.VISIBLE);
+                            presenter.getMyInfo();
                         }
                         break;
                     default:
@@ -586,6 +589,8 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                 break;
             case ParameterUtils.REQUEST_VIDEO:
                 String videoPath = data.getStringExtra("path");
+                llUpload.setVisibility(View.GONE);
+                tvAddGood.setVisibility(View.GONE);
                 presenter.uploadVideo(new File(videoPath));
                 break;
             default:
