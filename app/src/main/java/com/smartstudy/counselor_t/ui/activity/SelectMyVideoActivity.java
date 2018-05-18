@@ -96,15 +96,12 @@ public class SelectMyVideoActivity extends BaseActivity<BasePresenter> implement
     private ListDirPopupWindow mListDirPopupWindow;
 
     private String firstVideo = null;
-    private Uri imageUri = null;
     private WeakHandler myHandler = null;
-    private File saveFile;// 保存文件夹
-    private String saveName = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        super.setContentView(R.layout.activity_select_my_photo);
+        super.setContentView(R.layout.activity_select_my_media);
     }
 
     @Override
@@ -144,9 +141,8 @@ public class SelectMyVideoActivity extends BaseActivity<BasePresenter> implement
     @Override
     public void initEvent() {
         findViewById(R.id.topdefault_leftbutton).setOnClickListener(this);
-        TextView tvChooseDir = findViewById(R.id.id_choose_dir);
-        tvChooseDir.setText(ParameterUtils.ALL_VIDEOS);
-        tvChooseDir.setOnClickListener(this);
+        mChooseDir.setText(ParameterUtils.ALL_VIDEOS);
+        mChooseDir.setOnClickListener(this);
     }
 
     @Override
@@ -254,21 +250,24 @@ public class SelectMyVideoActivity extends BaseActivity<BasePresenter> implement
                         + MediaStore.Video.Media.MIME_TYPE + "=? or " + MediaStore.Video.Media.MIME_TYPE + "=?",
                     new String[]{"video/mpeg", "video/mp4", "video/3gpp"}, MediaStore.Video.Media.DATE_MODIFIED + " DESC");
 
-                FloderInfo mAllPics = new FloderInfo();
-                mAllPics.setIsSelected(true);
-                mAllPics.setDir(null);
+                FloderInfo mAllVideos = new FloderInfo();
+                mAllVideos.setIsSelected(true);
+                mAllVideos.setDir(null);
                 if (mCursor != null) {
-                    mAllPics.setCount(mCursor.getCount());
+                    mAllVideos.setCount(mCursor.getCount());
                     while (mCursor.moveToNext()) {
                         // 获取图片的路径
                         String path = mCursor.getString(mCursor.getColumnIndex(MediaStore.Video.Media.DATA));
-                        long duration = mCursor.getLong(mCursor.getColumnIndex(MediaStore.Video.Media.DURATION));
-                        mVideos.add(new MediaInfo(path, duration));
+                        long size = mCursor.getLong(mCursor.getColumnIndex(MediaStore.Video.Media.SIZE));
+                        mVideos.add(new MediaInfo(path, Utils.getFormatSize(size), "video"));
                         // 拿到第一张图片的路径
                         if (firstVideo == null) {
                             firstVideo = path;
-                            mAllPics.setFirstPath(firstVideo);
-                            mVideoFloders.add(mAllPics);
+                            mAllVideos.setFirstPath(firstVideo);
+                            mAllVideos.setName(ParameterUtils.ALL_VIDEOS);
+                            mAllVideos.setType("video");
+                            mVideoFloders.add(mAllVideos);
+                            mAllVideos = null;
                         }
 
                         // 获取该图片的父路径名
@@ -304,6 +303,7 @@ public class SelectMyVideoActivity extends BaseActivity<BasePresenter> implement
                         totalCount += picSize;
 
                         imageFloder.setCount(picSize);
+                        imageFloder.setType("video");
                         mVideoFloders.add(imageFloder);
 
                         if (picSize > mVideosSize) {
@@ -370,7 +370,7 @@ public class SelectMyVideoActivity extends BaseActivity<BasePresenter> implement
     public void selected(FloderInfo floder) {
         if (floder.getDir() != null) {
             mVideoDir = new File(floder.getDir());
-            List<String> Imgs_name = Arrays.asList(mVideoDir.list(new FilenameFilter() {
+            List<String> videoNames = Arrays.asList(mVideoDir.list(new FilenameFilter() {
                 @Override
                 public boolean accept(File dir, String filename) {
                     return filename.endsWith(".mpeg") || filename.endsWith(".mp4")
@@ -382,8 +382,10 @@ public class SelectMyVideoActivity extends BaseActivity<BasePresenter> implement
              */
             mImageCount.setText(floder.getCount() + getString(R.string.picture_unit));
             mDirVideos.clear();
-            for (String name : Imgs_name) {
-                mDirVideos.add(new MediaInfo(mVideoDir + "/" + name, 0));
+            for (String name : videoNames) {
+                String path = mVideoDir + "/" + name;
+                String size = Utils.getFormatSize(new File(path).length());
+                mDirVideos.add(new MediaInfo(path, size, "video"));
             }
             mAdapter = new SelectMyMediaAdapter(SelectMyVideoActivity.this, mDirVideos, R.layout.item_my_select_pic_grid);
             initItemClick();
@@ -392,7 +394,8 @@ public class SelectMyVideoActivity extends BaseActivity<BasePresenter> implement
             mChooseDir.setText(floder.getName());
         } else {
             mDirPaths = new HashSet<>();
-            getImages();
+            mChooseDir.setText(ParameterUtils.ALL_VIDEOS);
+            dataToView();
         }
         mListDirPopupWindow.dismiss();
 

@@ -1,5 +1,7 @@
 package com.smartstudy.counselor_t.entity;
 
+import android.provider.MediaStore;
+
 /**
  * @author louis
  * @date on 2018/5/17
@@ -9,13 +11,15 @@ package com.smartstudy.counselor_t.entity;
  */
 public class MediaInfo {
 
-    public MediaInfo(String path, long duration) {
+    public MediaInfo(String path, String size,String type) {
         this.path = path;
-        this.duration = duration;
+        this.size = size;
+        this.type = type;
     }
 
     private String path;
-    private long duration;
+    private String size;
+    private String type;
 
     public String getPath() {
         return path;
@@ -25,11 +29,19 @@ public class MediaInfo {
         this.path = path;
     }
 
-    public long getDuration() {
-        return duration;
+    public String getSize() {
+        return size;
     }
 
-    public void setDuration(long duration) {
-        this.duration = duration;
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

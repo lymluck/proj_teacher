@@ -38,15 +38,23 @@ public class SelectMyMediaAdapter extends CommonAdapter<MediaInfo> {
         ImageView imageView = helper.getView(R.id.id_item_image);
         LinearLayout mCheckBoxLl = helper.getView(R.id.llyt_check_pic);
         final TextView mCapture = helper.getView(R.id.photo_item_one);
+        TextView tvSize = helper.getView(R.id.tv_size);
         // 设置图片
         if (info != null) {
             helper.setImageUrl(imageView, info.getPath());
             imageView.setVisibility(View.VISIBLE);
             mCapture.setVisibility(View.GONE);
+            if ("video".equals(info.getType())) {
+                tvSize.setVisibility(View.VISIBLE);
+                tvSize.setText(info.getSize());
+            } else {
+                tvSize.setVisibility(View.GONE);
+            }
         } else {
             imageView.setVisibility(View.GONE);
             mCapture.setVisibility(View.VISIBLE);
             mCheckBoxLl.setVisibility(View.GONE);
+            tvSize.setVisibility(View.GONE);
         }
 
         final CheckBox mCheckBox = helper.getView(R.id.child_checkbox);
