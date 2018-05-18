@@ -6,8 +6,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,10 +22,13 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -29,8 +36,8 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.IdNameInfo;
-import com.smartstudy.counselor_t.entity.SaveItem;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
+import com.smartstudy.counselor_t.handler.WeakHandler;
 import com.smartstudy.counselor_t.mvp.contract.MyInfoDetailContract;
 import com.smartstudy.counselor_t.mvp.presenter.MyInfoDetailPresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
@@ -50,8 +57,6 @@ import com.smartstudy.medialib.ijkplayer.listener.OnPlayComplete;
 import com.smartstudy.medialib.ijkplayer.listener.OnToggleFullScreenListener;
 import com.smartstudy.medialib.ijkplayer.widget.PlayStateParams;
 import com.smartstudy.medialib.ijkplayer.widget.PlayerView;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -93,13 +98,57 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
     public PlayerView player;
     private ImageView iv_player;
     private RelativeLayout.LayoutParams params;
-    private ImageView iVideoBg;
     private ReboundScrollView rslInfo;
+    private FrameLayout flAvatar;
+    private ImageView ivThumb;
+    private LinearLayout llUpload;
+    private LinearLayout llProgress;
+    private ProgressBar pb;
+    private WeakHandler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_info);
+
+    }
+
+    @Override
+    public void initView() {
+        setLeftImgVisible(View.VISIBLE);
+        setTopdefaultRighttextColor("#078CF1");
+        setTitle("个人信息");
+        setTopdefaultRighttextVisible(View.VISIBLE);
+        setRightTxt("保存");
+        topdefaultRighttext.setTextColor(Color.parseColor("#E4E5E6"));
+
+        findViewById(R.id.app_video_box).setVisibility(View.GONE);
+        flAvatar = findViewById(R.id.fl_avatar);
+        ivAvatar = findViewById(R.id.iv_avatar);
+        tvNickName = findViewById(R.id.tv_nick_name);
+        tvWorkName = findViewById(R.id.tv_work_name);
+        tvWorkExperience = findViewById(R.id.tv_work_experience);
+        tvGraduatedSchool = findViewById(R.id.tv_graduated_school);
+        tvName = findViewById(R.id.tv_name);
+        tvEmail = findViewById(R.id.tv_email);
+        llCity = findViewById(R.id.ll_city);
+        tvAddGood = findViewById(R.id.tv_add_good);
+        tvCity = findViewById(R.id.tv_work_city);
+        llGoodBusiness = findViewById(R.id.ll_good_business);
+        tvLoginOut = findViewById(R.id.tv_login_out);
+        tlyTags = findViewById(R.id.tly_tags);
+        ivVideoInfo = findViewById(R.id.iv_video_info);
+        ivUpLoad = findViewById(R.id.iv_upLoad);
+        rslInfo = findViewById(R.id.sv_info);
+        llUpload = findViewById(R.id.ll_upload);
+        llProgress = findViewById(R.id.ll_progress);
+        pb = findViewById(R.id.pb_qa);
+        tvPersonalProfile = findViewById(R.id.tv_personal_profile);
+        presenter.getOptions();
+        if (presenter != null) {
+            presenter.getMyInfo();
+        }
+        initPlayer();
     }
 
     @Override
@@ -134,6 +183,28 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                 return false;
             }
         });
+        mHandler = new WeakHandler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                switch (msg.what) {
+                    case ParameterUtils.EMPTY_WHAT:
+                        int progress = msg.arg1;
+                        if (progress < 100) {
+                            llProgress.setVisibility(View.VISIBLE);
+                            pb.setProgress(progress);
+                        } else {
+                            llProgress.setVisibility(View.GONE);
+                            llUpload.setVisibility(View.VISIBLE);
+                            tvAddGood.setVisibility(View.VISIBLE);
+                            presenter.getMyInfo();
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                return false;
+            }
+        });
 
     }
 
@@ -150,7 +221,12 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
             player.setOnToggleFullScreenListener(new OnToggleFullScreenListener() {
                 @Override
                 public void onLandScape() {
-                    player.forbidScroll(false).hideBottomBar(false).hideCenterPlayer(false);
+                    setHeadVisible(View.GONE);
+                    flAvatar.setVisibility(View.GONE);
+                    llUpload.setVisibility(View.GONE);
+                    tvAddGood.setVisibility(View.GONE);
+                    player.forbidScroll(false).hideBottomBar(false).hideCenterPlayer(false)
+                        .setHideAllUI(false);
                     params.width = ViewGroup.LayoutParams.WRAP_CONTENT;
                     params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
                     iv_player.setLayoutParams(params);
@@ -159,16 +235,38 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
 
                 @Override
                 public void onPortrait() {
-                    player.forbidScroll(true).hideBottomBar(true).hideCenterPlayer(true);
+                    setHeadVisible(View.VISIBLE);
+                    flAvatar.setVisibility(View.VISIBLE);
+                    llUpload.setVisibility(View.VISIBLE);
+                    tvAddGood.setVisibility(View.VISIBLE);
+                    player.forbidScroll(true).hideBottomBar(true).hideCenterPlayer(true)
+                        .setHideAllUI(true);
                     params.width = DensityUtils.dip2px(45);
                     params.height = DensityUtils.dip2px(45);
                     iv_player.setLayoutParams(params);
                     rootView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
                 }
             });
+            ivThumb = player.getIv_trumb();
+            ViewTreeObserver vto = ivThumb.getViewTreeObserver();
+            vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+
+                @Override
+                public void onGlobalLayout() {
+                    ViewTreeObserver obs = ivThumb.getViewTreeObserver();
+                    FastBlur.blur(BitmapFactory.decodeResource(getResources(), R.drawable.ic_person_default), ivThumb);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        obs.removeOnGlobalLayoutListener(this);
+                    } else {
+                        obs.removeGlobalOnLayoutListener(this);
+                    }
+                }
+
+            });
             player.setScaleType(PlayStateParams.fillparent)
                 .hideControlPanl(true)
                 .hideCenterPlayer(true)
+                .setHideAllUI(true)
                 .hideTopBar(true)
                 .hideBottomBar(true)
                 .hideCenterPlayer(true)
@@ -185,11 +283,21 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (player != null && player.onBackPressed()) {
+            return;
+        }
+        super.onBackPressed();
+    }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.topdefault_leftbutton:
+                if (player != null && player.onBackPressed()) {
+                    return;
+                }
                 finish();
                 break;
             case R.id.topdefault_righttext:
@@ -259,43 +367,6 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         return new MyInfoDetailPresenter(this);
     }
 
-    @Override
-    public void initView() {
-        setLeftImgVisible(View.VISIBLE);
-        setTitleLineVisible(View.VISIBLE);
-        setTopdefaultRighttextColor("#078CF1");
-        setTitle("个人信息");
-        setTopdefaultRighttextVisible(View.VISIBLE);
-        setRightTxt("保存");
-        topdefaultRighttext.setTextColor(Color.parseColor("#E4E5E6"));
-
-
-        findViewById(R.id.app_video_box).setVisibility(View.GONE);
-        iVideoBg = findViewById(R.id.iv_video_bg);
-        ivAvatar = findViewById(R.id.iv_avatar);
-        tvNickName = findViewById(R.id.tv_nick_name);
-        tvWorkName = findViewById(R.id.tv_work_name);
-        tvWorkExperience = findViewById(R.id.tv_work_experience);
-        tvGraduatedSchool = findViewById(R.id.tv_graduated_school);
-        tvName = findViewById(R.id.tv_name);
-        tvEmail = findViewById(R.id.tv_email);
-        llCity = findViewById(R.id.ll_city);
-        tvAddGood = findViewById(R.id.tv_add_good);
-        tvCity = findViewById(R.id.tv_work_city);
-        llGoodBusiness = findViewById(R.id.ll_good_business);
-        tvLoginOut = findViewById(R.id.tv_login_out);
-        tlyTags = findViewById(R.id.tly_tags);
-        ivVideoInfo = findViewById(R.id.iv_video_info);
-        ivUpLoad = findViewById(R.id.iv_upLoad);
-        rslInfo = findViewById(R.id.sv_info);
-        tvPersonalProfile = findViewById(R.id.tv_personal_profile);
-        presenter.getOptions();
-        if (presenter != null) {
-            presenter.getMyInfo();
-        }
-        initPlayer();
-    }
-
 
     public void setPostClick() {
         topdefaultRighttext.setClickable(true);
@@ -314,10 +385,24 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
             if (!TextUtils.isEmpty(teacherInfo.getAvatar()) && photoFile == null) {
                 DisplayImageUtils.displayImage(this, teacherInfo.getAvatar(), new SimpleTarget<Bitmap>() {
                     @Override
-                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                    public void onResourceReady(@NonNull final Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                         if (TextUtils.isEmpty(teacherInfo.getVideo())) {
                             // 展示封面
-                            iVideoBg.setImageBitmap(FastBlur.blur(resource, iVideoBg));
+                            ViewTreeObserver vto = ivThumb.getViewTreeObserver();
+                            vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+
+                                @Override
+                                public void onGlobalLayout() {
+                                    ViewTreeObserver obs = ivThumb.getViewTreeObserver();
+                                    FastBlur.blur(resource, ivThumb);
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                        obs.removeOnGlobalLayoutListener(this);
+                                    } else {
+                                        obs.removeGlobalOnLayoutListener(this);
+                                    }
+                                }
+
+                            });
                         }
                         ivAvatar.setImageBitmap(resource);
                     }
@@ -325,7 +410,6 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
             }
 //            if (!TextUtils.isEmpty(teacherInfo.getVideo())) {
             rootView.findViewById(R.id.app_video_box).setVisibility(View.VISIBLE);
-            iVideoBg.setVisibility(View.GONE);
             // 播放视频
             if (player != null) {
                 player.hideControlPanl(false)
@@ -405,6 +489,14 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
     public void updateMyInfoSuccess() {
         ToastUtils.shortToast(this, "更新成功");
         finish();
+    }
+
+    @Override
+    public void onLoading(int progress) {
+        Message msg = Message.obtain();
+        msg.what = ParameterUtils.EMPTY_WHAT;
+        msg.arg1 = progress;
+        mHandler.sendMessage(msg);
     }
 
     @Override
@@ -489,6 +581,8 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                 break;
             case ParameterUtils.REQUEST_VIDEO:
                 String videoPath = data.getStringExtra("path");
+                llUpload.setVisibility(View.GONE);
+                tvAddGood.setVisibility(View.GONE);
                 presenter.uploadVideo(new File(videoPath));
                 break;
             default:

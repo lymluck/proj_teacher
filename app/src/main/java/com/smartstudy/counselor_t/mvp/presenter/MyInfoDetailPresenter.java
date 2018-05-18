@@ -40,13 +40,11 @@ public class MyInfoDetailPresenter extends BasePresenterImpl<MyInfoDetailContrac
         myInfoDetailModel = new MyInfoDetailModel();
     }
 
-
     @Override
     public void detach() {
         super.detach();
         myInfoDetailModel = null;
     }
-
 
     @Override
     public void getMyInfo() {
@@ -76,8 +74,7 @@ public class MyInfoDetailPresenter extends BasePresenterImpl<MyInfoDetailContrac
         myInfoDetailModel.uploadVideo(file, new OnUploadFileListener() {
             @Override
             public void onProgress(int progress) {
-                Log.d("pro=====", progress + "");
-                Log.w("kim","返回进度---->"+progress+"");
+                view.onLoading(progress);
             }
         });
     }

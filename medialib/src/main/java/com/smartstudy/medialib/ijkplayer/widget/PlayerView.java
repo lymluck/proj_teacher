@@ -76,6 +76,10 @@ public class PlayerView {
      */
     private final View ll_topbar;
     /**
+     * 播放器封面，播放前的封面或者缩列图
+     */
+    private final ImageView iv_trumb;
+    /**
      * 播放器底部控制bar
      */
     private final View ll_bottombar;
@@ -208,6 +212,10 @@ public class PlayerView {
      * 禁止收起控制面板，默认可以收起，true为禁止false为可触摸
      */
     private boolean isForbidHideControlPanl;
+    /**
+     * 隐藏所有ui
+     */
+    private boolean hideAllUI;
     /**
      * 当前是否切换视频流，默认为否，true是切换视频流，false没有切换
      */
@@ -587,6 +595,7 @@ public class PlayerView {
         streamSelectListView = (ListView) rootView.findViewById(R.id.simple_player_select_streams_list);
         ll_topbar = rootView.findViewById(R.id.app_video_top_box);
         ll_bottombar = rootView.findViewById(R.id.ll_bottom_bar);
+        iv_trumb = (ImageView) rootView.findViewById(R.id.iv_trumb);
         iv_back = (ImageView) rootView.findViewById(R.id.app_video_finish);
         iv_menu = (ImageView) rootView.findViewById(R.id.app_video_menu);
         iv_player = (ImageView) rootView.findViewById(R.id.play_icon);
@@ -799,6 +808,10 @@ public class PlayerView {
      * ==========================================对外的方法=============================
      */
 
+
+    /**
+     * 显示缩略图
+     */
 
     /**
      * 设置播放信息监听回调
@@ -1130,6 +1143,14 @@ public class PlayerView {
     }
 
     /**
+     * 设置是否禁止隐藏bar
+     */
+    public PlayerView setHideAllUI(boolean flag) {
+        this.hideAllUI = flag;
+        return this;
+    }
+
+    /**
      * 当前播放的是否是直播
      */
     public boolean isLive() {
@@ -1212,6 +1233,10 @@ public class PlayerView {
      */
     public ImageView getPlayerView() {
         return iv_player;
+    }
+
+    public ImageView getIv_trumb() {
+        return iv_trumb;
     }
 
     /**
@@ -1516,7 +1541,9 @@ public class PlayerView {
                         iv_player.setVisibility(View.GONE);
                         query.id(R.id.app_video_netTie).visible();
                     } else {
-                        operatorPanl();
+                        if (!hideAllUI) {
+                            operatorPanl();
+                        }
                     }
                     /**延迟0.5秒隐藏视频封面隐藏*/
                     query.id(R.id.iv_trumb).gone();
@@ -1955,7 +1982,9 @@ public class PlayerView {
             if (mShouldAutoPlay && !isForbidHideControlPanl) {
                 mHandler.removeCallbacks(this);
                 LogUtils.d(mContext, "线程执行==========");
-                operatorPanl();
+                if (!hideAllUI) {
+                    operatorPanl();
+                }
             }
         }
     }
@@ -2044,7 +2073,9 @@ public class PlayerView {
             /**视频视窗单击事件*/
             if (!isForbidHideControlPanl) {
                 LogUtils.d(mContext, "单击==========");
-                operatorPanl();
+                if (!hideAllUI) {
+                    operatorPanl();
+                }
             }
             return true;
         }

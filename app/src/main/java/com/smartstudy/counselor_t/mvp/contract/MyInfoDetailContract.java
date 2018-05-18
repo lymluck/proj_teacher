@@ -29,6 +29,8 @@ public interface MyInfoDetailContract {
         void getOptionsSuccess(List<IdNameInfo> workIdNameInfos, List<IdNameInfo> adeptIdNameInfos);
 
         void updateMyInfoSuccess();
+
+        void onLoading(int progress);
     }
 
     interface Presenter extends BasePresenter {
