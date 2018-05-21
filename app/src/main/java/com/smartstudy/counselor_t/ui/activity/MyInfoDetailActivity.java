@@ -18,6 +18,7 @@ import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -52,6 +54,9 @@ import com.smartstudy.counselor_t.util.ParameterUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
 import com.smartstudy.counselor_t.util.ToastUtils;
 import com.smartstudy.counselor_t.util.Utils;
+import com.smartstudy.counselor_t.videocompress.CompressListener;
+import com.smartstudy.counselor_t.videocompress.Compressor;
+import com.smartstudy.counselor_t.videocompress.InitListener;
 import com.smartstudy.medialib.ijkplayer.listener.OnPlayComplete;
 import com.smartstudy.medialib.ijkplayer.listener.OnToggleFullScreenListener;
 import com.smartstudy.medialib.ijkplayer.widget.PlayStateParams;
@@ -105,12 +110,17 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
     private ProgressBar pb;
     private WeakHandler mHandler;
     private String videoUrl;
+    private Compressor mCompressor;
+    private String videoPath = "";
+    private String currentInputVideoPath = "";
+    private String currentOutputVideoPath = "/mnt/sdcard/videokit/out.mp4";
+    String cmd = "-y -i " + currentInputVideoPath + " -strict -2 -vcodec libx264 -preset ultrafast " +
+        "-crf 24 -acodec aac -ar 44100 -ac 2 -b:a 96k -s 640x480 -aspect 16:9 " + currentOutputVideoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_info);
-
     }
 
     @Override
@@ -147,6 +157,21 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         if (presenter != null) {
             presenter.getMyInfo();
         }
+
+        mCompressor = new Compressor(this);
+        mCompressor.loadBinary(new InitListener() {
+            @Override
+            public void onLoadSuccess() {
+                Log.w("kim", "load library succeed");
+            }
+
+            @Override
+            public void onLoadFail(String reason) {
+                Log.w("kim", "load library fail:" + reason);
+            }
+        });
+
+
         initPlayer();
     }
 
@@ -207,7 +232,6 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                 return false;
             }
         });
-
     }
 
     private void initPlayer() {
@@ -501,6 +525,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         super.onResume();
         if (player != null) {
             player.onResume();
+            player.startPlay();
             player.hideCenterPlayer(true);
         }
     }
@@ -597,9 +622,31 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                 }
                 break;
             case ParameterUtils.REQUEST_VIDEO:
-                String videoPath = data.getStringExtra("path");
+//                currentInputVideoPath = data.getStringExtra("path");
+//
+//                String[] dataStr = currentInputVideoPath.split("/");
+//                String fileTruePath = "/sdcard/DCIM";
+//                for (int i = 4; i < dataStr.length; i++) {
+//                    currentInputVideoPath = fileTruePath + "/" + dataStr[i];
+//                }
+//                llUpload.setVisibility(View.GONE);
+//                tvAddGood.setVisibility(View.GONE);
+//
+//                Log.w("kim", "---->" + currentInputVideoPath);
+//                if (TextUtils.isEmpty(cmd)) {
+//                    Toast.makeText(this, "压缩命令不存在", Toast.LENGTH_SHORT).show();
+//                } else if (TextUtils.isEmpty(currentInputVideoPath)) {
+//                    Toast.makeText(this, "找不到该视屏", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    File file = new File(currentOutputVideoPath);
+//                    if (file.exists()) {
+//                        file.delete();
+//                    }
+//                    execCommand(cmd);
+//                }
                 llUpload.setVisibility(View.GONE);
                 tvAddGood.setVisibility(View.GONE);
+                videoPath = data.getStringExtra("path");
                 presenter.uploadVideo(new File(videoPath));
                 break;
             default:
@@ -738,6 +785,31 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                         }
                     }
                 }
+            }
+        });
+    }
+
+
+    private void execCommand(String cmd) {
+        File mFile = new File(currentOutputVideoPath);
+        if (mFile.exists()) {
+            mFile.delete();
+        }
+        mCompressor.execCommand(cmd, new CompressListener() {
+            @Override
+            public void onExecSuccess(String message) {
+                Log.i("kim", "success " + message);
+                Toast.makeText(getApplicationContext(), "压缩成功", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onExecFail(String reason) {
+                Log.w("kim", "----->" + reason);
+                ToastUtils.shortToast(getApplicationContext(), "压缩失败====》" + reason);
+            }
+
+            @Override
+            public void onExecProgress(String message) {
             }
         });
     }

@@ -423,8 +423,7 @@
         <activity
             android:name=".ui.activity.MyInfoDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="adjustNothing|stateHidden" />
+            android:screenOrientation="sensorPortrait" />
         <activity
             android:name=".ui.activity.ChooseListActivity"
             android:screenOrientation="portrait"
