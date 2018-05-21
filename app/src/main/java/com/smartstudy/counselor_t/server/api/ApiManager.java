@@ -46,14 +46,15 @@ public class ApiManager {
         //写入超时
         ClientBuilder.writeTimeout(30, TimeUnit.SECONDS);
         ClientBuilder.cache(cache);
+        ClientBuilder.retryOnConnectionFailure(true);
         ClientBuilder.addInterceptor(new CacheAndCookieInterceptor());
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(HttpUrlUtils.getBaseUrl())
-                .client(ClientBuilder.build())
-                .addConverterFactory(FastJsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build();
+            .baseUrl(HttpUrlUtils.getBaseUrl())
+            .client(ClientBuilder.build())
+            .addConverterFactory(FastJsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build();
         apiService = retrofit.create(ApiService.class);
     }
 }

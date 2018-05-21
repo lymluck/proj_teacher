@@ -15,10 +15,10 @@ import android.os.Message;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.NestedScrollView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +31,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -43,7 +42,6 @@ import com.smartstudy.counselor_t.mvp.contract.MyInfoDetailContract;
 import com.smartstudy.counselor_t.mvp.presenter.MyInfoDetailPresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.ui.dialog.DialogCreator;
-import com.smartstudy.counselor_t.ui.widget.ReboundScrollView;
 import com.smartstudy.counselor_t.ui.widget.TagsLayout;
 import com.smartstudy.counselor_t.util.CheckUtil;
 import com.smartstudy.counselor_t.util.DensityUtils;
@@ -93,8 +91,8 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
     private String bussinessValue;
     private TeacherInfo teacherInfo;
     private TextView tvLoginOut;
-    List<IdNameInfo> workIdNameInfos = new ArrayList<>();
-    List<IdNameInfo> adeptIdNameInfos = new ArrayList<>();
+    private List<IdNameInfo> workIdNameInfos = new ArrayList<>();
+    private List<IdNameInfo> adeptIdNameInfos = new ArrayList<>();
     private EditText tvPersonalProfile;
     private TextView tvAddGood;
     private ImageView ivVideoInfo;
@@ -102,7 +100,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
     public PlayerView player;
     private ImageView iv_player;
     private RelativeLayout.LayoutParams params;
-    private ReboundScrollView rslInfo;
+    private NestedScrollView rslInfo;
     private FrameLayout flAvatar;
     private ImageView ivThumb;
     private LinearLayout llUpload;
@@ -131,7 +129,6 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         setTopdefaultRighttextVisible(View.VISIBLE);
         setRightTxt("保存");
         topdefaultRighttext.setTextColor(Color.parseColor("#E4E5E6"));
-
         flAvatar = findViewById(R.id.fl_avatar);
         ivAvatar = findViewById(R.id.iv_avatar);
         tvNickName = findViewById(R.id.tv_nick_name);
@@ -157,6 +154,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         if (presenter != null) {
             presenter.getMyInfo();
         }
+        initHandler();
 
         mCompressor = new Compressor(this);
         mCompressor.loadBinary(new InitListener() {
@@ -195,7 +193,11 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         setEditTextTextWatch(tvEmail);
         setEditTextTextWatch(tvName);
         setEditTextTextWatch(tvPersonalProfile);
+        handleProfile();
+        handleAvatar();
+    }
 
+    private void handleProfile() {
         rslInfo.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -207,6 +209,26 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                 return false;
             }
         });
+    }
+
+    private void handleAvatar() {
+        // 头像的半径
+        final int size = DensityUtils.dip2px(90f);
+        rslInfo.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY <= size) {
+                    int padding = scrollY / 2;
+                    flAvatar.setPadding(padding, padding, padding, padding);
+                    flAvatar.setVisibility(View.VISIBLE);
+                } else {
+                    flAvatar.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
+    private void initHandler() {
         mHandler = new WeakHandler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
@@ -505,11 +527,13 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
 
     @Override
     public void onLoading(int progress, String url) {
-        Message msg = Message.obtain();
-        msg.what = ParameterUtils.EMPTY_WHAT;
-        msg.arg1 = progress;
-        msg.obj = url;
-        mHandler.sendMessage(msg);
+        if (mHandler != null) {
+            Message msg = Message.obtain();
+            msg.what = ParameterUtils.EMPTY_WHAT;
+            msg.arg1 = progress;
+            msg.obj = url;
+            mHandler.sendMessage(msg);
+        }
     }
 
     @Override
@@ -540,7 +564,6 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         MediaUtils.muteAudioFocus(this, true);
     }
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -548,8 +571,10 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
             player.onDestroy();
             player = null;
         }
+        if (mHandler != null) {
+            mHandler = null;
+        }
     }
-
 
     @Override
     public void onActivityResult(final int requestCode, int resultCode, Intent data) {
@@ -646,7 +671,6 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
 //                }
                 llUpload.setVisibility(View.GONE);
                 tvAddGood.setVisibility(View.GONE);
-                videoPath = data.getStringExtra("path");
                 presenter.uploadVideo(new File(videoPath));
                 break;
             default:
@@ -682,7 +706,6 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         return tvPersonalProfile.getText().toString().trim();
     }
 
-
     private void showNormalDialog() {
         final AlertDialog.Builder normalDialog =
             new AlertDialog.Builder(this);
@@ -705,7 +728,6 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         normalDialog.show();
     }
 
-
     private String getCityValue(String key) {
         if (workIdNameInfos != null) {
             for (IdNameInfo idNameInfo : workIdNameInfos) {
@@ -716,7 +738,6 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         }
         return "";
     }
-
 
     private String getBussinessValue(String key) {
         String[] ids = key.split(",");
@@ -742,7 +763,6 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         }
         return true;
     }
-
 
     private void setEditTextTextWatch(final EditText editText) {
         editText.addTextChangedListener(new TextWatcher() {
