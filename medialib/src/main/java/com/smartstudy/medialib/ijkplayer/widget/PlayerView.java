@@ -1833,7 +1833,8 @@ public class PlayerView {
      * 更新全屏和半屏按钮
      */
     private void updateFullScreenButton() {
-        if (getScreenOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+        if (getScreenOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            || getScreenOrientation() == ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE) {
             iv_fullscreen.setImageResource(R.drawable.simple_player_icon_fullscreen_shrink);
             if (onToggleFullScreenListener != null) {
                 onToggleFullScreenListener.onLandScape();

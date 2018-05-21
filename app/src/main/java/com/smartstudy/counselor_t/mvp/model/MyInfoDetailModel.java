@@ -1,24 +1,20 @@
 package com.smartstudy.counselor_t.mvp.model;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.listener.OnUploadFileListener;
 import com.smartstudy.counselor_t.mvp.base.BaseModel;
 import com.smartstudy.counselor_t.server.api.ApiManager;
 import com.smartstudy.counselor_t.server.api.FileUploadRequestBody;
-import com.smartstudy.counselor_t.util.AppUtils;
 import com.smartstudy.counselor_t.util.HttpUrlUtils;
 
 import java.io.File;
+import java.util.Map;
 
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 
 /**
  * @author yqy
@@ -29,10 +25,12 @@ import okhttp3.ResponseBody;
  */
 public class MyInfoDetailModel extends BaseModel {
 
-    public void uploadVideo(File file, OnUploadFileListener listener) {
-        final RequestBody requestBody = RequestBody.create(MediaType.parse("video/mp4"), file);
+    public void uploadVideo(File file, OnUploadFileListener listener, ObserverListener observerListener) {
+        final RequestBody requestBody = RequestBody.create(MediaType.parse("video/*"), file);
         FileUploadRequestBody fileUploadRequestBody = new FileUploadRequestBody(requestBody, listener);
-        fileObservalbe(ApiManager.getApiService().upLoadTeacherVideo(getHeadersMap(), fileUploadRequestBody)).subscribe();
+        Map map = getHeadersMap();
+        map.put("Connection", "close");
+        apiSubscribe(ApiManager.getApiService().upLoadTeacherVideo(map, fileUploadRequestBody), observerListener);
     }
 
     public void getAuditResult(ObserverListener listener) {
