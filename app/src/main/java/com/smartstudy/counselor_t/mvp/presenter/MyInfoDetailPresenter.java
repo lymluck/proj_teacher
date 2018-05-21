@@ -2,7 +2,6 @@ package com.smartstudy.counselor_t.mvp.presenter;
 
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSON;
@@ -11,7 +10,6 @@ import com.smartstudy.counselor_t.entity.IdNameInfo;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.entity.TokenBean;
 import com.smartstudy.counselor_t.listener.ObserverListener;
-import com.smartstudy.counselor_t.listener.OnUploadFileListener;
 import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
 import com.smartstudy.counselor_t.mvp.contract.MyInfoDetailContract;
 import com.smartstudy.counselor_t.mvp.model.MyInfoDetailModel;
@@ -69,34 +67,6 @@ public class MyInfoDetailPresenter extends BasePresenterImpl<MyInfoDetailContrac
             }
         });
     }
-
-    @Override
-    public void uploadVideo(final File file) {
-        myInfoDetailModel.uploadVideo(file, new OnUploadFileListener() {
-            @Override
-            public void onProgress(int progress) {
-                if (view != null) {
-                    view.onLoading(progress, file.getAbsolutePath());
-                }
-            }
-        }, new ObserverListener<String>() {
-            @Override
-            public void onSubscribe(Disposable disposable) {
-                addDisposable(disposable);
-            }
-
-            @Override
-            public void onNext(String result) {
-                Log.d("result===", result);
-            }
-
-            @Override
-            public void onError(String msg) {
-                view.showTip(msg);
-            }
-        });
-    }
-
 
     @Override
     public void updateMyAvatarInfo(File avatar, final ImageView ivAvatar) {
@@ -240,6 +210,27 @@ public class MyInfoDetailPresenter extends BasePresenterImpl<MyInfoDetailContrac
             public void onNext(String result) {
                 TokenBean tokenBean = JSONObject.parseObject(result, TokenBean.class);
                 view.refreshSuccess(tokenBean);
+            }
+
+            @Override
+            public void onError(String msg) {
+                view.showTip(msg);
+            }
+        });
+    }
+
+    @Override
+    public void updateVideoUrl(final String videoUrl) {
+        myInfoDetailModel.updateVideoUrl(videoUrl, new ObserverListener<String>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                addDisposable(disposable);
+            }
+
+            @Override
+            public void onNext(String result) {
+                view.updateVideoUrlSuccess();
+
             }
 
             @Override

@@ -12,6 +12,9 @@ import com.alibaba.sdk.android.oss.callback.OSSProgressCallback;
 import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
+import com.smartstudy.counselor_t.entity.ProgressItem;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.HashMap;
@@ -60,13 +63,13 @@ public class OssService {
             @Override
             public void onProgress(PutObjectRequest request, long currentSize, long totalSize) {
                 int progress = (int) (100 * currentSize / totalSize);
-//                mProgress.setProgress(progress);
+                EventBus.getDefault().post(new ProgressItem(progress, localFile));
             }
         });
         OSSAsyncTask ossAsyncTask = oss.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
             @Override
             public void onSuccess(PutObjectRequest request, final PutObjectResult result) {
-                callback.getPicData(result, localFile);
+                callback.getPicData(request.getObjectKey());
             }
 
             @Override
@@ -76,7 +79,6 @@ public class OssService {
                 if (clientExcepion != null) {
                     // 本地异常如网络异常等
                     clientExcepion.printStackTrace();
-                    info = clientExcepion.toString();
                 }
                 if (serviceException != null) {
                     // 服务异常
@@ -84,7 +86,7 @@ public class OssService {
                     Log.e("RequestId", serviceException.getRequestId());
                     Log.e("HostId", serviceException.getHostId());
                     Log.e("RawMessage", serviceException.getRawMessage());
-                    info = serviceException.toString();
+
                 }
             }
         });
@@ -92,7 +94,7 @@ public class OssService {
 
     //成功的回调接口
     public interface picResultCallback {
-        void getPicData(PutObjectResult data, String oldPath);
+        void getPicData(String videoUrl);
     }
 }
 

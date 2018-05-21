@@ -15,11 +15,11 @@ import android.os.Message;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.widget.NestedScrollView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,15 +37,18 @@ import com.alibaba.sdk.android.oss.ClientConfiguration;
 import com.alibaba.sdk.android.oss.OSS;
 import com.alibaba.sdk.android.oss.OSSClient;
 import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
-import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.IdNameInfo;
+import com.smartstudy.counselor_t.entity.ProgressItem;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
+import com.smartstudy.counselor_t.entity.TokenBean;
 import com.smartstudy.counselor_t.handler.WeakHandler;
 import com.smartstudy.counselor_t.mvp.contract.MyInfoDetailContract;
 import com.smartstudy.counselor_t.mvp.presenter.MyInfoDetailPresenter;
+import com.smartstudy.counselor_t.ossServer.OssService;
+import com.smartstudy.counselor_t.ossServer.STSGetter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.ui.dialog.DialogCreator;
 import com.smartstudy.counselor_t.ui.widget.TagsLayout;
@@ -62,6 +65,10 @@ import com.smartstudy.medialib.ijkplayer.listener.OnPlayComplete;
 import com.smartstudy.medialib.ijkplayer.listener.OnToggleFullScreenListener;
 import com.smartstudy.medialib.ijkplayer.widget.PlayStateParams;
 import com.smartstudy.medialib.ijkplayer.widget.PlayerView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -120,6 +127,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_info);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -521,21 +529,21 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         finish();
     }
 
-    @Override
-    public void onLoading(int progress, String url) {
-        if (mHandler != null) {
-            Message msg = Message.obtain();
-            msg.what = ParameterUtils.EMPTY_WHAT;
-            msg.arg1 = progress;
-            msg.obj = url;
-            mHandler.sendMessage(msg);
-        }
-    }
 
     @Override
     public void refreshSuccess(TokenBean tokenBean) {
         this.tokenBean = tokenBean;
         ossService = initOSS(tokenBean.getEndpoint(), tokenBean.getBucket(), tokenBean);
+        if (ossService != null) {
+            if (tokenBean != null) {
+                ossService.asyncPutVideo(tokenBean.getKey(), videoPath);
+            }
+        }
+    }
+
+    @Override
+    public void updateVideoUrlSuccess() {
+        ToastUtils.shortToast(this, "视频上传成功");
     }
 
 
@@ -550,8 +558,6 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
     @Override
     protected void onResume() {
         super.onResume();
-
-        presenter.refreshTacken();
         if (player != null) {
             player.onResume();
             if (!TextUtils.isEmpty(videoUrl)) {
@@ -574,6 +580,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
     @Override
     public void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         if (player != null) {
             player.onDestroy();
             player = null;
@@ -654,17 +661,11 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                 }
                 break;
             case ParameterUtils.REQUEST_VIDEO:
-                String videoPath = data.getStringExtra("path");
+                videoPath = data.getStringExtra("path");
                 llUpload.setVisibility(View.GONE);
                 tvAddGood.setVisibility(View.GONE);
                 flAvatar.setVisibility(View.GONE);
-                File file = new File(videoPath);
-                if (ossService != null) {
-                    if (tokenBean != null) {
-                        ossService.asyncPutVideo(tokenBean.getKey(), videoPath);
-                    }
-                }
-//                presenter.uploadVideo(new File(videoPath));
+                presenter.refreshTacken();
                 break;
             default:
                 break;
@@ -818,8 +819,23 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
     }
 
     @Override
-    public void getPicData(PutObjectResult data, String oldPath) {
-
+    public void getPicData(String videoUrl) {
+        presenter.updateVideoUrl(videoUrl);
     }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void onDataSynEvent(ProgressItem progressItem) {
+        if (progressItem != null) {
+            if (mHandler != null) {
+                Message msg = Message.obtain();
+                msg.what = ParameterUtils.EMPTY_WHAT;
+                msg.arg1 = progressItem.getProgress();
+                msg.obj = progressItem.getVoideoUrl();
+                mHandler.sendMessage(msg);
+            }
+        }
+    }
+
 }
 

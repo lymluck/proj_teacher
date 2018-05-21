@@ -31,16 +31,14 @@ public interface MyInfoDetailContract {
 
         void updateMyInfoSuccess();
 
-        void onLoading(int progress, String url);
-
         void refreshSuccess(TokenBean tokenBean);
+
+        void updateVideoUrlSuccess();
     }
 
     interface Presenter extends BasePresenter {
 
         void getMyInfo();
-
-        void uploadVideo(File file);
 
         void updateMyAvatarInfo(File avatar, ImageView ivAvatar);
 
@@ -52,5 +50,7 @@ public interface MyInfoDetailContract {
                           String email, String realName, String introduction, String workingCityKey, String adeptWorksKey);
 
         void refreshTacken();
+
+        void updateVideoUrl(String videoUrl);
     }
 }

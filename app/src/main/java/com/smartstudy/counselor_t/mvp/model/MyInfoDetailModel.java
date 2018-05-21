@@ -49,6 +49,14 @@ public class MyInfoDetailModel extends BaseModel {
     }
 
 
+    public void updateVideoUrl(String videoUrl, ObserverListener listener) {
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        if (!TextUtils.isEmpty(videoUrl)) {
+            builder.addFormDataPart("videoUrl", videoUrl);
+        }
+        apiSubscribe(ApiManager.getApiService().updatePersonInfo(getHeadersMap(), HttpUrlUtils.URL_COUNSELLOR_PROFILE, builder.build()), listener);
+    }
+
     public void getLogOut(ObserverListener listener) {
         apiSubscribe(ApiManager.getApiService().getLogOut(getHeadersMap()), listener);
     }

@@ -77,8 +77,6 @@ dependencies {
     compile 'com.zhy:flowlayout-lib:1.0.3'
     compile project(':medialib')
     compile 'com.aliyun.dpa:oss-android-sdk:2.4.5'
-    compile 'com.squareup.okhttp3:okhttp:3.4.1'
-    compile 'com.squareup.okio:okio:1.9.0'
 }
 
 repositories { flatDir { dirs 'aars' } }
