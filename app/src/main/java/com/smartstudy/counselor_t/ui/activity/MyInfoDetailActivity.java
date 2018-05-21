@@ -292,6 +292,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                 .hideCenterPlayer(true)
                 .hideRotation(true)
                 .hideSteam(true)
+                .setForbidDoulbeUp(true)
                 .setHideAllUI(true);
             ivPlayer = player.getPlayerView();
             params = (RelativeLayout.LayoutParams) ivPlayer.getLayoutParams();
@@ -438,6 +439,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                 // 播放视频
                 if (player != null) {
                     player.hideControlPanl(true)
+                        .setForbidDoulbeUp(false)
                         .autoPlay(videoUrl)
                         .hideCenterPlayer(true);
                     this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -536,7 +538,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         if (player != null) {
             player.onResume();
             if (!TextUtils.isEmpty(videoUrl)) {
-                player.startPlay();
+                player.setForbidDoulbeUp(false).startPlay();
             }
             player.hideCenterPlayer(true);
         }
