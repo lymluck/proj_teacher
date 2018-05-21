@@ -15,10 +15,12 @@ import android.os.Message;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.widget.NestedScrollView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,9 +54,6 @@ import com.smartstudy.counselor_t.util.ParameterUtils;
 import com.smartstudy.counselor_t.util.SPCacheUtils;
 import com.smartstudy.counselor_t.util.ToastUtils;
 import com.smartstudy.counselor_t.util.Utils;
-import com.smartstudy.counselor_t.videocompress.CompressListener;
-import com.smartstudy.counselor_t.videocompress.Compressor;
-import com.smartstudy.counselor_t.videocompress.InitListener;
 import com.smartstudy.medialib.ijkplayer.listener.OnPlayComplete;
 import com.smartstudy.medialib.ijkplayer.listener.OnToggleFullScreenListener;
 import com.smartstudy.medialib.ijkplayer.widget.PlayStateParams;
@@ -108,12 +107,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
     private ProgressBar pb;
     private WeakHandler mHandler;
     private String videoUrl;
-    private Compressor mCompressor;
     private String videoPath = "";
-    private String currentInputVideoPath = "";
-    private String currentOutputVideoPath = "/mnt/sdcard/videokit/out.mp4";
-    String cmd = "-y -i " + currentInputVideoPath + " -strict -2 -vcodec libx264 -preset ultrafast " +
-        "-crf 24 -acodec aac -ar 44100 -ac 2 -b:a 96k -s 640x480 -aspect 16:9 " + currentOutputVideoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,21 +149,6 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
             presenter.getMyInfo();
         }
         initHandler();
-
-        mCompressor = new Compressor(this);
-        mCompressor.loadBinary(new InitListener() {
-            @Override
-            public void onLoadSuccess() {
-                Log.w("kim", "load library succeed");
-            }
-
-            @Override
-            public void onLoadFail(String reason) {
-                Log.w("kim", "load library fail:" + reason);
-            }
-        });
-
-
         initPlayer();
     }
 
@@ -198,9 +177,11 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
     }
 
     private void handleProfile() {
+
         rslInfo.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
+                View childView = rslInfo.getChildAt(0);
                 if (rslInfo.getChildAt(0).getHeight() - rslInfo.getHeight() == rslInfo.getScrollY()) {
                     if (tvPersonalProfile.isFocused()) {
                         tvPersonalProfile.setSelection(tvPersonalProfile.getText().toString().length());
@@ -217,6 +198,10 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         rslInfo.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                Log.w("kim", "---->" + scrollY);
+                Log.w("kim", "----->" + rslInfo.getHeight());
+                Log.w("kim", "----->" + rslInfo.getScrollY());
+                Log.w("kim", "----->" + rslInfo.getChildAt(0).getMeasuredHeight());
                 if (scrollY <= size) {
                     int padding = scrollY / 2;
                     flAvatar.setPadding(padding, padding, padding, padding);
@@ -647,28 +632,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                 }
                 break;
             case ParameterUtils.REQUEST_VIDEO:
-//                currentInputVideoPath = data.getStringExtra("path");
-//
-//                String[] dataStr = currentInputVideoPath.split("/");
-//                String fileTruePath = "/sdcard/DCIM";
-//                for (int i = 4; i < dataStr.length; i++) {
-//                    currentInputVideoPath = fileTruePath + "/" + dataStr[i];
-//                }
-//                llUpload.setVisibility(View.GONE);
-//                tvAddGood.setVisibility(View.GONE);
-//
-//                Log.w("kim", "---->" + currentInputVideoPath);
-//                if (TextUtils.isEmpty(cmd)) {
-//                    Toast.makeText(this, "压缩命令不存在", Toast.LENGTH_SHORT).show();
-//                } else if (TextUtils.isEmpty(currentInputVideoPath)) {
-//                    Toast.makeText(this, "找不到该视屏", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    File file = new File(currentOutputVideoPath);
-//                    if (file.exists()) {
-//                        file.delete();
-//                    }
-//                    execCommand(cmd);
-//                }
+                videoPath = data.getStringExtra("path");
                 llUpload.setVisibility(View.GONE);
                 tvAddGood.setVisibility(View.GONE);
                 presenter.uploadVideo(new File(videoPath));
@@ -805,31 +769,6 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                         }
                     }
                 }
-            }
-        });
-    }
-
-
-    private void execCommand(String cmd) {
-        File mFile = new File(currentOutputVideoPath);
-        if (mFile.exists()) {
-            mFile.delete();
-        }
-        mCompressor.execCommand(cmd, new CompressListener() {
-            @Override
-            public void onExecSuccess(String message) {
-                Log.i("kim", "success " + message);
-                Toast.makeText(getApplicationContext(), "压缩成功", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onExecFail(String reason) {
-                Log.w("kim", "----->" + reason);
-                ToastUtils.shortToast(getApplicationContext(), "压缩失败====》" + reason);
-            }
-
-            @Override
-            public void onExecProgress(String message) {
             }
         });
     }

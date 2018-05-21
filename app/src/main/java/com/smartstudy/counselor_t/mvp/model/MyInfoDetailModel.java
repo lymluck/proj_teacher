@@ -30,7 +30,7 @@ import okhttp3.ResponseBody;
 public class MyInfoDetailModel extends BaseModel {
 
     public void uploadVideo(File file, OnUploadFileListener listener) {
-        final RequestBody requestBody = RequestBody.create(MediaType.parse("video/*"), file);
+        final RequestBody requestBody = RequestBody.create(MediaType.parse("video/mp4"), file);
         FileUploadRequestBody fileUploadRequestBody = new FileUploadRequestBody(requestBody, listener);
         fileObservalbe(ApiManager.getApiService().upLoadTeacherVideo(getHeadersMap(), fileUploadRequestBody)).subscribe();
     }

@@ -1,2 +1,2 @@
-include ':app', ':imlib', ':imkit', ':permissionlib', ':xxdRouter', ':xxdAnnotation', ':FFmpegAndroid'
+include ':app', ':imlib', ':imkit', ':permissionlib', ':xxdRouter', ':xxdAnnotation'
 include ':buildSrc', ':xxdCompiler', ':image', ':qrcode', ':slideback',':medialib'
