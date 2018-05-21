@@ -19,7 +19,6 @@ import android.support.v4.widget.NestedScrollView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -121,7 +120,6 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
     private boolean isLoading;
     private String videoPath = "";
     private OssService ossService;
-    private TokenBean tokenBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -532,7 +530,6 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
 
     @Override
     public void refreshSuccess(TokenBean tokenBean) {
-        this.tokenBean = tokenBean;
         ossService = initOSS(tokenBean.getEndpoint(), tokenBean.getBucket(), tokenBean);
         if (ossService != null) {
             if (tokenBean != null) {
@@ -665,6 +662,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                 llUpload.setVisibility(View.GONE);
                 tvAddGood.setVisibility(View.GONE);
                 flAvatar.setVisibility(View.GONE);
+                isLoading = true;
                 presenter.refreshTacken();
                 break;
             default:
