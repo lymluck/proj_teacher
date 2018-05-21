@@ -997,7 +997,9 @@ public class PlayerView {
                     if (status == PlayStateParams.MEDIA_INFO_BUFFERING_END ||
                         status == PlayStateParams.STATE_PLAYING) {
                         query.id(R.id.app_video_loading).gone();
-                        iv_player.setVisibility(View.VISIBLE);
+                        if (!hideAllUI) {
+                            iv_player.setVisibility(View.VISIBLE);
+                        }
                     }
                     videoView.start();
                 } else {
@@ -1338,7 +1340,9 @@ public class PlayerView {
             if (isLive) {
                 query.id(R.id.app_video_process_panl).invisible();
             } else {
-                query.id(R.id.app_video_process_panl).visible();
+                if (!hideAllUI) {
+                    query.id(R.id.app_video_process_panl).visible();
+                }
             }
             if (onControlPanelVisibilityChangeListener != null) {
                 onControlPanelVisibilityChangeListener.change(true);
@@ -1354,7 +1358,9 @@ public class PlayerView {
                     if (isHideCenterPlayer || isLive) {
                         iv_player.setVisibility(View.GONE);
                     } else {
-                        iv_player.setVisibility(View.VISIBLE);
+                        if (!hideAllUI) {
+                            iv_player.setVisibility(View.VISIBLE);
+                        }
                     }
                 }
             } else {
@@ -1368,13 +1374,16 @@ public class PlayerView {
             if (isHideTopBar) {
                 ll_topbar.setVisibility(View.GONE);
             } else {
-                ll_topbar.setVisibility(isForbidHideControlPanl ? View.VISIBLE : View.GONE);
-
+                if (!hideAllUI) {
+                    ll_topbar.setVisibility(isForbidHideControlPanl ? View.VISIBLE : View.GONE);
+                }
             }
             if (isHideBottonBar) {
                 ll_bottombar.setVisibility(View.GONE);
             } else {
-                ll_bottombar.setVisibility(isForbidHideControlPanl ? View.VISIBLE : View.GONE);
+                if (!hideAllUI) {
+                    ll_bottombar.setVisibility(isForbidHideControlPanl ? View.VISIBLE : View.GONE);
+                }
 
             }
             if (!isLive && status == PlayStateParams.STATE_PAUSED && !videoView.isPlaying()) {
@@ -1541,9 +1550,7 @@ public class PlayerView {
                         iv_player.setVisibility(View.GONE);
                         query.id(R.id.app_video_netTie).visible();
                     } else {
-                        if (!hideAllUI) {
-                            operatorPanl();
-                        }
+                        operatorPanl();
                     }
                     /**延迟0.5秒隐藏视频封面隐藏*/
                     query.id(R.id.iv_trumb).gone();
@@ -1983,9 +1990,7 @@ public class PlayerView {
             if (mShouldAutoPlay && !isForbidHideControlPanl) {
                 mHandler.removeCallbacks(this);
                 LogUtils.d(mContext, "线程执行==========");
-                if (!hideAllUI) {
-                    operatorPanl();
-                }
+                operatorPanl();
             }
         }
     }
@@ -2074,9 +2079,7 @@ public class PlayerView {
             /**视频视窗单击事件*/
             if (!isForbidHideControlPanl) {
                 LogUtils.d(mContext, "单击==========");
-                if (!hideAllUI) {
-                    operatorPanl();
-                }
+                operatorPanl();
             }
             return true;
         }
