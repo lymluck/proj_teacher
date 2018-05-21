@@ -94,7 +94,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
     private TextView tvAddGood;
     private ImageView ivVideoInfo;
     private ImageView ivUpLoad;
-    public PlayerView player;
+    private PlayerView player;
     private ImageView iv_player;
     private RelativeLayout.LayoutParams params;
     private NestedScrollView rslInfo;
@@ -119,6 +119,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         setTitle("个人信息");
         setTopdefaultRighttextVisible(View.VISIBLE);
         setRightTxt("保存");
+        setTopLineVisibility(View.VISIBLE);
         topdefaultRighttext.setTextColor(Color.parseColor("#E4E5E6"));
         flAvatar = findViewById(R.id.fl_avatar);
         ivAvatar = findViewById(R.id.iv_avatar);
@@ -249,6 +250,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                     flAvatar.setVisibility(View.GONE);
                     llUpload.setVisibility(View.GONE);
                     tvAddGood.setVisibility(View.GONE);
+                    setTopLineVisibility(View.GONE);
                     player.forbidScroll(false).hideBottomBar(false).hideCenterPlayer(false)
                         .setHideAllUI(false);
                     params.width = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -263,6 +265,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                     flAvatar.setVisibility(View.VISIBLE);
                     llUpload.setVisibility(View.VISIBLE);
                     tvAddGood.setVisibility(View.VISIBLE);
+                    setTopLineVisibility(View.VISIBLE);
                     player.forbidScroll(true).hideBottomBar(true).hideCenterPlayer(true)
                         .setHideAllUI(true);
                     params.width = DensityUtils.dip2px(45);
