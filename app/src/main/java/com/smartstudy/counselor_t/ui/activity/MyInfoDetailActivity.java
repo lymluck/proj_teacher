@@ -34,14 +34,23 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.sdk.android.oss.ClientConfiguration;
+import com.alibaba.sdk.android.oss.OSS;
+import com.alibaba.sdk.android.oss.OSSClient;
+import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
+import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.IdNameInfo;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
+import com.smartstudy.counselor_t.entity.TokenBean;
 import com.smartstudy.counselor_t.handler.WeakHandler;
 import com.smartstudy.counselor_t.mvp.contract.MyInfoDetailContract;
 import com.smartstudy.counselor_t.mvp.presenter.MyInfoDetailPresenter;
+import com.smartstudy.counselor_t.ossServer.OSSAuthCredentialsProvider;
+import com.smartstudy.counselor_t.ossServer.OssService;
+import com.smartstudy.counselor_t.ossServer.STSGetter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.ui.dialog.DialogCreator;
 import com.smartstudy.counselor_t.ui.widget.TagsLayout;
@@ -73,7 +82,7 @@ import io.rong.imkit.RongIM;
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */
-public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Presenter> implements MyInfoDetailContract.View {
+public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Presenter> implements MyInfoDetailContract.View, OssService.picResultCallback {
     private ImageView ivAvatar;
     private EditText tvNickName;
     private EditText tvWorkName;
@@ -108,6 +117,8 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
     private WeakHandler mHandler;
     private String videoUrl;
     private String videoPath = "";
+    private OssService ossService;
+    private TokenBean tokenBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,11 +193,8 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         rslInfo.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                View childView = rslInfo.getChildAt(0);
-                if (rslInfo.getChildAt(0).getHeight() - rslInfo.getHeight() == rslInfo.getScrollY()) {
-                    if (tvPersonalProfile.isFocused()) {
-                        tvPersonalProfile.setSelection(tvPersonalProfile.getText().toString().length());
-                    }
+                if (tvPersonalProfile.isFocused()) {
+                    tvPersonalProfile.setSelection(tvPersonalProfile.getText().toString().length());
                 }
                 return false;
             }
@@ -199,10 +207,6 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         rslInfo.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                Log.w("kim", "---->" + scrollY);
-                Log.w("kim", "----->" + rslInfo.getHeight());
-                Log.w("kim", "----->" + rslInfo.getScrollY());
-                Log.w("kim", "----->" + rslInfo.getChildAt(0).getMeasuredHeight());
                 if (scrollY <= size) {
                     int padding = scrollY / 2;
                     flAvatar.setPadding(padding, padding, padding, padding);
@@ -526,6 +530,13 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
     }
 
     @Override
+    public void refreshSuccess(TokenBean tokenBean) {
+        this.tokenBean = tokenBean;
+        ossService = initOSS(tokenBean.getEndpoint(), tokenBean.getBucket(), tokenBean);
+    }
+
+
+    @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         if (player != null) {
@@ -536,6 +547,8 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
     @Override
     protected void onResume() {
         super.onResume();
+
+        presenter.refreshTacken();
         if (player != null) {
             player.onResume();
             player.startPlay();
@@ -639,7 +652,13 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                 videoPath = data.getStringExtra("path");
                 llUpload.setVisibility(View.GONE);
                 tvAddGood.setVisibility(View.GONE);
-                presenter.uploadVideo(new File(videoPath));
+                File file = new File(videoPath);
+                if (ossService != null) {
+                    if (tokenBean != null) {
+                        ossService.asyncPutVideo(tokenBean.getKey(), videoPath);
+                    }
+                }
+//                presenter.uploadVideo(new File(videoPath));
                 break;
             default:
                 break;
@@ -775,6 +794,26 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                 }
             }
         });
+    }
+
+
+    public OssService initOSS(String endpoint, String bucket, TokenBean tokenBean) {
+        OSSCredentialProvider credentialProvider;
+        credentialProvider = new STSGetter(tokenBean);
+        //设置网络参数
+        ClientConfiguration conf = new ClientConfiguration();
+        conf.setConnectionTimeout(15 * 1000); // 连接超时，默认15秒
+        conf.setSocketTimeout(15 * 1000); // socket超时，默认15秒
+        conf.setMaxConcurrentRequest(5); // 最大并发请求书，默认5个
+        conf.setMaxErrorRetry(2); // 失败后最大重试次数，默认2次
+        OSS oss = new OSSClient(getApplicationContext(), endpoint, credentialProvider, conf);
+        return new OssService(oss, bucket, this);
+
+    }
+
+    @Override
+    public void getPicData(PutObjectResult data, String oldPath) {
+
     }
 }
 

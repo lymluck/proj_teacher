@@ -4,6 +4,7 @@ import android.widget.ImageView;
 
 import com.smartstudy.counselor_t.entity.IdNameInfo;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
+import com.smartstudy.counselor_t.entity.TokenBean;
 import com.smartstudy.counselor_t.mvp.base.BasePresenter;
 import com.smartstudy.counselor_t.mvp.base.BaseView;
 
@@ -31,6 +32,8 @@ public interface MyInfoDetailContract {
         void updateMyInfoSuccess();
 
         void onLoading(int progress, String url);
+
+        void refreshSuccess(TokenBean tokenBean);
     }
 
     interface Presenter extends BasePresenter {
@@ -48,5 +51,6 @@ public interface MyInfoDetailContract {
         void updateMyInfo(String name, File avatar, String title, String school, String yearsOfWorking,
                           String email, String realName, String introduction, String workingCityKey, String adeptWorksKey);
 
+        void refreshTacken();
     }
 }

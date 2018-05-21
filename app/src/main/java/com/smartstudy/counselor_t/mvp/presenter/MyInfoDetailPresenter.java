@@ -9,6 +9,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.smartstudy.counselor_t.entity.IdNameInfo;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
+import com.smartstudy.counselor_t.entity.TokenBean;
 import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.listener.OnUploadFileListener;
 import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
@@ -225,6 +226,27 @@ public class MyInfoDetailPresenter extends BasePresenterImpl<MyInfoDetailContrac
                     view.showTip(msg);
                 }
             });
+    }
+
+    @Override
+    public void refreshTacken() {
+        myInfoDetailModel.refreshTacken(new ObserverListener<String>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                addDisposable(disposable);
+            }
+
+            @Override
+            public void onNext(String result) {
+                TokenBean tokenBean = JSONObject.parseObject(result, TokenBean.class);
+                view.refreshSuccess(tokenBean);
+            }
+
+            @Override
+            public void onError(String msg) {
+                view.showTip(msg);
+            }
+        });
     }
 }
 

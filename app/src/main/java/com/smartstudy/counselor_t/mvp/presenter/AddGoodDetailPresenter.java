@@ -94,7 +94,7 @@ public class AddGoodDetailPresenter extends BasePresenterImpl<AddGoodDetailContr
         emptyView.findViewById(R.id.iv_loading).setVisibility(View.GONE);
         ImageView iv_err = (ImageView) emptyView.findViewById(R.id.iv_err);
         TextView tv_err_tip = (TextView) emptyView.findViewById(R.id.tv_err_tip);
-        iv_err.setImageResource(R.drawable.ic_no_question);
+        iv_err.setVisibility(View.INVISIBLE);
         tv_err_tip.setText("暂时还没有人点赞哦");
         view.showEmptyView(emptyView);
         context = null;

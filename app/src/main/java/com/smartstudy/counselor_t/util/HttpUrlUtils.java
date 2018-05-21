@@ -11,6 +11,7 @@ public class HttpUrlUtils {
     public static final String URL_QUESTS_MY_TAGS = "counsellor/student/%1$s/tags"; //学生标签
     public static final String URL_QUESTS_HISTORY_TAGS = "counsellor/student/tags/history";//提交历史的标签
     public static final String URL_QUESTS_LINK = "questions/%1$s"; //问答详情
+    public static final String URL_VIDEO_CREDENTIALS = "counsellor/profile/video/credentials";
 
     public static final String URL_PHONE_CODE = "counsellor/captcha";  //获取验证码
     public static final String URL_CODE_LOGIN = "counsellor/login";  //验证码登录

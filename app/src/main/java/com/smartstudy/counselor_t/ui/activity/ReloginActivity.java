@@ -18,7 +18,6 @@ import io.rong.imkit.RongIM;
 
 public class ReloginActivity extends BaseActivity<BasePresenter> {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

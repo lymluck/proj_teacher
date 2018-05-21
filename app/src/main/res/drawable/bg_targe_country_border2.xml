@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
 
-</selector>
+    <!-- 填充颜色 -->
+    <solid android:color="#DCB3F6" />
+    <!-- 线的宽度，颜色灰色 -->
+    <corners android:radius="2dp" />
+    <padding
+        android:bottom="1dp"
+        android:left="5dp"
+        android:right="5dp"
+        android:top="1dp" />
+</shape>

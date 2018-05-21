@@ -119,6 +119,11 @@ public interface ApiService {
     Observable<ResponseInfo> getOptions(@HeaderMap Map<String, String> header);
 
 
+    @GET(HttpUrlUtils.URL_VIDEO_CREDENTIALS)
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
+    Observable<ResponseInfo> refreshTacken(@HeaderMap Map<String, String> header);
+
+
     @GET(HttpUrlUtils.URL_COUNSELLOR_PROFILE)
     @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
     Observable<ResponseInfo> getMyInfo(@HeaderMap Map<String, String> header);

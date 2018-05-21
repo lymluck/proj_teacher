@@ -52,7 +52,7 @@
     </style>
     <!-- 20%黑背景 -->
     <style name="AppDialogActivityTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@color/black20</item>
+        <item name="android:windowBackground">@color/black30</item>
         <item name="android:windowIsTranslucent">true</item>
     </style>
     <!-- 全局标准对话框 -->

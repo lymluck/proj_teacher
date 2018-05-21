@@ -58,6 +58,9 @@ public class MyInfoDetailModel extends BaseModel {
         apiSubscribe(ApiManager.getApiService().getOptions(getHeadersMap()), listener);
     }
 
+    public void refreshTacken(ObserverListener listener) {
+        apiSubscribe(ApiManager.getApiService().refreshTacken(getHeadersMap()), listener);
+    }
 
     public void updateMyInfo(String name, File avatar, String title, String school, String yearsOfWorking,
                              String email, String realName, String introduction, String workingCityKey,
