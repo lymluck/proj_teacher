@@ -535,7 +535,9 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         super.onResume();
         if (player != null) {
             player.onResume();
-            player.startPlay();
+            if (!TextUtils.isEmpty(videoUrl)) {
+                player.startPlay();
+            }
             player.hideCenterPlayer(true);
         }
     }
