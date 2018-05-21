@@ -20,7 +20,6 @@ import android.support.v4.widget.NestedScrollView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,13 +43,9 @@ import com.bumptech.glide.request.transition.Transition;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.IdNameInfo;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
-import com.smartstudy.counselor_t.entity.TokenBean;
 import com.smartstudy.counselor_t.handler.WeakHandler;
 import com.smartstudy.counselor_t.mvp.contract.MyInfoDetailContract;
 import com.smartstudy.counselor_t.mvp.presenter.MyInfoDetailPresenter;
-import com.smartstudy.counselor_t.ossServer.OSSAuthCredentialsProvider;
-import com.smartstudy.counselor_t.ossServer.OssService;
-import com.smartstudy.counselor_t.ossServer.STSGetter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.ui.dialog.DialogCreator;
 import com.smartstudy.counselor_t.ui.widget.TagsLayout;
@@ -106,7 +101,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
     private ImageView ivVideoInfo;
     private ImageView ivUpLoad;
     private PlayerView player;
-    private ImageView iv_player;
+    private ImageView ivPlayer;
     private RelativeLayout.LayoutParams params;
     private NestedScrollView rslInfo;
     private FrameLayout flAvatar;
@@ -116,6 +111,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
     private ProgressBar pb;
     private WeakHandler mHandler;
     private String videoUrl;
+    private boolean isLoading;
     private String videoPath = "";
     private OssService ossService;
     private TokenBean tokenBean;
@@ -207,18 +203,21 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         rslInfo.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if (scrollY <= size) {
-                    int padding = scrollY / 2;
-                    flAvatar.setPadding(padding, padding, padding, padding);
-                    flAvatar.setVisibility(View.VISIBLE);
-                } else {
-                    flAvatar.setVisibility(View.GONE);
+                if (!isLoading) {
+                    if (scrollY <= size) {
+                        int padding = scrollY / 2;
+                        flAvatar.setPadding(padding, padding, padding, padding);
+                        flAvatar.setVisibility(View.VISIBLE);
+                    } else {
+                        flAvatar.setVisibility(View.GONE);
+                    }
                 }
             }
         });
     }
 
     private void initHandler() {
+        isLoading = false;
         mHandler = new WeakHandler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
@@ -226,9 +225,11 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                     case ParameterUtils.EMPTY_WHAT:
                         int progress = msg.arg1;
                         if (progress < 100) {
+                            isLoading = true;
                             llProgress.setVisibility(View.VISIBLE);
                             pb.setProgress(progress);
                         } else {
+                            isLoading = false;
                             llProgress.setVisibility(View.GONE);
                             llUpload.setVisibility(View.VISIBLE);
                             tvAddGood.setVisibility(View.VISIBLE);
@@ -249,6 +250,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
 
     private void initPlayer() {
         player = new PlayerView(this, rootView);
+        findViewById(R.id.app_video_menu).setVisibility(View.GONE);
         if (player != null) {
             player.setOnPlayComplete(new OnPlayComplete() {
                 @Override
@@ -266,11 +268,15 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                     tvAddGood.setVisibility(View.GONE);
                     setTopLineVisibility(View.GONE);
                     player.forbidScroll(false).hideBottomBar(false).hideCenterPlayer(false)
-                        .setHideAllUI(false);
+                        .hideTopBar(false).setHideAllUI(false);
                     params.width = ViewGroup.LayoutParams.WRAP_CONTENT;
                     params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                    iv_player.setLayoutParams(params);
-                    rootView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+                    ivPlayer.setLayoutParams(params);
+                    rootView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE);
                 }
 
                 @Override
@@ -281,10 +287,10 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                     tvAddGood.setVisibility(View.VISIBLE);
                     setTopLineVisibility(View.VISIBLE);
                     player.forbidScroll(true).hideBottomBar(true).hideCenterPlayer(true)
-                        .setHideAllUI(true);
+                        .hideTopBar(true).setHideAllUI(true);
                     params.width = DensityUtils.dip2px(45);
                     params.height = DensityUtils.dip2px(45);
-                    iv_player.setLayoutParams(params);
+                    ivPlayer.setLayoutParams(params);
                     rootView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
                 }
             });
@@ -292,20 +298,19 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
             player.setScaleType(PlayStateParams.fillparent)
                 .hideControlPanl(true)
                 .hideCenterPlayer(true)
-                .setHideAllUI(true)
-                .hideTopBar(true)
-                .hideBottomBar(true)
-                .hideCenterPlayer(true)
-                .hideRotation(true);
-            iv_player = player.getPlayerView();
-            params = (RelativeLayout.LayoutParams) iv_player.getLayoutParams();
+                .hideRotation(true)
+                .hideSteam(true)
+                .setForbidDoulbeUp(true)
+                .setHideAllUI(true);
+            ivPlayer = player.getPlayerView();
+            params = (RelativeLayout.LayoutParams) ivPlayer.getLayoutParams();
             params.topMargin = DensityUtils.dip2px(8);
             params.addRule(RelativeLayout.CENTER_IN_PARENT);
             //初始小屏模式
             player.forbidScroll(true);
             params.width = DensityUtils.dip2px(45);
             params.height = DensityUtils.dip2px(45);
-            iv_player.setLayoutParams(params);
+            ivPlayer.setLayoutParams(params);
         }
     }
 
@@ -441,12 +446,10 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
             if (!TextUtils.isEmpty(videoUrl)) {
                 // 播放视频
                 if (player != null) {
-                    player.hideControlPanl(false)
-                        .hideSteam(true)
-                        .hideTopBar(true)
+                    player.hideControlPanl(true)
+                        .setForbidDoulbeUp(false)
                         .autoPlay(videoUrl)
-                        .hideCenterPlayer(false)
-                        .hidePlayUI();
+                        .hideCenterPlayer(true);
                     this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 }
             }
@@ -551,7 +554,9 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         presenter.refreshTacken();
         if (player != null) {
             player.onResume();
-            player.startPlay();
+            if (!TextUtils.isEmpty(videoUrl)) {
+                player.setForbidDoulbeUp(false).startPlay();
+            }
             player.hideCenterPlayer(true);
         }
     }
@@ -649,9 +654,10 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                 }
                 break;
             case ParameterUtils.REQUEST_VIDEO:
-                videoPath = data.getStringExtra("path");
+                String videoPath = data.getStringExtra("path");
                 llUpload.setVisibility(View.GONE);
                 tvAddGood.setVisibility(View.GONE);
+                flAvatar.setVisibility(View.GONE);
                 File file = new File(videoPath);
                 if (ossService != null) {
                     if (tokenBean != null) {
