@@ -2,6 +2,7 @@ package com.smartstudy.counselor_t.mvp.presenter;
 
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSON;
@@ -76,6 +77,21 @@ public class MyInfoDetailPresenter extends BasePresenterImpl<MyInfoDetailContrac
                 if (view != null) {
                     view.onLoading(progress, file.getAbsolutePath());
                 }
+            }
+        }, new ObserverListener<String>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                addDisposable(disposable);
+            }
+
+            @Override
+            public void onNext(String result) {
+                Log.d("result===", result);
+            }
+
+            @Override
+            public void onError(String msg) {
+                view.showTip(msg);
             }
         });
     }

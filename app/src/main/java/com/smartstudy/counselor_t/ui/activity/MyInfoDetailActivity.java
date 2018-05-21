@@ -222,6 +222,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                             if (player != null) {
                                 videoUrl = (String) msg.obj;
                                 player.autoPlay(videoUrl);
+                                player.hideCenterPlayer(true);
                             }
                         }
                         break;

@@ -25,12 +25,12 @@ import okhttp3.RequestBody;
  */
 public class MyInfoDetailModel extends BaseModel {
 
-    public void uploadVideo(File file, OnUploadFileListener listener) {
+    public void uploadVideo(File file, OnUploadFileListener listener, ObserverListener observerListener) {
         final RequestBody requestBody = RequestBody.create(MediaType.parse("video/*"), file);
         FileUploadRequestBody fileUploadRequestBody = new FileUploadRequestBody(requestBody, listener);
         Map map = getHeadersMap();
         map.put("Connection", "close");
-        fileObservalbe(ApiManager.getApiService().upLoadTeacherVideo(map, fileUploadRequestBody)).subscribe();
+        apiSubscribe(ApiManager.getApiService().upLoadTeacherVideo(map, fileUploadRequestBody), observerListener);
     }
 
     public void getAuditResult(ObserverListener listener) {
