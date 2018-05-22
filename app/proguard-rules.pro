@@ -19,6 +19,18 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+#基本指令
+-optimizationpasses 5  #指定代码的压缩级别 0 - 7
+-dontskipnonpubliclibraryclassmembers  #如果应用程序引入的有jar包，并且想混淆jar包里面的class
+-printmapping proguardMapping.txt
+-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*  #混淆时采用的算法
+-keepattributes Signature
+-keepattributes SourceFile,LineNumberTable
+-keepattributes Signature  #过滤泛型（不写可能会出现类型转换错误，一般情况把这个加上就是了）
+-dontpreverify  #预校验
+
+-dontwarn okio.**
+-dontwarn java.nio.**
 
 -keep class com.smartstudy.counselor_t.entity.**{*;}
 
@@ -84,9 +96,19 @@
 # Only required if you use AsyncExecutor
 -keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
     <init>(java.lang.Throwable);
+}
+
 # oss
 -keep class com.alibaba.sdk.android.oss.** { *; }
 -dontwarn okio.**
 -dontwarn org.apache.commons.codec.binary.**
+
+#ijkplayer
+-keep class tv.danmaku.ijk.media.player.** {*; }
+-keep class tv.danmaku.ijk.media.player.IjkMediaPlayer{
+*;
+}
+-keep class tv.danmaku.ijk.media.player.ffmpeg.FFmpegApi{
+*;
 }
 
