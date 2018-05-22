@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.listener.OnSendMsgDialogClickListener;
 import com.smartstudy.counselor_t.ui.activity.LoginActivity;
+import com.smartstudy.counselor_t.ui.activity.SelectMyVideoActivity;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
 import com.smartstudy.counselor_t.util.KeyBoardUtils;
 import com.smartstudy.counselor_t.util.ParameterUtils;
@@ -223,7 +225,7 @@ public class DialogCreator {
     }
 
 
-    public static void createVedioClaimDialog(final Activity context) {
+    public static void createVedioClaimDialog(final Activity context, final String from) {
         final AppBasicDialog dialog = new AppBasicDialog(context, R.style.appBasicDialog);
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.dialog_vedio_claim, null);
@@ -246,6 +248,11 @@ public class DialogCreator {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+                if ("upLoad".equals(from)) {
+                    Intent toVideo = new Intent(context, SelectMyVideoActivity.class);
+                    toVideo.putExtra("singlePic", true);
+                    context.startActivityForResult(toVideo, ParameterUtils.REQUEST_VIDEO);
+                }
             }
         });
         WindowManager.LayoutParams p = dialog.getWindow().getAttributes();

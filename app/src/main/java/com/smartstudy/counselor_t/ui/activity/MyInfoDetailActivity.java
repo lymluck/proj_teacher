@@ -385,14 +385,26 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                 DialogCreator.createVedioDialog(this, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        DialogCreator.createVedioClaimDialog(MyInfoDetailActivity.this);
+                        DialogCreator.createVedioClaimDialog(MyInfoDetailActivity.this, "video_info");
                     }
                 });
                 break;
             case R.id.iv_upLoad:
-                Intent toVideo = new Intent(this, SelectMyVideoActivity.class);
-                toVideo.putExtra("singlePic", true);
-                startActivityForResult(toVideo, ParameterUtils.REQUEST_VIDEO);
+                String key = SPCacheUtils.get("imUserId", "").toString() + "ISFIRST";
+                if ((boolean) SPCacheUtils.get(key, false)) {
+
+                    Intent toVideo = new Intent(this, SelectMyVideoActivity.class);
+                    toVideo.putExtra("singlePic", true);
+                    startActivityForResult(toVideo, ParameterUtils.REQUEST_VIDEO);
+                } else {
+                    SPCacheUtils.put(key, true);
+                    DialogCreator.createVedioDialog(this, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            DialogCreator.createVedioClaimDialog(MyInfoDetailActivity.this, "upLoad");
+                        }
+                    });
+                }
                 break;
             default:
                 break;

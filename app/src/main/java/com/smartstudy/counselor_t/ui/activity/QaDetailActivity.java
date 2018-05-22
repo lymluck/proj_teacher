@@ -392,7 +392,6 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
     private void hideAudioView() {
         etAnswer.setText("");
         etAnswer.clearFocus();
-        llStudent.setVisibility(View.GONE);
     }
 
     @Override
