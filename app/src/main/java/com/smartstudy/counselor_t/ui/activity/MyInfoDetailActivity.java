@@ -391,7 +391,6 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
             case R.id.iv_upLoad:
                 String key = SPCacheUtils.get("imUserId", "").toString() + "ISFIRST";
                 if ((boolean) SPCacheUtils.get(key, false)) {
-
                     Intent toVideo = new Intent(this, SelectMyVideoActivity.class);
                     toVideo.putExtra("singlePic", true);
                     startActivityForResult(toVideo, ParameterUtils.REQUEST_VIDEO);
@@ -852,6 +851,9 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
     public void onDataSynEvent(ProgressItem progressItem) {
         if (progressItem != null) {
             if (mHandler != null) {
+                llUpload.setVisibility(View.GONE);
+                tvAddGood.setVisibility(View.GONE);
+                flAvatar.setVisibility(View.GONE);
                 Message msg = Message.obtain();
                 msg.what = ParameterUtils.EMPTY_WHAT;
                 msg.arg1 = progressItem.getProgress();

@@ -13,6 +13,7 @@ import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.smartstudy.counselor_t.entity.ProgressItem;
+import com.smartstudy.medialib.ijkplayer.util.NetUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
