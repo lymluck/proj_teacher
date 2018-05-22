@@ -2,6 +2,7 @@ package com.smartstudy.counselor_t.ui.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -15,6 +16,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -62,7 +64,6 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
     private SwipeRefreshLayout swipeRefreshLayout;
     private LinearLayout llStudent;
     private TextView tvLocation;
-    private TextView tvPlatform;
     private TextView tvSchoolName;
     private QaDetailInfo detailInfo;
     private HeaderAndFooterWrapper mHeader;
@@ -78,7 +79,6 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qa_detail_list);
     }
-
 
     @Override
     public void initEvent() {
@@ -159,6 +159,10 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
     @Override
     public void initView() {
+        View decorView = getWindow().getDecorView();
+        // 此处的控件ID可以使用界面当中的指定的任意控件
+        View contentView = findViewById(R.id.fl_container);
+        decorView.getViewTreeObserver().addOnGlobalLayoutListener(getGlobalLayoutListener(decorView, contentView));
         Intent data = getIntent();
         questionId = data.getStringExtra("id");
         setTitle(getString(R.string.qa_detail_title));
@@ -197,6 +201,29 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         }
     }
 
+    private ViewTreeObserver.OnGlobalLayoutListener getGlobalLayoutListener(final View decorView, final View contentView) {
+        return new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+                decorView.getWindowVisibleDisplayFrame(r);
+
+                int height = decorView.getContext().getResources().getDisplayMetrics().heightPixels;
+                int diff = height - r.bottom;
+
+                if (diff != 0) {
+                    if (contentView.getPaddingBottom() != diff) {
+                        contentView.setPadding(0, 0, 0, diff);
+                    }
+                } else {
+                    if (contentView.getPaddingBottom() != 0) {
+                        contentView.setPadding(0, 0, 0, 0);
+                    }
+                }
+            }
+        };
+    }
+
     private void initHeaderAndFooter() {
         headView = mInflater.inflate(R.layout.layout_question_list, null, false);
         llStudent = headView.findViewById(R.id.ll_student);
@@ -204,7 +231,6 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         dtvCallout = headView.findViewById(R.id.dtv_callout);
         tvAskerName = headView.findViewById(R.id.tv_asker_name);
         tvLocation = headView.findViewById(R.id.tv_location);
-        tvPlatform = headView.findViewById(R.id.tv_platform);
         tvSchoolName = headView.findViewById(R.id.tv_schoolName);
         dtvFocus = headView.findViewById(R.id.dtv_focus);
         tvQuestion = headView.findViewById(R.id.tv_question);
