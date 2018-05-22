@@ -191,7 +191,6 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
     }
 
     private void handleProfile() {
-
         rslInfo.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -555,6 +554,14 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         ToastUtils.shortToast(this, "视频上传成功");
     }
 
+    @Override
+    public void updateFail(String msg) {
+        ToastUtils.shortToast(this, msg);
+        llUpload.setVisibility(View.VISIBLE);
+        tvAddGood.setVisibility(View.VISIBLE);
+        flAvatar.setVisibility(View.VISIBLE);
+    }
+
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -831,6 +838,13 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
     @Override
     public void getPicData(String videoUrl) {
         presenter.updateVideoUrl(videoUrl);
+    }
+
+    @Override
+    public void uploadError() {
+        llUpload.setVisibility(View.VISIBLE);
+        tvAddGood.setVisibility(View.VISIBLE);
+        flAvatar.setVisibility(View.VISIBLE);
     }
 
 

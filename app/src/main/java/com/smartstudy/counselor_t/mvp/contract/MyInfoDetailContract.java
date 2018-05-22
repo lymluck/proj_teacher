@@ -34,6 +34,8 @@ public interface MyInfoDetailContract {
         void refreshSuccess(TokenBean tokenBean);
 
         void updateVideoUrlSuccess();
+
+        void updateFail(String message);
     }
 
     interface Presenter extends BasePresenter {

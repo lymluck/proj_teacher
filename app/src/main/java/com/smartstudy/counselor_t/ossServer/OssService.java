@@ -74,6 +74,7 @@ public class OssService {
 
             @Override
             public void onFailure(PutObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {
+                callback.uploadError();
                 String info = "";
                 // 请求异常
                 if (clientExcepion != null) {
@@ -95,6 +96,8 @@ public class OssService {
     //成功的回调接口
     public interface picResultCallback {
         void getPicData(String videoUrl);
+
+        void uploadError();
     }
 }
 

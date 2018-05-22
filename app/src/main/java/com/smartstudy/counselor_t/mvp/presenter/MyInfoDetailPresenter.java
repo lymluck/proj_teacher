@@ -235,7 +235,7 @@ public class MyInfoDetailPresenter extends BasePresenterImpl<MyInfoDetailContrac
 
             @Override
             public void onError(String msg) {
-                view.showTip(msg);
+                view.updateFail(msg);
             }
         });
     }
