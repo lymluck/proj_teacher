@@ -163,7 +163,7 @@ public class SplashActivity extends BaseActivity<SplashContract.Presenter> imple
         params.width = screenWidth;
         params.height = (realWidth * 3) / 2;
         ivAdv.setLayoutParams(params);
-        DisplayImageUtils.displayImageNoHolder(this, info.getData().getPhotoUrl(), ivAdv);
+        DisplayImageUtils.formatImgUrlNoHolder(this, info.getData().getPhotoUrl(), ivAdv);
         View viewTop = findViewById(R.id.view_top);
         LinearLayout.LayoutParams toplayout = (LinearLayout.LayoutParams) viewTop.getLayoutParams();
         toplayout.height = params.height;
@@ -282,6 +282,10 @@ public class SplashActivity extends BaseActivity<SplashContract.Presenter> imple
 
     @Override
     public void getAdSuccess(String result) {
-        SPCacheUtils.put("adInfo", result);
+        if (TextUtils.isEmpty(result)) {
+            SPCacheUtils.put("adInfo", "");
+        } else {
+            SPCacheUtils.put("adInfo", result);
+        }
     }
 }

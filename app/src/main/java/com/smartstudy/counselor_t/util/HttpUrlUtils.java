@@ -35,7 +35,7 @@ public class HttpUrlUtils {
     public static String getBaseUrl() {
 //        String SERVER = "https://slx.smartstudy.com/api/";
 //        String SERVER = "http://172.17.7.102:3234/";
-        String SERVER = "https://slx.smartstudy.com/api/"; //test
+        String SERVER = "https://slx.smartstudy.com/api/";
         String api = (String) SPCacheUtils.get(ConstantUtils.API_SERVER, "");
         switch (api) {
             case "master":
