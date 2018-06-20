@@ -20,7 +20,8 @@ public class MainModel extends BaseModel {
     }
 
     public void checkVersion(ObserverListener listener) {
-        apiSubscribe(ApiManager.getApiService().checkVersion(getHeadersMap(), String.format(HttpUrlUtils.URL_APP_VERSION, AppUtils.getVersionName())), listener);
+        apiSubscribe(ApiManager.getApiService().checkVersion(getHeadersMap(),
+            String.format(HttpUrlUtils.URL_APP_VERSION, AppUtils.getVersionName())), listener);
     }
 
     public void getLogOut(ObserverListener listener) {

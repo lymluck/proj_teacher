@@ -53,26 +53,29 @@ dependencies {
     compile rootProject.ext.dependencies.glide
     annotationProcessor rootProject.ext.dependencies.glideprocessor
     compile rootProject.ext.dependencies.nineoldandroids
+    compile rootProject.ext.dependencies.retrofit
+    compile rootProject.ext.dependencies.rxandroid
+    compile rootProject.ext.dependencies.rxjava
+    compile rootProject.ext.dependencies.fastjson
+    compile rootProject.ext.dependencies.eventbus
+    compile rootProject.ext.dependencies.retrofit_rxjava
+    compile rootProject.ext.dependencies.ali_oss
+    compile rootProject.ext.dependencies.flowlayout
+    compile rootProject.ext.dependencies.retrofit_log
     compile project(':imkit')
     compile project(':imlib')
     compile project(':image')
     compile project(':qrcode')
     compile project(':slideback')
-    compile 'com.squareup.retrofit2:retrofit:+'
-    compile 'io.reactivex.rxjava2:rxandroid:+'
-    compile 'io.reactivex.rxjava2:rxjava:+'
-    compile 'com.alibaba:fastjson:1.1.67.android'
-    compile 'com.squareup.retrofit2:adapter-rxjava2:+'
-    compile 'org.greenrobot:eventbus:3.+'
     compile project(path: ':permissionlib')
     compile(name: 'HMS-SDK-2.4.0.300', ext: 'aar')
     compile files('libs/MiPush_SDK_Client_3_6_1.jar')
     compile project(':xxdAnnotation')
     compile files('libs/jcore-android-1.1.9.jar')
     compile files('libs/jpush-android-3.1.1.jar')
-    compile 'com.zhy:flowlayout-lib:1.0.3'
     compile project(':medialib')
-    compile 'com.aliyun.dpa:oss-android-sdk:2.4.5'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 }
 
 repositories { flatDir { dirs 'aars' } }

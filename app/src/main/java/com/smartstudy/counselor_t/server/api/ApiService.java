@@ -156,6 +156,7 @@ public interface ApiService {
      * 问题列表
      */
     @GET(HttpUrlUtils.URL_QUESTS)
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
     Observable<ResponseInfo> getQuestions(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
 
@@ -171,6 +172,7 @@ public interface ApiService {
      * 我关注问题列表
      */
     @GET(HttpUrlUtils.URL_QUESTS_MARK)
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
     Observable<ResponseInfo> getMyFocusQuestions(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
 
@@ -178,6 +180,7 @@ public interface ApiService {
      * 获取我关注的学生的标签
      */
     @GET()
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
     Observable<ResponseInfo> getMyStudentTag(@HeaderMap Map<String, String> header, @Url() String url);
 
 
@@ -211,6 +214,7 @@ public interface ApiService {
      * @return
      */
     @GET()
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
     Observable<ResponseInfo> getQaDetail(@HeaderMap Map<String, String> header, @Url() String url, @QueryMap Map<String, String> params);
 
 
