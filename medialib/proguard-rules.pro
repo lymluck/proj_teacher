@@ -15,5 +15,13 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+#ijkplayer
+-keep class tv.danmaku.ijk.media.player.** {*; }
+-keep class tv.danmaku.ijk.media.player.IjkMediaPlayer{
+*;
+}
+-keep class tv.danmaku.ijk.media.player.ffmpeg.FFmpegApi{
+*;
+}
 -dontwarn okio.**
 -dontwarn java.nio.**
