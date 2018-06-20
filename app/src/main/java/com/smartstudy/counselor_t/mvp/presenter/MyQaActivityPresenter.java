@@ -3,7 +3,6 @@ package com.smartstudy.counselor_t.mvp.presenter;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
-import com.alibaba.fastjson.JSON;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.entity.VersionInfo;
 import com.smartstudy.counselor_t.listener.ObserverListener;
@@ -113,24 +112,23 @@ public class MyQaActivityPresenter extends BasePresenterImpl<MyQaActivityContrac
 
     @Override
     public void checkVersion() {
-        myQaModel.checkVersion(new ObserverListener<String>() {
+        myQaModel.checkVersion(new ObserverListener<VersionInfo>() {
             @Override
             public void onSubscribe(Disposable disposable) {
                 addDisposable(disposable);
             }
 
             @Override
-            public void onNext(String result) {
-                VersionInfo info = JSON.parseObject(result, VersionInfo.class);
-                if (info != null) {
-                    if (info.isNeedUpdate()) {
-                        if (info.isForceUpdate()) {
-                            view.forceUpdate(info.getPackageUrl(), info.getLatestVersion(), info.getDescription());
+            public void onNext(VersionInfo result) {
+                if (result != null) {
+                    if (result.isNeedUpdate()) {
+                        if (result.isForceUpdate()) {
+                            view.forceUpdate(result.getPackageUrl(), result.getLatestVersion(), result.getDescription());
                         } else {
-                            view.updateable(info.getPackageUrl(), info.getLatestVersion(), info.getDescription());
+                            view.updateable(result.getPackageUrl(), result.getLatestVersion(), result.getDescription());
                         }
                     }
-                    info = null;
+                    result = null;
                 }
             }
 
