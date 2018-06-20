@@ -9,7 +9,6 @@ import com.alibaba.fastjson.JSON;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.AddGoodInfo;
 import com.smartstudy.counselor_t.entity.DataListInfo;
-import com.smartstudy.counselor_t.entity.QuestionInfo;
 import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
 import com.smartstudy.counselor_t.mvp.contract.AddGoodDetailContract;
@@ -45,16 +44,15 @@ public class AddGoodDetailPresenter extends BasePresenterImpl<AddGoodDetailContr
 
     @Override
     public void getAddGoodDetail(int page, final int request_state) {
-        addGoodDetailModel.getAddGoodDetail(page, new ObserverListener<String>() {
+        addGoodDetailModel.getAddGoodDetail(page, new ObserverListener<DataListInfo>() {
             @Override
             public void onSubscribe(Disposable disposable) {
                 addDisposable(disposable);
             }
 
             @Override
-            public void onNext(String result) {
-                DataListInfo dataListInfo = JSON.parseObject((String) result, DataListInfo.class);
-                List<AddGoodInfo> data = JSON.parseArray(dataListInfo.getData(), AddGoodInfo.class);
+            public void onNext(DataListInfo result) {
+                List<AddGoodInfo> data = JSON.parseArray(result.getData(), AddGoodInfo.class);
                 if (data != null) {
                     view.getAddGoodDetailSucess(data, request_state);
                     data = null;

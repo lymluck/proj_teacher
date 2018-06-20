@@ -90,24 +90,23 @@ public class FillPersonPresenter extends BasePresenterImpl<FillPersonContract.Vi
 
     @Override
     public void getOptions() {
-        fillPersonModel.getOptions(new ObserverListener<String>() {
+        fillPersonModel.getOptions(new ObserverListener<JSONObject>() {
             @Override
             public void onSubscribe(Disposable disposable) {
                 addDisposable(disposable);
             }
 
             @Override
-            public void onNext(String s) {
-                JSONObject jsonObject = JSONObject.parseObject(s);
-                if (jsonObject != null) {
+            public void onNext(JSONObject result) {
+                if (result != null) {
                     List<IdNameInfo> workIdNameInfo = null;
                     List<IdNameInfo> adeptIdNameInfo = null;
-                    if (jsonObject.containsKey("workingCity")) {
-                        workIdNameInfo = JSONObject.parseArray(jsonObject.getString("workingCity"), IdNameInfo.class);
+                    if (result.containsKey("workingCity")) {
+                        workIdNameInfo = JSONObject.parseArray(result.getString("workingCity"), IdNameInfo.class);
                     }
 
-                    if (jsonObject.containsKey("adeptWorks")) {
-                        adeptIdNameInfo = JSONObject.parseArray(jsonObject.getString("adeptWorks"), IdNameInfo.class);
+                    if (result.containsKey("adeptWorks")) {
+                        adeptIdNameInfo = JSONObject.parseArray(result.getString("adeptWorks"), IdNameInfo.class);
                     }
                     view.getOptionsSuccess(workIdNameInfo, adeptIdNameInfo);
                 }

@@ -157,7 +157,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends SlideBackAct
     @Override
     public void showTip(String message) {
         if (!TextUtils.isEmpty(message)) {
-            ToastUtils.shortToast(this, message);
+            ToastUtils.shortToast(message);
         }
     }
 

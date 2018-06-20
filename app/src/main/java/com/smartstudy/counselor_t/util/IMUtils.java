@@ -3,8 +3,8 @@ package com.smartstudy.counselor_t.util;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
-import com.smartstudy.counselor_t.server.api.ApiManager;
 import com.smartstudy.counselor_t.entity.ResponseInfo;
+import com.smartstudy.counselor_t.server.api.ApiManager;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -46,29 +46,29 @@ public class IMUtils {
 
     public static void reGetToken() {
         ApiManager.getApiService().refreshToken().subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<ResponseInfo>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+            .unsubscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Observer<ResponseInfo>() {
+                @Override
+                public void onSubscribe(Disposable d) {
+                }
 
-                    @Override
-                    public void onNext(ResponseInfo responseInfo) {
-                        if (responseInfo.isSuccess()) {
-                            Log.d("======", responseInfo.getData());
-                            reConn(JSON.parseObject(responseInfo.getData()).getString("imToken"));
-                        }
+                @Override
+                public void onNext(ResponseInfo responseInfo) {
+                    if (responseInfo.isSuccess()) {
+                        Log.d("======", responseInfo.getData().toString());
+                        reConn(JSON.parseObject(responseInfo.getData().toString()).getString("imToken"));
                     }
+                }
 
-                    @Override
-                    public void onError(Throwable e) {
-                    }
+                @Override
+                public void onError(Throwable e) {
+                }
 
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+                @Override
+                public void onComplete() {
+                }
+            });
     }
 
     private static void reConn(String token) {

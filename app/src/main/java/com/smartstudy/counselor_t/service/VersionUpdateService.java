@@ -111,7 +111,7 @@ public class VersionUpdateService extends Service implements DownloadFileContrac
                         break;
                     case ParameterUtils.MSG_WHAT_ERR:
                         mNotificationManager.cancel(NOTIFY_ID);
-                        ToastUtils.shortToast(VersionUpdateService.this, (String) msg.obj);
+                        ToastUtils.shortToast((String) msg.obj);
                         break;
                     case ParameterUtils.MSG_WHAT_FINISH:
                         app.setDownload(false);

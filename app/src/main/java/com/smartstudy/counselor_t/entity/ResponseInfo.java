@@ -6,10 +6,10 @@ import android.text.TextUtils;
  * Created by louis on 2017/3/2.
  */
 
-public class ResponseInfo {
+public class ResponseInfo<T> {
 
     private String code;
-    private String data;
+    private T data;
     private String msg;
 
     public String getCode() {
@@ -20,11 +20,11 @@ public class ResponseInfo {
         this.code = code;
     }
 
-    public String getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(T data) {
         this.data = data;
     }
 
@@ -44,11 +44,11 @@ public class ResponseInfo {
     public String toString() {
         final StringBuilder sb = new StringBuilder("{");
         sb.append("\"code\":\"")
-                .append(code).append('\"');
+            .append(code).append('\"');
         sb.append(",\"data\":\"")
-                .append(data).append('\"');
+            .append(data).append('\"');
         sb.append(",\"msg\":\"")
-                .append(msg).append('\"');
+            .append(msg).append('\"');
         sb.append('}');
         return sb.toString();
     }

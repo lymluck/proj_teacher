@@ -260,7 +260,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
                 break;
             case R.id.tv_post:
                 if (TextUtils.isEmpty(etAnswer.getText().toString().trim())) {
-                    ToastUtils.shortToast(this, "发送消息不能为空");
+                    ToastUtils.shortToast("发送消息不能为空");
                     return;
                 }
                 tvPost.setClickable(false);
@@ -366,7 +366,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
     @Override
     public void getQaDetailFail(String message) {
-        ToastUtils.shortToast(this, message);
+        ToastUtils.shortToast(message);
         swipeRefreshLayout.setRefreshing(false);
     }
 
@@ -381,7 +381,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
     @Override
     public void postAnswerFail(String message) {
-        ToastUtils.shortToast(this, message);
+        ToastUtils.shortToast(message);
         tvPost.setClickable(true);
     }
 
@@ -392,7 +392,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         leftDrawable.setBounds(0, 0, leftDrawable.getMinimumWidth(), leftDrawable.getMinimumHeight());
         dtvFocus.setCompoundDrawables(leftDrawable, null, null, null);
         isFocus = true;
-        ToastUtils.shortToast(this, "关注成功");
+        ToastUtils.shortToast("关注成功");
     }
 
     @Override
@@ -401,7 +401,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         leftDrawable.setBounds(0, 0, leftDrawable.getMinimumWidth(), leftDrawable.getMinimumHeight());
         dtvFocus.setCompoundDrawables(leftDrawable, null, null, null);
         isFocus = false;
-        ToastUtils.shortToast(this, "取消关注成功");
+        ToastUtils.shortToast("取消关注成功");
     }
 
     @Override

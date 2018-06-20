@@ -94,7 +94,7 @@ public class ChooseListActivity extends BaseActivity {
                 }
             }
             if (TextUtils.isEmpty(names)) {
-                ToastUtils.shortToast(this, "请至少选一项！");
+                ToastUtils.shortToast( "请至少选一项！");
             } else {
                 Intent data = new Intent();
                 data.putExtra("new_value", names);

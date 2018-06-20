@@ -1,22 +1,18 @@
 package com.smartstudy.counselor_t.mvp.presenter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.DataListInfo;
 import com.smartstudy.counselor_t.entity.QuestionInfo;
 import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
 import com.smartstudy.counselor_t.mvp.contract.MyQaFragmentContract;
-import com.smartstudy.counselor_t.mvp.contract.QaListContract;
 import com.smartstudy.counselor_t.mvp.model.MyQaFragmentModel;
-import com.smartstudy.counselor_t.mvp.model.QuestionsModel;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
 import com.smartstudy.counselor_t.util.Utils;
 
@@ -50,23 +46,22 @@ public class MyQaFragmentPresenter extends BasePresenterImpl<MyQaFragmentContrac
 
     @Override
     public void getMyQuestions(int page, final int request_state) {
-        myQaFragmentModel.getMyQuestions(page, new ObserverListener<String>() {
+        myQaFragmentModel.getMyQuestions(page, new ObserverListener<DataListInfo>() {
             @Override
             public void onSubscribe(Disposable disposable) {
                 addDisposable(disposable);
             }
 
             @Override
-            public void onNext(String result) {
+            public void onNext(DataListInfo result) {
                 int subCount = 0;
-                DataListInfo dataListInfo = JSON.parseObject(result, DataListInfo.class);
-                List<QuestionInfo> data = JSON.parseArray(dataListInfo.getData(), QuestionInfo.class);
-                if (JSON.parseObject(dataListInfo.getMeta()) != null) {
-                    if (JSON.parseObject(dataListInfo.getMeta()).containsKey("totalSubQuestionCountToMe")) {
-                        subCount = JSON.parseObject(dataListInfo.getMeta()).getIntValue("totalSubQuestionCountToMe");
+                List<QuestionInfo> data = JSON.parseArray(result.getData(), QuestionInfo.class);
+                if (JSON.parseObject(result.getMeta()) != null) {
+                    if (JSON.parseObject(result.getMeta()).containsKey("totalSubQuestionCountToMe")) {
+                        subCount = JSON.parseObject(result.getMeta()).getIntValue("totalSubQuestionCountToMe");
                     }
                 }
-                dataListInfo = null;
+                result = null;
                 if (data != null) {
                     view.getQuestionsSuccess(subCount, data, request_state);
                     data = null;

@@ -86,20 +86,20 @@ public class ImPicPagerActivity extends PicturePagerActivity {
                 switch (which) {
                     case 0:
                         Router.build("MsgShareActivity").with("uri", Uri.fromFile(file))
-                                .with("type", "image")
-                                .requestCode(REQUEST_SHARE).go(ImPicPagerActivity.this);
+                            .with("type", "image")
+                            .requestCode(REQUEST_SHARE).go(ImPicPagerActivity.this);
                         break;
                     case 1:
                         savePic(file);
                         break;
                     case 2:
                         startActivityForResult(new Intent(ImPicPagerActivity.this, IMGEditActivity.class)
-                                .putExtra("uri", Uri.fromFile(file)), REQUEST_EDIT);
+                            .putExtra("uri", Uri.fromFile(file)), REQUEST_EDIT);
                         break;
                     case 3:
                         //跳转到result这个url
                         startActivity(new Intent(ImPicPagerActivity.this, RongWebviewActivity.class)
-                                .putExtra("url", qrCodeUrl));
+                            .putExtra("url", qrCodeUrl));
                         break;
                     default:
                         break;
@@ -122,9 +122,9 @@ public class ImPicPagerActivity extends PicturePagerActivity {
             String name = System.currentTimeMillis() + ".jpg";
             FileUtils.copyFile(file, dir.getPath() + File.separator, name);
             MediaScannerConnection.scanFile(BaseApplication.appContext, new String[]{dir.getPath() + File.separator + name}, (String[]) null, (MediaScannerConnection.OnScanCompletedListener) null);
-            ToastUtils.shortToast(BaseApplication.appContext, String.format(BaseApplication.appContext.getString(io.rong.imkit.R.string.rc_save_picture_at), new Object[]{dir.getPath() + File.separator + name}));
+            ToastUtils.shortToast(String.format(BaseApplication.appContext.getString(io.rong.imkit.R.string.rc_save_picture_at), new Object[]{dir.getPath() + File.separator + name}));
         } else {
-            ToastUtils.shortToast(BaseApplication.appContext, BaseApplication.appContext.getString(io.rong.imkit.R.string.rc_src_file_not_found));
+            ToastUtils.shortToast(BaseApplication.appContext.getString(io.rong.imkit.R.string.rc_src_file_not_found));
         }
     }
 
@@ -204,7 +204,7 @@ public class ImPicPagerActivity extends PicturePagerActivity {
                 //消息通过网络发送成功的回调
                 String myId = (String) SPCacheUtils.get("imUserId", "");
                 if (!userId.equals(myId)) {
-                    ToastUtils.shortToast(ImPicPagerActivity.this, "已发送");
+                    ToastUtils.shortToast("已发送");
                 }
             }
 
@@ -213,7 +213,7 @@ public class ImPicPagerActivity extends PicturePagerActivity {
                 //消息发送失败的回调
                 String myId = (String) SPCacheUtils.get("imUserId", "");
                 if (!userId.equals(myId)) {
-                    ToastUtils.shortToast(ImPicPagerActivity.this, "消息发送失败！");
+                    ToastUtils.shortToast("消息发送失败！");
                 }
             }
         });
@@ -231,7 +231,7 @@ public class ImPicPagerActivity extends PicturePagerActivity {
             public void onError(Message message, RongIMClient.ErrorCode errorCode) {
                 String myId = (String) SPCacheUtils.get("imUserId", "");
                 if (!userId.equals(myId)) {
-                    ToastUtils.shortToast(ImPicPagerActivity.this, "消息发送失败！");
+                    ToastUtils.shortToast("消息发送失败！");
                 }
             }
 
@@ -242,7 +242,7 @@ public class ImPicPagerActivity extends PicturePagerActivity {
                 }
                 String myId = (String) SPCacheUtils.get("imUserId", "");
                 if (!userId.equals(myId)) {
-                    ToastUtils.shortToast(ImPicPagerActivity.this, "消息已发送");
+                    ToastUtils.shortToast("消息已发送");
                 }
             }
 

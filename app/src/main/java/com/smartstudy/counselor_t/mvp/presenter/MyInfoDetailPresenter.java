@@ -4,7 +4,6 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.smartstudy.counselor_t.entity.IdNameInfo;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
@@ -47,17 +46,16 @@ public class MyInfoDetailPresenter extends BasePresenterImpl<MyInfoDetailContrac
 
     @Override
     public void getMyInfo() {
-        myInfoDetailModel.getAuditResult(new ObserverListener<String>() {
+        myInfoDetailModel.getAuditResult(new ObserverListener<TeacherInfo>() {
             @Override
             public void onSubscribe(Disposable disposable) {
                 addDisposable(disposable);
             }
 
             @Override
-            public void onNext(String s) {
-                TeacherInfo teacherInfo = JSON.parseObject(s, TeacherInfo.class);
-                if (teacherInfo != null) {
-                    view.getMyInfoSuccess(teacherInfo);
+            public void onNext(TeacherInfo result) {
+                if (result != null) {
+                    view.getMyInfoSuccess(result);
                 }
             }
 
@@ -70,27 +68,26 @@ public class MyInfoDetailPresenter extends BasePresenterImpl<MyInfoDetailContrac
 
     @Override
     public void updateMyAvatarInfo(File avatar, final ImageView ivAvatar) {
-        myInfoDetailModel.updatePersonInfo(avatar, new ObserverListener<String>() {
+        myInfoDetailModel.updatePersonInfo(avatar, new ObserverListener<TeacherInfo>() {
             @Override
             public void onSubscribe(Disposable disposable) {
                 addDisposable(disposable);
             }
 
             @Override
-            public void onNext(String s) {
-                TeacherInfo teacherInfo = JSON.parseObject(s, TeacherInfo.class);
-                if (teacherInfo != null) {
+            public void onNext(TeacherInfo result) {
+                if (result != null) {
                     //更新融云
                     String imUserId = (String) SPCacheUtils.get("imUserId", "");
                     if (!TextUtils.isEmpty(imUserId)) {
                         Uri avatarUri = null;
-                        if (!TextUtils.isEmpty(teacherInfo.getAvatar())) {
-                            String avatarUrl = DisplayImageUtils.formatImgUrl(teacherInfo.getAvatar(), ivAvatar.getWidth(), ivAvatar.getHeight());
+                        if (!TextUtils.isEmpty(result.getAvatar())) {
+                            String avatarUrl = DisplayImageUtils.formatImgUrl(result.getAvatar(), ivAvatar.getWidth(), ivAvatar.getHeight());
                             avatarUri = Uri.parse(avatarUrl);
                         }
                         String name = null;
-                        if (!TextUtils.isEmpty(teacherInfo.getName())) {
-                            name = teacherInfo.getName();
+                        if (!TextUtils.isEmpty(result.getName())) {
+                            name = result.getName();
                         }
                         if (RongIM.getInstance() != null) {
                             if (avatarUri != null && name != null) {
@@ -108,9 +105,9 @@ public class MyInfoDetailPresenter extends BasePresenterImpl<MyInfoDetailContrac
                             }
                         }
                     }
-                    SPCacheUtils.put("title", teacherInfo.getTitle());
-                    SPCacheUtils.put("year", teacherInfo.getYearsOfWorking());
-                    SPCacheUtils.put("company", teacherInfo.getOrganization().getName());
+                    SPCacheUtils.put("title", result.getTitle());
+                    SPCacheUtils.put("year", result.getYearsOfWorking());
+                    SPCacheUtils.put("company", result.getOrganization().getName());
                     view.updateMyAvatarSuccesee();
                 }
             }
@@ -144,28 +141,26 @@ public class MyInfoDetailPresenter extends BasePresenterImpl<MyInfoDetailContrac
 
     @Override
     public void getOptions() {
-        myInfoDetailModel.getOptions(new ObserverListener<String>() {
+        myInfoDetailModel.getOptions(new ObserverListener<JSONObject>() {
             @Override
             public void onSubscribe(Disposable disposable) {
                 addDisposable(disposable);
             }
 
             @Override
-            public void onNext(String s) {
-                JSONObject jsonObject = JSONObject.parseObject(s);
-                if (jsonObject != null) {
+            public void onNext(JSONObject result) {
+                if (result != null) {
                     List<IdNameInfo> workIdNameInfo = null;
                     List<IdNameInfo> adeptIdNameInfo = null;
-                    if (jsonObject.containsKey("workingCity")) {
-                        workIdNameInfo = JSONObject.parseArray(jsonObject.getString("workingCity"), IdNameInfo.class);
+                    if (result.containsKey("workingCity")) {
+                        workIdNameInfo = JSONObject.parseArray(result.getString("workingCity"), IdNameInfo.class);
                     }
 
-                    if (jsonObject.containsKey("adeptWorks")) {
-                        adeptIdNameInfo = JSONObject.parseArray(jsonObject.getString("adeptWorks"), IdNameInfo.class);
+                    if (result.containsKey("adeptWorks")) {
+                        adeptIdNameInfo = JSONObject.parseArray(result.getString("adeptWorks"), IdNameInfo.class);
                     }
                     view.getOptionsSuccess(workIdNameInfo, adeptIdNameInfo);
                 }
-
             }
 
             @Override
@@ -180,14 +175,14 @@ public class MyInfoDetailPresenter extends BasePresenterImpl<MyInfoDetailContrac
                              String email, String realName, String introduction, String workingCityKey,
                              String adeptWorksKey) {
         myInfoDetailModel.updateMyInfo(name, avatar, title, school, yearsOfWorking, email, realName, introduction,
-            workingCityKey, adeptWorksKey, new ObserverListener<String>() {
+            workingCityKey, adeptWorksKey, new ObserverListener<TeacherInfo>() {
                 @Override
                 public void onSubscribe(Disposable disposable) {
                     addDisposable(disposable);
                 }
 
                 @Override
-                public void onNext(String s) {
+                public void onNext(TeacherInfo result) {
                     view.updateMyInfoSuccess();
                 }
 
@@ -200,16 +195,15 @@ public class MyInfoDetailPresenter extends BasePresenterImpl<MyInfoDetailContrac
 
     @Override
     public void refreshTacken() {
-        myInfoDetailModel.refreshTacken(new ObserverListener<String>() {
+        myInfoDetailModel.refreshTacken(new ObserverListener<TokenBean>() {
             @Override
             public void onSubscribe(Disposable disposable) {
                 addDisposable(disposable);
             }
 
             @Override
-            public void onNext(String result) {
-                TokenBean tokenBean = JSONObject.parseObject(result, TokenBean.class);
-                view.refreshSuccess(tokenBean);
+            public void onNext(TokenBean result) {
+                view.refreshSuccess(result);
             }
 
             @Override
@@ -221,16 +215,15 @@ public class MyInfoDetailPresenter extends BasePresenterImpl<MyInfoDetailContrac
 
     @Override
     public void updateVideoUrl(final String videoUrl) {
-        myInfoDetailModel.updateVideoUrl(videoUrl, new ObserverListener<String>() {
+        myInfoDetailModel.updateVideoUrl(videoUrl, new ObserverListener<TeacherInfo>() {
             @Override
             public void onSubscribe(Disposable disposable) {
                 addDisposable(disposable);
             }
 
             @Override
-            public void onNext(String result) {
+            public void onNext(TeacherInfo result) {
                 view.updateVideoUrlSuccess();
-
             }
 
             @Override

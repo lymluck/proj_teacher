@@ -3,10 +3,7 @@ package com.smartstudy.counselor_t.ui.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +13,6 @@ import android.widget.TextView;
 
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.QuestionInfo;
-import com.smartstudy.counselor_t.entity.SchoolInfo;
 import com.smartstudy.counselor_t.mvp.contract.MyQaFragmentContract;
 import com.smartstudy.counselor_t.mvp.presenter.MyQaFragmentPresenter;
 import com.smartstudy.counselor_t.ui.activity.MyQaActivity;
@@ -324,7 +320,7 @@ public class MyQaFragment extends UIFragment<MyQaFragmentContract.Presenter> imp
         if (presenter != null) {
             swipeRefreshLayout.setRefreshing(false);
             rclv_qa.loadComplete(true);
-            ToastUtils.shortToast(mActivity, message);
+            ToastUtils.shortToast(message);
         }
     }
 }

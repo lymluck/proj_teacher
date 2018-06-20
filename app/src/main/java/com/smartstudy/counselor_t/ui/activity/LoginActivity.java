@@ -119,9 +119,9 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     if (TextUtils.isEmpty(etcmobile.getText()) || etcmobile.getText().length() != 11) {
-                        ToastUtils.shortToast(LoginActivity.this, getString(R.string.enter_phone));
+                        ToastUtils.shortToast(getString(R.string.enter_phone));
                     } else if (TextUtils.isEmpty(etc_yzm.getText())) {
-                        ToastUtils.shortToast(LoginActivity.this, String.format(getString(R.string.not_null), "验证码"));
+                        ToastUtils.shortToast(String.format(getString(R.string.not_null), "验证码"));
                     } else {
                         presenter.phoneCodeLogin(etcmobile.getText(), etc_yzm.getText().toString());
                     }
@@ -206,7 +206,7 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
             img_logo.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    ToastUtils.shortToast(LoginActivity.this, "手机屏幕分辨率:" + displayMetrics.widthPixels + "X" + displayMetrics.heightPixels + "\n" + "密度:"
+                    ToastUtils.shortToast("手机屏幕分辨率:" + displayMetrics.widthPixels + "X" + displayMetrics.heightPixels + "\n" + "密度:"
                         + displayMetrics.density + "\n" + "使用每英寸的像素点来显示密度:" + displayMetrics.densityDpi + "\n" + "xdpi"
                         + displayMetrics.xdpi + "\n" + "ydpi" + displayMetrics.ydpi + "\n" + "scaledDensity"
                         + displayMetrics.scaledDensity);
@@ -222,10 +222,10 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
         switch (v.getId()) {
             case R.id.btn_login:
                 if (TextUtils.isEmpty(etcmobile.getText()) || etcmobile.getText().length() != 11) {
-                    ToastUtils.shortToast(LoginActivity.this, getString(R.string.enter_phone));
+                    ToastUtils.shortToast(getString(R.string.enter_phone));
                     return;
                 } else if (TextUtils.isEmpty(etc_yzm.getText())) {
-                    ToastUtils.shortToast(LoginActivity.this, String.format(getString(R.string.not_null), "验证码"));
+                    ToastUtils.shortToast(String.format(getString(R.string.not_null), "验证码"));
                     return;
                 }
                 presenter.phoneCodeLogin(etcmobile.getText(), etc_yzm.getText().toString());
@@ -234,7 +234,7 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
                 tv_yzm.setEnabled(false);
                 //获取验证码,手机号加密
                 if (TextUtils.isEmpty(etcmobile.getText()) || etcmobile.getText().length() != 11) {
-                    ToastUtils.shortToast(LoginActivity.this, getString(R.string.enter_phone));
+                    ToastUtils.shortToast(getString(R.string.enter_phone));
                     tv_yzm.setEnabled(true);
                     return;
                 }

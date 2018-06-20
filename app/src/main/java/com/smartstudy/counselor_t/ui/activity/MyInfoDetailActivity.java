@@ -339,14 +339,14 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                 break;
             case R.id.topdefault_righttext:
                 if (!CheckUtil.checkEmail(getEmail())) {
-                    ToastUtils.shortToast(this, "邮箱不合法");
+                    ToastUtils.shortToast("邮箱不合法");
                     return;
                 }
                 if (checkInput()) {
                     presenter.updateMyInfo(getNickName(), photoFile, getWorkTitle(), getGraduatedSchool(), getWorkExperience(),
                         getEmail(), getRealName(), getIntroduction(), cityValue, bussinessValue);
                 } else {
-                    ToastUtils.shortToast(this, "信息不能为空");
+                    ToastUtils.shortToast("信息不能为空");
                 }
                 break;
 
@@ -479,7 +479,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
 
     @Override
     public void updateMyAvatarSuccesee() {
-        ToastUtils.shortToast(this, "头像修改成功");
+        ToastUtils.shortToast("头像修改成功");
     }
 
     @Override
@@ -523,7 +523,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
 
     @Override
     public void updateMyInfoSuccess() {
-        ToastUtils.shortToast(this, "更新成功");
+        ToastUtils.shortToast("更新成功");
         finish();
     }
 
@@ -540,7 +540,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
 
     @Override
     public void updateVideoUrlSuccess() {
-        ToastUtils.shortToast(this, "视频上传成功");
+        ToastUtils.shortToast("视频上传成功");
     }
 
 

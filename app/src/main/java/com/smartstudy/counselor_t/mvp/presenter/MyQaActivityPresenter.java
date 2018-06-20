@@ -3,7 +3,6 @@ package com.smartstudy.counselor_t.mvp.presenter;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
-import com.alibaba.fastjson.JSON;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
@@ -40,19 +39,17 @@ public class MyQaActivityPresenter extends BasePresenterImpl<MyQaActivityContrac
 
     @Override
     public void getAuditResult() {
-        myQaModel.getAuditResult(new ObserverListener<String>() {
+        myQaModel.getAuditResult(new ObserverListener() {
             @Override
             public void onSubscribe(Disposable disposable) {
                 addDisposable(disposable);
             }
 
             @Override
-            public void onNext(String s) {
-                TeacherInfo teacherInfo = JSON.parseObject(s, TeacherInfo.class);
-                if (teacherInfo != null) {
-                    view.getAuditResult(teacherInfo);
+            public void onNext(Object result) {
+                if (result != null) {
+                    view.getAuditResult((TeacherInfo) result);
                 }
-
             }
 
             @Override

@@ -2,7 +2,6 @@ package com.smartstudy.counselor_t.ui.activity;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.smartstudy.counselor_t.R;
@@ -88,7 +87,7 @@ public class ReloadQaActivity extends BaseActivity<ReloadQaContract.Presenter> i
         if (pdDialog != null && pdDialog.isShowing()) {
             pdDialog.dismiss();
         }
-        ToastUtils.shortToast(ReloadQaActivity.this, "发送成功");
+        ToastUtils.shortToast("发送成功");
         if (file.exists()) {
             file.delete();
         }
@@ -97,7 +96,7 @@ public class ReloadQaActivity extends BaseActivity<ReloadQaContract.Presenter> i
 
     @Override
     public void postAnswerFail(String message) {
-        ToastUtils.shortToast(ReloadQaActivity.this, message);
+        ToastUtils.shortToast(message);
         if (pdDialog != null && pdDialog.isShowing()) {
             pdDialog.dismiss();
         }
