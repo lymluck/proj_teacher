@@ -58,24 +58,23 @@ public class MainActivityPresenter extends BasePresenterImpl<MainActivityContrac
 
     @Override
     public void checkVersion() {
-        mainModel.checkVersion(new ObserverListener<String>() {
+        mainModel.checkVersion(new ObserverListener<VersionInfo>() {
             @Override
             public void onSubscribe(Disposable disposable) {
                 addDisposable(disposable);
             }
 
             @Override
-            public void onNext(String result) {
-                VersionInfo info = JSON.parseObject(result, VersionInfo.class);
-                if (info != null) {
-                    if (info.isNeedUpdate()) {
-                        if (info.isForceUpdate()) {
-                            view.forceUpdate(info.getPackageUrl(), info.getLatestVersion(), info.getDescription());
+            public void onNext(VersionInfo result) {
+                if (result != null) {
+                    if (result.isNeedUpdate()) {
+                        if (result.isForceUpdate()) {
+                            view.forceUpdate(result.getPackageUrl(), result.getLatestVersion(), result.getDescription());
                         } else {
-                            view.updateable(info.getPackageUrl(), info.getLatestVersion(), info.getDescription());
+                            view.updateable(result.getPackageUrl(), result.getLatestVersion(), result.getDescription());
                         }
                     }
-                    info = null;
+                    result = null;
                 }
             }
 

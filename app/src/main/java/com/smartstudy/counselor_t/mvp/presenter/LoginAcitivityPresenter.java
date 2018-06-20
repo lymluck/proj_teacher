@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.app.BaseApplication;
@@ -58,33 +57,32 @@ public class LoginAcitivityPresenter extends BasePresenterImpl<LoginActivityCont
 
     @Override
     public void phoneCodeLogin(final String phone, final String code) {
-        loginModel.phoneCodeLogin(phone, code, new ObserverListener<String>() {
+        loginModel.phoneCodeLogin(phone, code, new ObserverListener<JSONObject>() {
             @Override
             public void onSubscribe(Disposable disposable) {
                 addDisposable(disposable);
             }
 
             @Override
-            public void onNext(String result) {
-                JSONObject data = JSON.parseObject(result);
-                if (data != null) {
-                    String name = data.getString("name");
-                    String avatar = data.getString("avatar");
-                    String imToken = data.getString("imToken");
-                    JSONObject organization = data.getJSONObject("organization");
+            public void onNext(JSONObject result) {
+                if (result != null) {
+                    String name = result.getString("name");
+                    String avatar = result.getString("avatar");
+                    String imToken = result.getString("imToken");
+                    JSONObject organization = result.getJSONObject("organization");
                     if (organization != null) {
                         SPCacheUtils.put("company", organization.getString("name"));
                     }
                     SPCacheUtils.put("phone", phone);
                     SPCacheUtils.put("name", name);
                     SPCacheUtils.put("avatar", getCacheUrl(avatar));
-                    SPCacheUtils.put("ticket", data.getString("ticket"));
-                    SPCacheUtils.put("orgId", data.getString("orgId"));
-                    SPCacheUtils.put("title", data.getString("title"));
-                    SPCacheUtils.put("school", data.getString("school"));
-                    SPCacheUtils.put("year", data.getString("yearsOfWorking"));
+                    SPCacheUtils.put("ticket", result.getString("ticket"));
+                    SPCacheUtils.put("orgId", result.getString("orgId"));
+                    SPCacheUtils.put("title", result.getString("title"));
+                    SPCacheUtils.put("school", result.getString("school"));
+                    SPCacheUtils.put("year", result.getString("yearsOfWorking"));
                     SPCacheUtils.put("imToken", imToken);
-                    int status = data.getIntValue("status");
+                    int status = result.getIntValue("status");
                     if (status == 4) {
                         view.showTip(BaseApplication.appContext.getString(R.string.blocked_msg));
                     } else if (status == 2) {

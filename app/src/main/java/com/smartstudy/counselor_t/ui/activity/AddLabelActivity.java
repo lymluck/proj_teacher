@@ -327,7 +327,7 @@ public class AddLabelActivity extends BaseActivity<AddLabelContract.Presenter> i
 
     @Override
     public void subitMyStudentSuccess() {
-        ToastUtils.shortToast(this, "标签更新成功");
+        ToastUtils.shortToast("标签更新成功");
         finish();
     }
 

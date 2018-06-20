@@ -68,13 +68,13 @@ public class CommonEditNameActivity extends BaseActivity<CommonEditNameContract.
                 TeacherInfo teacherInfo = new TeacherInfo();
                 String content = etname.getText().toString().replaceAll(" ", "");
                 if (TextUtils.isEmpty(content)) {
-                    ToastUtils.shortToast(this, "输入的内容不能为空！");
+                    ToastUtils.shortToast("输入的内容不能为空！");
                     return;
                 }
 
                 if (flag.equals(ParameterUtils.EDIT_EMAIL)) {
                     if (!CheckUtil.checkEmail(content)) {
-                        ToastUtils.shortToast(this, "邮箱不合法");
+                        ToastUtils.shortToast("邮箱不合法");
                         return;
                     }
                 }

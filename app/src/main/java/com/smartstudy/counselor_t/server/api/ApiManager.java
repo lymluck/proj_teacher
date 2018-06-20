@@ -4,12 +4,14 @@ import com.smartstudy.counselor_t.converter.FastJsonConverterFactory;
 import com.smartstudy.counselor_t.server.okhttpcache.interceptor.CacheAndCookieInterceptor;
 import com.smartstudy.counselor_t.util.HttpUrlUtils;
 import com.smartstudy.counselor_t.util.SDCardUtils;
+import com.smartstudy.counselor_t.util.Utils;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
@@ -48,7 +50,10 @@ public class ApiManager {
         ClientBuilder.cache(cache);
         ClientBuilder.retryOnConnectionFailure(true);
         ClientBuilder.addInterceptor(new CacheAndCookieInterceptor());
-
+        if (Utils.isApkInDebug()) {
+            ClientBuilder.addInterceptor(new HttpLoggingInterceptor()
+                .setLevel(HttpLoggingInterceptor.Level.BODY));
+        }
         Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(HttpUrlUtils.getBaseUrl())
             .client(ClientBuilder.build())

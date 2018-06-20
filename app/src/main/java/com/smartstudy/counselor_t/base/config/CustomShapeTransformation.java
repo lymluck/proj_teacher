@@ -29,7 +29,7 @@ public class CustomShapeTransformation extends BitmapTransformation {
     private static final String ID = "com.bumptech.glide.transformations.FillSpace";
 
     public CustomShapeTransformation(Context context, int shapeRes) {
-        super(context);
+        super();
         mContext = context;
         mShapeRes = shapeRes;
         // 实例化Paint对象，并设置Xfermode为SRC_IN

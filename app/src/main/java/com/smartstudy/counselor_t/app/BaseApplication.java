@@ -3,8 +3,6 @@ package com.smartstudy.counselor_t.app;
 
 import android.app.ActivityManager;
 import android.content.Context;
-import android.os.Build;
-import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
@@ -12,8 +10,8 @@ import android.text.TextUtils;
 import com.smartstudy.counselor_t.base.manager.CrashHandler;
 import com.smartstudy.counselor_t.ui.provider.MyConversationListProvider;
 import com.smartstudy.counselor_t.ui.provider.MyTextMessageItemProvider;
-import com.smartstudy.counselor_t.util.Utils;
 import com.smartstudy.router.Router;
+import com.squareup.leakcanary.LeakCanary;
 
 import java.util.List;
 
@@ -49,6 +47,11 @@ public class BaseApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        // 检测内存泄漏
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return;
+        }
+        LeakCanary.install(this);
         if (getProcessName(this).equals(getPackageName())) {
 
             CrashHandler.getInstance().init(this);
@@ -111,7 +114,7 @@ public class BaseApplication extends MultiDexApplication {
 
         for (ActivityManager.RunningAppProcessInfo runningAppProcess : runningAppProcesses) {
             if (runningAppProcess.pid == android.os.Process.myPid()
-                    && !TextUtils.isEmpty(runningAppProcess.processName)) {
+                && !TextUtils.isEmpty(runningAppProcess.processName)) {
                 return runningAppProcess.processName;
             }
         }

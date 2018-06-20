@@ -1,7 +1,6 @@
 package com.smartstudy.counselor_t.mvp.presenter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -43,27 +42,25 @@ public class QuestionsPresenter extends BasePresenterImpl<QaListContract.View> i
 
     @Override
     public void getQuestions(int page, final int request_state) {
-        questionsModel.getQuestions(page, new ObserverListener<String>() {
+        questionsModel.getQuestions(page, new ObserverListener<DataListInfo>() {
             @Override
             public void onSubscribe(Disposable disposable) {
                 addDisposable(disposable);
             }
 
             @Override
-            public void onNext(String result) {
+            public void onNext(DataListInfo result) {
                 int subCount = 0;
-                DataListInfo dataListInfo = JSON.parseObject((String) result, DataListInfo.class);
-                List<QuestionInfo> data = JSON.parseArray(dataListInfo.getData(), QuestionInfo.class);
-                if (JSON.parseObject(dataListInfo.getMeta()) != null) {
-                    if (JSON.parseObject(dataListInfo.getMeta()).containsKey("totalSubQuestionCountToMe")) {
-                        subCount = JSON.parseObject(dataListInfo.getMeta()).getIntValue("totalSubQuestionCountToMe");
+                List<QuestionInfo> data = JSON.parseArray(result.getData(), QuestionInfo.class);
+                if (JSON.parseObject(result.getMeta()) != null) {
+                    if (JSON.parseObject(result.getMeta()).containsKey("totalSubQuestionCountToMe")) {
+                        subCount = JSON.parseObject(result.getMeta()).getIntValue("totalSubQuestionCountToMe");
                     }
                 }
                 if (data != null) {
                     view.getQuestionsSuccess(subCount, data, request_state);
                     data = null;
                 }
-                dataListInfo = null;
             }
 
             @Override

@@ -10,9 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,7 +24,6 @@ import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.mvp.contract.FillPersonContract;
 import com.smartstudy.counselor_t.mvp.presenter.FillPersonPresenter;
 import com.smartstudy.counselor_t.ui.base.BaseActivity;
-import com.smartstudy.counselor_t.ui.widget.ClipImageLayout;
 import com.smartstudy.counselor_t.ui.widget.TagsLayout;
 import com.smartstudy.counselor_t.util.CheckUtil;
 import com.smartstudy.counselor_t.util.ConstantUtils;
@@ -109,15 +106,15 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
         switch (v.getId()) {
             case R.id.bt_post_info:
                 if (!CheckUtil.checkEmail(getEmail())) {
-                    ToastUtils.shortToast(this, "邮箱不合法");
+                    ToastUtils.shortToast("邮箱不合法");
                     return;
                 }
                 if (photoFile == null && !isImage) {
-                    ToastUtils.shortToast(this, "头像不能为空");
+                    ToastUtils.shortToast("头像不能为空");
                     return;
                 }
                 if (!checkInput()) {
-                    ToastUtils.shortToast(this, "信息未填写完整");
+                    ToastUtils.shortToast("信息未填写完整");
                     return;
                 }
                 presenter.postPersonInfo(getNickName(), photoFile, getWorkTitle(), getGraduatedSchool()

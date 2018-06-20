@@ -1,7 +1,5 @@
 package com.smartstudy.counselor_t.mvp.presenter;
 
-import android.text.TextUtils;
-
 import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
 import com.smartstudy.counselor_t.mvp.contract.SplashContract;
@@ -32,9 +30,7 @@ public class SplashPresenter extends BasePresenterImpl<SplashContract.View> impl
 
             @Override
             public void onNext(String result) {
-                if (!TextUtils.isEmpty(result)) {
-                    view.getAdSuccess(result);
-                }
+                view.getAdSuccess(result);
             }
 
             @Override

@@ -316,7 +316,7 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
                 //转发消息
                 if (ImageMessage.class.isAssignableFrom(message.getContent().getClass())) {
                     if (((ImageMessage) message.getContent()).getLocalPath() == null && ((ImageMessage) message.getContent()).getRemoteUri() == null) {
-                        ToastUtils.shortToast(context, "图片已被清理");
+                        ToastUtils.shortToast("图片已被清理");
                         return true;
                     } else {
                         handleUri(((ImageMessage) message.getContent()), "share");
@@ -338,7 +338,7 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
                 //编辑图片
                 ImageMessage msg = (ImageMessage) message.getContent();
                 if (msg.getLocalPath() == null && msg.getRemoteUri() == null) {
-                    ToastUtils.shortToast(context, "图片已被清理");
+                    ToastUtils.shortToast( "图片已被清理");
                 } else {
                     handleUri(msg, "edit");
                 }
@@ -400,7 +400,7 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
                                 .putExtra("path", savePath + File.separator + fileName), REQUEST_EDIT);
                         }
                     } else {
-                        ToastUtils.shortToast(ConversationActivity.this, "获取图片失败！");
+                        ToastUtils.shortToast("获取图片失败！");
                     }
                 }
             });

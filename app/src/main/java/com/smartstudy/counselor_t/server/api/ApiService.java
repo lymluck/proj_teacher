@@ -1,6 +1,13 @@
 package com.smartstudy.counselor_t.server.api;
 
+import com.alibaba.fastjson.JSONObject;
+import com.smartstudy.counselor_t.entity.DataListInfo;
+import com.smartstudy.counselor_t.entity.QaDetailInfo;
 import com.smartstudy.counselor_t.entity.ResponseInfo;
+import com.smartstudy.counselor_t.entity.StudentPageInfo;
+import com.smartstudy.counselor_t.entity.TeacherInfo;
+import com.smartstudy.counselor_t.entity.TokenBean;
+import com.smartstudy.counselor_t.entity.VersionInfo;
 import com.smartstudy.counselor_t.util.ConstantUtils;
 import com.smartstudy.counselor_t.util.HttpUrlUtils;
 import com.smartstudy.counselor_t.util.ParameterUtils;
@@ -13,7 +20,6 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.Headers;
@@ -40,7 +46,7 @@ public interface ApiService {
      * @return
      */
     @POST(HttpUrlUtils.URL_PHONE_CODE)
-    Observable<ResponseInfo> getPhoneCode(@HeaderMap Map<String, String> header, @Query("phone") String phone);
+    Observable<ResponseInfo<String>> getPhoneCode(@HeaderMap Map<String, String> header, @Query("phone") String phone);
 
     /**
      * 验证码登录
@@ -49,7 +55,7 @@ public interface ApiService {
      * @return
      */
     @POST(HttpUrlUtils.URL_CODE_LOGIN)
-    Observable<ResponseInfo> phoneCodeLogin(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+    Observable<ResponseInfo<JSONObject>> phoneCodeLogin(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
     /**
      * 获取学生主页详情
@@ -59,7 +65,7 @@ public interface ApiService {
      */
     @GET(HttpUrlUtils.URL_STUDENT_DETAIL_INFO)
     @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
-    Observable<ResponseInfo> getStudentDetailInfo(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+    Observable<ResponseInfo<StudentPageInfo>> getStudentDetailInfo(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
     /**
      * 获取学生信息
@@ -69,7 +75,7 @@ public interface ApiService {
      */
     @GET(HttpUrlUtils.URL_STUDENT_DETAIL_INFO)
     @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
-    Observable<ResponseInfo> getStudentInfo(@HeaderMap Map<String, String> header, @Query("id") String id);
+    Observable<ResponseInfo<StudentPageInfo>> getStudentInfo(@HeaderMap Map<String, String> header, @Query("id") String id);
 
     /**
      * 重新获取token
@@ -86,7 +92,7 @@ public interface ApiService {
      * @return
      */
     @POST()
-    Observable<ResponseInfo> postPersonInfo(@HeaderMap Map<String, String> header, @Url() String url, @Body RequestBody Body);
+    Observable<ResponseInfo<String>> postPersonInfo(@HeaderMap Map<String, String> header, @Url() String url, @Body RequestBody Body);
 
 
     /**
@@ -95,7 +101,7 @@ public interface ApiService {
      * @return
      */
     @PUT()
-    Observable<ResponseInfo> updatePersonInfo(@HeaderMap Map<String, String> header, @Url() String url, @Body RequestBody Body);
+    Observable<ResponseInfo<TeacherInfo>> updatePersonInfo(@HeaderMap Map<String, String> header, @Url() String url, @Body RequestBody Body);
 
     /**
      * 个人信息
@@ -105,7 +111,7 @@ public interface ApiService {
 
     @GET(HttpUrlUtils.URL_COUNSELLOR_PROFILE)
     @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
-    Observable<ResponseInfo> getAuditResult(@HeaderMap Map<String, String> header);
+    Observable<ResponseInfo<TeacherInfo>> getAuditResult(@HeaderMap Map<String, String> header);
 
 
     /**
@@ -116,30 +122,30 @@ public interface ApiService {
 
     @GET(HttpUrlUtils.COUNSELLOR_PROFILE_OPTIONS)
     @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
-    Observable<ResponseInfo> getOptions(@HeaderMap Map<String, String> header);
+    Observable<ResponseInfo<JSONObject>> getOptions(@HeaderMap Map<String, String> header);
 
 
     @GET(HttpUrlUtils.URL_VIDEO_CREDENTIALS)
     @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
-    Observable<ResponseInfo> refreshTacken(@HeaderMap Map<String, String> header);
+    Observable<ResponseInfo<TokenBean>> refreshTacken(@HeaderMap Map<String, String> header);
 
 
     @GET(HttpUrlUtils.URL_COUNSELLOR_PROFILE)
     @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
-    Observable<ResponseInfo> getMyInfo(@HeaderMap Map<String, String> header);
+    Observable<ResponseInfo<TeacherInfo>> getMyInfo(@HeaderMap Map<String, String> header);
 
 
     /**
      * 版本检测
      */
     @GET()
-    Observable<ResponseInfo> checkVersion(@HeaderMap Map<String, String> header, @Url() String url);
+    Observable<ResponseInfo<VersionInfo>> checkVersion(@HeaderMap Map<String, String> header, @Url() String url);
 
     /**
      * 用户注销
      */
     @POST(HttpUrlUtils.URL_USER_LOGOUT)
-    Observable<ResponseInfo> getLogOut(@HeaderMap Map<String, String> header);
+    Observable<ResponseInfo<String>> getLogOut(@HeaderMap Map<String, String> header);
 
     /**
      * 文件下载
@@ -156,7 +162,8 @@ public interface ApiService {
      * 问题列表
      */
     @GET(HttpUrlUtils.URL_QUESTS)
-    Observable<ResponseInfo> getQuestions(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
+    Observable<ResponseInfo<DataListInfo>> getQuestions(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
 
     /**
@@ -164,35 +171,37 @@ public interface ApiService {
      */
     @GET(HttpUrlUtils.URL_ADD_GOODS_LIST)
     @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
-    Observable<ResponseInfo> getAddGoodDetail(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+    Observable<ResponseInfo<DataListInfo>> getAddGoodDetail(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
 
     /**
      * 我关注问题列表
      */
     @GET(HttpUrlUtils.URL_QUESTS_MARK)
-    Observable<ResponseInfo> getMyFocusQuestions(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
+    Observable<ResponseInfo<DataListInfo>> getMyFocusQuestions(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
 
     /**
      * 获取我关注的学生的标签
      */
     @GET()
-    Observable<ResponseInfo> getMyStudentTag(@HeaderMap Map<String, String> header, @Url() String url);
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
+    Observable<ResponseInfo<String>> getMyStudentTag(@HeaderMap Map<String, String> header, @Url() String url);
 
 
     /**
      * 提交标签
      */
     @PUT()
-    Observable<ResponseInfo> submitMyStudentTag(@HeaderMap Map<String, String> header, @Url() String url, @QueryMap Map<String, String> params);
+    Observable<ResponseInfo<String>> submitMyStudentTag(@HeaderMap Map<String, String> header, @Url() String url, @QueryMap Map<String, String> params);
 
 
     /**
      * 提交历史标签
      */
     @POST(HttpUrlUtils.URL_QUESTS_HISTORY_TAGS)
-    Observable<ResponseInfo> postHistoryTag(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+    Observable<ResponseInfo<String>> postHistoryTag(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
 
     /**
@@ -200,7 +209,7 @@ public interface ApiService {
      */
     @GET(HttpUrlUtils.URL_QUESTS_HISTORY_TAGS)
     @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
-    Observable<ResponseInfo> getHisToryTag(@HeaderMap Map<String, String> header);
+    Observable<ResponseInfo<String>> getHisToryTag(@HeaderMap Map<String, String> header);
 
     /**
      * 问答详情
@@ -211,7 +220,8 @@ public interface ApiService {
      * @return
      */
     @GET()
-    Observable<ResponseInfo> getQaDetail(@HeaderMap Map<String, String> header, @Url() String url, @QueryMap Map<String, String> params);
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
+    Observable<ResponseInfo<QaDetailInfo>> getQaDetail(@HeaderMap Map<String, String> header, @Url() String url, @QueryMap Map<String, String> params);
 
 
     /**
@@ -222,7 +232,7 @@ public interface ApiService {
      * @return
      */
     @POST()
-    Observable<ResponseInfo> postQuestion(@HeaderMap Map<String, String> header, @Url() String url, @QueryMap Map<String, String> params);
+    Observable<ResponseInfo<String>> postQuestion(@HeaderMap Map<String, String> header, @Url() String url, @QueryMap Map<String, String> params);
 
     /**
      * 重点关注
@@ -232,7 +242,7 @@ public interface ApiService {
      * @return
      */
     @POST()
-    Observable<ResponseInfo> questionAddMark(@HeaderMap Map<String, String> header, @Url() String url);
+    Observable<ResponseInfo<String>> questionAddMark(@HeaderMap Map<String, String> header, @Url() String url);
 
 
     /**
@@ -243,30 +253,22 @@ public interface ApiService {
      * @return
      */
     @DELETE()
-    Observable<ResponseInfo> questionDeleteMark(@HeaderMap Map<String, String> header, @Url() String url);
+    Observable<ResponseInfo<String>> questionDeleteMark(@HeaderMap Map<String, String> header, @Url() String url);
 
 
     @POST()
-    Observable<ResponseInfo> postAnswerVoice(@HeaderMap Map<String, String> header, @Url() String url, @Body RequestBody Body);
+    Observable<ResponseInfo<String>> postAnswerVoice(@HeaderMap Map<String, String> header, @Url() String url, @Body RequestBody Body);
 
     /**
-     * 用户注销
+     * 我的问答
      */
     @GET(HttpUrlUtils.URL_MY_ANSWER)
-    Observable<ResponseInfo> getMyQuestion(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+    Observable<ResponseInfo<DataListInfo>> getMyQuestion(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
     /**
-     * 用户注销
+     * 启动页广告
      */
     @GET(HttpUrlUtils.URL_START_AD)
-    Observable<ResponseInfo> getAdInfo(@HeaderMap Map<String, String> header);
-
-    /**
-     * 上传视频
-     *
-     * @return
-     */
-    @POST(HttpUrlUtils.URL_PROFILE_VIDEO)
-    Observable<ResponseInfo> upLoadTeacherVideo(@HeaderMap Map<String, String> header, @Body RequestBody Body);
+    Observable<ResponseInfo<String>> getAdInfo(@HeaderMap Map<String, String> header);
 
 }

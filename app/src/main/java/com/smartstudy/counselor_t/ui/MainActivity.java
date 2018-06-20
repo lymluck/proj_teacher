@@ -530,7 +530,7 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
     @Override
     public void onDragOut() {
         mUnreadNumView.setVisibility(View.GONE);
-        ToastUtils.shortToast(this, "清除成功");
+        ToastUtils.shortToast( "清除成功");
         RongIM.getInstance().getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
             @Override
             public void onSuccess(List<Conversation> conversations) {

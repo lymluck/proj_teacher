@@ -53,14 +53,14 @@ public class ClipPictureActivity extends BaseActivity {
         mClipImageLayout.setVisibility(VISIBLE);
         String path = intent.getStringExtra("path");
         if (isEmpty(path) || !(new File(path).exists())) {
-            ToastUtils.shortToast(this, getString(R.string.picture_load_failure));
+            ToastUtils.shortToast( getString(R.string.picture_load_failure));
             return;
         }
         DisplayImageUtils.displayImage(ClipPictureActivity.this, path, new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                 if (resource == null) {
-                    ToastUtils.shortToast(ClipPictureActivity.this, getString(R.string.picture_load_failure));
+                    ToastUtils.shortToast(getString(R.string.picture_load_failure));
                     return;
                 }
                 mClipImageLayout.setBitmap(resource);

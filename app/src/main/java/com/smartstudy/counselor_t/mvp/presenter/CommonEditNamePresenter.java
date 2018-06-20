@@ -1,6 +1,5 @@
 package com.smartstudy.counselor_t.mvp.presenter;
 
-import com.alibaba.fastjson.JSON;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
@@ -35,18 +34,16 @@ public class CommonEditNamePresenter extends BasePresenterImpl<CommonEditNameCon
 
     @Override
     public void updateMyInfo(TeacherInfo teacherInfo) {
-        commonEditNameModel.updatePersonInfo(teacherInfo, new ObserverListener<String>() {
+        commonEditNameModel.updatePersonInfo(teacherInfo, new ObserverListener<TeacherInfo>() {
             @Override
             public void onSubscribe(Disposable disposable) {
                 addDisposable(disposable);
             }
 
             @Override
-            public void onNext(String s) {
-
-                TeacherInfo teacherInfo = JSON.parseObject(s, TeacherInfo.class);
-                if (teacherInfo != null) {
-                    view.updateMyInfoSuccesee(teacherInfo);
+            public void onNext(TeacherInfo result) {
+                if (result != null) {
+                    view.updateMyInfoSuccesee(result);
                 }
             }
 

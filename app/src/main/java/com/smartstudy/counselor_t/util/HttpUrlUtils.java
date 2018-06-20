@@ -11,7 +11,7 @@ public class HttpUrlUtils {
     public static final String URL_QUESTS_MY_TAGS = "counsellor/student/%1$s/tags"; //学生标签
     public static final String URL_QUESTS_HISTORY_TAGS = "counsellor/student/tags/history";//提交历史的标签
     public static final String URL_QUESTS_LINK = "questions/%1$s"; //问答详情
-    public static final String URL_VIDEO_CREDENTIALS = "counsellor/profile/video/credentials";
+    public static final String URL_VIDEO_CREDENTIALS = "counsellor/profile/video/credentials"; //上传视频
 
     public static final String URL_PHONE_CODE = "counsellor/captcha";  //获取验证码
     public static final String URL_CODE_LOGIN = "counsellor/login";  //验证码登录
@@ -25,7 +25,6 @@ public class HttpUrlUtils {
     public static final String URL_QUESTION_MARK = "questions/%1$s/mark";//关注问题
     public static final String URL_MY_ANSWER = "questions/list/answered_by_me";//我的问答
     public static final String URL_START_AD = "counsellor/app/launchscreen";  // 开机广告页
-    public static final String URL_PROFILE_VIDEO = "counsellor/profile/video";  // 上传视频
 
     /**************************** web ***************************/
     public static final String URL_USER_CONTRACT = "/user-agreement.html";  //用户协议

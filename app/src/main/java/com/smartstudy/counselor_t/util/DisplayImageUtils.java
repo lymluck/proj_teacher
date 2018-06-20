@@ -99,7 +99,7 @@ public class DisplayImageUtils {
 
     public static void displayRoundImage(Context context, String url, ImageView view, int radius_dp) {
         GlideApp.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.DATA)
-            .centerCrop().transform(new RoundedCorners(radius_dp))
+            .centerCrop().transform(new RoundedCorners(radius_dp)).placeholder(R.drawable.ic_img_default)
             .dontAnimate().into(view);
     }
 

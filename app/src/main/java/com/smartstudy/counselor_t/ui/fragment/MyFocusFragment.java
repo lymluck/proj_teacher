@@ -247,7 +247,7 @@ public class MyFocusFragment extends UIFragment<MyFocusContract.Presenter> imple
         if (presenter != null) {
             swipeRefreshLayout.setRefreshing(false);
             rclv_qa.loadComplete(true);
-            ToastUtils.shortToast(mActivity, message);
+            ToastUtils.shortToast( message);
         }
     }
 

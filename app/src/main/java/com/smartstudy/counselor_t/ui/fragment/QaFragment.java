@@ -307,7 +307,7 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
         if (presenter != null) {
             swipeRefreshLayout.setRefreshing(false);
             rclv_qa.loadComplete(true);
-            ToastUtils.shortToast(mActivity, message);
+            ToastUtils.shortToast( message);
         }
     }
 }

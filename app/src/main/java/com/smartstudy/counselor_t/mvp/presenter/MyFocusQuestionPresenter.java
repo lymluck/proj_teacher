@@ -12,9 +12,7 @@ import com.smartstudy.counselor_t.entity.QuestionInfo;
 import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
 import com.smartstudy.counselor_t.mvp.contract.MyFocusContract;
-import com.smartstudy.counselor_t.mvp.contract.QaListContract;
 import com.smartstudy.counselor_t.mvp.model.MyFocusQuestionModel;
-import com.smartstudy.counselor_t.mvp.model.QuestionsModel;
 import com.smartstudy.counselor_t.util.DisplayImageUtils;
 import com.smartstudy.counselor_t.util.Utils;
 
@@ -48,21 +46,20 @@ public class MyFocusQuestionPresenter extends BasePresenterImpl<MyFocusContract.
 
     @Override
     public void getMyFocusQuestions(int page, final int request_state) {
-        myFocusQuestionModel.getMyFocusQuestions(page, new ObserverListener<String>() {
+        myFocusQuestionModel.getMyFocusQuestions(page, new ObserverListener<DataListInfo>() {
             @Override
             public void onSubscribe(Disposable disposable) {
                 addDisposable(disposable);
             }
 
             @Override
-            public void onNext(String result) {
-                DataListInfo dataListInfo = JSON.parseObject(result, DataListInfo.class);
-                List<QuestionInfo> data = JSON.parseArray(dataListInfo.getData(), QuestionInfo.class);
+            public void onNext(DataListInfo result) {
+                List<QuestionInfo> data = JSON.parseArray(result.getData(), QuestionInfo.class);
                 if (data != null) {
                     view.getMyFocusQuestionsSuccess(data, request_state);
                 }
                 data = null;
-                dataListInfo = null;
+                result = null;
             }
 
             @Override

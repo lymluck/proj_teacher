@@ -217,7 +217,7 @@ public class Utils {
     public static void installApk(Context context, String path) {
         File apkfile = new File(path);
         if (!apkfile.exists()) {
-            ToastUtils.shortToast(context, "安装包不存在，请退出应用重新下载！");
+            ToastUtils.shortToast( "安装包不存在，请退出应用重新下载！");
             return;
         }
 
