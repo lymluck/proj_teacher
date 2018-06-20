@@ -555,7 +555,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
 
     @Override
     public void updateFail(String msg) {
-        ToastUtils.shortToast(this, msg);
+        ToastUtils.shortToast(msg);
         llUpload.setVisibility(View.VISIBLE);
         tvAddGood.setVisibility(View.VISIBLE);
         flAvatar.setVisibility(View.VISIBLE);

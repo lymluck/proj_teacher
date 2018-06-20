@@ -3,6 +3,7 @@ package com.smartstudy.counselor_t.mvp.presenter;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
+import com.alibaba.fastjson.JSON;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.entity.VersionInfo;
 import com.smartstudy.counselor_t.listener.ObserverListener;
