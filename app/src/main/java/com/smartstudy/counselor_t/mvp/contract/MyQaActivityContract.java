@@ -29,6 +29,10 @@ public interface MyQaActivityContract {
 
         void showMyFocus(FragmentTransaction ft);
 
+        void updateable(String downUrl, String version, String des);
+
+        void forceUpdate(String downUrl, String version, String des);
+
     }
 
     interface Presenter extends BasePresenter {
@@ -40,5 +44,7 @@ public interface MyQaActivityContract {
         void showFragment(FragmentManager fragmentManager, int index);
 
         int currentIndex();
+
+        void checkVersion();
     }
 }

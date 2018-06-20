@@ -202,8 +202,6 @@ public class QaDetailAdapter extends RecyclerView.Adapter<QaDetailAdapter.MyView
         } else {
             holder.v_line.setVisibility(View.GONE);
         }
-        holder.rvDetailAnswer.setVisibility(View.VISIBLE);
-        /////////////////////////////////////////////////////
 
     }
 

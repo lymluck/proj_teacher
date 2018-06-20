@@ -224,7 +224,7 @@ public class Utils {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         //判断是否是AndroidN以及更高的版本
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Uri contentUri = FileProvider.getUriForFile(context, "com.smartstudy.xxd.fileProvider", apkfile);
+            Uri contentUri = FileProvider.getUriForFile(context, "com.smartstudy.counselor_t.fileProvider", apkfile);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
         } else {

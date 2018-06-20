@@ -30,6 +30,7 @@ public class ReloadQaActivity extends BaseActivity<ReloadQaContract.Presenter> i
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setSlideable(false);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reqa);
         setHeadVisible(View.GONE);

@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.alibaba.fastjson.JSON;
 import com.smartstudy.counselor_t.entity.TeacherInfo;
+import com.smartstudy.counselor_t.entity.VersionInfo;
 import com.smartstudy.counselor_t.listener.ObserverListener;
 import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
 import com.smartstudy.counselor_t.mvp.contract.MyQaActivityContract;
@@ -110,6 +111,36 @@ public class MyQaActivityPresenter extends BasePresenterImpl<MyQaActivityContrac
     @Override
     public int currentIndex() {
         return currentIndex;
+    }
+
+    @Override
+    public void checkVersion() {
+        myQaModel.checkVersion(new ObserverListener<String>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                addDisposable(disposable);
+            }
+
+            @Override
+            public void onNext(String result) {
+                VersionInfo info = JSON.parseObject(result, VersionInfo.class);
+                if (info != null) {
+                    if (info.isNeedUpdate()) {
+                        if (info.isForceUpdate()) {
+                            view.forceUpdate(info.getPackageUrl(), info.getLatestVersion(), info.getDescription());
+                        } else {
+                            view.updateable(info.getPackageUrl(), info.getLatestVersion(), info.getDescription());
+                        }
+                    }
+                    info = null;
+                }
+            }
+
+            @Override
+            public void onError(String msg) {
+                view.showTip(msg);
+            }
+        });
     }
 }
 

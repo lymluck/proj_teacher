@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.smartstudy.counselor_t.R;
@@ -99,7 +100,7 @@ public class VersionUpdateService extends Service implements DownloadFileContrac
                             Intent intent = new Intent(VersionUpdateService.this, MyQaActivity.class);
                             // 更新参数,注意flags要使用FLAG_UPDATE_CURRENT
                             PendingIntent contentIntent = PendingIntent.getActivity(VersionUpdateService.this, 0, intent,
-                                    PendingIntent.FLAG_UPDATE_CURRENT);
+                                PendingIntent.FLAG_UPDATE_CURRENT);
                             mNotification.setContentTitle("下载完成");
                             mNotification.setContentText("文件已下载完毕");
                             mNotification.setContentIntent(contentIntent);
@@ -200,7 +201,7 @@ public class VersionUpdateService extends Service implements DownloadFileContrac
 
         // 指定内容意图
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent.FLAG_UPDATE_CURRENT);
         mNotification.setContentIntent(contentIntent);
         mNotificationManager.notify(NOTIFY_ID, mNotification.build());
     }

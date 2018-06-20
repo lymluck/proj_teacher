@@ -43,8 +43,8 @@ public class HttpUrlUtils {
 //                SERVER = "http://slx.sta ging.smartstudy.com/api/";
                 break;
             case "test":
-               SERVER = "https://slx.smartstudy.com/api/";
-//                SERVER = "http://slx.staging.smartstudy.com/api/"; //test
+//               SERVER = "https://slx.smartstudy.com/api/";
+                SERVER = "http://slx.staging.smartstudy.com/api/"; //test
 //                SERVER = "http://172.17.7.102:3234/";
                 break;
             case "dev":
