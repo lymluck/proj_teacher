@@ -1,13 +1,10 @@
 package com.smartstudy.counselor_t.mvp.presenter;
 
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.smartstudy.counselor_t.listener.ObserverListener;
-import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
-import com.smartstudy.counselor_t.mvp.contract.AddLabelContract;
+import study.smart.baselib.listener.ObserverListener;
+import study.smart.baselib.mvp.base.BasePresenterImpl;
 import com.smartstudy.counselor_t.mvp.contract.OtherTeacherTagContract;
-import com.smartstudy.counselor_t.mvp.model.AddLabelModel;
 import com.smartstudy.counselor_t.mvp.model.OtherTeacherTagModel;
 
 import java.util.ArrayList;

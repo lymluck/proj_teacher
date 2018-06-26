@@ -1,8 +1,9 @@
 package com.smartstudy.counselor_t.mvp.contract;
 
-import com.smartstudy.counselor_t.listener.OnDownloadFileListener;
-import com.smartstudy.counselor_t.mvp.base.BasePresenter;
-import com.smartstudy.counselor_t.mvp.base.BaseView;
+
+import study.smart.baselib.listener.OnDownloadFileListener;
+import study.smart.baselib.mvp.base.BasePresenter;
+import study.smart.baselib.mvp.base.BaseView;
 
 import java.io.File;
 

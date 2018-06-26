@@ -112,14 +112,6 @@
         android:layout_marginLeft="64dp"
         android:background="@color/bg_home_search" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_answer_detail"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </android.support.v7.widget.RecyclerView>
-
-
     <LinearLayout
         android:id="@+id/ll_comment_detail"
         android:layout_width="match_parent"
@@ -146,7 +138,7 @@
                 android:textColor="#949BA1"
                 android:textSize="15sp" />
 
-            <com.smartstudy.counselor_t.ui.widget.RatingBar
+            <study.smart.baselib.ui.widget.RatingBar
                 android:id="@+id/rb_course_rate"
                 android:layout_width="wrap_content"
                 android:layout_height="14dp"
@@ -174,5 +166,10 @@
             android:textColor="#58646E"
             android:textSize="14sp" />
     </LinearLayout>
-
+    <View
+        android:id="@+id/view_last"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:visibility="gone"
+        android:background="@color/bg_home_search"/>
 </LinearLayout>

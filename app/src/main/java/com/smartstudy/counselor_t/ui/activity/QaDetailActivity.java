@@ -22,26 +22,33 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import study.smart.baselib.entity.QaDetailInfo;
+import study.smart.baselib.ui.base.BaseActivity;
+import study.smart.baselib.utils.DisplayImageUtils;
+import study.smart.baselib.utils.KeyBoardUtils;
+import study.smart.baselib.utils.SPCacheUtils;
+import study.smart.baselib.utils.ToastUtils;
 import com.smartstudy.counselor_t.R;
-import com.smartstudy.counselor_t.entity.ItemOnClick;
-import com.smartstudy.counselor_t.entity.QaDetailInfo;
 import com.smartstudy.counselor_t.mvp.contract.QaDetailContract;
 import com.smartstudy.counselor_t.mvp.presenter.QaDetailPresenter;
-import com.smartstudy.counselor_t.ui.adapter.QaDetailAdapter;
-import com.smartstudy.counselor_t.ui.adapter.wrapper.HeaderAndFooterWrapper;
-import com.smartstudy.counselor_t.ui.base.BaseActivity;
-import com.smartstudy.counselor_t.ui.widget.DrawableTextView;
-import com.smartstudy.counselor_t.ui.widget.HorizontalDividerItemDecoration;
-import com.smartstudy.counselor_t.ui.widget.NoScrollLinearLayoutManager;
-import com.smartstudy.counselor_t.ui.widget.audio.AudioRecorder;
-import com.smartstudy.counselor_t.util.DensityUtils;
-import com.smartstudy.counselor_t.util.DisplayImageUtils;
-import com.smartstudy.counselor_t.util.KeyBoardUtils;
+import com.smartstudy.counselor_t.ui.adapter.QaDetailOneTreeItemParent;
+import com.smartstudy.counselor_t.ui.adapter.QaDetailTwoTreeItem;
+import study.smart.baselib.ui.adapter.TreeRecyclerAdapter;
+import study.smart.baselib.ui.adapter.base.BaseItem;
+import study.smart.baselib.ui.adapter.base.BaseRecyclerAdapter;
+import study.smart.baselib.ui.adapter.base.ItemFactory;
+import study.smart.baselib.ui.adapter.base.TreeRecyclerViewType;
+import study.smart.baselib.ui.adapter.base.ViewHolder;
+import study.smart.baselib.ui.adapter.wrapper.TreeHeaderAndFootWapper;
+import study.smart.baselib.ui.widget.DrawableTextView;
+import study.smart.baselib.ui.widget.NoScrollLinearLayoutManager;
+import study.smart.baselib.ui.widget.audio.AudioRecorder;
+import study.smart.baselib.ui.widget.treeview.TreeItem;
 import com.smartstudy.counselor_t.util.NoDoubleClickUtils;
-import com.smartstudy.counselor_t.util.SPCacheUtils;
-import com.smartstudy.counselor_t.util.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
 
 /**
  * Created by yqy on 2017/12/4.
@@ -55,7 +62,6 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
     private TextView tvQuestion;
     private TextView tvAskerTime;
     private TextView answer;
-    private QaDetailAdapter qaDetailAdapter;
     private TextView tvPost;
     private EditText etAnswer;
     private ImageView ivSpeak;
@@ -66,13 +72,17 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
     private TextView tvLocation;
     private TextView tvSchoolName;
     private QaDetailInfo detailInfo;
-    private HeaderAndFooterWrapper mHeader;
     private View headView;
     private DrawableTextView dtvFocus;
     private boolean isFocus = false;
     private DrawableTextView dtvCallout;
     private DrawableTextView dtvPhone;
     private String telephone;
+
+    private TreeRecyclerAdapter qaAdapter;
+    private ArrayList<TreeItem> qaTreeItems;
+    private TreeHeaderAndFootWapper<TreeItem> mHeaderAdapter;
+    private BaseItem lastBaseItem;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -191,11 +201,10 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         mLayoutManager.setScrollEnabled(true);
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
-            .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.bg_home_search).build());
+//        recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
+//            .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.bg_home_search).build());
         recyclerView.setFocusable(false);
         initAdapter();
-        initHeaderAndFooter();
         if (!TextUtils.isEmpty(questionId)) {
             presenter.getQaDetails(questionId);
         }
@@ -224,23 +233,6 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         };
     }
 
-    private void initHeaderAndFooter() {
-        headView = mInflater.inflate(R.layout.layout_question_list, null, false);
-        llStudent = headView.findViewById(R.id.ll_student);
-        ivAsker = headView.findViewById(R.id.iv_asker);
-        dtvCallout = headView.findViewById(R.id.dtv_callout);
-        tvAskerName = headView.findViewById(R.id.tv_asker_name);
-        tvLocation = headView.findViewById(R.id.tv_location);
-        tvSchoolName = headView.findViewById(R.id.tv_schoolName);
-        dtvFocus = headView.findViewById(R.id.dtv_focus);
-        tvQuestion = headView.findViewById(R.id.tv_question);
-        tvAskerTime = headView.findViewById(R.id.tv_ask_time);
-        answer = headView.findViewById(R.id.answer);
-        dtvPhone = headView.findViewById(R.id.dtv_phone);
-        mHeader = new HeaderAndFooterWrapper(qaDetailAdapter);
-        mHeader.addHeaderView(headView);
-        recyclerView.setAdapter(mHeader);
-    }
 
     @Override
     public void onClick(View v) {
@@ -287,7 +279,15 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
                 intent.putExtra("question_id", questionId);
                 intent.setClass(this, ReloadQaActivity.class);
                 startActivity(intent);
-                EventBus.getDefault().post(new ItemOnClick("Qa"));
+                if (lastBaseItem != null) {
+                    if (lastBaseItem instanceof QaDetailOneTreeItemParent) {
+                        QaDetailOneTreeItemParent qaDetailOneTreeItemParent = (QaDetailOneTreeItemParent) lastBaseItem;
+                        qaDetailOneTreeItemParent.setVoiceState();
+                    } else {
+                        QaDetailTwoTreeItem qaDetailTwoTreeItem = (QaDetailTwoTreeItem) lastBaseItem;
+                        qaDetailTwoTreeItem.setVoiceState();
+                    }
+                }
                 if (AudioRecorder.getInstance() != null) {
                     AudioRecorder.getInstance().setReset();
                 }
@@ -330,10 +330,14 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
             }
         }
         if (data.getAnswers() != null && data.getAnswers().size() > 0) {
-            if (qaDetailAdapter != null && data.getAsker() != null) {
-                qaDetailAdapter.setAnswers(data.getAnswers(), data.getAsker().getName());
+            if (qaAdapter != null && data.getAsker() != null) {
+                //存入询问人的名字
+                SPCacheUtils.put("askName", data.getAsker().getName());
                 answer.setText("回复");
-                mHeader.notifyDataSetChanged();
+                qaTreeItems.clear();
+                qaTreeItems.addAll(ItemFactory.createTreeItemList(data.getAnswers(), QaDetailOneTreeItemParent.class, null));
+                qaAdapter.setDatas(qaTreeItems);
+                mHeaderAdapter.notifyDataSetChanged();
             }
         } else {
             answer.setText("暂时还没有人回答哦，快来抢答吧！");
@@ -411,9 +415,89 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
     }
 
     private void initAdapter() {
-        qaDetailAdapter = new QaDetailAdapter(this);
-        recyclerView.setAdapter(qaDetailAdapter);
+        headView = mInflater.inflate(R.layout.layout_question_list, null, false);
+        headView.setVisibility(View.GONE);
+        llStudent = headView.findViewById(R.id.ll_student);
+        ivAsker = headView.findViewById(R.id.iv_asker);
+        dtvCallout = headView.findViewById(R.id.dtv_callout);
+        tvAskerName = headView.findViewById(R.id.tv_asker_name);
+        tvLocation = headView.findViewById(R.id.tv_location);
+        tvSchoolName = headView.findViewById(R.id.tv_schoolName);
+        dtvFocus = headView.findViewById(R.id.dtv_focus);
+        tvQuestion = headView.findViewById(R.id.tv_question);
+        tvAskerTime = headView.findViewById(R.id.tv_ask_time);
+        answer = headView.findViewById(R.id.answer);
+        dtvPhone = headView.findViewById(R.id.dtv_phone);
+        qaAdapter = new TreeRecyclerAdapter();
+        qaAdapter.setType(TreeRecyclerViewType.SHOW_ALL);
+        mHeaderAdapter = new TreeHeaderAndFootWapper<>(qaAdapter);
+        mHeaderAdapter.addHeaderView(headView);
+        qaTreeItems = new ArrayList<>();
+        recyclerView.setAdapter(mHeaderAdapter);
+
+        qaAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickLitener() {
+            @Override
+            public void onItemClick(final ViewHolder viewHolder, final BaseItem baseItem, final int itemPosition) {
+                if (baseItem instanceof QaDetailOneTreeItemParent) {
+                    QaDetailOneTreeItemParent qaDetailOneTreeItemParent = (QaDetailOneTreeItemParent) baseItem;
+                    if (lastBaseItem != null) {
+                        //上一次点击的是二级目录
+                        if (lastBaseItem instanceof QaDetailTwoTreeItem) {
+                            //重置上次二级目录的播放状态
+                            QaDetailTwoTreeItem qaDetailTwoTreeItem = (QaDetailTwoTreeItem) lastBaseItem;
+                            qaDetailTwoTreeItem.setVoiceState();
+                            qaDetailOneTreeItemParent.voiceOnclick(viewHolder);
+                        } else {
+                            QaDetailOneTreeItemParent lastOneItem = (QaDetailOneTreeItemParent) lastBaseItem;
+                            if (qaDetailOneTreeItemParent == lastBaseItem) {
+                                if (qaDetailOneTreeItemParent.getIsPlaying()) {
+                                    lastOneItem.setVoiceState();
+                                } else {
+                                    qaDetailOneTreeItemParent.voiceOnclick(viewHolder);
+                                }
+                            } else {
+                                lastOneItem.setVoiceState();
+                                qaDetailOneTreeItemParent.voiceOnclick(viewHolder);
+                            }
+                        }
+                    } else {
+                        qaDetailOneTreeItemParent.voiceOnclick(viewHolder);
+                    }
+                }
+
+                if (baseItem instanceof QaDetailTwoTreeItem) {
+                    QaDetailTwoTreeItem qaDetailTwoTreeItem = (QaDetailTwoTreeItem) baseItem;
+                    if (lastBaseItem != null) {
+                        if (lastBaseItem instanceof QaDetailOneTreeItemParent) {
+                            //上次点击的是一级目录，需要把上次上次点击的状态重置，包括播放状态等
+                            QaDetailOneTreeItemParent qaDetailOneTreeItemParent = (QaDetailOneTreeItemParent) lastBaseItem;
+                            qaDetailOneTreeItemParent.setVoiceState();
+                            qaDetailTwoTreeItem.voiceOnclick(viewHolder);
+                        } else {
+                            QaDetailTwoTreeItem lastTwoItem = (QaDetailTwoTreeItem) lastBaseItem;
+                            //如果上次点击的是二级目录本身，也需要重置状态
+                            //判断是否同一条二级目录
+                            if (qaDetailTwoTreeItem == lastBaseItem) {
+                                if (qaDetailTwoTreeItem.getIsPlaying()) {
+                                    lastTwoItem.setVoiceState();
+                                } else {
+                                    qaDetailTwoTreeItem.voiceOnclick(viewHolder);
+                                }
+                            } else {
+                                lastTwoItem.setVoiceState();
+                                qaDetailTwoTreeItem.voiceOnclick(viewHolder);
+                            }
+                        }
+                    } else {
+                        qaDetailTwoTreeItem.voiceOnclick(viewHolder);
+                    }
+                }
+                lastBaseItem = baseItem;
+            }
+        });
+
     }
+
 
     private void hideAudioView() {
         etAnswer.setText("");
@@ -426,8 +510,8 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
             recyclerView.removeAllViews();
             recyclerView = null;
         }
-        if (qaDetailAdapter != null) {
-            qaDetailAdapter = null;
+        if (qaAdapter != null) {
+            qaAdapter = null;
         }
         if (presenter != null) {
             presenter = null;

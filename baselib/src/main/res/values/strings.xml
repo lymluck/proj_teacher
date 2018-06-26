@@ -1,0 +1,27 @@
+<resources>
+    <string name="not_null">%1$s不能为空！</string>
+    <string name="blocked_msg">你的账号已被禁用，如有疑问请联系管理员！</string>
+    <string name="logout_notify">下线通知</string>
+    <string name="loginout_msg">你的账号已在其他设备上登录，是否重新登录？</string>
+    <string name="relogin">重新登录</string>
+    <string name="enter_phone">请输入正确的手机号码</string>
+    <string name="refused_msg">你的信息审核未通过！</string>
+    <string name="get_code_again">重新发送(%1$s)</string>
+    <string name="send_again">重新发送</string>
+    <string name="get_security_code">获取验证码</string>
+    <string name="video_unit">个</string>
+    <string name="picture_unit">张</string>
+    <string name="login">登录</string>
+    <string name="login_now">您还未登录，立即登录？</string>
+    <string name="sure">确定</string>
+    <string name="cancle">取消</string>
+    <string name="picture_load_failure">图片加载失败</string>
+    <string name="choose_video">选择视频</string>
+    <string name="no_external_storage">暂无外部存储</string>
+    <string name="loading">正在加载...</string>
+    <string name="picture_max">最多只能同时上传9张图片</string>
+    <string name="scan_no_video">没扫描到视频</string>
+    <string name="choose_pic">选择图片</string>
+    <string name="scan_no_picture">没扫描到图片</string>
+    <string name="move_and_zoom">移动和缩放</string>
+</resources>

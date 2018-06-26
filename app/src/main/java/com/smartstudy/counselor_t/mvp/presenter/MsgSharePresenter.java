@@ -2,8 +2,8 @@ package com.smartstudy.counselor_t.mvp.presenter;
 
 import android.text.TextUtils;
 
+import study.smart.baselib.mvp.base.BasePresenterImpl;
 import com.smartstudy.counselor_t.entity.ChatUserInfo;
-import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
 import com.smartstudy.counselor_t.mvp.contract.MsgShareContract;
 
 import java.util.ArrayList;

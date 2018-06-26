@@ -7,7 +7,7 @@
     android:padding="8dp"
     android:transitionName="search_top">
 
-    <com.smartstudy.counselor_t.ui.widget.DrawableTextView
+    <study.smart.baselib.ui.widget.DrawableTextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/search_white_bg"

@@ -6,15 +6,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import study.smart.baselib.entity.DataListInfo;
+import study.smart.baselib.listener.ObserverListener;
+import study.smart.baselib.mvp.base.BasePresenterImpl;
+import study.smart.baselib.utils.DisplayImageUtils;
+import study.smart.baselib.utils.Utils;
 import com.smartstudy.counselor_t.R;
-import com.smartstudy.counselor_t.entity.DataListInfo;
 import com.smartstudy.counselor_t.entity.QuestionInfo;
-import com.smartstudy.counselor_t.listener.ObserverListener;
-import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
 import com.smartstudy.counselor_t.mvp.contract.MyQaFragmentContract;
 import com.smartstudy.counselor_t.mvp.model.MyQaFragmentModel;
-import com.smartstudy.counselor_t.util.DisplayImageUtils;
-import com.smartstudy.counselor_t.util.Utils;
 
 import java.util.List;
 

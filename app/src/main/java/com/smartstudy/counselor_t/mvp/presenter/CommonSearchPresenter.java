@@ -8,10 +8,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import study.smart.baselib.mvp.base.BasePresenterImpl;
+import study.smart.baselib.utils.Utils;
 import com.smartstudy.counselor_t.R;
-import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
 import com.smartstudy.counselor_t.mvp.contract.CommonSearchContract;
-import com.smartstudy.counselor_t.util.Utils;
 
 /**
  * Created by louis on 2017/3/4.

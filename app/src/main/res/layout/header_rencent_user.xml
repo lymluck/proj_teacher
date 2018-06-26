@@ -13,7 +13,7 @@
         android:paddingRight="16dp"
         android:paddingTop="8dp">
 
-        <com.smartstudy.counselor_t.ui.widget.DrawableTextView
+        <study.smart.baselib.ui.widget.DrawableTextView
             android:id="@+id/searchView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

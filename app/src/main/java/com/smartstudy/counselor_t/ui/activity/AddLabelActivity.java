@@ -12,13 +12,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import study.smart.baselib.ui.base.BaseActivity;
+import study.smart.baselib.utils.DensityUtils;
+import study.smart.baselib.utils.KeyBoardUtils;
+import study.smart.baselib.utils.ToastUtils;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.mvp.contract.AddLabelContract;
 import com.smartstudy.counselor_t.mvp.presenter.AddLabelPresenter;
-import com.smartstudy.counselor_t.ui.base.BaseActivity;
-import com.smartstudy.counselor_t.util.DensityUtils;
-import com.smartstudy.counselor_t.util.KeyBoardUtils;
-import com.smartstudy.counselor_t.util.ToastUtils;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;

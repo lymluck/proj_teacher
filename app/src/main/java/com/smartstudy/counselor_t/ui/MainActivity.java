@@ -24,27 +24,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.smartstudy.counselor_t.R;
-import com.smartstudy.counselor_t.app.BaseApplication;
-import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.handler.WeakHandler;
-import com.smartstudy.counselor_t.listener.OnProgressListener;
 import com.smartstudy.counselor_t.mvp.contract.MainActivityContract;
 import com.smartstudy.counselor_t.mvp.presenter.MainActivityPresenter;
 import com.smartstudy.counselor_t.service.VersionUpdateService;
 import com.smartstudy.counselor_t.ui.activity.FillPersonActivity;
-import com.smartstudy.counselor_t.ui.activity.LoginActivity;
-import com.smartstudy.counselor_t.ui.base.BaseActivity;
-import com.smartstudy.counselor_t.ui.dialog.AppBasicDialog;
-import com.smartstudy.counselor_t.ui.dialog.DialogCreator;
+import study.smart.baselib.ui.widget.dialog.AppBasicDialog;
+import study.smart.baselib.ui.widget.dialog.DialogCreator;
 import com.smartstudy.counselor_t.ui.fragment.QaFragment;
-import com.smartstudy.counselor_t.ui.widget.DragPointView;
-import com.smartstudy.counselor_t.util.ConstantUtils;
-import com.smartstudy.counselor_t.util.IMUtils;
-import com.smartstudy.counselor_t.util.ParameterUtils;
-import com.smartstudy.counselor_t.util.SPCacheUtils;
-import com.smartstudy.counselor_t.util.ScreenUtils;
-import com.smartstudy.counselor_t.util.ToastUtils;
-import com.smartstudy.counselor_t.util.Utils;
+import study.smart.baselib.ui.widget.DragPointView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +42,18 @@ import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imkit.manager.IUnReadMessageObserver;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
+import study.smart.baselib.BaseApplication;
+import study.smart.baselib.entity.TeacherInfo;
+import study.smart.baselib.listener.OnProgressListener;
+import study.smart.baselib.ui.activity.LoginActivity;
+import study.smart.baselib.ui.base.BaseActivity;
+import study.smart.baselib.utils.ConstantUtils;
+import study.smart.baselib.utils.IMUtils;
+import study.smart.baselib.utils.ParameterUtils;
+import study.smart.baselib.utils.SPCacheUtils;
+import study.smart.baselib.utils.ScreenUtils;
+import study.smart.baselib.utils.ToastUtils;
+import study.smart.baselib.utils.Utils;
 
 public class MainActivity extends BaseActivity<MainActivityContract.Presenter> implements DragPointView.OnDragListencer,
     MainActivityContract.View, ViewPager.OnPageChangeListener {

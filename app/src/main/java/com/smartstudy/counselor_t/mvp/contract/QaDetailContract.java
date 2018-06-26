@@ -1,12 +1,9 @@
 package com.smartstudy.counselor_t.mvp.contract;
 
 
-import com.smartstudy.counselor_t.entity.QaDetailInfo;
-import com.smartstudy.counselor_t.mvp.base.BasePresenter;
-import com.smartstudy.counselor_t.mvp.base.BaseView;
-
-import java.io.File;
-import java.util.List;
+import study.smart.baselib.entity.QaDetailInfo;
+import study.smart.baselib.mvp.base.BasePresenter;
+import study.smart.baselib.mvp.base.BaseView;
 
 /**
  * Created by yqy on 2017/12/4.

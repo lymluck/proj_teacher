@@ -1,8 +1,9 @@
 package com.smartstudy.counselor_t.mvp.model;
 
-import com.smartstudy.counselor_t.server.api.ApiManager;
-import com.smartstudy.counselor_t.listener.ObserverListener;
-import com.smartstudy.counselor_t.mvp.base.BaseModel;
+
+import study.smart.baselib.listener.ObserverListener;
+import study.smart.baselib.mvp.base.BaseModel;
+import study.smart.baselib.server.api.ApiManager;
 
 import java.util.HashMap;
 import java.util.Map;

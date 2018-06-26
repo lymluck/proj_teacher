@@ -18,19 +18,22 @@ import android.widget.TextView;
 
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.smartstudy.annotation.Route;
+import study.smart.baselib.entity.TeacherInfo;
+import study.smart.baselib.ui.activity.LoginActivity;
+import study.smart.baselib.ui.activity.SelectMyPhotoActivity;
+import study.smart.baselib.ui.base.BaseActivity;
+import study.smart.baselib.utils.ConstantUtils;
+import study.smart.baselib.utils.DisplayImageUtils;
+import study.smart.baselib.utils.ParameterUtils;
+import study.smart.baselib.utils.SPCacheUtils;
+import study.smart.baselib.utils.ToastUtils;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.IdNameInfo;
-import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.mvp.contract.FillPersonContract;
 import com.smartstudy.counselor_t.mvp.presenter.FillPersonPresenter;
-import com.smartstudy.counselor_t.ui.base.BaseActivity;
-import com.smartstudy.counselor_t.ui.widget.TagsLayout;
+import study.smart.baselib.ui.widget.TagsLayout;
 import com.smartstudy.counselor_t.util.CheckUtil;
-import com.smartstudy.counselor_t.util.ConstantUtils;
-import com.smartstudy.counselor_t.util.DisplayImageUtils;
-import com.smartstudy.counselor_t.util.ParameterUtils;
-import com.smartstudy.counselor_t.util.SPCacheUtils;
-import com.smartstudy.counselor_t.util.ToastUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -47,6 +50,7 @@ import io.rong.imlib.model.UserInfo;
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */
+@Route("FillPersonActivity")
 public class FillPersonActivity extends BaseActivity<FillPersonContract.Presenter> implements FillPersonContract.View {
     private ImageView ivAvatar;
     private TextView btPostInfo;

@@ -4,13 +4,13 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 
+import study.smart.baselib.ui.base.BaseActivity;
+import study.smart.baselib.utils.ToastUtils;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.mvp.contract.ReloadQaContract;
 import com.smartstudy.counselor_t.mvp.presenter.ReloadQaPresenter;
-import com.smartstudy.counselor_t.ui.base.BaseActivity;
-import com.smartstudy.counselor_t.ui.widget.AudioRecordView;
-import com.smartstudy.counselor_t.ui.widget.audio.AudioRecorder;
-import com.smartstudy.counselor_t.util.ToastUtils;
+import study.smart.baselib.ui.widget.AudioRecordView;
+import study.smart.baselib.ui.widget.audio.AudioRecorder;
 
 import java.io.File;
 

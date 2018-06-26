@@ -1,8 +1,8 @@
 package com.smartstudy.counselor_t.mvp.contract;
 
+import study.smart.baselib.mvp.base.BasePresenter;
+import study.smart.baselib.mvp.base.BaseView;
 import com.smartstudy.counselor_t.entity.ChatUserInfo;
-import com.smartstudy.counselor_t.mvp.base.BasePresenter;
-import com.smartstudy.counselor_t.mvp.base.BaseView;
 
 import java.util.List;
 

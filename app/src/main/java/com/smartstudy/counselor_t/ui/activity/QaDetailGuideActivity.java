@@ -8,12 +8,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import study.smart.baselib.entity.QaDetailInfo;
+import study.smart.baselib.mvp.base.BasePresenter;
+import study.smart.baselib.ui.base.BaseActivity;
+import study.smart.baselib.utils.DisplayImageUtils;
 import com.smartstudy.counselor_t.R;
-import com.smartstudy.counselor_t.entity.QaDetailInfo;
-import com.smartstudy.counselor_t.mvp.base.BasePresenter;
-import com.smartstudy.counselor_t.ui.base.BaseActivity;
-import com.smartstudy.counselor_t.ui.widget.DrawableTextView;
-import com.smartstudy.counselor_t.util.DisplayImageUtils;
+import study.smart.baselib.ui.widget.DrawableTextView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

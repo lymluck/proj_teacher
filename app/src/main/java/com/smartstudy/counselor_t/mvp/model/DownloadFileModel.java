@@ -1,8 +1,9 @@
 package com.smartstudy.counselor_t.mvp.model;
 
-import com.smartstudy.counselor_t.listener.FileDownLoadObserver;
-import com.smartstudy.counselor_t.mvp.base.BaseModel;
-import com.smartstudy.counselor_t.server.api.ApiManager;
+
+import study.smart.baselib.listener.FileDownLoadObserver;
+import study.smart.baselib.mvp.base.BaseModel;
+import study.smart.baselib.server.api.ApiManager;
 
 import java.io.File;
 

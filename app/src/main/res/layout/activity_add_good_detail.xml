@@ -1,4 +1,4 @@
-<com.smartstudy.counselor_t.ui.widget.LoadMoreRecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+<study.smart.baselib.ui.widget.LoadMoreRecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rclv_add_good"
     android:background="@color/white"
     android:layout_width="match_parent"

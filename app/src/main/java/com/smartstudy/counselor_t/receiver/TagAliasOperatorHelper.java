@@ -6,8 +6,9 @@ import android.os.Message;
 import android.util.Log;
 import android.util.SparseArray;
 
-import com.smartstudy.counselor_t.util.ToastUtils;
-import com.smartstudy.counselor_t.util.Utils;
+
+import study.smart.baselib.utils.ToastUtils;
+import study.smart.baselib.utils.Utils;
 
 import java.util.Locale;
 import java.util.Set;

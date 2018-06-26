@@ -5,6 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.widget.ImageView;
 
+import study.smart.baselib.utils.DisplayImageUtils;
+
 /**
  * @author louis
  * @date on 2018/5/17

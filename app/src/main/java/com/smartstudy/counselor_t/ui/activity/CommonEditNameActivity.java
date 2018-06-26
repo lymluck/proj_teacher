@@ -7,15 +7,15 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
+import study.smart.baselib.entity.TeacherInfo;
+import study.smart.baselib.ui.base.BaseActivity;
+import study.smart.baselib.utils.KeyBoardUtils;
+import study.smart.baselib.utils.ParameterUtils;
+import study.smart.baselib.utils.ToastUtils;
 import com.smartstudy.counselor_t.R;
-import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.mvp.contract.CommonEditNameContract;
 import com.smartstudy.counselor_t.mvp.presenter.CommonEditNamePresenter;
-import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.util.CheckUtil;
-import com.smartstudy.counselor_t.util.KeyBoardUtils;
-import com.smartstudy.counselor_t.util.ParameterUtils;
-import com.smartstudy.counselor_t.util.ToastUtils;
 
 public class CommonEditNameActivity extends BaseActivity<CommonEditNameContract.Presenter> implements CommonEditNameContract.View {
     private EditText etname;

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- app全局横向分割线样式 -->
+    <style name="horizontal_line">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:background">@color/app_line_color</item>
+    </style>
+    <!-- app全局通栏按钮样式 -->
+    <style name="app_onebtn">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/app_btnh</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">@dimen/app_btn_paddingtb</item>
+        <item name="android:paddingBottom">@dimen/app_btn_paddingtb</item>
+        <item name="android:background">@drawable/bg_main_btn_radius</item>
+        <item name="android:textColor">@drawable/btn_text_selected_color</item>
+        <item name="android:layout_marginTop">@dimen/app_btn_margintop</item>
+        <item name="android:textSize">@dimen/app_textsize</item>
+    </style>
+
+    <!-- 全局标准对话框 -->
+    <style name="appBasicDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:background">#00000000</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
+
+    <style name="DialogNextAnim">
+        <item name="@android:windowEnterAnimation">@anim/base_dialog_in</item>
+        <item name="@android:windowExitAnimation">@anim/dialog_exit</item>
+    </style>
+
+    <style name="DialogEndAnim">
+        <item name="@android:windowEnterAnimation">@anim/dialog_enter</item>
+        <item name="@android:windowExitAnimation">@anim/base_dialog_out</item>
+    </style>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@null</item>
+    </style>
+
+    <!-- 20%黑背景 -->
+    <style name="AppDialogActivityTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@color/black30</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+</resources>

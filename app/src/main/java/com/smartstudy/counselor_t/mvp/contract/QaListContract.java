@@ -2,9 +2,9 @@ package com.smartstudy.counselor_t.mvp.contract;
 
 import android.content.Context;
 
+import study.smart.baselib.mvp.base.BasePresenter;
+import study.smart.baselib.mvp.base.BaseView;
 import com.smartstudy.counselor_t.entity.QuestionInfo;
-import com.smartstudy.counselor_t.mvp.base.BasePresenter;
-import com.smartstudy.counselor_t.mvp.base.BaseView;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface QaListContract {
 
-    interface View extends BaseView{
+    interface View extends BaseView {
 
         void getQuestionsSuccess(int subCount,List<QuestionInfo> data, int request_state);
 

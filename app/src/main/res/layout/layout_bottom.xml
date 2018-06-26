@@ -62,7 +62,7 @@
 
                 </RelativeLayout>
 
-                <com.smartstudy.counselor_t.ui.widget.DragPointView
+                <study.smart.baselib.ui.widget.DragPointView
                     android:id="@+id/xxd_num"
                     android:layout_width="18dp"
                     android:layout_height="18dp"

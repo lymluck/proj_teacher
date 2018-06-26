@@ -9,11 +9,11 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.view.View;
 
+import study.smart.baselib.BaseApplication;
+import study.smart.baselib.utils.BitmapUtils;
+import study.smart.baselib.utils.SPCacheUtils;
+import study.smart.baselib.utils.ToastUtils;
 import com.smartstudy.counselor_t.R;
-import com.smartstudy.counselor_t.app.BaseApplication;
-import com.smartstudy.counselor_t.util.BitmapUtils;
-import com.smartstudy.counselor_t.util.SPCacheUtils;
-import com.smartstudy.counselor_t.util.ToastUtils;
 import com.smartstudy.router.Router;
 import com.smartstudy.zbar.zxing.QRCodeDecoder;
 

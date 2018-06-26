@@ -137,7 +137,7 @@
         android:layout_height="50dp"
         android:orientation="horizontal">
 
-        <com.smartstudy.counselor_t.ui.widget.DrawableTextView
+        <study.smart.baselib.ui.widget.DrawableTextView
             android:id="@+id/dtv_focus"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -156,7 +156,7 @@
             android:layout_marginTop="12dp"
             android:background="#E4E5E6" />
 
-        <com.smartstudy.counselor_t.ui.widget.DrawableTextView
+        <study.smart.baselib.ui.widget.DrawableTextView
             android:id="@+id/dtv_callout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -175,7 +175,7 @@
             android:layout_marginTop="12dp"
             android:background="#E4E5E6" />
 
-        <com.smartstudy.counselor_t.ui.widget.DrawableTextView
+        <study.smart.baselib.ui.widget.DrawableTextView
             android:id="@+id/dtv_phone"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

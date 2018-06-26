@@ -4,8 +4,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.smartstudy.counselor_t.mvp.base.BasePresenter;
-import com.smartstudy.counselor_t.mvp.base.BaseView;
+
+import study.smart.baselib.mvp.base.BasePresenter;
+import study.smart.baselib.mvp.base.BaseView;
 
 import java.util.List;
 

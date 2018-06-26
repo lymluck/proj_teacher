@@ -304,7 +304,7 @@
                     android:textColor="@color/app_text_color"
                     android:textSize="16sp" />
 
-                <com.smartstudy.counselor_t.ui.widget.TagsLayout
+                <study.smart.baselib.ui.widget.TagsLayout
                     android:id="@+id/tly_tags"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

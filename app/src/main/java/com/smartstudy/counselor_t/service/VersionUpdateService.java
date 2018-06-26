@@ -11,22 +11,21 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.widget.RemoteViews;
 
+import study.smart.baselib.BaseApplication;
+import study.smart.baselib.listener.OnDownloadFileListener;
+import study.smart.baselib.listener.OnProgressListener;
+import study.smart.baselib.utils.AppUtils;
+import study.smart.baselib.utils.ParameterUtils;
+import study.smart.baselib.utils.SDCardUtils;
+import study.smart.baselib.utils.ToastUtils;
+import study.smart.baselib.utils.Utils;
 import com.smartstudy.counselor_t.R;
-import com.smartstudy.counselor_t.app.BaseApplication;
 import com.smartstudy.counselor_t.handler.WeakHandler;
-import com.smartstudy.counselor_t.listener.OnDownloadFileListener;
-import com.smartstudy.counselor_t.listener.OnProgressListener;
 import com.smartstudy.counselor_t.mvp.contract.DownloadFileContract;
 import com.smartstudy.counselor_t.mvp.presenter.DownloadFilePresenter;
 import com.smartstudy.counselor_t.ui.activity.MyQaActivity;
-import com.smartstudy.counselor_t.util.AppUtils;
-import com.smartstudy.counselor_t.util.ParameterUtils;
-import com.smartstudy.counselor_t.util.SDCardUtils;
-import com.smartstudy.counselor_t.util.ToastUtils;
-import com.smartstudy.counselor_t.util.Utils;
 
 import java.io.File;
 

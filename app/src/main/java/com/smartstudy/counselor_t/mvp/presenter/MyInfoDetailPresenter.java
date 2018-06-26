@@ -5,15 +5,15 @@ import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSONObject;
+import study.smart.baselib.entity.TeacherInfo;
+import study.smart.baselib.entity.TokenBean;
+import study.smart.baselib.listener.ObserverListener;
+import study.smart.baselib.mvp.base.BasePresenterImpl;
+import study.smart.baselib.utils.DisplayImageUtils;
+import study.smart.baselib.utils.SPCacheUtils;
 import com.smartstudy.counselor_t.entity.IdNameInfo;
-import com.smartstudy.counselor_t.entity.TeacherInfo;
-import com.smartstudy.counselor_t.entity.TokenBean;
-import com.smartstudy.counselor_t.listener.ObserverListener;
-import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
 import com.smartstudy.counselor_t.mvp.contract.MyInfoDetailContract;
 import com.smartstudy.counselor_t.mvp.model.MyInfoDetailModel;
-import com.smartstudy.counselor_t.util.DisplayImageUtils;
-import com.smartstudy.counselor_t.util.SPCacheUtils;
 
 import java.io.File;
 import java.util.List;

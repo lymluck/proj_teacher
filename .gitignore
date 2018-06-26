@@ -86,3 +86,5 @@ freeline_project_description.json
 /qrcode/qrcode.iml
 /slideback/slideback.iml
 /slideback/build/
+/baselib/build/
+/transfer_management/build/

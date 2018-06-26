@@ -51,14 +51,14 @@
 
     <!-- ⼩米 配置结束 < -->
     <application
-        android:name=".app.BaseApplication"
+        android:name=".XxdImApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
-        tools:replace="android:allowBackup"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:name">
 
         <!-- 版本下载 -->
         <service
@@ -335,11 +335,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing|stateAlwaysHidden" />
-        <activity
-            android:name=".ui.activity.LoginActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing|stateHidden" />
+
         <activity
             android:name=".ui.activity.StudentInfoActivity"
             android:screenOrientation="portrait"
@@ -363,14 +359,6 @@
                     android:scheme="rong" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.activity.SelectMyPhotoActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing|stateHidden" />
-        <activity
-            android:name=".ui.activity.ClipPictureActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing|stateHidden" />
 
         <activity
             android:name=".ui.activity.MsgShareActivity"
@@ -401,12 +389,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <!-- windowIsTranslucent不可与screenOrientation同时设置 -->
-        <activity
-            android:name=".ui.activity.ReloginActivity"
-            android:launchMode="singleTask"
-            android:theme="@style/AppDialogActivityTheme"
-            android:windowSoftInputMode="adjustNothing|stateHidden" />
-
         <activity
             android:name=".ui.activity.CommonEditNameActivity"
             android:screenOrientation="portrait"
@@ -450,10 +432,7 @@
             android:name=".ui.activity.AddGoodDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity
-            android:name=".ui.activity.SelectMyVideoActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
+
     </application>
 
 </manifest>

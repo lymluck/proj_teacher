@@ -22,7 +22,7 @@
             android:layout_weight="1"
             android:transitionName="top_search">
 
-            <com.smartstudy.counselor_t.ui.widget.EditTextWithClear
+            <com.smartstudy.counselor_t.commonlib.ui.widget.EditTextWithClear
                 android:id="@+id/searchView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -63,7 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.smartstudy.counselor_t.ui.widget.LoadMoreRecyclerView
+        <study.smart.baselib.ui.widget.LoadMoreRecyclerView
             android:id="@+id/rclv_search"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

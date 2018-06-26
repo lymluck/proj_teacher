@@ -5,10 +5,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import study.smart.baselib.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.mvp.contract.OtherTeacherTagContract;
 import com.smartstudy.counselor_t.mvp.presenter.OtherTeacherTagPresenter;
-import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;

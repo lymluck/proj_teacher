@@ -7,15 +7,15 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 
+import study.smart.baselib.mvp.base.BasePresenter;
+import study.smart.baselib.ui.base.BaseActivity;
+import study.smart.baselib.utils.ParameterUtils;
+import study.smart.baselib.utils.ToastUtils;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.IdNameInfo;
-import com.smartstudy.counselor_t.mvp.base.BasePresenter;
-import com.smartstudy.counselor_t.ui.adapter.CommonAdapter;
-import com.smartstudy.counselor_t.ui.adapter.MultiItemTypeAdapter;
-import com.smartstudy.counselor_t.ui.adapter.base.ViewHolder;
-import com.smartstudy.counselor_t.ui.base.BaseActivity;
-import com.smartstudy.counselor_t.util.ParameterUtils;
-import com.smartstudy.counselor_t.util.ToastUtils;
+import study.smart.baselib.ui.adapter.CommonAdapter;
+import study.smart.baselib.ui.adapter.MultiItemTypeAdapter;
+import study.smart.baselib.ui.adapter.base.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -5,9 +5,9 @@ import android.os.Vibrator;
 import android.util.Log;
 import android.widget.Toast;
 
+import study.smart.baselib.mvp.base.BasePresenter;
+import study.smart.baselib.ui.base.BaseActivity;
 import com.smartstudy.counselor_t.R;
-import com.smartstudy.counselor_t.mvp.base.BasePresenter;
-import com.smartstudy.counselor_t.ui.base.BaseActivity;
 import com.smartstudy.zbar.QRCodeView;
 import com.smartstudy.zbar.zbar.ZBarView;
 

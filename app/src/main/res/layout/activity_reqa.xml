@@ -9,9 +9,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
 
-        <com.smartstudy.counselor_t.ui.widget.AudioRecordView
+        <study.smart.baselib.ui.widget.AudioRecordView
             android:id="@+id/arv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></com.smartstudy.counselor_t.ui.widget.AudioRecordView>
+            android:layout_height="wrap_content"></study.smart.baselib.ui.widget.AudioRecordView>
     </RelativeLayout>
 </RelativeLayout>

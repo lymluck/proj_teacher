@@ -3,13 +3,13 @@ package com.smartstudy.counselor_t.mvp.presenter;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
-import com.smartstudy.counselor_t.entity.TeacherInfo;
-import com.smartstudy.counselor_t.entity.VersionInfo;
-import com.smartstudy.counselor_t.listener.ObserverListener;
-import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
+import study.smart.baselib.entity.TeacherInfo;
+import study.smart.baselib.entity.VersionInfo;
+import study.smart.baselib.listener.ObserverListener;
+import study.smart.baselib.mvp.base.BasePresenterImpl;
+import study.smart.baselib.utils.ParameterUtils;
 import com.smartstudy.counselor_t.mvp.contract.MyQaActivityContract;
 import com.smartstudy.counselor_t.mvp.model.MyQaActivityModel;
-import com.smartstudy.counselor_t.util.ParameterUtils;
 
 import io.reactivex.disposables.Disposable;
 

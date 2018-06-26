@@ -2,17 +2,14 @@ package com.smartstudy.counselor_t.mvp.model;
 
 import android.text.TextUtils;
 
-import com.smartstudy.counselor_t.entity.TeacherInfo;
-import com.smartstudy.counselor_t.listener.ObserverListener;
-import com.smartstudy.counselor_t.mvp.base.BaseModel;
-import com.smartstudy.counselor_t.server.api.ApiManager;
-import com.smartstudy.counselor_t.util.HttpUrlUtils;
 
-import java.io.File;
+import study.smart.baselib.entity.TeacherInfo;
+import study.smart.baselib.listener.ObserverListener;
+import study.smart.baselib.mvp.base.BaseModel;
+import study.smart.baselib.server.api.ApiManager;
+import study.smart.baselib.utils.HttpUrlUtils;
 
-import okhttp3.MediaType;
 import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 
 /**
  * @author yqy

@@ -2,7 +2,7 @@ package com.smartstudy.counselor_t.ossServer;
 
 import com.alibaba.sdk.android.oss.common.auth.OSSFederationCredentialProvider;
 import com.alibaba.sdk.android.oss.common.auth.OSSFederationToken;
-import com.smartstudy.counselor_t.entity.TokenBean;
+import study.smart.baselib.entity.TokenBean;
 
 /**
  * @author yqy

@@ -1,13 +1,9 @@
 package com.smartstudy.counselor_t.mvp.contract;
 
-import android.widget.ImageView;
 
-import com.smartstudy.counselor_t.entity.IdNameInfo;
-import com.smartstudy.counselor_t.entity.TeacherInfo;
-import com.smartstudy.counselor_t.mvp.base.BasePresenter;
-import com.smartstudy.counselor_t.mvp.base.BaseView;
+import study.smart.baselib.mvp.base.BasePresenter;
+import study.smart.baselib.mvp.base.BaseView;
 
-import java.io.File;
 import java.util.List;
 
 /**

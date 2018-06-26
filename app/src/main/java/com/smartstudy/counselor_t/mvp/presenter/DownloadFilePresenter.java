@@ -1,10 +1,8 @@
 package com.smartstudy.counselor_t.mvp.presenter;
 
-import android.util.Log;
-
-import com.smartstudy.counselor_t.listener.FileDownLoadObserver;
-import com.smartstudy.counselor_t.listener.OnDownloadFileListener;
-import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
+import study.smart.baselib.listener.FileDownLoadObserver;
+import study.smart.baselib.listener.OnDownloadFileListener;
+import study.smart.baselib.mvp.base.BasePresenterImpl;
 import com.smartstudy.counselor_t.mvp.contract.DownloadFileContract;
 import com.smartstudy.counselor_t.mvp.model.DownloadFileModel;
 

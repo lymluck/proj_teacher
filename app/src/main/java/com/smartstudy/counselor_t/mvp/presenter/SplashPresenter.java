@@ -1,7 +1,7 @@
 package com.smartstudy.counselor_t.mvp.presenter;
 
-import com.smartstudy.counselor_t.listener.ObserverListener;
-import com.smartstudy.counselor_t.mvp.base.BasePresenterImpl;
+import study.smart.baselib.listener.ObserverListener;
+import study.smart.baselib.mvp.base.BasePresenterImpl;
 import com.smartstudy.counselor_t.mvp.contract.SplashContract;
 import com.smartstudy.counselor_t.mvp.model.SplashModel;
 

@@ -2,22 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingLeft="64dp">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="64dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_detail_answer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="15dp"
             android:lineSpacingExtra="4dp"
             android:paddingRight="16dp"
+            android:paddingTop="15dp"
             android:textColor="@color/app_text_color2"
             android:textSize="15sp" />
 
@@ -29,8 +30,8 @@
             android:layout_marginRight="70dp"
             android:layout_marginTop="12dp"
             android:background="@drawable/bg_voice_play"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
             android:visibility="gone">
@@ -63,6 +64,76 @@
         android:layout_height="wrap_content"
         android:paddingBottom="15dp"
         android:paddingTop="12dp"
+        android:paddingLeft="64dp"
         android:textColor="@color/app_text_color"
         android:textSize="12sp" />
+
+    <View
+        android:id="@+id/v_line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="64dp"
+        android:background="@color/bg_home_search" />
+
+    <LinearLayout
+        android:id="@+id/ll_comment_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="64dp"
+            android:background="#E4E5E6" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="评价"
+                android:textColor="#949BA1"
+                android:textSize="15sp" />
+
+            <study.smart.baselib.ui.widget.RatingBar
+                android:id="@+id/rb_course_rate"
+                app:clickable="false"
+                app:starCount="5"
+                app:starEmpty="@drawable/ic_star_gray"
+                app:starFill="@drawable/ic_star_blue"
+                app:starHalf="@drawable/ic_star_half"
+                app:starImageSize="14dp"
+                app:starStep="0"
+                app:stepSize="Half"
+                android:layout_width="wrap_content"
+                android:layout_height="14dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:paddingLeft="18dp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-12dp"
+            android:paddingBottom="20dp"
+            android:paddingLeft="64dp"
+            android:paddingRight="16dp"
+            android:textColor="#58646E"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/v_last"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/bg_home_search"
+        android:visibility="gone" />
 </LinearLayout>

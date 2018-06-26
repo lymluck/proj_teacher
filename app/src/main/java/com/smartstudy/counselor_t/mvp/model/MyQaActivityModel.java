@@ -1,10 +1,11 @@
 package com.smartstudy.counselor_t.mvp.model;
 
-import com.smartstudy.counselor_t.listener.ObserverListener;
-import com.smartstudy.counselor_t.mvp.base.BaseModel;
-import com.smartstudy.counselor_t.server.api.ApiManager;
-import com.smartstudy.counselor_t.util.AppUtils;
-import com.smartstudy.counselor_t.util.HttpUrlUtils;
+
+import study.smart.baselib.listener.ObserverListener;
+import study.smart.baselib.mvp.base.BaseModel;
+import study.smart.baselib.server.api.ApiManager;
+import study.smart.baselib.utils.AppUtils;
+import study.smart.baselib.utils.HttpUrlUtils;
 
 /**
  * @author yqy

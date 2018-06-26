@@ -267,7 +267,7 @@
                     android:textColor="@color/app_text_color"
                     android:textSize="16sp" />
 
-                <com.smartstudy.counselor_t.ui.widget.TagsLayout
+                <study.smart.baselib.ui.widget.TagsLayout
                     android:id="@+id/tly_tags"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -392,7 +392,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="166dp">
 
-        <com.smartstudy.counselor_t.ui.widget.CircleImageView
+        <study.smart.baselib.ui.widget.CircleImageView
             android:id="@+id/iv_avatar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

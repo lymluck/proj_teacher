@@ -12,7 +12,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -21,28 +20,29 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.smartstudy.annotation.Route;
+
+import study.smart.baselib.BaseApplication;
+import study.smart.baselib.entity.TeacherInfo;
+import study.smart.baselib.listener.OnProgressListener;
+import study.smart.baselib.ui.activity.LoginActivity;
+import study.smart.baselib.ui.base.BaseActivity;
+import study.smart.baselib.utils.ConstantUtils;
+import study.smart.baselib.utils.ParameterUtils;
+import study.smart.baselib.utils.SPCacheUtils;
+import study.smart.baselib.utils.ScreenUtils;
+import study.smart.baselib.utils.Utils;
 import com.smartstudy.counselor_t.R;
-import com.smartstudy.counselor_t.app.BaseApplication;
-import com.smartstudy.counselor_t.entity.TeacherInfo;
 import com.smartstudy.counselor_t.entity.TotalSubQuestion;
 import com.smartstudy.counselor_t.handler.WeakHandler;
-import com.smartstudy.counselor_t.listener.OnProgressListener;
-import com.smartstudy.counselor_t.listener.OnSendMsgDialogClickListener;
 import com.smartstudy.counselor_t.mvp.contract.MyQaActivityContract;
 import com.smartstudy.counselor_t.mvp.presenter.MyQaActivityPresenter;
 import com.smartstudy.counselor_t.service.VersionUpdateService;
-import com.smartstudy.counselor_t.ui.MainActivity;
-import com.smartstudy.counselor_t.ui.base.BaseActivity;
-import com.smartstudy.counselor_t.ui.dialog.AppBasicDialog;
-import com.smartstudy.counselor_t.ui.dialog.DialogCreator;
+import study.smart.baselib.ui.widget.dialog.AppBasicDialog;
+import study.smart.baselib.ui.widget.dialog.DialogCreator;
 import com.smartstudy.counselor_t.ui.fragment.MyFocusFragment;
 import com.smartstudy.counselor_t.ui.fragment.MyQaFragment;
 import com.smartstudy.counselor_t.ui.fragment.QaFragment;
-import com.smartstudy.counselor_t.util.ConstantUtils;
-import com.smartstudy.counselor_t.util.ParameterUtils;
-import com.smartstudy.counselor_t.util.SPCacheUtils;
-import com.smartstudy.counselor_t.util.ScreenUtils;
-import com.smartstudy.counselor_t.util.Utils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -57,6 +57,8 @@ import io.rong.imkit.RongIM;
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */
+
+@Route("MyQaActivity")
 public class MyQaActivity extends BaseActivity<MyQaActivityContract.Presenter> implements MyQaActivityContract.View {
     private TextView allAnswer;
     private TextView myAnswer;

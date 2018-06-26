@@ -19,17 +19,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import study.smart.baselib.ui.activity.LoginActivity;
+import study.smart.baselib.ui.base.BaseActivity;
+import study.smart.baselib.utils.DensityUtils;
+import study.smart.baselib.utils.DisplayImageUtils;
+import study.smart.baselib.utils.ParameterUtils;
+import study.smart.baselib.utils.SPCacheUtils;
+import study.smart.baselib.utils.ScreenUtils;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.SplashInfo;
 import com.smartstudy.counselor_t.handler.WeakHandler;
 import com.smartstudy.counselor_t.mvp.contract.SplashContract;
 import com.smartstudy.counselor_t.mvp.presenter.SplashPresenter;
-import com.smartstudy.counselor_t.ui.base.BaseActivity;
-import com.smartstudy.counselor_t.util.DensityUtils;
-import com.smartstudy.counselor_t.util.DisplayImageUtils;
-import com.smartstudy.counselor_t.util.ParameterUtils;
-import com.smartstudy.counselor_t.util.SPCacheUtils;
-import com.smartstudy.counselor_t.util.ScreenUtils;
 
 
 /**

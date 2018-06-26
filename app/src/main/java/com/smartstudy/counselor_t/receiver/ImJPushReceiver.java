@@ -3,19 +3,15 @@ package com.smartstudy.counselor_t.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
+import study.smart.baselib.ui.activity.LoginActivity;
+import study.smart.baselib.utils.ParameterUtils;
+import study.smart.baselib.utils.SPCacheUtils;
 import com.smartstudy.counselor_t.entity.TotalSubQuestion;
-import com.smartstudy.counselor_t.ui.activity.LoginActivity;
 import com.smartstudy.counselor_t.ui.activity.QaDetailActivity;
-import com.smartstudy.counselor_t.util.ParameterUtils;
-import com.smartstudy.counselor_t.util.SPCacheUtils;
-import com.smartstudy.router.RouteCallback;
-import com.smartstudy.router.RouteResult;
-import com.smartstudy.router.Router;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
