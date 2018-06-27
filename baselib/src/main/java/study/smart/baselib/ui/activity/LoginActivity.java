@@ -308,7 +308,7 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
 
     @Override
     public void phoneCodeLoginSuccess(int status) {
-        Router.build("MyQaActivity").go(this);
+        Router.build("MainActivity").go(this);
         finish();
     }
 

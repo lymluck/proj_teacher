@@ -20,7 +20,6 @@ import com.smartstudy.counselor_t.entity.QuestionInfo;
 import com.smartstudy.counselor_t.entity.SchoolInfo;
 import com.smartstudy.counselor_t.mvp.contract.QaListContract;
 import com.smartstudy.counselor_t.mvp.presenter.QuestionsPresenter;
-import com.smartstudy.counselor_t.ui.activity.MyQaActivity;
 import com.smartstudy.counselor_t.ui.activity.QaDetailActivity;
 import study.smart.baselib.ui.adapter.CommonAdapter;
 import study.smart.baselib.ui.adapter.base.ViewHolder;
@@ -46,12 +45,12 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
 
     private List<QuestionInfo> questionInfoList;
     private int mPage = 1;
-    private MyQaActivity myQaActivity;
+    private MyAllQaFragment myAllQaFragment;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        myQaActivity = (MyQaActivity) activity;
+        myAllQaFragment= (MyAllQaFragment) getParentFragment();
     }
 
     @Override
@@ -244,8 +243,8 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
 
     @Override
     public void getQuestionsSuccess(int subCount, List<QuestionInfo> data, int request_state) {
-        if (myQaActivity != null) {
-            TextView tvSubCount = myQaActivity.getSubCountTextView();
+        if (myAllQaFragment != null) {
+            TextView tvSubCount = myAllQaFragment.getSubCountTextView();
             if (subCount == 0) {
                 tvSubCount.setVisibility(View.GONE);
             } else {

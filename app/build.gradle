@@ -60,6 +60,7 @@ dependencies {
     compile project(':xxdAnnotation')
     compile project(path: ':image')
     compile project(path: ':baselib')
+    compile project(path: ':transfer_management')
 }
 
 repositories { flatDir { dirs 'aars' } }

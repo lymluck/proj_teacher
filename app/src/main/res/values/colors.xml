@@ -3,8 +3,6 @@
     <color name="transparent">#00ffffff</color> <!-- 透明色 -->
     <color name="search_bg">#fff7f7f7</color>
     <color name="bg_answer_color">#FE5252</color> <!-- 答icon背景颜色 -->
-    <color name="bg_recent_search">#e4e5e6</color> <!-- 转发消息页面联系人搜索背景 -->
-    <color name="app_basicdialog_editborder">#cccccc</color><!--标准对话框边框色 -->
     <color name="home_search_title_bg">#F5F6F7</color> <!-- 首页搜索列表标题背景颜色 -->
     <color name="bg_home_search">#E4E5E6</color>
     <color name="qa_post_clor">#949BA1</color>

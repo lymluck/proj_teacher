@@ -33,6 +33,8 @@ import com.smartstudy.counselor_t.entity.IdNameInfo;
 import com.smartstudy.counselor_t.mvp.contract.FillPersonContract;
 import com.smartstudy.counselor_t.mvp.presenter.FillPersonPresenter;
 import study.smart.baselib.ui.widget.TagsLayout;
+
+import com.smartstudy.counselor_t.ui.MainActivity;
 import com.smartstudy.counselor_t.util.CheckUtil;
 
 import java.io.File;
@@ -260,7 +262,7 @@ public class FillPersonActivity extends BaseActivity<FillPersonContract.Presente
                     }
                 }
             }
-            this.startActivity(new Intent(this, MyQaActivity.class));
+            this.startActivity(new Intent(this, MainActivity.class));
             finish();
         } else if (teacherInfo.getStatus() == 1) {
             btPostInfo.setClickable(false);

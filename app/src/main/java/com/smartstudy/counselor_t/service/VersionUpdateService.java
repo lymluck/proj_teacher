@@ -25,7 +25,7 @@ import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.handler.WeakHandler;
 import com.smartstudy.counselor_t.mvp.contract.DownloadFileContract;
 import com.smartstudy.counselor_t.mvp.presenter.DownloadFilePresenter;
-import com.smartstudy.counselor_t.ui.activity.MyQaActivity;
+import com.smartstudy.counselor_t.ui.MainActivity;
 
 import java.io.File;
 
@@ -96,7 +96,7 @@ public class VersionUpdateService extends Service implements DownloadFileContrac
                             // 下载完毕后变换通知形式
                             mNotification.build().flags = Notification.FLAG_AUTO_CANCEL;
                             mNotification.setContent(null);
-                            Intent intent = new Intent(VersionUpdateService.this, MyQaActivity.class);
+                            Intent intent = new Intent(VersionUpdateService.this, MainActivity.class);
                             // 更新参数,注意flags要使用FLAG_UPDATE_CURRENT
                             PendingIntent contentIntent = PendingIntent.getActivity(VersionUpdateService.this, 0, intent,
                                 PendingIntent.FLAG_UPDATE_CURRENT);
@@ -191,7 +191,7 @@ public class VersionUpdateService extends Service implements DownloadFileContrac
         // 指定个性化视图
         mNotification.setContent(mContentView);
 
-        Intent intent = new Intent(this, MyQaActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         // 下面两句是 在按home后，点击通知栏，返回之前activity 状态;
         // 有下面两句的话，假如service还在后台下载， 在点击程序图片重新进入程序时，直接到下载界面，相当于把程序MAIN 入口改了 - -
         // 是这么理解么。。。

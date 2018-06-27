@@ -38,27 +38,7 @@ public class MyQaActivityPresenter extends BasePresenterImpl<MyQaActivityContrac
         myQaModel = null;
     }
 
-    @Override
-    public void getAuditResult() {
-        myQaModel.getAuditResult(new ObserverListener() {
-            @Override
-            public void onSubscribe(Disposable disposable) {
-                addDisposable(disposable);
-            }
 
-            @Override
-            public void onNext(Object result) {
-                if (result != null) {
-                    view.getAuditResult((TeacherInfo) result);
-                }
-            }
-
-            @Override
-            public void onError(String msg) {
-                view.showTip(msg);
-            }
-        });
-    }
 
     @Override
     public void getLogOut() {
@@ -110,33 +90,5 @@ public class MyQaActivityPresenter extends BasePresenterImpl<MyQaActivityContrac
         return currentIndex;
     }
 
-    @Override
-    public void checkVersion() {
-        myQaModel.checkVersion(new ObserverListener<VersionInfo>() {
-            @Override
-            public void onSubscribe(Disposable disposable) {
-                addDisposable(disposable);
-            }
-
-            @Override
-            public void onNext(VersionInfo result) {
-                if (result != null) {
-                    if (result.isNeedUpdate()) {
-                        if (result.isForceUpdate()) {
-                            view.forceUpdate(result.getPackageUrl(), result.getLatestVersion(), result.getDescription());
-                        } else {
-                            view.updateable(result.getPackageUrl(), result.getLatestVersion(), result.getDescription());
-                        }
-                    }
-                    result = null;
-                }
-            }
-
-            @Override
-            public void onError(String msg) {
-                view.showTip(msg);
-            }
-        });
-    }
 }
 

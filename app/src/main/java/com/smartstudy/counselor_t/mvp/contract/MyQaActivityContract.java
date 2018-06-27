@@ -18,8 +18,6 @@ import study.smart.baselib.mvp.base.BaseView;
 public interface MyQaActivityContract {
     interface View extends BaseView {
 
-        void getAuditResult(TeacherInfo teacherInfo);
-
         void getLogOutSuccess();
 
         void hideFragment(FragmentManager fragmentManager);
@@ -29,23 +27,14 @@ public interface MyQaActivityContract {
         void showMyQaFragment(FragmentTransaction ft);
 
         void showMyFocus(FragmentTransaction ft);
-
-        void updateable(String downUrl, String version, String des);
-
-        void forceUpdate(String downUrl, String version, String des);
-
     }
 
     interface Presenter extends BasePresenter {
-
-        void getAuditResult();
 
         void getLogOut();
 
         void showFragment(FragmentManager fragmentManager, int index);
 
         int currentIndex();
-
-        void checkVersion();
     }
 }

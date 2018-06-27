@@ -1,8 +1,5 @@
 <resources>
-    <dimen name="simple_itemh">64dp</dimen> <!-- 简单列表单项高度-->
     <dimen name="simple_item_titleh">38dp</dimen> <!-- 简单列表单项标题类高度-->
-    <dimen name="simple_item_paddingl">16dp</dimen> <!-- 简单列表单项左内边距-->
-    <dimen name="simple_item_paddingr">16dp</dimen> <!-- 简单列表单项右内边距-->
     <dimen name="app_top_right_text_marginRight">20dp</dimen>   <!-- 头部布局文件中右边文字的内左或右边距 -->
     <dimen name="app_top_leftright_textheight">30dp</dimen>  <!-- 头部布局文件中左或右边文字的高度-->
     <dimen name="app_top_progressBar_wh">28dp</dimen>  <!-- top中间转圈进度条宽高 -->
@@ -18,8 +15,6 @@
     <dimen name="add_myinfo_img_margin_b">30dp</dimen><!--完善个人信息页面图片下外边距  -->
     <dimen name="notify_img_wh">38dp</dimen><!-- 下载更新通知栏logo宽高  -->
     <dimen name="notify_img_ml">4dp</dimen><!-- 下载更新通知栏logo左外边距  -->
-    <dimen name="page_err_img_margin_t">105dp</dimen><!-- 异常页距离顶部外边距  -->
-
     <dimen name="app_main_tab_textsize">11sp</dimen> <!-- 主页tab文字大小 -->
 
     <dimen name="qa_title_padding_left">55dp</dimen>

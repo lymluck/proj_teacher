@@ -2,6 +2,8 @@
 <resources>
     <color name="app_top_color">#ffffff</color> <!-- 主页头部背景色 -->
     <color name="app_line_color">#E4E5E6</color> <!-- 分割线颜色 -->
+    <color name="topcentertext">#ff333333</color>
+    <color name="bg_recent_search">#e4e5e6</color> <!-- 转发消息页面联系人搜索背景 -->
     <color name="app_main_color">#078CF1</color>     <!-- 主色调颜色 -->
     <color name="app_text_color">#949ba1</color> <!-- 正文文本颜色 -->
     <color name="app_text_color1">#58646E</color> <!-- 正文1文本颜色 -->
@@ -39,4 +41,5 @@
     <color name="white10">#19ffffff</color><!--10%的白色 -->
     <color name="app_main_color80">#b2078CF1</color>     <!-- 80%主色调颜色 -->
     <color name="orange_clor">#FFB400</color>
+    <color name="app_basicdialog_editborder">#cccccc</color><!--标准对话框边框色 -->
 </resources>

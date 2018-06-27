@@ -31,6 +31,7 @@ import com.smartstudy.counselor_t.entity.SplashInfo;
 import com.smartstudy.counselor_t.handler.WeakHandler;
 import com.smartstudy.counselor_t.mvp.contract.SplashContract;
 import com.smartstudy.counselor_t.mvp.presenter.SplashPresenter;
+import com.smartstudy.counselor_t.ui.MainActivity;
 
 
 /**
@@ -219,7 +220,7 @@ public class SplashActivity extends BaseActivity<SplashContract.Presenter> imple
         String ticket = (String) SPCacheUtils.get("ticket", "");
         Intent it;
         if (!TextUtils.isEmpty(ticket)) {
-            it = new Intent(SplashActivity.this, MyQaActivity.class);
+            it = new Intent(SplashActivity.this, MainActivity.class);
         } else {
             it = new Intent(SplashActivity.this, LoginActivity.class);
             it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

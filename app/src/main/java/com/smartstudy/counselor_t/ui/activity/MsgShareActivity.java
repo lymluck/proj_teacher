@@ -16,11 +16,12 @@ import android.widget.ImageView;
 
 import com.smartstudy.annotation.Route;
 import study.smart.baselib.listener.OnSendMsgDialogClickListener;
+import study.smart.baselib.ui.activity.CommonSearchActivity;
 import study.smart.baselib.ui.base.BaseActivity;
 import study.smart.baselib.utils.DisplayImageUtils;
 import study.smart.baselib.utils.ParameterUtils;
 import com.smartstudy.counselor_t.R;
-import com.smartstudy.counselor_t.entity.ChatUserInfo;
+import study.smart.baselib.entity.ChatUserInfo;
 import com.smartstudy.counselor_t.handler.WeakHandler;
 import com.smartstudy.counselor_t.mvp.contract.MsgShareContract;
 import com.smartstudy.counselor_t.mvp.presenter.MsgSharePresenter;

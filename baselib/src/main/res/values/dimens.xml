@@ -33,4 +33,8 @@
     <dimen name="app_btn_margintop">30dp</dimen> <!-- 按钮距顶部高 -->
     <dimen name="login_contract_margin_t">150dp</dimen><!--登录页面协议上边距  -->
     <dimen name="login_btn_margin_t">40dp</dimen><!--登录页面btn上边距  -->
+    <dimen name="simple_itemh">64dp</dimen> <!-- 简单列表单项高度-->
+    <dimen name="simple_item_paddingl">16dp</dimen> <!-- 简单列表单项左内边距-->
+    <dimen name="simple_item_paddingr">16dp</dimen> <!-- 简单列表单项右内边距-->
+    <dimen name="page_err_img_margin_t">105dp</dimen><!-- 异常页距离顶部外边距  -->
 </resources>

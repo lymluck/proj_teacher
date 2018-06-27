@@ -14,8 +14,8 @@
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:gravity="left|center_vertical"
-            android:paddingLeft="@dimen/app_top_right_btn_marginleft"
-            android:minWidth="@dimen/app_top_leftright_btnimagewh">
+            android:minWidth="@dimen/app_top_leftright_btnimagewh"
+            android:paddingLeft="@dimen/app_top_right_btn_marginleft">
 
             <ImageView
                 android:id="@+id/topdefault_leftbutton"
@@ -87,6 +87,18 @@
                 android:paddingRight="@dimen/app_top_right_btn_marginright"
                 android:scaleType="centerInside"
                 android:transitionName="btn_tr"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/topdefault_rightmenu"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/app_top_right_btn_marginright"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:textColor="@color/topcentertext"
+                android:textSize="@dimen/app_text_size2"
                 android:visibility="gone" />
 
         </LinearLayout>

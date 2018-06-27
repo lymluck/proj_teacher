@@ -1,6 +1,7 @@
 package study.smart.baselib.server.api;
 
 import com.alibaba.fastjson.JSONObject;
+
 import study.smart.baselib.entity.DataListInfo;
 import study.smart.baselib.entity.QaDetailInfo;
 import study.smart.baselib.entity.ResponseInfo;
@@ -270,5 +271,18 @@ public interface ApiService {
      */
     @GET(HttpUrlUtils.URL_START_AD)
     Observable<ResponseInfo<String>> getAdInfo(@HeaderMap Map<String, String> header);
+
+
+    /**
+     * 获取未分配中心案子
+     */
+    @GET(HttpUrlUtils.URL_UNALLOCATED_CENTER)
+    Observable<ResponseInfo<String>> getUnallocatedCenter(@HeaderMap Map<String, String> header,@QueryMap Map<String, String> params);
+
+    /**
+     * 获取已分配中心案子
+     */
+    @GET(HttpUrlUtils.URL_UNALLOCATED_CENTER)
+    Observable<ResponseInfo<String>> getAllocatedCenter(@HeaderMap Map<String, String> header,@QueryMap Map<String, String> params);
 
 }

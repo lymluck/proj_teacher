@@ -23,15 +23,20 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.smartstudy.annotation.Route;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.handler.WeakHandler;
 import com.smartstudy.counselor_t.mvp.contract.MainActivityContract;
 import com.smartstudy.counselor_t.mvp.presenter.MainActivityPresenter;
 import com.smartstudy.counselor_t.service.VersionUpdateService;
 import com.smartstudy.counselor_t.ui.activity.FillPersonActivity;
+
 import study.smart.baselib.ui.widget.dialog.AppBasicDialog;
 import study.smart.baselib.ui.widget.dialog.DialogCreator;
+
+import com.smartstudy.counselor_t.ui.fragment.MyAllQaFragment;
 import com.smartstudy.counselor_t.ui.fragment.QaFragment;
+
 import study.smart.baselib.ui.widget.DragPointView;
 
 import java.util.ArrayList;
@@ -54,7 +59,9 @@ import study.smart.baselib.utils.SPCacheUtils;
 import study.smart.baselib.utils.ScreenUtils;
 import study.smart.baselib.utils.ToastUtils;
 import study.smart.baselib.utils.Utils;
+import study.smart.transfer_management.ui.fragment.TransferManagerFragment;
 
+@Route("MainActivity")
 public class MainActivity extends BaseActivity<MainActivityContract.Presenter> implements DragPointView.OnDragListencer,
     MainActivityContract.View, ViewPager.OnPageChangeListener {
     private ConversationListFragment mConversationListFragment = null;
@@ -88,7 +95,7 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTopLineVisibility(View.VISIBLE);
+        setHeadVisible(View.GONE);
     }
 
     @Override
@@ -110,9 +117,9 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
         xxdMeImage = findViewById(R.id.tab_img_me);
         tvXxdMe = findViewById(R.id.tab_text_me);
         mUnreadNumView = findViewById(R.id.xxd_num);
-        mFragment.add(conversationList);
+        mFragment.add(new TransferManagerFragment());
         mFragment.add(new QaFragment());
-//        mFragment.add(new MyFragment());
+        mFragment.add(new QaFragment());
         changeTextViewColor();
         changeSelectedTabState(0);
         String ticket = (String) SPCacheUtils.get("ticket", ConstantUtils.CACHE_NULL);
@@ -202,21 +209,21 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.xxd_chat:
-                if (mViewPager.getCurrentItem() == 0) {
-                    if (firstClick == 0) {
-                        firstClick = System.currentTimeMillis();
-                    } else {
-                        secondClick = System.currentTimeMillis();
-                    }
-                    if (secondClick - firstClick > 0 && secondClick - firstClick <= 800) {
-                        mConversationListFragment.focusUnreadItem();
-                        firstClick = 0;
-                        secondClick = 0;
-                    } else if (firstClick != 0 && secondClick != 0) {
-                        firstClick = 0;
-                        secondClick = 0;
-                    }
-                }
+//                if (mViewPager.getCurrentItem() == 0) {
+//                    if (firstClick == 0) {
+//                        firstClick = System.currentTimeMillis();
+//                    } else {
+//                        secondClick = System.currentTimeMillis();
+//                    }
+//                    if (secondClick - firstClick > 0 && secondClick - firstClick <= 800) {
+//                        mConversationListFragment.focusUnreadItem();
+//                        firstClick = 0;
+//                        secondClick = 0;
+//                    } else if (firstClick != 0 && secondClick != 0) {
+//                        firstClick = 0;
+//                        secondClick = 0;
+//                    }
+//                }
                 mViewPager.setCurrentItem(0, false);
                 break;
             case R.id.xxd_answer_list:
@@ -452,7 +459,7 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
     }
 
     private void changeSelectedTabState(int position) {
-        setMainTitle(position);
+//        setMainTitle(position);
         switch (position) {
             case 0:
                 unReadMessage();
@@ -481,7 +488,7 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
     public void onPageSelected(int position) {
         changeTextViewColor();
         changeSelectedTabState(position);
-        setMainTitle(position);
+//        setMainTitle(position);
     }
 
     @Override
@@ -530,7 +537,7 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
     @Override
     public void onDragOut() {
         mUnreadNumView.setVisibility(View.GONE);
-        ToastUtils.shortToast( "清除成功");
+        ToastUtils.shortToast("清除成功");
         RongIM.getInstance().getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
             @Override
             public void onSuccess(List<Conversation> conversations) {

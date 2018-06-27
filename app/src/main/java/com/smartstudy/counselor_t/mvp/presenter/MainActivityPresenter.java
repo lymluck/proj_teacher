@@ -1,10 +1,12 @@
 package com.smartstudy.counselor_t.mvp.presenter;
 
 import com.alibaba.fastjson.JSON;
+
 import study.smart.baselib.entity.TeacherInfo;
 import study.smart.baselib.entity.VersionInfo;
 import study.smart.baselib.listener.ObserverListener;
 import study.smart.baselib.mvp.base.BasePresenterImpl;
+
 import com.smartstudy.counselor_t.mvp.contract.MainActivityContract;
 import com.smartstudy.counselor_t.mvp.model.MainModel;
 
@@ -35,15 +37,14 @@ public class MainActivityPresenter extends BasePresenterImpl<MainActivityContrac
 
     @Override
     public void getAuditResult() {
-        mainModel.getAuditResult(new ObserverListener<String>() {
+        mainModel.getAuditResult(new ObserverListener<TeacherInfo>() {
             @Override
             public void onSubscribe(Disposable disposable) {
                 addDisposable(disposable);
             }
 
             @Override
-            public void onNext(String s) {
-                TeacherInfo teacherInfo = JSON.parseObject(s, TeacherInfo.class);
+            public void onNext(TeacherInfo teacherInfo) {
                 if (teacherInfo != null) {
                     view.getAuditResult(teacherInfo);
                 }

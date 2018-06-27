@@ -1,6 +1,5 @@
 package com.smartstudy.counselor_t.ui.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,26 +10,26 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
-import study.smart.baselib.ui.base.UIFragment;
-import study.smart.baselib.utils.DensityUtils;
-import study.smart.baselib.utils.ParameterUtils;
-import study.smart.baselib.utils.ToastUtils;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.QuestionInfo;
 import com.smartstudy.counselor_t.mvp.contract.MyQaFragmentContract;
 import com.smartstudy.counselor_t.mvp.presenter.MyQaFragmentPresenter;
-import com.smartstudy.counselor_t.ui.activity.MyQaActivity;
 import com.smartstudy.counselor_t.ui.activity.QaDetailActivity;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import study.smart.baselib.ui.adapter.CommonAdapter;
 import study.smart.baselib.ui.adapter.base.ViewHolder;
 import study.smart.baselib.ui.adapter.wrapper.EmptyWrapper;
 import study.smart.baselib.ui.adapter.wrapper.LoadMoreWrapper;
+import study.smart.baselib.ui.base.UIFragment;
 import study.smart.baselib.ui.widget.HorizontalDividerItemDecoration;
 import study.smart.baselib.ui.widget.LoadMoreRecyclerView;
 import study.smart.baselib.ui.widget.NoScrollLinearLayoutManager;
-
-import java.util.ArrayList;
-import java.util.List;
+import study.smart.baselib.utils.DensityUtils;
+import study.smart.baselib.utils.ParameterUtils;
+import study.smart.baselib.utils.ToastUtils;
 
 /**
  * @author yqy
@@ -51,19 +50,12 @@ public class MyQaFragment extends UIFragment<MyQaFragmentContract.Presenter> imp
 
     private List<QuestionInfo> questionInfoList;
     private int mPage = 1;
-    private MyQaActivity myQaActivity;
-
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        myQaActivity = (MyQaActivity) activity;
-
-    }
+    private MyAllQaFragment myAllQaFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        myAllQaFragment = (MyAllQaFragment) getParentFragment();
         isPrepared = true;
     }
 
@@ -256,8 +248,8 @@ public class MyQaFragment extends UIFragment<MyQaFragmentContract.Presenter> imp
 
     @Override
     public void getQuestionsSuccess(int subCount, List<QuestionInfo> data, int request_state) {
-        if (myQaActivity != null) {
-            TextView tvSubCount = myQaActivity.getSubCountTextView();
+        if (myAllQaFragment != null) {
+            TextView tvSubCount = myAllQaFragment.getSubCountTextView();
             if (subCount == 0) {
                 tvSubCount.setVisibility(View.GONE);
             } else {

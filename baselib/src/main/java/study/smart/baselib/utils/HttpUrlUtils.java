@@ -25,6 +25,8 @@ public class HttpUrlUtils {
     public static final String URL_QUESTION_MARK = "questions/%1$s/mark";//关注问题
     public static final String URL_MY_ANSWER = "questions/list/answered_by_me";//我的问答
     public static final String URL_START_AD = "counsellor/app/launchscreen";  // 开机广告页
+    public static final String URL_UNALLOCATED_CENTER = "transfer_case/unallocated_center/list";//未分配中心案子的列表
+    public static final String URL_ALLOCATED_CENTER = "transfer_case/allocated_center/list";//已分配中心案子的列表
 
     /**************************** web ***************************/
     public static final String URL_USER_CONTRACT = "/user-agreement.html";  //用户协议
