@@ -277,12 +277,256 @@ public interface ApiService {
      * 获取未分配中心案子
      */
     @GET(HttpUrlUtils.URL_UNALLOCATED_CENTER)
-    Observable<ResponseInfo<String>> getUnallocatedCenter(@HeaderMap Map<String, String> header,@QueryMap Map<String, String> params);
+    Observable<ResponseInfo<DataListInfo>> getUnallocatedCenter(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
     /**
      * 获取已分配中心案子
      */
-    @GET(HttpUrlUtils.URL_UNALLOCATED_CENTER)
-    Observable<ResponseInfo<String>> getAllocatedCenter(@HeaderMap Map<String, String> header,@QueryMap Map<String, String> params);
+    @GET(HttpUrlUtils.URL_ALLOCATED_CENTER)
+    Observable<ResponseInfo<DataListInfo>> getAllocatedCenter(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+
+    /**
+     * 获取被驳回转案
+     */
+    @GET(HttpUrlUtils.URL_REJECTED_CENTER)
+    Observable<ResponseInfo<DataListInfo>> getRejectedCenter(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+
+
+    /**
+     * 获取未分配导师
+     */
+    @GET(HttpUrlUtils.URL_UNALLOCATED_COACH)
+    Observable<ResponseInfo<DataListInfo>> getUnallocatedCoach(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+
+    /**
+     * 获取已分配导师
+     */
+    @GET(HttpUrlUtils.URL_ALLOCATED_COACH)
+    Observable<ResponseInfo<DataListInfo>> getAllocatedCoach(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+
+    /**
+     * 搜索转案案例
+     */
+    @GET(HttpUrlUtils.URL_TRANSFER_CASE)
+    Observable<ResponseInfo<DataListInfo>> searchTransferCase(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+
+    /**
+     * 未分配中心结案
+     *
+     * @param header
+     * @param url
+     * @return
+     */
+    @PUT()
+    Observable<ResponseInfo<String>> closeTransferCase(@HeaderMap Map<String, String> header, @Url() String url);
+
+    /**
+     * 已分配中心结案
+     *
+     * @param header
+     * @param url
+     * @return
+     */
+    @PUT()
+    Observable<ResponseInfo<String>> closeAllocateTransferCase(@HeaderMap Map<String, String> header, @Url() String url);
+
+
+    /**
+     * 未分配中心驳回
+     *
+     * @param header
+     * @param url
+     * @return
+     */
+    @PUT()
+    Observable<ResponseInfo<String>> rejectTransferManagerCase(@HeaderMap Map<String, String> header, @Url() String url, @QueryMap Map<String, String> params);
+
+    /**
+     * 未分配中心转案重启
+     *
+     * @param header
+     * @param url
+     * @return
+     */
+    @PUT()
+    Observable<ResponseInfo<String>> reopenTransferCase(@HeaderMap Map<String, String> header, @Url() String url);
+
+
+    /**
+     * 已分配中心转案重启
+     *
+     * @param header
+     * @param url
+     * @return
+     */
+    @PUT()
+    Observable<ResponseInfo<String>> reopenAllocatedCenter(@HeaderMap Map<String, String> header, @Url() String url);
+
+    /**
+     * wei分配案子详情
+     *
+     * @param header
+     * @param url
+     * @return
+     */
+    @GET()
+    Observable<ResponseInfo<String>> getUnallocated(@HeaderMap Map<String, String> header, @Url() String url);
+
+    /**
+     * 已分配案子详情
+     *
+     * @param header
+     * @param url
+     * @return
+     */
+    @GET()
+    Observable<ResponseInfo<String>> getAllocated(@HeaderMap Map<String, String> header, @Url() String url);
+
+    /**
+     * 被驳回案子详情
+     *
+     * @param header
+     * @param url
+     * @return
+     */
+    @GET()
+    Observable<ResponseInfo<String>> getRejectedCenter(@HeaderMap Map<String, String> header, @Url() String url);
+
+
+    /**
+     * 被驳回案子驳回
+     *
+     * @param header
+     * @param url
+     * @return
+     */
+    @PUT()
+    Observable<ResponseInfo<String>> rejectRejectCenter(@HeaderMap Map<String, String> header, @Url() String url, @QueryMap Map<String, String> params);
+
+    /**
+     * 被驳回案子驳回
+     *
+     * @param header
+     * @param url
+     * @return
+     */
+    @PUT()
+    Observable<ResponseInfo<String>> closeRejectCenter(@HeaderMap Map<String, String> header, @Url() String url);
+
+
+    /**
+     * 被驳回案子驳回
+     *
+     * @param header
+     * @param url
+     * @return
+     */
+    @PUT()
+    Observable<ResponseInfo<String>> reopenRejectCenter(@HeaderMap Map<String, String> header, @Url() String url);
+
+
+    /**
+     * 未分配导师驳回
+     *
+     * @param header
+     * @param url
+     * @return
+     */
+    @PUT()
+    Observable<ResponseInfo<String>> rejectUnallocatedCoach(@HeaderMap Map<String, String> header, @Url() String url, @QueryMap Map<String, String> params);
+
+
+    /**
+     * 未分配导师结案
+     *
+     * @param header
+     * @param url
+     * @return
+     */
+    @PUT()
+    Observable<ResponseInfo<String>> closeUnallocatedCoach(@HeaderMap Map<String, String> header, @Url() String url);
+
+
+    /**
+     * 已分配导师结案
+     *
+     * @param header
+     * @param url
+     * @return
+     */
+    @PUT()
+    Observable<ResponseInfo<String>> closeAllocatedCoach(@HeaderMap Map<String, String> header, @Url() String url);
+
+    /**
+     * 未分配导师重启
+     *
+     * @param header
+     * @param url
+     * @return
+     */
+    @PUT()
+    Observable<ResponseInfo<String>> reopenUnallocatedCoach(@HeaderMap Map<String, String> header, @Url() String url);
+
+    /**
+     * 已分配导师重启
+     *
+     * @param header
+     * @param url
+     * @return
+     */
+    @PUT()
+    Observable<ResponseInfo<String>> reopenAllocatedCoach(@HeaderMap Map<String, String> header, @Url() String url);
+
+    /**
+     * 未分配导师案子详情
+     *
+     * @param header
+     * @param url
+     * @return
+     */
+    @GET()
+    Observable<ResponseInfo<String>> getUnallocatedCoachl(@HeaderMap Map<String, String> header, @Url() String url);
+
+    /**
+     * 已分配导师案子详情
+     *
+     * @param header
+     * @param url
+     * @return
+     */
+    @GET()
+    Observable<ResponseInfo<String>> getAllocatedCoachl(@HeaderMap Map<String, String> header, @Url() String url);
+
+    /**
+     * 给案子分配中心
+     *
+     * @param header
+     * @param url
+     * @return
+     */
+    @PUT()
+    Observable<ResponseInfo<String>> assignTransferCase(@HeaderMap Map<String, String> header, @Url() String url, @QueryMap Map<String, String> params);
+
+
+    /**
+     * 给案子分配老师
+     *
+     * @param header
+     * @param url
+     * @return
+     */
+    @PUT()
+    Observable<ResponseInfo<String>> assignTransferCaseTeacher(@HeaderMap Map<String, String> header, @Url() String url, @QueryMap Map<String, String> params);
+
+    /**
+     * 重新分配老师
+     *
+     * @param header
+     * @param url
+     * @return
+     */
+    @PUT()
+    Observable<ResponseInfo<String>> assignTransferCaseTeacherAgain(@HeaderMap Map<String, String> header, @Url() String url, @QueryMap Map<String, String> params);
 
 }
+

@@ -16,6 +16,8 @@ import study.smart.baselib.ui.base.BaseActivity;
 import study.smart.baselib.utils.DensityUtils;
 import study.smart.baselib.utils.KeyBoardUtils;
 import study.smart.baselib.utils.ToastUtils;
+
+import com.smartstudy.annotation.Route;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.mvp.contract.AddLabelContract;
 import com.smartstudy.counselor_t.mvp.presenter.AddLabelPresenter;
@@ -35,6 +37,7 @@ import java.util.Set;
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */
+@Route("AddLabelActivity")
 public class AddLabelActivity extends BaseActivity<AddLabelContract.Presenter> implements AddLabelContract.View {
     private FlowLayout flowLayout;//上面的flowLayout
     private TagFlowLayout allFlowLayout;//所有标签的TagFlowLayout

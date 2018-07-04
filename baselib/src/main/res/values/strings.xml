@@ -32,6 +32,10 @@
     <string name="no_net_tip">连接不上网络啦～</string>
     <string name="no_search_tip">抱歉，没有找到你想要的内容哦～</string>
     <string name="take_photo">拍摄照片</string>
+    <string name="transfer_owner_name">%1$s (%2$s/%3$s)</string>
+    <string name="transfer_goods_name">商品名称：%1$s</string>
+    <string name="transfer_contractor">签约CC：%1$s</string>
+    <string name="transfer_orderId">订单号：%1$s</string>
     <string name="dialog_vedio_claim">1.着装整洁，声音清晰\n2.场景不限\n3.时长在1-3分钟之间\n4.建议使用VUE App录制，自己配音乐，视频长宽比采用16：9的格式</string>
     <string name="dialog_vedio">1.我是谁\n2.毕业院校(不做强制要求，如若有过国外留学经历，建议加进去，是个加分项)\n3.熟悉哪个城市或者院校或专业\n4.擅长留学领域哪块的工作\n5.向留学用户们发出问答邀请(如：各位留学小伙伴，我是***(中文，英文，外号等个性化名称) + 我在选校帝等你来撩/聊；大体结构是这样)</string>
 </resources>

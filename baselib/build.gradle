@@ -40,7 +40,7 @@ dependencies {
     compile project(':imlib')
     compile project(':slideback')
     compile project(path: ':permissionlib')
-    compile project(':xxdAnnotation')
+    compile project(':xxdRouter')
     compile files('libs/jpush-android-3.1.1.jar')
     compile project(':medialib')
     compile project(':image')

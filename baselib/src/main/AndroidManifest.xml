@@ -67,10 +67,6 @@
             android:windowSoftInputMode="adjustNothing|stateHidden" />
 
         <!-- windowIsTranslucent不可与screenOrientation同时设置 -->
-        <activity
-            android:name="study.smart.baselib.ui.activity.CommonSearchActivity"
-            android:theme="@style/AppDialogActivityTheme"
-            android:windowSoftInputMode="adjustNothing" />
     </application>
 
 </manifest>

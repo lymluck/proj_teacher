@@ -1,2 +1,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="study.smart.transfer_management" />
+    package="study.smart.transfer_management">
+
+    <application>
+        <activity
+            android:name=".ui.activity.TransferManagerDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
+        <activity
+            android:name=".ui.activity.CommonSearchActivity"
+            android:theme="@style/AppDialogActivityTheme"
+            android:windowSoftInputMode="adjustNothing" />
+    </application>
+</manifest>

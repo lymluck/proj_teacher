@@ -24,6 +24,7 @@ import study.smart.baselib.utils.ParameterUtils;
 import study.smart.baselib.utils.ScreenUtils;
 import study.smart.baselib.utils.StringUtis;
 import study.smart.baselib.utils.ToastUtils;
+
 import com.smartstudy.permissions.AfterPermissionGranted;
 import com.smartstudy.permissions.AppSettingsDialog;
 import com.smartstudy.permissions.Permission;
@@ -142,7 +143,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends SlideBackAct
 
     @Override
     public void onClick(View v) {
-        if (v.getId()== R.id.topdefault_leftbutton) {
+        if (v.getId() == R.id.topdefault_leftbutton) {
             finish();
         }
     }
@@ -233,6 +234,10 @@ public abstract class BaseActivity<P extends BasePresenter> extends SlideBackAct
 
     public void setTopdefaultRighttextColor(String color) {
         topdefaultRighttext.setTextColor(Color.parseColor(color));
+    }
+
+    public TextView getTopdefaultRighttext() {
+        return topdefaultRighttext;
     }
 
     @Override

@@ -22,7 +22,7 @@
             android:layout_weight="1"
             android:transitionName="top_search">
 
-            <com.smartstudy.counselor_t.commonlib.ui.widget.EditTextWithClear
+            <study.smart.baselib.ui.widget.EditTextWithClear
                 android:id="@+id/searchView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

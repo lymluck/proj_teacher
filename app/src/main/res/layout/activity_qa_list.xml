@@ -8,10 +8,11 @@
         android:id="@+id/layout_qa_title"
         layout="@layout/layout_qa_title" />
 
-    <FrameLayout
-        android:id="@+id/flyt_qa"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
+    <study.smart.baselib.ui.widget.NoScrollViewPager
+        android:id="@+id/main_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 </LinearLayout>
 

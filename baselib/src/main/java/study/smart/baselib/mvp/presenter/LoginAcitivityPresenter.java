@@ -69,6 +69,11 @@ public class LoginAcitivityPresenter extends BasePresenterImpl<LoginActivityCont
                     String name = result.getString("name");
                     String avatar = result.getString("avatar");
                     String imToken = result.getString("imToken");
+                    JSONObject smart = result.getJSONObject("smart");
+                    if (smart != null) {
+                        SPCacheUtils.put("smart_ticket", smart.getString("ticket"));
+                        SPCacheUtils.put("privileges", smart.getString("privileges"));
+                    }
                     JSONObject organization = result.getJSONObject("organization");
                     if (organization != null) {
                         SPCacheUtils.put("company", organization.getString("name"));

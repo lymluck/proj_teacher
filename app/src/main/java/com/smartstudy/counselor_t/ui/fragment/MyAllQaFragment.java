@@ -1,30 +1,42 @@
 package com.smartstudy.counselor_t.ui.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.TotalSubQuestion;
 import com.smartstudy.counselor_t.mvp.contract.MyQaActivityContract;
 import com.smartstudy.counselor_t.mvp.presenter.MyQaActivityPresenter;
-import com.smartstudy.counselor_t.ui.activity.MyInfoDetailActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.rong.imkit.RongIM;
+import study.smart.baselib.mvp.base.BasePresenter;
 import study.smart.baselib.ui.activity.LoginActivity;
 import study.smart.baselib.ui.base.UIFragment;
+import study.smart.baselib.ui.widget.NoScrollViewPager;
 import study.smart.baselib.utils.ParameterUtils;
 import study.smart.baselib.utils.SPCacheUtils;
+import study.smart.baselib.utils.ScreenUtils;
 import study.smart.baselib.utils.ToastUtils;
 import study.smart.baselib.utils.Utils;
 
@@ -35,16 +47,18 @@ import study.smart.baselib.utils.Utils;
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */
-public class MyAllQaFragment extends UIFragment<MyQaActivityContract.Presenter> implements MyQaActivityContract.View {
+public class MyAllQaFragment extends UIFragment implements ViewPager.OnPageChangeListener {
     private TextView allAnswer;
     private TextView myAnswer;
     private TextView myFocus;
-    private QaFragment qaFragment;
-    private MyFocusFragment myFocusFragment;
-    private FragmentManager mfragmentManager;
-    private MyQaFragment myFragment;
     private TextView tvSubcount;
-    private ImageView userIcon;
+    private List<Fragment> mFragment = new ArrayList<>();
+    public static NoScrollViewPager mViewPager;
+
+    @Override
+    public void onFirstUserVisible() {
+        super.onFirstUserVisible();
+    }
 
     @Override
     protected View getLayoutView() {
@@ -55,27 +69,44 @@ public class MyAllQaFragment extends UIFragment<MyQaActivityContract.Presenter> 
 
     @Override
     protected void initView(View rootView) {
+        RelativeLayout layoutQaTitle = rootView.findViewById(R.id.layout_qa_title);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) layoutQaTitle.getLayoutParams();
+            params.height = params.height + ScreenUtils.getStatusHeight(mActivity);
+            layoutQaTitle.setLayoutParams(params);
+            layoutQaTitle.setPadding(0, ScreenUtils.getStatusHeight(mActivity), 0, 0);
+        }
         tvSubcount = rootView.findViewById(R.id.tv_subcount);
         allAnswer = rootView.findViewById(R.id.all_answer);
         myAnswer = rootView.findViewById(R.id.my_answer);
         myFocus = rootView.findViewById(R.id.tv_focus);
-        userIcon = rootView.findViewById(R.id.user_icon);
-        allAnswer.setSelected(true);
-        mfragmentManager = getFragmentManager();
-        hideFragment(mfragmentManager);
-        presenter.showFragment(mfragmentManager, ParameterUtils.FRAGMENT_ONE);
-    }
+        mFragment.add(new QaFragment());
+        mFragment.add(new MyFocusFragment());
+        mFragment.add(new MyQaFragment());
+        mViewPager = rootView.findViewById(R.id.main_viewpager);
+        mViewPager.setNoScroll(true);
+        changeTextViewColor();
+        changeSelectedTabState(0);
+        FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                return mFragment.get(position);
+            }
 
-    @Override
-    public MyQaActivityContract.Presenter initPresenter() {
-        return new MyQaActivityPresenter(this);
+            @Override
+            public int getCount() {
+                return mFragment.size();
+            }
+        };
+        mViewPager.setAdapter(fragmentPagerAdapter);
+        mViewPager.setOffscreenPageLimit(mFragment.size());
+        mViewPager.setOnPageChangeListener(this);
     }
 
     @Override
     public void initEvent() {
         allAnswer.setOnClickListener(this);
         myAnswer.setOnClickListener(this);
-        userIcon.setOnClickListener(this);
         myFocus.setOnClickListener(this);
     }
 
@@ -83,124 +114,18 @@ public class MyAllQaFragment extends UIFragment<MyQaActivityContract.Presenter> 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.user_icon:
-                startActivity(new Intent(mActivity, MyInfoDetailActivity.class));
-                break;
             case R.id.all_answer:
-                presenter.showFragment(mfragmentManager, ParameterUtils.FRAGMENT_ONE);
+                mViewPager.setCurrentItem(0, false);
                 break;
             case R.id.my_answer:
-                presenter.showFragment(mfragmentManager, ParameterUtils.FRAGMENT_TWO);
+                mViewPager.setCurrentItem(2, false);
                 break;
             case R.id.tv_focus:
-                presenter.showFragment(mfragmentManager, ParameterUtils.FRAGMENT_THREE);
+                mViewPager.setCurrentItem(1, false);
                 break;
             default:
                 break;
         }
-    }
-
-    /**
-     * 保存fragment状态
-     *
-     * @param outState
-     */
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putInt(ParameterUtils.FRAGMENT_TAG, presenter.currentIndex());
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            hideFragment(mfragmentManager);
-            presenter.showFragment(mfragmentManager, savedInstanceState.getInt(ParameterUtils.FRAGMENT_TAG));
-        }
-        super.onViewStateRestored(savedInstanceState);
-    }
-
-    @Override
-    public void getLogOutSuccess() {
-        RongIM.getInstance().logout();
-        SPCacheUtils.put("phone", ParameterUtils.CACHE_NULL);
-        SPCacheUtils.put("name", ParameterUtils.CACHE_NULL);
-        SPCacheUtils.put("avatar", ParameterUtils.CACHE_NULL);
-        SPCacheUtils.put("ticket", ParameterUtils.CACHE_NULL);
-        SPCacheUtils.put("orgId", ParameterUtils.CACHE_NULL);
-        SPCacheUtils.put("title", ParameterUtils.CACHE_NULL);
-        SPCacheUtils.put("imToken", "");
-        SPCacheUtils.put("imUserId", "");
-        Utils.removeCookie(mActivity);
-        Intent to_login = new Intent(mActivity, LoginActivity.class);
-        to_login.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-            Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(to_login);
-    }
-
-
-    @Override
-    public void hideFragment(FragmentManager fragmentManager) {
-        //如果不为空，就先隐藏起来
-        if (fragmentManager != null && fragmentManager.getFragments().size() > 0) {
-            for (Fragment fragment : fragmentManager.getFragments()) {
-                fragment.setUserVisibleHint(false);
-                if (fragment.isAdded()) {
-                    fragmentManager.beginTransaction().hide(fragment)
-                        .commitAllowingStateLoss();
-                }
-            }
-        }
-        allAnswer.setSelected(false);
-        myAnswer.setSelected(false);
-        myFocus.setSelected(false);
-    }
-
-    @Override
-    public void showQaFragment(FragmentTransaction ft) {
-        allAnswer.setSelected(true);
-        /**
-         * 如果Fragment为空，就新建一个实例
-         * 如果不为空，就将它从栈中显示出来
-         */
-        if (qaFragment == null) {
-            qaFragment = new QaFragment();
-            ft.add(R.id.flyt_qa, qaFragment);
-        } else {
-            ft.show(qaFragment);
-        }
-        qaFragment.setUserVisibleHint(true);
-        ft = null;
-    }
-
-    @Override
-    public void showMyQaFragment(FragmentTransaction ft) {
-        myAnswer.setSelected(true);
-        /**
-         * 如果Fragment为空，就新建一个实例
-         * 如果不为空，就将它从栈中显示出来
-         */
-        if (myFragment == null) {
-            myFragment = new MyQaFragment();
-            ft.add(R.id.flyt_qa, myFragment);
-        } else {
-            ft.show(myFragment);
-        }
-        myFragment.setUserVisibleHint(true);
-        ft = null;
-    }
-
-    @Override
-    public void showMyFocus(FragmentTransaction ft) {
-        myFocus.setSelected(true);
-        if (myFocusFragment == null) {
-            myFocusFragment = new MyFocusFragment();
-            ft.add(R.id.flyt_qa, myFocusFragment);
-        } else {
-            ft.show(myFocusFragment);
-        }
-        myFocusFragment.setUserVisibleHint(true);
-        ft = null;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
@@ -225,6 +150,34 @@ public class MyAllQaFragment extends UIFragment<MyQaActivityContract.Presenter> 
         }
     }
 
+    private void changeSelectedTabState(int position) {
+        switch (position) {
+            case 0:
+                allAnswer.setTextColor(Color.parseColor("#ffffff"));
+                allAnswer.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_qa_border));
+                break;
+            case 1:
+                myFocus.setTextColor(Color.parseColor("#ffffff"));
+                myFocus.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_qa_border));
+                break;
+            case 2:
+                myAnswer.setTextColor(Color.parseColor("#ffffff"));
+                myAnswer.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_qa_border));
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void changeTextViewColor() {
+        allAnswer.setBackgroundDrawable(null);
+        myFocus.setBackgroundDrawable(null);
+        myAnswer.setBackgroundDrawable(null);
+        allAnswer.setTextColor(Color.parseColor("#58646E"));
+        myFocus.setTextColor(Color.parseColor("#58646E"));
+        myAnswer.setTextColor(Color.parseColor("#58646E"));
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -234,14 +187,30 @@ public class MyAllQaFragment extends UIFragment<MyQaActivityContract.Presenter> 
         EventBus.getDefault().unregister(this);
     }
 
+    @Override
+    public BasePresenter initPresenter() {
+        return null;
+    }
+
     public TextView getSubCountTextView() {
         return tvSubcount;
     }
 
 
     @Override
-    public void showTip(String message) {
-        ToastUtils.shortToast(message);
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        changeTextViewColor();
+        changeSelectedTabState(position);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 }
 

@@ -42,7 +42,6 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
     private EmptyWrapper<SchoolInfo> emptyWrapper;
     private NoScrollLinearLayoutManager mLayoutManager;
     private View emptyView;
-
     private List<QuestionInfo> questionInfoList;
     private int mPage = 1;
     private MyAllQaFragment myAllQaFragment;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/app_top_height"
     android:background="@color/white"
@@ -7,6 +7,7 @@
     android:orientation="vertical">
 
     <FrameLayout
+        android:id="@+id/fl_container"
         android:layout_width="match_parent"
         android:layout_height="45dp">
 
@@ -18,7 +19,7 @@
             android:layout_marginLeft="@dimen/qa_title_padding_left"
             android:layout_marginRight="@dimen/qa_title_padding_right"
             android:alpha="0.8"
-            android:background="@drawable/bg_study_consultants_border14"
+            android:background="@drawable/bg_qa_border_gray"
             android:orientation="horizontal">
 
             <TextView
@@ -26,14 +27,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/bg_study_consultans_select_border14"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp"
                 android:text="全部回答"
-                android:textColor="@drawable/text_study_consultants"
                 android:textSize="13sp" />
 
             <TextView
@@ -41,14 +40,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/bg_study_consultans_select_border14"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp"
                 android:text="重点关注"
-                android:textColor="@drawable/text_study_consultants"
                 android:textSize="13sp" />
 
             <TextView
@@ -56,14 +53,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/bg_study_consultans_select_border14"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp"
                 android:text="我的回答"
-                android:textColor="@drawable/text_study_consultants"
                 android:textSize="13sp" />
 
         </LinearLayout>
@@ -82,18 +77,9 @@
             android:textSize="12sp"
             android:visibility="gone" />
 
-        <ImageView
-            android:id="@+id/user_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|right"
-            android:clickable="true"
-            android:paddingLeft="@dimen/app_top_right_btn_marginleftright"
-            android:paddingRight="@dimen/app_top_right_btn_marginright"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_my_info"
-            android:transitionName="btn_tr" />
     </FrameLayout>
 
-    <View style="@style/horizontal_line" />
-</LinearLayout>
+    <View
+        style="@style/horizontal_line"
+        android:layout_below="@+id/fl_container" />
+</RelativeLayout>

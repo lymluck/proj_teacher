@@ -380,7 +380,7 @@
             android:theme="@style/AppDialogActivityTheme"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".ui.activity.MyInfoDetailActivity"
+            android:name=".ui.fragment.MyInfoDetailFragment"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="sensorPortrait" />
         <activity
@@ -407,7 +407,6 @@
             android:name=".ui.activity.AddGoodDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-
     </application>
 
 </manifest>

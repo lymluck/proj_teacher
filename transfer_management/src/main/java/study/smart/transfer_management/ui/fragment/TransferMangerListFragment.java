@@ -1,15 +1,20 @@
 package study.smart.transfer_management.ui.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,12 +29,15 @@ import study.smart.baselib.ui.widget.LoadMoreRecyclerView;
 import study.smart.baselib.ui.widget.NoScrollLinearLayoutManager;
 import study.smart.baselib.utils.DensityUtils;
 import study.smart.baselib.utils.ParameterUtils;
+import study.smart.baselib.utils.TimeUtil;
 import study.smart.baselib.utils.ToastUtils;
 import study.smart.transfer_management.R;
+import study.smart.transfer_management.entity.OptionSuccess;
 import study.smart.transfer_management.entity.StateInfo;
-import study.smart.transfer_management.entity.TransferManagerEntity;
+import study.smart.baselib.entity.TransferManagerEntity;
 import study.smart.transfer_management.mvp.contract.TransferManagerListContract;
 import study.smart.transfer_management.mvp.presenter.TransferManagerPresenter;
+import study.smart.transfer_management.ui.activity.TransferManagerDetailActivity;
 
 /**
  * @author yqy
@@ -61,6 +69,7 @@ public class TransferMangerListFragment extends UIFragment<TransferManagerListCo
 
     @Override
     protected View getLayoutView() {
+        EventBus.getDefault().register(this);
         return mActivity.getLayoutInflater().inflate(R.layout.fragment_transfer_list, null);
     }
 
@@ -91,8 +100,7 @@ public class TransferMangerListFragment extends UIFragment<TransferManagerListCo
         lmrvTransfer.setItemAnimator(new DefaultItemAnimator());
         lmrvTransfer.addItemDecoration(new HorizontalDividerItemDecoration.Builder(mActivity)
             .size(DensityUtils.dip2px(12f))
-            .margin(DensityUtils.dip2px(16), 0)
-            .colorResId(R.color.horizontal_line_color)
+            .colorResId(R.color.main_bg)
             .build());
         initAdapter();
         stateInfo = getArguments().getParcelable("title");
@@ -109,7 +117,31 @@ public class TransferMangerListFragment extends UIFragment<TransferManagerListCo
             @Override
             protected void convert(ViewHolder holder, TransferManagerEntity transferManagerEntity, int position) {
                 if (transferManagerEntity != null) {
+                    holder.setText(R.id.tv_name, String.format(mActivity.getString(R.string.transfer_owner_name),
+                        TextUtils.isEmpty(transferManagerEntity.getName()) ? "" : transferManagerEntity.getName(),
+                        TextUtils.isEmpty(transferManagerEntity.getTargetApplicationYearSeason()) ? "" : transferManagerEntity.getTargetApplicationYearSeason(),
+                        TextUtils.isEmpty(transferManagerEntity.getTargetDegreeName()) ? "" : transferManagerEntity.getTargetDegreeName()));
 
+                    TextView distribution_state = holder.getView(R.id.distribution_state);
+                    if (!TextUtils.isEmpty(transferManagerEntity.getStatusName())) {
+                        if ("已结案".equals(transferManagerEntity.getStatusName())) {
+                            distribution_state.setTextColor(Color.parseColor("#949BA1"));
+                        } else if ("服务中".equals(transferManagerEntity.getStatusName())) {
+                            distribution_state.setTextColor(Color.parseColor("#078CF1"));
+                        } else {
+                            distribution_state.setTextColor(Color.parseColor("#F23D18"));
+                        }
+                        distribution_state.setText(transferManagerEntity.getStatusName());
+                    }
+                    holder.setText(R.id.tv_goods_name, String.format(mActivity.getString(R.string.transfer_goods_name),
+                        TextUtils.isEmpty(transferManagerEntity.getServiceProductNames()) ? "" : transferManagerEntity.getServiceProductNames()));
+
+                    holder.setText(R.id.tv_contractor, String.format(mActivity.getString(R.string.transfer_contractor),
+                        TextUtils.isEmpty(transferManagerEntity.getContractor()) ? "" : transferManagerEntity.getContractor()));
+
+                    holder.setText(R.id.tv_order_number, String.format(mActivity.getString(R.string.transfer_orderId), TextUtils.isEmpty(transferManagerEntity.getOrderId()) ? "" : transferManagerEntity.getOrderId()));
+
+                    holder.setText(R.id.tv_time, TimeUtil.getStrTime(transferManagerEntity.getSignedTime()));
                 }
             }
         };
@@ -131,7 +163,14 @@ public class TransferMangerListFragment extends UIFragment<TransferManagerListCo
         mAdapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-
+                Intent intent = new Intent();
+                //把模块名传送过去
+                intent.putExtra("model", stateInfo.getTitle());
+                intent.putExtra("id", transferManagerEntities.get(position).getId());
+                //把订单状态传送过去
+                intent.putExtra("order_state", transferManagerEntities.get(position).getStatusName());
+                intent.setClass(mActivity, TransferManagerDetailActivity.class);
+                mActivity.startActivity(intent);
             }
 
             @Override
@@ -190,6 +229,24 @@ public class TransferMangerListFragment extends UIFragment<TransferManagerListCo
                 }
             }
         }
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void onDataSynEvent(OptionSuccess optionSuccess) {
+        mPage = 1;
+        if (emptyView == null) {
+            emptyView = mActivity.getLayoutInflater().inflate(R.layout.layout_empty, lmrvTransfer,
+                false);
+        }
+        presenter.showLoading(mActivity, emptyView);
+        presenter.getTransferList(stateInfo.getType(), mPage + "", ParameterUtils.PULL_DOWN);
+    }
+
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
     }
 
     @Override

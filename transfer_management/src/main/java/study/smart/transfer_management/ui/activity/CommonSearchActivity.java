@@ -1,6 +1,7 @@
-package study.smart.baselib.ui.activity;
+package study.smart.transfer_management.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,27 +23,28 @@ import android.widget.TextView;
 
 import com.smartstudy.medialib.ijkplayer.WeakHandler;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import study.smart.baselib.R;
 import study.smart.baselib.entity.ChatUserInfo;
+import study.smart.baselib.entity.TransferManagerEntity;
 import study.smart.baselib.mvp.contract.CommonSearchContract;
 import study.smart.baselib.mvp.presenter.CommonSearchPresenter;
+import study.smart.baselib.ui.adapter.CommonAdapter;
+import study.smart.baselib.ui.adapter.base.ViewHolder;
+import study.smart.baselib.ui.adapter.wrapper.EmptyWrapper;
+import study.smart.baselib.ui.adapter.wrapper.LoadMoreWrapper;
 import study.smart.baselib.ui.base.BaseActivity;
 import study.smart.baselib.ui.widget.EditTextWithClear;
+import study.smart.baselib.ui.widget.HorizontalDividerItemDecoration;
+import study.smart.baselib.ui.widget.LoadMoreRecyclerView;
+import study.smart.baselib.ui.widget.NoScrollLinearLayoutManager;
 import study.smart.baselib.utils.DensityUtils;
 import study.smart.baselib.utils.DisplayImageUtils;
 import study.smart.baselib.utils.KeyBoardUtils;
 import study.smart.baselib.utils.ParameterUtils;
 import study.smart.baselib.utils.Utils;
-import study.smart.baselib.ui.adapter.CommonAdapter;
-import study.smart.baselib.ui.adapter.base.ViewHolder;
-import study.smart.baselib.ui.adapter.wrapper.EmptyWrapper;
-import study.smart.baselib.ui.adapter.wrapper.LoadMoreWrapper;
-import study.smart.baselib.ui.widget.HorizontalDividerItemDecoration;
-import study.smart.baselib.ui.widget.LoadMoreRecyclerView;
-import study.smart.baselib.ui.widget.NoScrollLinearLayoutManager;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Presenter> implements CommonSearchContract.View {
     private EditTextWithClear searchView;
@@ -53,12 +55,14 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
     private LoadMoreWrapper loadMoreWrapper;
     private EmptyWrapper emptyWrapper;
     private NoScrollLinearLayoutManager mLayoutManager;
+    private CommonAdapter<TransferManagerEntity> mTransferAdapter;
+    private List<TransferManagerEntity> transferManagerEntities;
 
     private WeakHandler mHandler;
     private int mPage = 1;
-    private String flag_value;
     private List<ChatUserInfo> chatUserInfoList;
     private String keyword;
+    private String flag_value;
     private static int spaceTime = 300;//时间间隔
     private static long lastSearchTime = 0;//上次搜索的时间
 
@@ -87,14 +91,22 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
             mSchoolAdapter.destroy();
             mSchoolAdapter = null;
         }
+        if (mTransferAdapter != null) {
+            mTransferAdapter.destroy();
+            mTransferAdapter = null;
+        }
         clearList();
         chatUserInfoList = null;
     }
 
     //item分割线匹配
     private void initItemDecoration() {
+        if (ParameterUtils.TRANSFER_MANAGER.equals(flag_value)) {
+            rclvSearch.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
+                .size(DensityUtils.dip2px(12f)).colorResId(R.color.main_bg).build());
+        }
         rclvSearch.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
-                .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.horizontal_line_color).build());
+            .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.horizontal_line_color).build());
     }
 
     @Override
@@ -173,6 +185,9 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
 
     private void pullRefresh(int cacheMode, int pullTo) {
         //默认搜索学校
+        if (ParameterUtils.TRANSFER_MANAGER.equals(flag_value)) {
+            presenter.getTransferManagerList(keyword, mPage, pullTo);
+        }
         presenter.getSchools(cacheMode, getIntent().getStringExtra("countryId"), keyword, mPage, pullTo, flag_value);
     }
 
@@ -252,6 +267,9 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
         if (chatUserInfoList != null) {
             chatUserInfoList.clear();
         }
+        if (transferManagerEntities != null) {
+            transferManagerEntities.clear();
+        }
     }
 
     @Override
@@ -272,9 +290,92 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
     private void initAdapter() {
         //这里做列表adapter匹配
         //默认适配搜索学校
-        initSchoolAdapter();
+        if (ParameterUtils.TRANSFER_MANAGER.equals(flag_value)) {
+            initTransferAdapter();
+        } else {
+            initSchoolAdapter();
+        }
         rclvSearch.setAdapter(loadMoreWrapper);
     }
+
+
+    private void initTransferAdapter() {
+        transferManagerEntities = new ArrayList<>();
+        mTransferAdapter = new CommonAdapter<TransferManagerEntity>(this, R.layout.item_transfer_manager, transferManagerEntities) {
+            @Override
+            protected void convert(ViewHolder holder, TransferManagerEntity transferManagerEntity, int position) {
+                if (transferManagerEntity != null) {
+                    holder.setText(R.id.tv_name, String.format(getString(R.string.transfer_owner_name),
+                        TextUtils.isEmpty(transferManagerEntity.getName()) ? "" : transferManagerEntity.getName(),
+                        TextUtils.isEmpty(transferManagerEntity.getTargetApplicationYearSeason()) ? "" : transferManagerEntity.getTargetApplicationYearSeason(),
+                        TextUtils.isEmpty(transferManagerEntity.getTargetDegreeName()) ? "" : transferManagerEntity.getTargetDegreeName()));
+
+                    TextView distribution_state = holder.getView(R.id.distribution_state);
+                    if (!TextUtils.isEmpty(transferManagerEntity.getStatusName())) {
+                        if ("已结案".equals(transferManagerEntity.getStatusName())) {
+                            distribution_state.setTextColor(Color.parseColor("#949BA1"));
+                        } else if ("服务中".equals(transferManagerEntity.getStatusName())) {
+                            distribution_state.setTextColor(Color.parseColor("#078CF1"));
+                        } else {
+                            distribution_state.setTextColor(Color.parseColor("#F23D18"));
+                        }
+                        distribution_state.setText(transferManagerEntity.getStatusName());
+                    }
+                    holder.setText(R.id.tv_goods_name, String.format(getString(R.string.transfer_goods_name),
+                        TextUtils.isEmpty(transferManagerEntity.getServiceProductNames()) ? "" : transferManagerEntity.getServiceProductNames()));
+
+                    holder.setText(R.id.tv_contractor, String.format(getString(R.string.transfer_contractor),
+                        TextUtils.isEmpty(transferManagerEntity.getContractor()) ? "" : transferManagerEntity.getContractor()));
+
+                    holder.setText(R.id.tv_order_number, String.format(getString(R.string.transfer_orderId), TextUtils.isEmpty(transferManagerEntity.getOrderId()) ? "" : transferManagerEntity.getOrderId()));
+                    holder.setText(R.id.tv_time, transferManagerEntity.getSignedTime());
+                }
+            }
+        };
+        emptyWrapper = new EmptyWrapper<>(mTransferAdapter);
+        loadMoreWrapper = new LoadMoreWrapper<>(emptyWrapper);
+
+        mTransferAdapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                String model = "";
+                //把模块名传送过去
+                if ("未分配中心".equals(transferManagerEntities.get(position).getStatusName())) {
+                    model = "未分配中心";
+                } else if ("选导师".equals(transferManagerEntities.get(position).getStatusName())) {
+                    model = "已分配中心";
+                } else if ("服务中".equals(transferManagerEntities.get(position).getStatusName())) {
+                    model = "已分配中心";
+                } else if ("已驳回".equals(transferManagerEntities.get(position).getStatusName())) {
+                    model = "被驳回转案";
+                } else {
+                    //已结案状态，需要根据另外的字段进行判断
+                    if ("REJECTED_CENTER".equals(transferManagerEntities.get(position).getPreClosedStatus())) {
+                        model = "被驳回转案";
+                    } else if ("UNALLOCATED_CENTER".equals(transferManagerEntities.get(position).getPreClosedStatus())) {
+                        model = "未分配中心";
+                    } else {
+                        model = "已分配中心";
+                    }
+                }
+                Intent intent = new Intent();
+                //把模块名传送过去
+                intent.putExtra("model", model);
+                intent.putExtra("id", transferManagerEntities.get(position).getId());
+                //把订单状态传送过去
+                intent.putExtra("order_state", transferManagerEntities.get(position).getStatusName());
+                intent.setClass(CommonSearchActivity.this, TransferManagerDetailActivity.class);
+                startActivity(intent);
+
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
+    }
+
 
     private void initSchoolAdapter() {
         chatUserInfoList = new ArrayList<>();
@@ -323,7 +424,7 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
     @Override
     public void showResult(List data, int request_state, String flag) {
         llytTopSearch.setBackgroundResource(R.color.main_bg);
-        presenter.setEmptyView(mInflater, this, rclvSearch, flag_value);
+        presenter.setEmptyView(mInflater, this, rclvSearch);
         mLayoutManager.setScrollEnabled(true);
         List datas = getNowList();
         int len = data.size();
@@ -383,8 +484,52 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
         data = null;
     }
 
+    @Override
+    public void showTransferManagerList(List<TransferManagerEntity> transferManagerEntities, int request_state) {
+        if (presenter != null) {
+            llytTopSearch.setBackgroundResource(R.color.main_bg);
+            presenter.setEmptyView(mInflater, this, rclvSearch);
+            mLayoutManager.setScrollEnabled(true);
+            List datas = getNowList();
+            int len = transferManagerEntities.size();
+            if (datas != null) {
+                if (request_state == ParameterUtils.PULL_DOWN) {
+                    //下拉刷新
+                    if (len <= 0) {
+                        rclvSearch.loadComplete(true);
+                        mLayoutManager.setScrollEnabled(false);
+                    }
+                    datas.clear();
+                    datas.addAll(transferManagerEntities);
+                    swipeRefreshLayout.setRefreshing(false);
+                    loadMoreWrapper.notifyDataSetChanged();
+                } else if (request_state == ParameterUtils.PULL_UP) {
+                    //上拉加载
+                    if (len <= 0) {
+                        //没有更多内容
+                        if (mPage > 1) {
+                            mPage = mPage - 1;
+                        }
+                        if (datas.size() > 0) {
+                            rclvSearch.loadComplete(false);
+                        } else {
+                            rclvSearch.loadComplete(true);
+                        }
+                    } else {
+                        rclvSearch.loadComplete(true);
+                        datas.addAll(transferManagerEntities);
+                        loadMoreWrapper.notifyDataSetChanged();
+                    }
+                }
+            }
+        }
+    }
+
     private List getNowList() {
         //默认搜索学校
+        if (ParameterUtils.TRANSFER_MANAGER.equals(flag_value)) {
+            return transferManagerEntities;
+        }
         return chatUserInfoList;
     }
 
@@ -401,7 +546,7 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
         super.showTip(message);
         if (!Utils.isNetworkConnected()) {
             llytTopSearch.setBackgroundResource(R.color.main_bg);
-            presenter.setEmptyView(mInflater, this, rclvSearch, flag_value);
+            presenter.setEmptyView(mInflater, this, rclvSearch);
         }
         swipeRefreshLayout.setRefreshing(false);
         rclvSearch.loadComplete(true);

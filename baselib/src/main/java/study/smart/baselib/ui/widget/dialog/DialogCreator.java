@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,13 +57,16 @@ public class DialogCreator {
         dialog.setContentView(view);
         view.findViewById(R.id.dialog_edit).setVisibility(View.GONE);
         TextView tv_title = (TextView) view.findViewById(R.id.dialog_title);
-        tv_title.setVisibility(View.VISIBLE);
-        tv_title.setText(title);
+        if (TextUtils.isEmpty(title)) {
+            tv_title.setVisibility(View.GONE);
+        } else {
+            tv_title.setVisibility(View.VISIBLE);
+            tv_title.setText(title);
+        }
         ((TextView) view.findViewById(R.id.dialog_info)).setText(msg_tip);
         Button ok_btn = ((Button) view.findViewById(R.id.positive_btn));
         ok_btn.setText(txt_ok);
         ok_btn.setOnClickListener(onClickListener);
-
         Button cancle_btn = ((Button) view.findViewById(R.id.negative_btn));
         cancle_btn.setText(txt_cancle);
         cancle_btn.setOnClickListener(new View.OnClickListener() {
@@ -261,5 +266,38 @@ public class DialogCreator {
         dialogWindow.setWindowAnimations(R.style.DialogEndAnim);
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
+    }
+
+    public static AppBasicDialog createTransferTurnDownDialog(final Activity context, final OnSendMsgDialogClickListener listener) {
+        final AppBasicDialog dialog = new AppBasicDialog(context, R.style.appBasicDialog);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.dialog_transfer_turn_down, null);
+        TextView tvCancel = view.findViewById(R.id.tv_cancel);
+        final EditText etReason = view.findViewById(R.id.et_reason);
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (listener != null) {
+                    listener.onNegative();
+                }
+            }
+        });
+        TextView tvSure = view.findViewById(R.id.tv_sure);
+        tvSure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (listener != null) {
+                    listener.onPositive(etReason.getText().toString());
+                }
+            }
+        });
+        dialog.setContentView(view);
+        WindowManager.LayoutParams p = dialog.getWindow().getAttributes();
+        p.width = ScreenUtils.getScreenWidth();
+        dialog.getWindow().setAttributes(p);
+        Window dialogWindow = dialog.getWindow();
+        dialogWindow.setGravity(Gravity.BOTTOM);
+        dialog.setCanceledOnTouchOutside(false);
+        return dialog;
     }
 }

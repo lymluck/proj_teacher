@@ -104,6 +104,7 @@ public class ParameterUtils {
     public static final String QA_FLAG = "qa_list";  //flag
     public static final String HOME_QA_FLAG = "home_qa_list";  //flag
     public static final String NEWS_FLAG = "news_list";  //flag
+    public static final String TRANSFER_MANAGER = "TRANSFER_MANAGER";  //flag
     public static final String COURSE_FLAG = "course_list";  //flag
     public static final String RANKS_FLAG = "rank_list";  //flag
     public static final String MYSCHOOL_FLAG = "mySchool";  //flag

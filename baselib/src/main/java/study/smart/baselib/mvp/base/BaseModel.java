@@ -81,6 +81,10 @@ public class BaseModel {
         if (!TextUtils.isEmpty(ticket) && !ConstantUtils.CACHE_NULL.equals(ticket)) {
             params.put("x-smartsa-counsellor-ticket", ticket);
         }
+        String smartTicket = (String) SPCacheUtils.get("smart_ticket", ConstantUtils.CACHE_NULL);
+        if (!TextUtils.isEmpty(smartTicket) && !ConstantUtils.CACHE_NULL.equals(ticket)) {
+            params.put("x-smartsa-ticket", smartTicket);
+        }
         return params;
     }
 

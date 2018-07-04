@@ -27,7 +27,31 @@ public class HttpUrlUtils {
     public static final String URL_START_AD = "counsellor/app/launchscreen";  // 开机广告页
     public static final String URL_UNALLOCATED_CENTER = "transfer_case/unallocated_center/list";//未分配中心案子的列表
     public static final String URL_ALLOCATED_CENTER = "transfer_case/allocated_center/list";//已分配中心案子的列表
-
+    public static final String URL_REJECTED_CENTER = "transfer_case/rejected_center/list";//被驳回案例列表
+    public static final String URL_UNALLOCATED_COACH = "transfer_case/unallocated_coach/list";//获取未分配导师
+    public static final String URL_ALLOCATED_COACH = "transfer_case/allocated_coach/list";//获取已分配导师
+    public static final String URL_TRANSFER_CASE = "transfer_case/list";//转案搜索
+    public static final String URL_CLOSE_TRANSFER_CASE = "transfer_case/close/%1$s/unallocated_center";//未分配中心转案结案
+    public static final String URL_REJECT_TRANSFER_CASE = "transfer_case/reject/%1$s/unallocated_center";//未分配中心转案驳回
+    public static final String URL_REOPEN_TRANSFER_CASE = "transfer_case/reopen/%1$s/unallocated_center";//未分配中心转案重启
+    public static final String URL_UNALLOCATED_TRANSFER_CASE = "transfer_case/%1$s/unallocated";//未分配中心转案获取详情
+    public static final String URL_ASSIGN_TRANSFER_CASE = "transfer_case/assign/%1$s/unallocated_center";//给案子分配中心
+    public static final String URL_ALLOCATED_TRANSFER_CASE = "transfer_case/%1$s/allocated";//已分配中心转案获取详情
+    public static final String URL_REJECTED_CENTER_DETAIL = "transfer_case/%1$s/rejected_center";//被驳回转案获取详情
+    public static final String URL_UNALLOCATED_COACH_DETAIL = "transfer_case/%1$s/unallocated_coach";//未分配导师转案获取详情
+    public static final String URL_ALLOCATED_COACH_DETAIL = "transfer_case/%1$s/allocated_coach";//已分配导师转案获取详情
+    public static final String URL_CLOSE_ALLOCATED_CENTER = "transfer_case/close/%1$s/allocated_center";//已分配中心结案
+    public static final String URL_ASSIGN_UNALLOCATED_COACH = "transfer_case/assign/%1$s/unallocated_coach";//给案子分配老师
+    public static final String URL_ASSIGN_ALLOCATED_COACH = "transfer_case/assign/%1$s/allocated_coach";//重新分配老师
+    public static final String URL_REOPEN_ALLOCATED_CENTER = "transfer_case/reopen/%1$s/allocated_center";//已分配案子重启
+    public static final String URL_REJECT_REJECTED_CENTER = " transfer_case/reject/%1$s/rejected_center";//被驳回列表驳回到CRM
+    public static final String URL_CLOSE_REJECTED_CENTER = " transfer_case/close/%1$s/rejected_center";//被驳回列表结案
+    public static final String URL_REOPEN_REJECTED_CENTER = " transfer_case/reopen/%1$s/rejected_center";//被驳回列表重启
+    public static final String URL_REJECT_UNALLOCATED_COACH = "transfer_case/reject/%1$s/unallocated_coach";//未分配导师驳回
+    public static final String URL_CLOSE_UNALLOCATED_COACH = "transfer_case/close/%1$s/unallocated_coach";//未分配导师结案
+    public static final String URL_REOPEN_UNALLOCATED_COACH = "transfer_case/reopen/%1$s/unallocated_coach";//未分配导师重启
+    public static final String URL_CLOSE_ALLOCATED_COACH = "transfer_case/close/%1$s/allocated_coach";//已分配导师结案
+    public static final String URL_REOPEN_ALLOCATED_COACH = "transfer_case/reopen/%1$s/allocated_coach";//已分配导师重启
     /**************************** web ***************************/
     public static final String URL_USER_CONTRACT = "/user-agreement.html";  //用户协议
 

@@ -281,7 +281,6 @@ public class LoginActivity extends BaseActivity<LoginActivityContract.Presenter>
                 }
                 SPCacheUtils.put(ConstantUtils.API_SERVER, "test");
             }
-
         } else if (i == R.id.btn_dev) {//测试用
             if (isDebug) {
                 if (!isSelected) {

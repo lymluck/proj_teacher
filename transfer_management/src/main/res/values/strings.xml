@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">transfer_management</string>
+    <string name="data_format">（共%1$s条）</string>
 </resources>

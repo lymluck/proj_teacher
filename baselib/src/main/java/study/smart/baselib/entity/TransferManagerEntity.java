@@ -1,4 +1,4 @@
-package study.smart.transfer_management.entity;
+package study.smart.baselib.entity;
 
 /**
  * @author yqy
@@ -22,6 +22,15 @@ public class TransferManagerEntity {
     private String targetDegreeName;
     private String statusName;
     private String isClose;
+    private String preClosedStatus;
+
+    public String getPreClosedStatus() {
+        return preClosedStatus;
+    }
+
+    public void setPreClosedStatus(String preClosedStatus) {
+        this.preClosedStatus = preClosedStatus;
+    }
 
     public String getId() {
         return id;

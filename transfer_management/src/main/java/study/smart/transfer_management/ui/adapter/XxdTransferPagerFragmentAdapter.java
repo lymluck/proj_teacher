@@ -20,7 +20,7 @@ public class XxdTransferPagerFragmentAdapter extends FragmentPagerAdapter {
     private List<String> titles;
     private List<UIFragment> fragments;
 
-    public XxdTransferPagerFragmentAdapter(FragmentManager fm, List<String> list, List<String> eventIds, List<UIFragment> fragments) {
+    public XxdTransferPagerFragmentAdapter(FragmentManager fm, List<String> list, List<UIFragment> fragments) {
         super(fm);
         this.titles = list;
         this.fragments = fragments;

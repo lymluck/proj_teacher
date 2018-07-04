@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -12,19 +13,22 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.rong.imkit.fragment.BaseFragment;
+import study.smart.baselib.entity.Privileges;
 import study.smart.baselib.mvp.base.BasePresenter;
-import study.smart.baselib.ui.activity.CommonSearchActivity;
 import study.smart.baselib.ui.base.UIFragment;
 import study.smart.baselib.ui.widget.PagerSlidingTabStrip;
 import study.smart.baselib.utils.ParameterUtils;
+import study.smart.baselib.utils.SPCacheUtils;
 import study.smart.baselib.utils.ScreenUtils;
 import study.smart.transfer_management.R;
 import study.smart.transfer_management.entity.StateInfo;
+import study.smart.transfer_management.ui.activity.CommonSearchActivity;
 import study.smart.transfer_management.ui.adapter.XxdTransferPagerFragmentAdapter;
 
 /**
@@ -65,14 +69,36 @@ public class TransferManagerFragment extends UIFragment {
         topLeftBtn.setVisibility(View.GONE);
         ViewPager pagerNews = rootView.findViewById(R.id.pager_news);
         ArrayList<UIFragment> fragments = new ArrayList<>();
-
         List<String> titles = new ArrayList<>();
-        titles.add("已分配中心");
-        titles.add("未分配中心");
-
-        List<String> eventIds = new ArrayList<>();
+        //根据权限来配置转案管理，一共分为三级权限
+        String transferPermission = (String) SPCacheUtils.get("privileges", "");
+        if (!TextUtils.isEmpty(transferPermission)) {
+            Privileges privileges = JSONObject.parseObject(transferPermission, Privileges.class);
+            //表示含有转案管理模块的权限
+            if (privileges.isTransferCase()) {
+                //判断是否有未分配中心的权限
+                if (privileges.isUnallocated()) {
+                    titles.add("未分配中心");
+                }
+                //判断是否含有已分配中心
+                if (privileges.isAllocated()) {
+                    titles.add("已分配中心");
+                }
+                //判断是否含有被驳回转案
+                if (privileges.isRejected()) {
+                    titles.add("被驳回转案");
+                }
+                //判断是否含有未分配导师
+                if (privileges.isUnassigned()) {
+                    titles.add("未分配导师");
+                }
+                //判断是否含有分配导师
+                if (privileges.isAssigned()) {
+                    titles.add("已分配导师");
+                }
+            }
+        }
         for (int i = 0; i < titles.size(); i++) {
-            eventIds.add(titles.get(i));
             StateInfo stateInfo = new StateInfo();
             stateInfo.setTitle(titles.get(i));
             stateInfo.setType(titles.get(i));
@@ -80,7 +106,7 @@ public class TransferManagerFragment extends UIFragment {
             bundle.putParcelable("title", stateInfo);
             fragments.add(TransferMangerListFragment.getInstance(bundle));
         }
-        pagerNews.setAdapter(new XxdTransferPagerFragmentAdapter(getChildFragmentManager(), titles, eventIds, fragments));
+        pagerNews.setAdapter(new XxdTransferPagerFragmentAdapter(getChildFragmentManager(), titles, fragments));
         pagerNews.setOffscreenPageLimit(4);
         PagerSlidingTabStrip newTabs = rootView.findViewById(R.id.tabs_news);
         newTabs.setViewPager(pagerNews);
@@ -99,7 +125,7 @@ public class TransferManagerFragment extends UIFragment {
         int i = v.getId();
         if (i == R.id.topdefault_rightmenu) {
             Intent toSearch = new Intent(mActivity, CommonSearchActivity.class);
-            toSearch.putExtra(ParameterUtils.TRANSITION_FLAG, ParameterUtils.NEWS_FLAG);
+            toSearch.putExtra(ParameterUtils.TRANSITION_FLAG, ParameterUtils.TRANSFER_MANAGER);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 startActivity(toSearch, ActivityOptionsCompat.makeSceneTransitionAnimation(mActivity,
                     topRightMenu, "btn_tr").toBundle());

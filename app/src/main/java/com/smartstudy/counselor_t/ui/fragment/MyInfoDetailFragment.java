@@ -1,4 +1,4 @@
-package com.smartstudy.counselor_t.ui.activity;
+package com.smartstudy.counselor_t.ui.fragment;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -38,18 +38,21 @@ import com.alibaba.sdk.android.oss.OSSClient;
 import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+
 import study.smart.baselib.entity.TeacherInfo;
 import study.smart.baselib.entity.TokenBean;
 import study.smart.baselib.ui.activity.LoginActivity;
 import study.smart.baselib.ui.activity.SelectMyPhotoActivity;
 import study.smart.baselib.ui.activity.SelectMyVideoActivity;
 import study.smart.baselib.ui.base.BaseActivity;
+import study.smart.baselib.ui.base.UIFragment;
 import study.smart.baselib.utils.DensityUtils;
 import study.smart.baselib.utils.DisplayImageUtils;
 import study.smart.baselib.utils.ParameterUtils;
 import study.smart.baselib.utils.SPCacheUtils;
 import study.smart.baselib.utils.ToastUtils;
 import study.smart.baselib.utils.Utils;
+
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.IdNameInfo;
 import com.smartstudy.counselor_t.entity.ProgressItem;
@@ -58,8 +61,13 @@ import com.smartstudy.counselor_t.mvp.contract.MyInfoDetailContract;
 import com.smartstudy.counselor_t.mvp.presenter.MyInfoDetailPresenter;
 import com.smartstudy.counselor_t.ossServer.OssService;
 import com.smartstudy.counselor_t.ossServer.STSGetter;
+
 import study.smart.baselib.ui.widget.dialog.DialogCreator;
 import study.smart.baselib.ui.widget.TagsLayout;
+
+import com.smartstudy.counselor_t.ui.MainActivity;
+import com.smartstudy.counselor_t.ui.activity.AddGoodDetailActivity;
+import com.smartstudy.counselor_t.ui.activity.ChooseListActivity;
 import com.smartstudy.counselor_t.util.CheckUtil;
 import com.smartstudy.counselor_t.util.FastBlur;
 import com.smartstudy.counselor_t.util.MediaUtils;
@@ -67,6 +75,8 @@ import com.smartstudy.medialib.ijkplayer.listener.OnPlayComplete;
 import com.smartstudy.medialib.ijkplayer.listener.OnToggleFullScreenListener;
 import com.smartstudy.medialib.ijkplayer.widget.PlayStateParams;
 import com.smartstudy.medialib.ijkplayer.widget.PlayerView;
+
+import net.sourceforge.zbar.Image;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -86,7 +96,7 @@ import io.rong.imkit.RongIM;
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */
-public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Presenter> implements MyInfoDetailContract.View, OssService.picResultCallback {
+public class MyInfoDetailFragment extends UIFragment<MyInfoDetailContract.Presenter> implements MyInfoDetailContract.View, OssService.picResultCallback {
     private ImageView ivAvatar;
     private EditText tvNickName;
     private EditText tvWorkName;
@@ -123,58 +133,67 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
     private boolean isLoading;
     private String videoPath = "";
     private OssService ossService;
+    private MainActivity mainActivity;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_info);
-        EventBus.getDefault().register(this);
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mainActivity = (MainActivity) activity;
     }
 
     @Override
-    public void initView() {
-        setLeftImgVisible(View.VISIBLE);
-        setTopdefaultRighttextColor("#078CF1");
-        setTitle("个人信息");
-        setTopdefaultRighttextVisible(View.VISIBLE);
-        setRightTxt("保存");
-        setTopLineVisibility(View.VISIBLE);
-        topdefaultRighttext.setTextColor(Color.parseColor("#E4E5E6"));
-        flAvatar = findViewById(R.id.fl_avatar);
-        ivAvatar = findViewById(R.id.iv_avatar);
-        tvNickName = findViewById(R.id.tv_nick_name);
-        tvWorkName = findViewById(R.id.tv_work_name);
-        tvWorkExperience = findViewById(R.id.tv_work_experience);
-        tvGraduatedSchool = findViewById(R.id.tv_graduated_school);
-        tvName = findViewById(R.id.tv_name);
-        tvEmail = findViewById(R.id.tv_email);
-        llCity = findViewById(R.id.ll_city);
-        tvAddGood = findViewById(R.id.tv_add_good);
-        tvCity = findViewById(R.id.tv_work_city);
-        llGoodBusiness = findViewById(R.id.ll_good_business);
-        tvLoginOut = findViewById(R.id.tv_login_out);
-        tlyTags = findViewById(R.id.tly_tags);
-        ivVideoInfo = findViewById(R.id.iv_video_info);
-        ivUpLoad = findViewById(R.id.iv_upLoad);
-        rslInfo = findViewById(R.id.sv_info);
-        llUpload = findViewById(R.id.ll_upload);
-        llProgress = findViewById(R.id.ll_progress);
-        pb = findViewById(R.id.pb_qa);
-        tvPersonalProfile = findViewById(R.id.tv_personal_profile);
+    public void onFirstUserVisible() {
+        super.onFirstUserVisible();
         presenter.getOptions();
         if (presenter != null) {
             presenter.getMyInfo();
         }
+    }
+
+    @Override
+    protected View getLayoutView() {
+        EventBus.getDefault().register(this);
+        return mActivity.getLayoutInflater().inflate(R.layout.activity_my_info, null);
+    }
+
+    @Override
+    protected void initView(View rootView) {
+        mainActivity.setLeftImgVisible(View.GONE);
+        mainActivity.setTitle("个人信息");
+        mainActivity.setRightTxt("保存");
+        mainActivity.getTopdefaultRighttext().setVisibility(View.VISIBLE);
+        mainActivity.setTopdefaultRighttextColor("#E4E5E6");
+        mainActivity.setTopLineVisibility(View.VISIBLE);
+        flAvatar = rootView.findViewById(R.id.fl_avatar);
+        ivAvatar = rootView.findViewById(R.id.iv_avatar);
+        tvNickName = rootView.findViewById(R.id.tv_nick_name);
+        tvWorkName = rootView.findViewById(R.id.tv_work_name);
+        tvWorkExperience = rootView.findViewById(R.id.tv_work_experience);
+        tvGraduatedSchool = rootView.findViewById(R.id.tv_graduated_school);
+        tvName = rootView.findViewById(R.id.tv_name);
+        tvEmail = rootView.findViewById(R.id.tv_email);
+        llCity = rootView.findViewById(R.id.ll_city);
+        tvAddGood = rootView.findViewById(R.id.tv_add_good);
+        tvCity = rootView.findViewById(R.id.tv_work_city);
+        llGoodBusiness = rootView.findViewById(R.id.ll_good_business);
+        tvLoginOut = rootView.findViewById(R.id.tv_login_out);
+        tlyTags = rootView.findViewById(R.id.tly_tags);
+        ivVideoInfo = rootView.findViewById(R.id.iv_video_info);
+        ivUpLoad = rootView.findViewById(R.id.iv_upLoad);
+        rslInfo = rootView.findViewById(R.id.sv_info);
+        llUpload = rootView.findViewById(R.id.ll_upload);
+        llProgress = rootView.findViewById(R.id.ll_progress);
+        pb = rootView.findViewById(R.id.pb_qa);
+        tvPersonalProfile = rootView.findViewById(R.id.tv_personal_profile);
+
         initHandler();
         initPlayer();
     }
 
     @Override
     public void initEvent() {
-        topdefaultLeftbutton.setOnClickListener(this);
-        topdefaultRighttext.setOnClickListener(this);
-        topdefaultRighttext.setClickable(false);
-
+        mainActivity.getTopdefaultRighttext().setOnClickListener(this);
+        mainActivity.getTopdefaultRighttext().setClickable(false);
         llCity.setOnClickListener(this);
         llGoodBusiness.setOnClickListener(this);
         ivAvatar.setOnClickListener(this);
@@ -257,8 +276,8 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
     }
 
     private void initPlayer() {
-        player = new PlayerView(this, rootView);
-        findViewById(R.id.app_video_menu).setVisibility(View.GONE);
+        player = new PlayerView(mActivity, rootView);
+        rootView.findViewById(R.id.app_video_menu).setVisibility(View.GONE);
         if (player != null) {
             player.setOnPlayComplete(new OnPlayComplete() {
                 @Override
@@ -270,11 +289,11 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
             player.setOnToggleFullScreenListener(new OnToggleFullScreenListener() {
                 @Override
                 public void onLandScape() {
-                    setHeadVisible(View.GONE);
+                    mainActivity.getHeadView().setVisibility(View.GONE);
                     flAvatar.setVisibility(View.GONE);
                     llUpload.setVisibility(View.GONE);
                     tvAddGood.setVisibility(View.GONE);
-                    setTopLineVisibility(View.GONE);
+                    rootView.findViewById(R.id.top_line).setVisibility(View.GONE);
                     player.forbidScroll(false).hideBottomBar(false).hideCenterPlayer(false)
                         .hideTopBar(false).setHideAllUI(false);
                     params.width = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -289,11 +308,11 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
 
                 @Override
                 public void onPortrait() {
-                    setHeadVisible(View.VISIBLE);
+                    mainActivity.getHeadView().setVisibility(View.VISIBLE);
                     flAvatar.setVisibility(View.VISIBLE);
                     llUpload.setVisibility(View.VISIBLE);
                     tvAddGood.setVisibility(View.VISIBLE);
-                    setTopLineVisibility(View.VISIBLE);
+                    rootView.findViewById(R.id.top_line).setVisibility(View.VISIBLE);
                     player.forbidScroll(true).hideBottomBar(true).hideCenterPlayer(true)
                         .hideTopBar(true).setHideAllUI(true);
                     params.width = DensityUtils.dip2px(45);
@@ -322,23 +341,10 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        if (player != null && player.onBackPressed()) {
-            return;
-        }
-        super.onBackPressed();
-    }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.topdefault_leftbutton:
-                if (player != null && player.onBackPressed()) {
-                    return;
-                }
-                finish();
-                break;
             case R.id.topdefault_righttext:
                 if (!CheckUtil.checkEmail(getEmail())) {
                     ToastUtils.shortToast("邮箱不合法");
@@ -356,10 +362,10 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                 showNormalDialog();
                 break;
             case R.id.tv_add_good:
-                startActivity(new Intent(this, AddGoodDetailActivity.class));
+                startActivity(new Intent(mActivity, AddGoodDetailActivity.class));
                 break;
             case R.id.ll_city:
-                Intent toCity = new Intent(this, ChooseListActivity.class);
+                Intent toCity = new Intent(mActivity, ChooseListActivity.class);
                 toCity.putExtra("value", tvCity.getText());
                 toCity.putParcelableArrayListExtra("list", (ArrayList<? extends Parcelable>) workIdNameInfos);
                 toCity.putExtra("ischange", false);
@@ -368,7 +374,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                 startActivityForResult(toCity, ParameterUtils.REQUEST_CODE_EDIT_MYINFO);
                 break;
             case R.id.ll_good_business:
-                Intent toBuss = new Intent(this, ChooseListActivity.class);
+                Intent toBuss = new Intent(mActivity, ChooseListActivity.class);
                 if (tlyTags.getTabValue() != null) {
                     toBuss.putExtra("value", tlyTags.getTabValue());
                 }
@@ -379,30 +385,30 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                 startActivityForResult(toBuss, ParameterUtils.REQUEST_CODE_EDIT_MYINFO);
                 break;
             case R.id.iv_avatar:
-                Intent intent = new Intent(this, SelectMyPhotoActivity.class);
+                Intent intent = new Intent(mActivity, SelectMyPhotoActivity.class);
                 intent.putExtra("singlePic", true);
                 startActivityForResult(intent, ParameterUtils.REQUEST_CODE_CHANGEPHOTO);
                 break;
             case R.id.iv_video_info:
-                DialogCreator.createVedioDialog(this, new DialogInterface.OnClickListener() {
+                DialogCreator.createVedioDialog(mActivity, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        DialogCreator.createVedioClaimDialog(MyInfoDetailActivity.this, "video_info");
+                        DialogCreator.createVedioClaimDialog(mActivity, "video_info");
                     }
                 });
                 break;
             case R.id.iv_upLoad:
                 String key = SPCacheUtils.get("imUserId", "").toString() + "ISFIRST";
                 if ((boolean) SPCacheUtils.get(key, false)) {
-                    Intent toVideo = new Intent(this, SelectMyVideoActivity.class);
+                    Intent toVideo = new Intent(mActivity, SelectMyVideoActivity.class);
                     toVideo.putExtra("singlePic", true);
                     startActivityForResult(toVideo, ParameterUtils.REQUEST_VIDEO);
                 } else {
                     SPCacheUtils.put(key, true);
-                    DialogCreator.createVedioDialog(this, new DialogInterface.OnClickListener() {
+                    DialogCreator.createVedioDialog(mActivity, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            DialogCreator.createVedioClaimDialog(MyInfoDetailActivity.this, "upLoad");
+                            DialogCreator.createVedioClaimDialog(mActivity, "upLoad");
                         }
                     });
                 }
@@ -419,13 +425,13 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
 
 
     public void setPostClick() {
-        topdefaultRighttext.setClickable(true);
-        topdefaultRighttext.setTextColor(Color.parseColor("#078CF1"));
+        mainActivity.getTopdefaultRighttext().setClickable(true);
+        mainActivity.getTopdefaultRighttext().setTextColor(Color.parseColor("#078CF1"));
     }
 
     public void setPostUnClick() {
-        topdefaultRighttext.setClickable(false);
-        topdefaultRighttext.setTextColor(Color.parseColor("#E4E5E6"));
+        mainActivity.getTopdefaultRighttext().setClickable(false);
+        mainActivity.getTopdefaultRighttext().setTextColor(Color.parseColor("#E4E5E6"));
     }
 
     @Override
@@ -434,7 +440,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
             this.teacherInfo = teacherInfo;
             videoUrl = teacherInfo.getVideo();
             if (!TextUtils.isEmpty(teacherInfo.getAvatar()) && photoFile == null) {
-                DisplayImageUtils.displayImage(this, teacherInfo.getAvatar(), new SimpleTarget<Bitmap>() {
+                DisplayImageUtils.displayImage(mActivity, teacherInfo.getAvatar(), new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(@NonNull final Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                         if (TextUtils.isEmpty(videoUrl)) {
@@ -469,7 +475,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                         .setForbidDoulbeUp(false)
                         .autoPlay(videoUrl)
                         .hideCenterPlayer(true);
-                    this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                    mActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 }
             }
 
@@ -484,7 +490,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
             if (!TextUtils.isEmpty(teacherInfo.getAdeptWorksKey())) {
                 List<String> list = Arrays.asList(getBussinessValue(teacherInfo.getAdeptWorksKey()).split(","));
                 tlyTags.setBackGroup(R.drawable.bg_good_bussienss_border);
-                tlyTags.createTab(this, list);
+                tlyTags.createTab(mActivity, list);
             }
             tvPersonalProfile.setText(teacherInfo.getIntroduction());
         }
@@ -502,12 +508,14 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         SPCacheUtils.put("name", ParameterUtils.CACHE_NULL);
         SPCacheUtils.put("avatar", ParameterUtils.CACHE_NULL);
         SPCacheUtils.put("ticket", ParameterUtils.CACHE_NULL);
+        SPCacheUtils.put("smart_ticket", ParameterUtils.CACHE_NULL);
+        SPCacheUtils.put("privileges", ParameterUtils.CACHE_NULL);
         SPCacheUtils.put("orgId", ParameterUtils.CACHE_NULL);
         SPCacheUtils.put("title", ParameterUtils.CACHE_NULL);
         SPCacheUtils.put("imToken", "");
         SPCacheUtils.put("imUserId", "");
-        Utils.removeCookie(this);
-        Intent to_login = new Intent(this, LoginActivity.class);
+        Utils.removeCookie(mActivity);
+        Intent to_login = new Intent(mActivity, LoginActivity.class);
         to_login.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
             Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(to_login);
@@ -529,7 +537,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
             if (!TextUtils.isEmpty(teacherInfo.getAdeptWorksKey())) {
                 List<String> list = Arrays.asList(getBussinessValue(teacherInfo.getAdeptWorksKey()).split(","));
                 tlyTags.setBackGroup(R.drawable.bg_good_bussienss_border);
-                tlyTags.createTab(this, list);
+                tlyTags.createTab(mActivity, list);
             }
         }
     }
@@ -537,7 +545,6 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
     @Override
     public void updateMyInfoSuccess() {
         ToastUtils.shortToast("更新成功");
-        finish();
     }
 
 
@@ -574,7 +581,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         if (player != null) {
             player.onResume();
@@ -592,7 +599,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
             player.onPause();
         }
         /**恢复系统其它媒体的状态*/
-        MediaUtils.muteAudioFocus(this, true);
+        MediaUtils.muteAudioFocus(mActivity, true);
     }
 
     @Override
@@ -617,12 +624,12 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         switch (requestCode) {
             case ParameterUtils.REQUEST_CODE_CHANGEPHOTO:
                 final String temppath = data.getStringExtra("path");
-                DisplayImageUtils.displayImageFile(this.getApplicationContext(), temppath, new SimpleTarget<File>(100, 100) {
+                DisplayImageUtils.displayImageFile(mActivity.getApplicationContext(), temppath, new SimpleTarget<File>(100, 100) {
                     @Override
                     public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
                         photoFile = resource;
                         // 如果没有视频，则要同步改变封面
-                        DisplayImageUtils.displayPersonRes(MyInfoDetailActivity.this, resource, ivAvatar);
+                        DisplayImageUtils.displayPersonRes(mActivity, resource, ivAvatar);
                         if (TextUtils.isEmpty(videoUrl)) {
                             ivThumb.setImageBitmap(BitmapFactory.decodeFile(resource.getAbsolutePath()));
                             ViewTreeObserver vto = ivThumb.getViewTreeObserver();
@@ -675,7 +682,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
                     }
                     List<String> list = Arrays.asList(getBussinessValue(bussinessValue).split(","));
                     tlyTags.setBackGroup(R.drawable.bg_good_bussienss_border);
-                    tlyTags.createTab(this, list);
+                    tlyTags.createTab(mActivity, list);
                 }
                 break;
             case ParameterUtils.REQUEST_VIDEO:
@@ -721,7 +728,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
 
     private void showNormalDialog() {
         final AlertDialog.Builder normalDialog =
-            new AlertDialog.Builder(this);
+            new AlertDialog.Builder(mActivity);
         normalDialog.setMessage("确定要退出登录吗?");
         normalDialog.setPositiveButton("确定",
             new DialogInterface.OnClickListener() {
@@ -832,7 +839,7 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         conf.setSocketTimeout(15 * 1000); // socket超时，默认15秒
         conf.setMaxConcurrentRequest(5); // 最大并发请求书，默认5个
         conf.setMaxErrorRetry(2); // 失败后最大重试次数，默认2次
-        OSS oss = new OSSClient(getApplicationContext(), endpoint, credentialProvider, conf);
+        OSS oss = new OSSClient(mActivity.getApplicationContext(), endpoint, credentialProvider, conf);
         return new OssService(oss, bucket, this);
 
     }
@@ -866,5 +873,10 @@ public class MyInfoDetailActivity extends BaseActivity<MyInfoDetailContract.Pres
         }
     }
 
+
+    @Override
+    public void showTip(String message) {
+        ToastUtils.shortToast(message);
+    }
 }
 

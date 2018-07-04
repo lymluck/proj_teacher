@@ -16,7 +16,6 @@ import android.widget.ImageView;
 
 import com.smartstudy.annotation.Route;
 import study.smart.baselib.listener.OnSendMsgDialogClickListener;
-import study.smart.baselib.ui.activity.CommonSearchActivity;
 import study.smart.baselib.ui.base.BaseActivity;
 import study.smart.baselib.utils.DisplayImageUtils;
 import study.smart.baselib.utils.ParameterUtils;
@@ -30,6 +29,7 @@ import study.smart.baselib.ui.adapter.MultiItemTypeAdapter;
 import study.smart.baselib.ui.adapter.base.ViewHolder;
 import study.smart.baselib.ui.adapter.wrapper.HeaderAndFooterWrapper;
 import study.smart.baselib.ui.widget.dialog.DialogCreator;
+import study.smart.transfer_management.ui.activity.CommonSearchActivity;
 
 import java.util.ArrayList;
 import java.util.List;

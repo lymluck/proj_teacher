@@ -8,20 +8,30 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONObject;
+
+import java.util.List;
+
+import io.reactivex.disposables.Disposable;
 import study.smart.baselib.R;
+import study.smart.baselib.entity.DataListInfo;
+import study.smart.baselib.entity.TransferManagerEntity;
+import study.smart.baselib.listener.ObserverListener;
 import study.smart.baselib.mvp.base.BasePresenterImpl;
-import study.smart.baselib.utils.Utils;
 import study.smart.baselib.mvp.contract.CommonSearchContract;
+import study.smart.baselib.mvp.model.CommonSearchModel;
+import study.smart.baselib.utils.Utils;
 
 /**
  * Created by louis on 2017/3/4.
  */
 
 public class CommonSearchPresenter extends BasePresenterImpl<CommonSearchContract.View> implements CommonSearchContract.Presenter {
-
+    private CommonSearchModel commonSearchModel;
 
     public CommonSearchPresenter(CommonSearchContract.View view) {
         super(view);
+        commonSearchModel = new CommonSearchModel();
     }
 
     @Override
@@ -30,7 +40,30 @@ public class CommonSearchPresenter extends BasePresenterImpl<CommonSearchContrac
     }
 
     @Override
-    public void setEmptyView(LayoutInflater mInflater, final Context context, ViewGroup parent, String from) {
+    public void getTransferManagerList(String keyword, int page, final int request_state) {
+        commonSearchModel.searTransferManagerList(keyword, page, new ObserverListener<DataListInfo>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                addDisposable(disposable);
+            }
+
+            @Override
+            public void onNext(DataListInfo dataListInfo) {
+                List<TransferManagerEntity> transferManagerEntities = JSONObject.parseArray(dataListInfo.getData(), TransferManagerEntity.class);
+                if (transferManagerEntities != null) {
+                    view.showTransferManagerList(transferManagerEntities, request_state);
+                }
+            }
+
+            @Override
+            public void onError(String msg) {
+                view.showTip(msg);
+            }
+        });
+    }
+
+    @Override
+    public void setEmptyView(LayoutInflater mInflater, final Context context, ViewGroup parent) {
         View emptyView = mInflater.inflate(R.layout.layout_empty, parent, false);
         emptyView.findViewById(R.id.iv_loading).setVisibility(View.GONE);
         emptyView.findViewById(R.id.llyt_err).setVisibility(View.VISIBLE);
@@ -47,5 +80,11 @@ public class CommonSearchPresenter extends BasePresenterImpl<CommonSearchContrac
         view.showEmptyView(emptyView);
         mInflater = null;
         parent = null;
+    }
+
+    @Override
+    public void detach() {
+        super.detach();
+        commonSearchModel = null;
     }
 }

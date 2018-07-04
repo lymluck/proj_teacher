@@ -65,4 +65,10 @@
         <item name="android:paddingRight">@dimen/simple_item_paddingr</item>
         <item name="android:gravity">center_vertical</item>
     </style>
+
+    <style name="LoadingDialog" parent="@android:style/Theme.Holo.Dialog.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
 </resources>
