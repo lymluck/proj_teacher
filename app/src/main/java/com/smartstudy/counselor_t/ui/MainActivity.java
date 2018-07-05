@@ -4,11 +4,13 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -80,6 +82,10 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
     private RelativeLayout answerRLayout;
     private RelativeLayout meRLayout;
     private String mLastVersion;
+    private MyAllQaFragment myAllQaFragment;
+    private MyInfoDetailFragment myInfoDetailFragment;
+    private TransferManagerFragment transferManagerFragment;
+    private View layoutBottom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +95,7 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
         setHeadVisible(View.GONE);
     }
 
+
     @Override
     public MainActivityContract.Presenter initPresenter() {
         return new MainActivityPresenter(this);
@@ -97,25 +104,36 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
     @Override
     public void initView() {
         chatRLayout = findViewById(R.id.xxd_chat);
+        layoutBottom = findViewById(R.id.layout_bottom);
         //权限判断，转案管理是否显示
+        if (myAllQaFragment == null) {
+            myAllQaFragment = new MyAllQaFragment();
+        }
+        if (transferManagerFragment == null) {
+            transferManagerFragment = new TransferManagerFragment();
+        }
+
+        if (myInfoDetailFragment == null) {
+            myInfoDetailFragment = new MyInfoDetailFragment();
+        }
         String transferPerssion = (String) SPCacheUtils.get("privileges", "");
-        if (TextUtils.isEmpty(transferPerssion)) {
+        if (TextUtils.isEmpty(transferPerssion) || ParameterUtils.CACHE_NULL.equals(transferPerssion)) {
             //没有权限，不加载转案模块
             chatRLayout.setVisibility(View.GONE);
-            mFragment.add(new QaFragment());
-            mFragment.add(new QaFragment());
+            mFragment.add(myAllQaFragment);
+            mFragment.add(myInfoDetailFragment);
         } else {
             //判断是否有权限
             Privileges privileges = JSONObject.parseObject(transferPerssion, Privileges.class);
             if (privileges.isTransferCase()) {
                 chatRLayout.setVisibility(View.VISIBLE);
-                mFragment.add(new TransferManagerFragment());
-                mFragment.add(new MyAllQaFragment());
-                mFragment.add(new MyInfoDetailFragment());
+                mFragment.add(transferManagerFragment);
+                mFragment.add(myAllQaFragment);
+                mFragment.add(myInfoDetailFragment);
             } else {
                 chatRLayout.setVisibility(View.GONE);
-                mFragment.add(new MyAllQaFragment());
-                mFragment.add(new MyInfoDetailFragment());
+                mFragment.add(myAllQaFragment);
+                mFragment.add(myInfoDetailFragment);
             }
         }
         answerRLayout = findViewById(R.id.xxd_answer_list);
@@ -193,14 +211,23 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
             case R.id.xxd_chat:
                 mViewPager.setCurrentItem(0, false);
                 setHeadVisible(View.GONE);
+                if (myInfoDetailFragment != null) {
+                    myInfoDetailFragment.stopPlay();
+                }
                 break;
             case R.id.xxd_answer_list:
                 mViewPager.setCurrentItem(mFragment.size() - 2, false);
                 setHeadVisible(View.GONE);
+                if (myInfoDetailFragment != null) {
+                    myInfoDetailFragment.stopPlay();
+                }
                 break;
             case R.id.xxd_me:
                 mViewPager.setCurrentItem(mFragment.size() - 1, false);
                 setHeadVisible(View.VISIBLE);
+                if (myInfoDetailFragment != null) {
+                    myInfoDetailFragment.startPlay();
+                }
                 break;
             default:
                 break;
@@ -454,4 +481,14 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
         startActivity(to_login);
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
+
+    public void setBottomVisibility(int visibility) {
+        if (layoutBottom != null) {
+            layoutBottom.setVisibility(visibility);
+        }
+    }
 }

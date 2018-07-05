@@ -2,16 +2,20 @@ package com.smartstudy.counselor_t.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import study.smart.baselib.entity.TeacherInfo;
 import study.smart.baselib.ui.base.BaseActivity;
+import study.smart.baselib.utils.DensityUtils;
 import study.smart.baselib.utils.KeyBoardUtils;
 import study.smart.baselib.utils.ParameterUtils;
 import study.smart.baselib.utils.ToastUtils;
+
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.mvp.contract.CommonEditNameContract;
 import com.smartstudy.counselor_t.mvp.presenter.CommonEditNamePresenter;
@@ -39,10 +43,23 @@ public class CommonEditNameActivity extends BaseActivity<CommonEditNameContract.
         etname.requestFocus();
         KeyBoardUtils.openKeybord(etname, this);
         flag = data.getStringExtra(ParameterUtils.TRANSITION_FLAG);
-        if (flag.equals(ParameterUtils.EDIT_WORK_EXPERIENCE)) {
+        if (ParameterUtils.EDIT_WORK_EXPERIENCE.equals(flag)) {
             etname.setInputType(InputType.TYPE_CLASS_NUMBER);
         } else {
             etname.setInputType(InputType.TYPE_CLASS_TEXT);
+        }
+        if (ParameterUtils.EDIT_REMARK.equals(flag)) {
+            LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) etname.getLayoutParams(); //取控件textView当前的布局参数 linearParams.height = 20;// 控件的高强制设成20
+            linearParams.width = LinearLayout.LayoutParams.MATCH_PARENT;
+            linearParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            etname.setPadding(DensityUtils.dip2px(20), DensityUtils.dip2px(16), DensityUtils.dip2px(20), DensityUtils.dip2px(16));
+            etname.setLayoutParams(linearParams); //使设置好的布局参数应用到控件
+            etname.setMaxLines(200);
+            etname.setSingleLine(false);
+            etname.setSelection(etname.getText().toString().length());
+        } else {
+            InputFilter[] filters = {new InputFilter.LengthFilter(30)};
+            etname.setFilters(filters);
         }
     }
 
@@ -90,8 +107,9 @@ public class CommonEditNameActivity extends BaseActivity<CommonEditNameContract.
                     teacherInfo.setRealName(content);
                 } else if (flag.equals(ParameterUtils.EDIT_EMAIL)) {
                     teacherInfo.setEmail(content);
+                } else {
+                    teacherInfo.setIntroduction(content);
                 }
-
                 presenter.updateMyInfo(teacherInfo);
                 break;
         }

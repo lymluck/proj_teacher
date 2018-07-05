@@ -19,6 +19,7 @@ import android.support.v4.widget.NestedScrollView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,6 +69,7 @@ import study.smart.baselib.ui.widget.TagsLayout;
 import com.smartstudy.counselor_t.ui.MainActivity;
 import com.smartstudy.counselor_t.ui.activity.AddGoodDetailActivity;
 import com.smartstudy.counselor_t.ui.activity.ChooseListActivity;
+import com.smartstudy.counselor_t.ui.activity.CommonEditNameActivity;
 import com.smartstudy.counselor_t.util.CheckUtil;
 import com.smartstudy.counselor_t.util.FastBlur;
 import com.smartstudy.counselor_t.util.MediaUtils;
@@ -98,12 +100,12 @@ import io.rong.imkit.RongIM;
  */
 public class MyInfoDetailFragment extends UIFragment<MyInfoDetailContract.Presenter> implements MyInfoDetailContract.View, OssService.picResultCallback {
     private ImageView ivAvatar;
-    private EditText tvNickName;
-    private EditText tvWorkName;
-    private EditText tvWorkExperience;
-    private EditText tvGraduatedSchool;
-    private EditText tvEmail;
-    private EditText tvName;
+    private TextView tvNickName;
+    private TextView tvWorkName;
+    private TextView tvWorkExperience;
+    private TextView tvGraduatedSchool;
+    private TextView tvEmail;
+    private TextView tvName;
     private File photoFile;
     private LinearLayout llCity;
     private TextView tvCity;
@@ -115,7 +117,7 @@ public class MyInfoDetailFragment extends UIFragment<MyInfoDetailContract.Presen
     private TextView tvLoginOut;
     private List<IdNameInfo> workIdNameInfos = new ArrayList<>();
     private List<IdNameInfo> adeptIdNameInfos = new ArrayList<>();
-    private EditText tvPersonalProfile;
+    private TextView tvPersonalProfile;
     private TextView tvAddGood;
     private ImageView ivVideoInfo;
     private ImageView ivUpLoad;
@@ -134,6 +136,13 @@ public class MyInfoDetailFragment extends UIFragment<MyInfoDetailContract.Presen
     private String videoPath = "";
     private OssService ossService;
     private MainActivity mainActivity;
+    private LinearLayout llName;
+    private LinearLayout llNickName;
+    private LinearLayout llWorkName;
+    private LinearLayout llWorkExperience;
+    private LinearLayout llGraduatedSchool;
+    private LinearLayout llEmail;
+    private LinearLayout llPersonalProfile;
 
     @Override
     public void onAttach(Activity activity) {
@@ -160,9 +169,6 @@ public class MyInfoDetailFragment extends UIFragment<MyInfoDetailContract.Presen
     protected void initView(View rootView) {
         mainActivity.setLeftImgVisible(View.GONE);
         mainActivity.setTitle("个人信息");
-        mainActivity.setRightTxt("保存");
-        mainActivity.getTopdefaultRighttext().setVisibility(View.VISIBLE);
-        mainActivity.setTopdefaultRighttextColor("#E4E5E6");
         mainActivity.setTopLineVisibility(View.VISIBLE);
         flAvatar = rootView.findViewById(R.id.fl_avatar);
         ivAvatar = rootView.findViewById(R.id.iv_avatar);
@@ -182,18 +188,27 @@ public class MyInfoDetailFragment extends UIFragment<MyInfoDetailContract.Presen
         ivUpLoad = rootView.findViewById(R.id.iv_upLoad);
         rslInfo = rootView.findViewById(R.id.sv_info);
         llUpload = rootView.findViewById(R.id.ll_upload);
+        llName = rootView.findViewById(R.id.ll_name);
         llProgress = rootView.findViewById(R.id.ll_progress);
         pb = rootView.findViewById(R.id.pb_qa);
+        llNickName = rootView.findViewById(R.id.ll_nick_name);
         tvPersonalProfile = rootView.findViewById(R.id.tv_personal_profile);
-
+        llWorkName = rootView.findViewById(R.id.ll_work_name);
+        llWorkExperience = rootView.findViewById(R.id.ll_work_experience);
+        llGraduatedSchool = rootView.findViewById(R.id.ll_graduated_school);
+        llEmail = rootView.findViewById(R.id.ll_email);
+        llPersonalProfile = rootView.findViewById(R.id.ll_personal_profile);
         initHandler();
         initPlayer();
     }
 
     @Override
     public void initEvent() {
-        mainActivity.getTopdefaultRighttext().setOnClickListener(this);
-        mainActivity.getTopdefaultRighttext().setClickable(false);
+        String smartTicket = (String) SPCacheUtils.get("smart_ticket", "");
+        if (TextUtils.isEmpty(smartTicket)) {
+            llName.setOnClickListener(this);
+            llEmail.setOnClickListener(this);
+        }
         llCity.setOnClickListener(this);
         llGoodBusiness.setOnClickListener(this);
         ivAvatar.setOnClickListener(this);
@@ -201,27 +216,12 @@ public class MyInfoDetailFragment extends UIFragment<MyInfoDetailContract.Presen
         tvAddGood.setOnClickListener(this);
         ivVideoInfo.setOnClickListener(this);
         ivUpLoad.setOnClickListener(this);
-        setEditTextTextWatch(tvNickName);
-        setEditTextTextWatch(tvWorkName);
-        setEditTextTextWatch(tvWorkExperience);
-        setEditTextTextWatch(tvGraduatedSchool);
-        setEditTextTextWatch(tvEmail);
-        setEditTextTextWatch(tvName);
-        setEditTextTextWatch(tvPersonalProfile);
-        handleProfile();
+        llWorkName.setOnClickListener(this);
+        llNickName.setOnClickListener(this);
+        llWorkExperience.setOnClickListener(this);
+        llGraduatedSchool.setOnClickListener(this);
+        llPersonalProfile.setOnClickListener(this);
         handleAvatar();
-    }
-
-    private void handleProfile() {
-        rslInfo.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (tvPersonalProfile.isFocused()) {
-                    tvPersonalProfile.setSelection(tvPersonalProfile.getText().toString().length());
-                }
-                return false;
-            }
-        });
     }
 
     private void handleAvatar() {
@@ -290,10 +290,11 @@ public class MyInfoDetailFragment extends UIFragment<MyInfoDetailContract.Presen
                 @Override
                 public void onLandScape() {
                     mainActivity.getHeadView().setVisibility(View.GONE);
+                    mainActivity.setBottomVisibility(View.GONE);
                     flAvatar.setVisibility(View.GONE);
                     llUpload.setVisibility(View.GONE);
                     tvAddGood.setVisibility(View.GONE);
-                    rootView.findViewById(R.id.top_line).setVisibility(View.GONE);
+                    mainActivity.setTopLineVisibility(View.GONE);
                     player.forbidScroll(false).hideBottomBar(false).hideCenterPlayer(false)
                         .hideTopBar(false).setHideAllUI(false);
                     params.width = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -309,10 +310,11 @@ public class MyInfoDetailFragment extends UIFragment<MyInfoDetailContract.Presen
                 @Override
                 public void onPortrait() {
                     mainActivity.getHeadView().setVisibility(View.VISIBLE);
+                    mainActivity.setBottomVisibility(View.VISIBLE);
                     flAvatar.setVisibility(View.VISIBLE);
                     llUpload.setVisibility(View.VISIBLE);
                     tvAddGood.setVisibility(View.VISIBLE);
-                    rootView.findViewById(R.id.top_line).setVisibility(View.VISIBLE);
+                    mainActivity.setTopLineVisibility(View.VISIBLE);
                     player.forbidScroll(true).hideBottomBar(true).hideCenterPlayer(true)
                         .hideTopBar(true).setHideAllUI(true);
                     params.width = DensityUtils.dip2px(45);
@@ -357,7 +359,56 @@ public class MyInfoDetailFragment extends UIFragment<MyInfoDetailContract.Presen
                     ToastUtils.shortToast("信息不能为空");
                 }
                 break;
+            case R.id.ll_name:
+                Intent toRealName = new Intent(mActivity, CommonEditNameActivity.class);
+                toRealName.putExtra("value", getRealName());
+                toRealName.putExtra(ParameterUtils.TRANSITION_FLAG, ParameterUtils.EDIT_REAL_NAME);
+                toRealName.putExtra("title", "修改真实姓名");
+                startActivityForResult(toRealName, ParameterUtils.REQUEST_CODE_EDIT_MYINFO);
+                break;
+            case R.id.ll_personal_profile:
+                Intent toRemark = new Intent(mActivity, CommonEditNameActivity.class);
+                toRemark.putExtra("value", getIntroduction());
+                toRemark.putExtra(ParameterUtils.TRANSITION_FLAG, ParameterUtils.EDIT_REMARK);
+                toRemark.putExtra("title", "修改备注");
+                startActivityForResult(toRemark, ParameterUtils.REQUEST_CODE_EDIT_MYINFO);
+                break;
+            case R.id.ll_work_name:
+                Intent toWorkName = new Intent(mActivity, CommonEditNameActivity.class);
+                toWorkName.putExtra("value", getWorkTitle());
+                toWorkName.putExtra(ParameterUtils.TRANSITION_FLAG, ParameterUtils.EDIT_WORK_NAME);
+                toWorkName.putExtra("title", "修改工作职称");
+                startActivityForResult(toWorkName, ParameterUtils.REQUEST_CODE_EDIT_MYINFO);
+                break;
+            case R.id.ll_email:
+                Intent toEmail = new Intent(mActivity, CommonEditNameActivity.class);
+                toEmail.putExtra("value", getEmail());
+                toEmail.putExtra(ParameterUtils.TRANSITION_FLAG, ParameterUtils.EDIT_EMAIL);
+                toEmail.putExtra("title", "修改邮箱");
+                startActivityForResult(toEmail, ParameterUtils.REQUEST_CODE_EDIT_MYINFO);
+                break;
+            case R.id.ll_graduated_school:
+                Intent toGraduatedSchool = new Intent(mActivity, CommonEditNameActivity.class);
+                toGraduatedSchool.putExtra("value", getGraduatedSchool());
+                toGraduatedSchool.putExtra(ParameterUtils.TRANSITION_FLAG, ParameterUtils.EDIT_GRADUATED_SCHOOL);
+                toGraduatedSchool.putExtra("title", "修改毕业学校");
+                startActivityForResult(toGraduatedSchool, ParameterUtils.REQUEST_CODE_EDIT_MYINFO);
+                break;
+            case R.id.ll_work_experience:
+                Intent toWorkExperience = new Intent(mActivity, CommonEditNameActivity.class);
+                toWorkExperience.putExtra("value", getWorkExperience());
+                toWorkExperience.putExtra(ParameterUtils.TRANSITION_FLAG, ParameterUtils.EDIT_WORK_EXPERIENCE);
+                toWorkExperience.putExtra("title", "修改工作经验");
+                startActivityForResult(toWorkExperience, ParameterUtils.REQUEST_CODE_EDIT_MYINFO);
+                break;
 
+            case R.id.ll_nick_name:
+                Intent toNickName = new Intent(mActivity, CommonEditNameActivity.class);
+                toNickName.putExtra("value", getNickName());
+                toNickName.putExtra(ParameterUtils.TRANSITION_FLAG, ParameterUtils.EDIT_NAME);
+                toNickName.putExtra("title", "修改昵称");
+                startActivityForResult(toNickName, ParameterUtils.REQUEST_CODE_EDIT_MYINFO);
+                break;
             case R.id.tv_login_out:
                 showNormalDialog();
                 break;
@@ -421,17 +472,6 @@ public class MyInfoDetailFragment extends UIFragment<MyInfoDetailContract.Presen
     @Override
     public MyInfoDetailContract.Presenter initPresenter() {
         return new MyInfoDetailPresenter(this);
-    }
-
-
-    public void setPostClick() {
-        mainActivity.getTopdefaultRighttext().setClickable(true);
-        mainActivity.getTopdefaultRighttext().setTextColor(Color.parseColor("#078CF1"));
-    }
-
-    public void setPostUnClick() {
-        mainActivity.getTopdefaultRighttext().setClickable(false);
-        mainActivity.getTopdefaultRighttext().setTextColor(Color.parseColor("#E4E5E6"));
     }
 
     @Override
@@ -547,7 +587,6 @@ public class MyInfoDetailFragment extends UIFragment<MyInfoDetailContract.Presen
         ToastUtils.shortToast("更新成功");
     }
 
-
     @Override
     public void refreshSuccess(TokenBean tokenBean) {
         ossService = initOSS(tokenBean.getEndpoint(), tokenBean.getBucket(), tokenBean);
@@ -583,12 +622,14 @@ public class MyInfoDetailFragment extends UIFragment<MyInfoDetailContract.Presen
     @Override
     public void onResume() {
         super.onResume();
-        if (player != null) {
-            player.onResume();
-            if (!TextUtils.isEmpty(videoUrl)) {
-                player.setForbidDoulbeUp(false).startPlay();
+        if (isHidden()) {
+            if (player != null) {
+                player.onResume();
+                if (!TextUtils.isEmpty(videoUrl)) {
+                    player.setForbidDoulbeUp(false).startPlay();
+                }
+                player.hideCenterPlayer(true);
             }
-            player.hideCenterPlayer(true);
         }
     }
 
@@ -663,20 +704,30 @@ public class MyInfoDetailFragment extends UIFragment<MyInfoDetailContract.Presen
                         //监听是否发生改变
                         if (teacherInfo != null) {
                             if (!getCityValue(cityValue).equals(getCityValue(teacherInfo.getWorkingCityKey()))) {
-                                setPostClick();
-                            } else {
-                                setPostUnClick();
+                                presenter.updateMyInfo("", null, "", "", "", "", "", "", cityValue, "");
                             }
                         }
                     }
+                } else if (ParameterUtils.EDIT_REAL_NAME.equals(flag)) {
+                    tvName.setText(data.getStringExtra("new_value"));
+                } else if (ParameterUtils.EDIT_NAME.equals(flag)) {
+                    tvNickName.setText(data.getStringExtra("new_value"));
+                } else if (ParameterUtils.EDIT_WORK_NAME.equals(flag)) {
+                    tvWorkName.setText(data.getStringExtra("new_value"));
+                } else if (ParameterUtils.EDIT_WORK_EXPERIENCE.equals(flag)) {
+                    tvWorkExperience.setText(data.getStringExtra("new_value"));
+                } else if (ParameterUtils.EDIT_GRADUATED_SCHOOL.equals(flag)) {
+                    tvGraduatedSchool.setText(data.getStringExtra("new_value"));
+                } else if (ParameterUtils.EDIT_EMAIL.equals(flag)) {
+                    tvEmail.setText(data.getStringExtra("new_value"));
+                } else if (ParameterUtils.EDIT_REMARK.equals(flag)) {
+                    tvPersonalProfile.setText(data.getStringExtra("new_value"));
                 } else {
                     bussinessValue = data.getStringExtra("new_value");
                     if (!TextUtils.isEmpty(bussinessValue)) {
                         if (teacherInfo != null) {
                             if (!bussinessValue.equals(teacherInfo.getAdeptWorksKey())) {
-                                setPostClick();
-                            } else {
-                                setPostUnClick();
+                                presenter.updateMyInfo("", null, "", "", "", "", "", "", "", bussinessValue);
                             }
                         }
                     }
@@ -784,52 +835,6 @@ public class MyInfoDetailFragment extends UIFragment<MyInfoDetailContract.Presen
         return true;
     }
 
-    private void setEditTextTextWatch(final EditText editText) {
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (!TextUtils.isEmpty(editable.toString())) {
-                    if (teacherInfo != null) {
-                        String beforeValue = "";
-                        if (editText.getId() == tvNickName.getId()) {
-                            beforeValue = teacherInfo.getName();
-                        } else if (editText.getId() == tvWorkName.getId()) {
-                            beforeValue = teacherInfo.getTitle();
-                        } else if (editText.getId() == tvWorkExperience.getId()) {
-                            beforeValue = teacherInfo.getYearsOfWorking();
-                        } else if (editText.getId() == tvGraduatedSchool.getId()) {
-                            beforeValue = teacherInfo.getSchool();
-                        } else if (editText.getId() == tvEmail.getId()) {
-                            beforeValue = teacherInfo.getEmail();
-                        } else if (editText.getId() == tvName.getId()) {
-                            beforeValue = teacherInfo.getRealName();
-                        } else if (editText.getId() == tvPersonalProfile.getId()) {
-                            beforeValue = teacherInfo.getIntroduction();
-                        } else {
-                            return;
-                        }
-                        if (!editable.toString().equals(beforeValue)) {
-                            setPostClick();
-                        } else {
-                            setPostUnClick();
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-
     public OssService initOSS(String endpoint, String bucket, TokenBean tokenBean) {
         OSSCredentialProvider credentialProvider;
         credentialProvider = new STSGetter(tokenBean);
@@ -873,6 +878,22 @@ public class MyInfoDetailFragment extends UIFragment<MyInfoDetailContract.Presen
         }
     }
 
+    public void stopPlay() {
+        if (player != null) {
+            player.pausePlay();
+        }
+    }
+
+    public void startPlay() {
+        if (player != null) {
+            player.startPlay();
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
 
     @Override
     public void showTip(String message) {

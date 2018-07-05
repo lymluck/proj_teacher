@@ -274,6 +274,7 @@ public class DialogCreator {
         View view = inflater.inflate(R.layout.dialog_transfer_turn_down, null);
         TextView tvCancel = view.findViewById(R.id.tv_cancel);
         final EditText etReason = view.findViewById(R.id.et_reason);
+        KeyBoardUtils.openKeybord(etReason, context);
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

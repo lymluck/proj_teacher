@@ -447,7 +447,6 @@ public class TransferManagerDetailActivity extends BaseActivity<TransferManagerD
             }
 
         } else if (i == R.id.tv_reboot) {
-
             if (rebootDialog == null) {
                 rebootDialog = DialogCreator.createAppBasicDialog(this, "", "确定重启吗？",
                     "确定", "取消", new View.OnClickListener() {
@@ -594,7 +593,6 @@ public class TransferManagerDetailActivity extends BaseActivity<TransferManagerD
         EventBus.getDefault().post(new OptionSuccess());
         finish();
     }
-
 
     @Override
     public void rejectTransferCaseSuccess() {

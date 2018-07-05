@@ -141,6 +141,7 @@ public class ParameterUtils {
     public static final String EDIT_WORK_EXPERIENCE = "edit_work_experience";//工作经验
     public static final String EDIT_GRADUATED_SCHOOL = "edit_graduated_school";//毕业学校
     public static final String EDIT_REAL_NAME = "edit_real_name";//修改真实姓名
+    public static final String EDIT_REMARK = "edit_remark";//修改真实姓名
     public static final String EDIT_EMAIL = "edit_email";//修改邮箱
 
 }

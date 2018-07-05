@@ -313,6 +313,7 @@
             android:name=".ui.MainActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="adjustNothing|stateAlwaysHidden" />
 
         <activity

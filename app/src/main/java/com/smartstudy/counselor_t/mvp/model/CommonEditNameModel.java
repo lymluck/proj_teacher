@@ -42,6 +42,10 @@ public class CommonEditNameModel extends BaseModel {
             builder.addFormDataPart("realName", teacherInfo.getRealName());
         }
 
+        if (!TextUtils.isEmpty(teacherInfo.getIntroduction())) {
+            builder.addFormDataPart("introduction", teacherInfo.getIntroduction());
+        }
+
         if (!TextUtils.isEmpty(teacherInfo.getYearsOfWorking())) {
             builder.addFormDataPart("yearsOfWorking", teacherInfo.getYearsOfWorking());
         }
