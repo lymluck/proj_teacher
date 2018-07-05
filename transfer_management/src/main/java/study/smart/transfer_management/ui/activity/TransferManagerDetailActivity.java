@@ -770,6 +770,36 @@ public class TransferManagerDetailActivity extends BaseActivity<TransferManagerD
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (overDialog != null) {
+            overDialog.dismiss();
+            overDialog = null;
+        }
+        if (rebootDialog != null) {
+            rebootDialog.dismiss();
+            rebootDialog = null;
+        }
+        if (turnDownDialog != null) {
+            turnDownDialog.dismiss();
+            turnDownDialog = null;
+        }
+        if (centerLists != null) {
+            centerLists.clear();
+            centerLists = null;
+        }
+        if (softTeachers != null) {
+            softTeachers.clear();
+            softTeachers = null;
+        }
+        if (hardTeachers != null) {
+            hardTeachers.clear();
+            hardTeachers = null;
+        }
+        if (loadingDialog != null) {
+            if(loadingDialog.isShowing()) {
+                loadingDialog.dismiss();
+            }
+            loadingDialog = null;
+        }
         EventBus.getDefault().unregister(this);
     }
 }

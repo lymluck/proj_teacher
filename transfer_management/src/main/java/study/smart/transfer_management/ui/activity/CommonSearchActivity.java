@@ -57,7 +57,6 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
     private NoScrollLinearLayoutManager mLayoutManager;
     private CommonAdapter<TransferManagerEntity> mTransferAdapter;
     private List<TransferManagerEntity> transferManagerEntities;
-
     private WeakHandler mHandler;
     private int mPage = 1;
     private List<ChatUserInfo> chatUserInfoList;

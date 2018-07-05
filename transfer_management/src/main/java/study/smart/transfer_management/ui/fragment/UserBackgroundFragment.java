@@ -506,6 +506,4 @@ public class UserBackgroundFragment extends UIFragment {
             tvNoData.setVisibility(View.VISIBLE);
         }
     }
-
-
 }

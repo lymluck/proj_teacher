@@ -1,5 +1,6 @@
 package study.smart.transfer_management.ui.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -134,6 +135,7 @@ public class TransferManagerFragment extends UIFragment {
             }
         }
     }
+
 
     @Override
     public BasePresenter initPresenter() {

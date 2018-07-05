@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -230,13 +231,15 @@ public class MyInfoDetailFragment extends UIFragment<MyInfoDetailContract.Presen
         rslInfo.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if (!isLoading) {
-                    if (scrollY <= size) {
-                        int padding = scrollY / 2;
-                        flAvatar.setPadding(padding, padding, padding, padding);
-                        flAvatar.setVisibility(View.VISIBLE);
-                    } else {
-                        flAvatar.setVisibility(View.GONE);
+                if (mActivity.getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+                    if (!isLoading) {
+                        if (scrollY <= size) {
+                            int padding = scrollY / 2;
+                            flAvatar.setPadding(padding, padding, padding, padding);
+                            flAvatar.setVisibility(View.VISIBLE);
+                        } else {
+                            flAvatar.setVisibility(View.GONE);
+                        }
                     }
                 }
             }

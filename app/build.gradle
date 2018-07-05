@@ -61,6 +61,8 @@ dependencies {
     compile project(path: ':image')
     compile project(path: ':baselib')
     compile project(path: ':transfer_management')
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 }
 
 repositories { flatDir { dirs 'aars' } }

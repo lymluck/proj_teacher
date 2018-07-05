@@ -53,7 +53,7 @@ public class MyAllQaFragment extends UIFragment implements ViewPager.OnPageChang
     private TextView myFocus;
     private TextView tvSubcount;
     private List<Fragment> mFragment = new ArrayList<>();
-    public static NoScrollViewPager mViewPager;
+    private NoScrollViewPager mViewPager;
 
     @Override
     public void onFirstUserVisible() {
@@ -211,6 +211,18 @@ public class MyAllQaFragment extends UIFragment implements ViewPager.OnPageChang
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (mViewPager != null) {
+            mViewPager = null;
+        }
+        if (mFragment != null) {
+            mFragment.clear();
+            mFragment = null;
+        }
     }
 }
 

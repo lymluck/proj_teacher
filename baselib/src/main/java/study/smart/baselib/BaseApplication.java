@@ -12,7 +12,6 @@ import study.smart.baselib.manager.AppManager;
 import study.smart.baselib.ui.provider.MyConversationListProvider;
 import study.smart.baselib.ui.provider.MyTextMessageItemProvider;
 import com.smartstudy.router.Router;
-import com.squareup.leakcanary.LeakCanary;
 
 import java.util.List;
 

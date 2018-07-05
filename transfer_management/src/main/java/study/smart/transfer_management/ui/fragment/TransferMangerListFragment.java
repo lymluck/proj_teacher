@@ -247,6 +247,25 @@ public class TransferMangerListFragment extends UIFragment<TransferManagerListCo
     @Override
     public void onDetach() {
         super.onDetach();
+        EventBus.getDefault().unregister(this);
+        if (lmrvTransfer != null) {
+            lmrvTransfer.removeAllViews();
+            lmrvTransfer = null;
+        }
+        if (mLayoutManager != null) {
+            mLayoutManager.removeAllViews();
+            mLayoutManager = null;
+        }
+
+        if (mAdapter != null) {
+            mAdapter.destroy();
+            mAdapter = null;
+        }
+
+        if (transferManagerEntities != null) {
+            transferManagerEntities.clear();
+            transferManagerEntities = null;
+        }
     }
 
     @Override

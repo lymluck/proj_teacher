@@ -109,7 +109,12 @@ public class ContractInformationFragment extends UIFragment {
                 tvOther.setText(transferDetailentity.getContractData().getOtherContent());
             }
         }
+    }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        transferDetailentity = null;
     }
 
     @Override
