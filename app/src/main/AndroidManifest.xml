@@ -380,10 +380,7 @@
             android:launchMode="singleTask"
             android:theme="@style/AppDialogActivityTheme"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity
-            android:name=".ui.fragment.MyInfoDetailFragment"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="sensorPortrait" />
+
         <activity
             android:name=".ui.activity.ChooseListActivity"
             android:screenOrientation="portrait"
