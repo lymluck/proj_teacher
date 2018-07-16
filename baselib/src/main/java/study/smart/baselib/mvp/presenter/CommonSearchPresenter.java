@@ -15,6 +15,7 @@ import java.util.List;
 import io.reactivex.disposables.Disposable;
 import study.smart.baselib.R;
 import study.smart.baselib.entity.DataListInfo;
+import study.smart.baselib.entity.MessageDetailItemInfo;
 import study.smart.baselib.entity.TransferManagerEntity;
 import study.smart.baselib.listener.ObserverListener;
 import study.smart.baselib.mvp.base.BasePresenterImpl;
@@ -34,10 +35,6 @@ public class CommonSearchPresenter extends BasePresenterImpl<CommonSearchContrac
         commonSearchModel = new CommonSearchModel();
     }
 
-    @Override
-    public void getSchools(int cacheType, String countryId, final String keyword, final int page,
-                           final int request_state, final String flag) {
-    }
 
     @Override
     public void getTransferManagerList(String keyword, int page, final int request_state) {
@@ -52,6 +49,29 @@ public class CommonSearchPresenter extends BasePresenterImpl<CommonSearchContrac
                 List<TransferManagerEntity> transferManagerEntities = JSONObject.parseArray(dataListInfo.getData(), TransferManagerEntity.class);
                 if (transferManagerEntities != null) {
                     view.showTransferManagerList(transferManagerEntities, request_state);
+                }
+            }
+
+            @Override
+            public void onError(String msg) {
+                view.showTip(msg);
+            }
+        });
+    }
+
+    @Override
+    public void getMsgList(String keyword, int page, final int request_state) {
+        commonSearchModel.searchMsgDetail(keyword, page, new ObserverListener<DataListInfo>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                addDisposable(disposable);
+            }
+
+            @Override
+            public void onNext(DataListInfo dataListInfo) {
+                List<MessageDetailItemInfo> messageDetailItemInfos = JSONObject.parseArray(dataListInfo.getData(), MessageDetailItemInfo.class);
+                if (messageDetailItemInfos != null) {
+                    view.showMsgList(messageDetailItemInfos, request_state);
                 }
             }
 

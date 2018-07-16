@@ -168,9 +168,6 @@ public class MyInfoDetailFragment extends UIFragment<MyInfoDetailContract.Presen
 
     @Override
     protected void initView(View rootView) {
-        mainActivity.setLeftImgVisible(View.GONE);
-        mainActivity.setTitle("个人信息");
-        mainActivity.setTopLineVisibility(View.VISIBLE);
         flAvatar = rootView.findViewById(R.id.fl_avatar);
         ivAvatar = rootView.findViewById(R.id.iv_avatar);
         tvNickName = rootView.findViewById(R.id.tv_nick_name);

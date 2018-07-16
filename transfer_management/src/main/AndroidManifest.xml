@@ -12,5 +12,11 @@
             android:name=".ui.activity.CommonSearchActivity"
             android:theme="@style/AppDialogActivityTheme"
             android:windowSoftInputMode="adjustNothing" />
+
+        <activity
+            android:name=".ui.activity.TransferManagerMessageDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
     </application>
 </manifest>

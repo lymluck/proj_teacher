@@ -98,13 +98,14 @@ public class ParameterUtils {
     public static final String RESPONSE_CODE_SUCCESS = "0";  //响应成功码
     public static final String RESPONSE_CODE_NOLOGIN = "SCHOOL_8";  //响应成功码
 
-    public static final String TRANSITION_FLAG = "trans_flag";  //转场flag名
+    public static final String TRANSITION_FLAG = "trans_flag";  //搜索flag名
     public static final String SCHOOLS_FLAG = "school_list";  //flag
     public static final String HOME_RATE_FLAG = "home_rate";  //flag
     public static final String QA_FLAG = "qa_list";  //flag
     public static final String HOME_QA_FLAG = "home_qa_list";  //flag
     public static final String NEWS_FLAG = "news_list";  //flag
-    public static final String TRANSFER_MANAGER = "TRANSFER_MANAGER";  //flag
+    public static final String TRANSFER_MANAGER = "transfer_manager";  //flag
+    public static final String MSG_DETAIL = "msg_detail";  //flag
     public static final String COURSE_FLAG = "course_list";  //flag
     public static final String RANKS_FLAG = "rank_list";  //flag
     public static final String MYSCHOOL_FLAG = "mySchool";  //flag

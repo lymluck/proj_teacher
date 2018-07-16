@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 
+import study.smart.baselib.entity.MessageDetailItemInfo;
 import study.smart.baselib.entity.TransferManagerEntity;
 import study.smart.baselib.mvp.base.BasePresenter;
 import study.smart.baselib.mvp.base.BaseView;
@@ -19,18 +20,18 @@ public interface CommonSearchContract {
 
     interface View extends BaseView {
 
-        void showResult(List data, int request_state, String flag);
-
         void showTransferManagerList(List<TransferManagerEntity> transferManagerEntities, int request_state);
+
+        void showMsgList(List<MessageDetailItemInfo> messageDetailItemInfos, int request_state);
 
         void showEmptyView(android.view.View view);
     }
 
     interface Presenter extends BasePresenter {
 
-        void getSchools(int cacheType, String countryId, String keyword, int page, int request_state, String flag);
-
         void getTransferManagerList(String keyword, int page, int request_state);
+
+        void getMsgList(String keyword, int page, int request_state);
 
         void setEmptyView(LayoutInflater mInflater, Context context, ViewGroup parent);
     }

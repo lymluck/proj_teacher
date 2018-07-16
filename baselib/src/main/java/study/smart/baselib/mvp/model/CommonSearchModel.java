@@ -26,4 +26,13 @@ public class CommonSearchModel extends BaseModel {
         apiSubscribe(ApiManager.getApiService().searchTransferCase(getHeadersMap(), params), listener);
     }
 
+    public void searchMsgDetail(String keyWord, int page, final ObserverListener listener) {
+        Map<String, String> params = new HashMap<>();
+        params.put("page", page + "");
+        if (!TextUtils.isEmpty(keyWord)) {
+            params.put("keyword", keyWord);
+        }
+        apiSubscribe(ApiManager.getApiService().searchMsgList(getHeadersMap(), params), listener);
+    }
+
 }

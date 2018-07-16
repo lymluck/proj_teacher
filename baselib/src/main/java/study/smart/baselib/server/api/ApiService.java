@@ -135,6 +135,16 @@ public interface ApiService {
     @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
     Observable<ResponseInfo<TeacherInfo>> getMyInfo(@HeaderMap Map<String, String> header);
 
+    /**
+     * 获取消息统计列表
+     *
+     * @param header
+     * @return
+     */
+    @GET(HttpUrlUtils.URL_MESSAGE_STATISTIC_LIST)
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
+    Observable<ResponseInfo<String>> getMessageList(@HeaderMap Map<String, String> header);
+
 
     /**
      * 版本检测
@@ -166,6 +176,13 @@ public interface ApiService {
     @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
     Observable<ResponseInfo<DataListInfo>> getQuestions(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
+
+    /**
+     * 消息列表
+     */
+    @GET(HttpUrlUtils.URL_MESSAGE_LIST)
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
+    Observable<ResponseInfo<DataListInfo>> getMessageList(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
     /**
      * 点赞列表
@@ -309,6 +326,14 @@ public interface ApiService {
      */
     @GET(HttpUrlUtils.URL_TRANSFER_CASE)
     Observable<ResponseInfo<DataListInfo>> searchTransferCase(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+
+
+    /**
+     * 搜索转案案例
+     */
+    @GET(HttpUrlUtils.URL_MESSAGE_LIST)
+    Observable<ResponseInfo<DataListInfo>> searchMsgList(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+
 
     /**
      * 未分配中心结案
