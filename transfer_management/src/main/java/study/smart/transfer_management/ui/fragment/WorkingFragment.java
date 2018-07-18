@@ -1,5 +1,6 @@
-package study.smart.transfer_management.ui.activity;
+package study.smart.transfer_management.ui.fragment;
 
+import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -9,10 +10,12 @@ import java.util.List;
 
 import study.smart.baselib.mvp.base.BasePresenter;
 import study.smart.baselib.ui.adapter.CommonAdapter;
+import study.smart.baselib.ui.adapter.MultiItemTypeAdapter;
 import study.smart.baselib.ui.adapter.base.ViewHolder;
 import study.smart.baselib.ui.base.UIFragment;
 import study.smart.transfer_management.R;
 import study.smart.transfer_management.entity.WorkingInfo;
+import study.smart.transfer_management.ui.activity.WorkingDetailActivity;
 
 /**
  * @author yqy
@@ -62,6 +65,19 @@ public class WorkingFragment extends UIFragment {
             }
         };
         rvWorking.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                //学员管理
+                startActivity(new Intent(mActivity, WorkingDetailActivity.class).putExtra("from", workingInfos.get(position).getId()));
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
     }
 
     private void initData() {

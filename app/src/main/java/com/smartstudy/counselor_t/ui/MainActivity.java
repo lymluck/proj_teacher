@@ -10,12 +10,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -35,14 +33,11 @@ import com.smartstudy.counselor_t.service.VersionUpdateService;
 import com.smartstudy.counselor_t.ui.activity.FillPersonActivity;
 import com.smartstudy.counselor_t.ui.fragment.MyAllQaFragment;
 import com.smartstudy.counselor_t.ui.fragment.MyInfoDetailFragment;
-import com.smartstudy.counselor_t.ui.fragment.QaFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.rong.imkit.RongIM;
-import io.rong.imkit.fragment.ConversationListFragment;
-import io.rong.imlib.model.Conversation;
 import study.smart.baselib.BaseApplication;
 import study.smart.baselib.entity.Privileges;
 import study.smart.baselib.entity.TeacherInfo;
@@ -57,9 +52,8 @@ import study.smart.baselib.utils.ParameterUtils;
 import study.smart.baselib.utils.SPCacheUtils;
 import study.smart.baselib.utils.ScreenUtils;
 import study.smart.baselib.utils.Utils;
-import study.smart.transfer_management.ui.activity.WorkingFragment;
+import study.smart.transfer_management.ui.fragment.WorkingFragment;
 import study.smart.transfer_management.ui.fragment.MessageFragment;
-import study.smart.transfer_management.ui.fragment.TransferManagerFragment;
 
 @Route("MainActivity")
 public class MainActivity extends BaseActivity<MainActivityContract.Presenter> implements MainActivityContract.View, ViewPager.OnPageChangeListener {
