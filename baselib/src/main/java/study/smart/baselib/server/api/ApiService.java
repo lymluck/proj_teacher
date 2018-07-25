@@ -3,6 +3,7 @@ package study.smart.baselib.server.api;
 import com.alibaba.fastjson.JSONObject;
 
 import study.smart.baselib.entity.DataListInfo;
+import study.smart.baselib.entity.MyTalkRecordInfo;
 import study.smart.baselib.entity.QaDetailInfo;
 import study.smart.baselib.entity.ResponseInfo;
 import study.smart.baselib.entity.StudentPageInfo;
@@ -144,6 +145,68 @@ public interface ApiService {
     @GET(HttpUrlUtils.URL_MESSAGE_STATISTIC_LIST)
     @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
     Observable<ResponseInfo<String>> getMessageList(@HeaderMap Map<String, String> header);
+
+    /**
+     * 为完成沟通记录
+     *
+     * @param header
+     * @return
+     */
+    @GET(HttpUrlUtils.WORKBENCH_UNCOMPLETE_LIST)
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
+    Observable<ResponseInfo<DataListInfo>> getUnTalkRecordList(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+
+    /**
+     * 获取报告
+     *
+     * @param header
+     * @return
+     */
+    @GET(HttpUrlUtils.WORKBENCH_UNCOMPLETE_REPORT_LIST)
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
+    Observable<ResponseInfo<DataListInfo>> getUnCompeleteReportList(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+
+    /**
+     * 获取消息统计列表
+     *
+     * @param header
+     * @return
+     */
+    @GET(HttpUrlUtils.WORKBENCH_REPORT_LIST)
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
+    Observable<ResponseInfo<DataListInfo>> getMyReportList(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+
+    /**
+     * 获取我发布未沟通列表
+     *
+     * @param header
+     * @return
+     */
+    @GET(HttpUrlUtils.WORKBENCH_COMPLETE_LIST)
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
+    Observable<ResponseInfo<String>> getMyTalkRecordList(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+
+
+    /**
+     * 获取消息统计列表
+     *
+     * @param header
+     * @return
+     */
+    @GET(HttpUrlUtils.WORKBENCH_REPORT_LIST)
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
+    Observable<ResponseInfo<DataListInfo>> getStudentDetailReport(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+
+
+    /**
+     * 我的学员
+     *
+     * @param header
+     * @return
+     */
+    @GET(HttpUrlUtils.WORKBENCH_USER_LIST)
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
+    Observable<ResponseInfo<DataListInfo>> getMyStudent(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
 
     /**

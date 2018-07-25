@@ -4,30 +4,26 @@ import android.content.Context;
 
 import java.util.List;
 
-import study.smart.baselib.entity.TransferManagerEntity;
 import study.smart.baselib.mvp.base.BasePresenter;
 import study.smart.baselib.mvp.base.BaseView;
-import study.smart.transfer_management.entity.MyStudentInfo;
+import study.smart.baselib.entity.MyTalkRecordInfo;
 
 /**
  * @author yqy
- * @date on 2018/7/17
+ * @date on 2018/7/24
  * @describe TODO
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */
-public interface TransferMyStudentContract {
+public interface MyTalkRecordContract {
     interface View extends BaseView {
-        void getTransferStudentSuccess(List<MyStudentInfo> myStudentInfos, int request_state);
+        void getMyUnTalkRecordSuccess(List<MyTalkRecordInfo> myTalkRecordInfo);
 
         void showEmptyView(android.view.View view);
-
     }
 
     interface Presenter extends BasePresenter {
-        void getMyStudent(String page, int request_state);
-
-        void getCompeleteStudent(String page, int request_state);
+        void getMyUnTalkRecordList();
 
         void showLoading(Context context, android.view.View emptyView);
 

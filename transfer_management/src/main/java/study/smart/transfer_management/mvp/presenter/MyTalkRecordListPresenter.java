@@ -1,67 +1,66 @@
 package study.smart.transfer_management.mvp.presenter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 import study.smart.baselib.entity.DataListInfo;
-import study.smart.baselib.entity.TransferManagerEntity;
+import study.smart.baselib.entity.MyTalkRecordInfo;
 import study.smart.baselib.listener.ObserverListener;
 import study.smart.baselib.mvp.base.BasePresenterImpl;
 import study.smart.baselib.utils.DisplayImageUtils;
 import study.smart.baselib.utils.Utils;
 import study.smart.transfer_management.R;
 import study.smart.transfer_management.entity.MyStudentInfo;
-import study.smart.transfer_management.mvp.contract.TransferManagerListContract;
-import study.smart.transfer_management.mvp.contract.TransferMyStudentContract;
-import study.smart.transfer_management.mvp.model.TransferManagerListModel;
-import study.smart.transfer_management.mvp.model.TransferMyStudentModel;
+import study.smart.transfer_management.mvp.contract.MyReportContract;
+import study.smart.transfer_management.mvp.contract.MyTalkRecordContract;
+import study.smart.transfer_management.mvp.model.MyReportModel;
+import study.smart.transfer_management.mvp.model.MyTalkRecordListModel;
 
 /**
  * @author yqy
- * @date on 2018/7/17
+ * @date on 2018/7/24
  * @describe TODO
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */
-public class TransferMyStudentPresenter extends BasePresenterImpl<TransferMyStudentContract.View> implements TransferMyStudentContract.Presenter {
+public class MyTalkRecordListPresenter extends BasePresenterImpl<MyTalkRecordContract.View> implements MyTalkRecordContract.Presenter {
 
-    private TransferMyStudentModel transferManagerListModel;
+    private MyTalkRecordListModel myTalkRecordListModel;
 
-    public TransferMyStudentPresenter(TransferMyStudentContract.View view) {
+    public MyTalkRecordListPresenter(MyTalkRecordContract.View view) {
         super(view);
-        transferManagerListModel = new TransferMyStudentModel();
+        myTalkRecordListModel = new MyTalkRecordListModel();
     }
 
 
     @Override
     public void detach() {
         super.detach();
-        transferManagerListModel = null;
+        myTalkRecordListModel = null;
     }
 
 
     @Override
-    public void getMyStudent(String page, final int request_state) {
-        transferManagerListModel.getMyStudent(new ObserverListener<DataListInfo>() {
+    public void getMyUnTalkRecordList() {
+        myTalkRecordListModel.getMyTalkRecordList(new ObserverListener<String>() {
             @Override
             public void onSubscribe(Disposable disposable) {
                 addDisposable(disposable);
             }
 
             @Override
-            public void onNext(DataListInfo dataListInfo) {
-                List<MyStudentInfo> myStudentInfos = JSONObject.parseArray(dataListInfo.getData(), MyStudentInfo.class);
-                if (myStudentInfos != null) {
-                    view.getTransferStudentSuccess(myStudentInfos, request_state);
-                }
+            public void onNext(String dataListInfo) {
+                List<MyTalkRecordInfo> myTalkRecordInfo = JSONObject.parseArray(dataListInfo, MyTalkRecordInfo.class);
+                view.getMyUnTalkRecordSuccess(myTalkRecordInfo);
             }
 
             @Override
@@ -70,30 +69,6 @@ public class TransferMyStudentPresenter extends BasePresenterImpl<TransferMyStud
             }
         });
     }
-
-    @Override
-    public void getCompeleteStudent(String page, final int request_state) {
-        transferManagerListModel.getCompeleteStudent(new ObserverListener<DataListInfo>() {
-            @Override
-            public void onSubscribe(Disposable disposable) {
-                addDisposable(disposable);
-            }
-
-            @Override
-            public void onNext(DataListInfo dataListInfo) {
-                List<MyStudentInfo> myStudentInfos = JSONObject.parseArray(dataListInfo.getData(), MyStudentInfo.class);
-                if (myStudentInfos != null) {
-                    view.getTransferStudentSuccess(myStudentInfos, request_state);
-                }
-            }
-
-            @Override
-            public void onError(String msg) {
-                view.showTip(msg);
-            }
-        });
-    }
-
 
     @Override
     public void showLoading(Context context, View emptyView) {

@@ -45,9 +45,9 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="方用了"
                     android:textColor="@color/app_text_color"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -72,9 +72,9 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/tv_telephone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="13456739156"
                     android:textColor="@color/app_text_color"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -99,9 +99,9 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/tv_service_project"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="全球精英赋能计划B"
                     android:textColor="@color/app_text_color"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -127,9 +127,9 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/tv_contractor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="谢兄"
                     android:textColor="@color/app_text_color"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -154,9 +154,9 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/tv_signed_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2018-05-30"
                     android:textColor="@color/app_text_color"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -204,9 +204,9 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/tv_year_season"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2018/夏"
                     android:textColor="@color/app_text_color"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -231,9 +231,9 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/tv_apply_project"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="本科"
                     android:textColor="@color/app_text_color"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -277,9 +277,9 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/tv_center_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="北京留学中心"
                     android:textColor="@color/app_text_color"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -304,9 +304,9 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/tv_hard_teacher"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="方文山"
                     android:textColor="@color/app_text_color"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -331,9 +331,9 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/tv_soft_teacher"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="昆凌"
                     android:textColor="@color/app_text_color"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -358,9 +358,9 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/tv_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="服务中"
                     android:textColor="@color/app_text_color"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -375,22 +375,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
+            android:paddingTop="24dp"
+            android:paddingBottom="16dp"
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_remind"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:paddingTop="24dp"
                 android:text="学员信息待完善，请前往电脑上完善"
                 android:textColor="@color/app_main_color"
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/tv_contact"
                 android:layout_width="120dp"
                 android:layout_height="36dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="16dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/bg_contact_student"
                 android:gravity="center"

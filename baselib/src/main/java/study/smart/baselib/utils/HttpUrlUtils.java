@@ -54,6 +54,12 @@ public class HttpUrlUtils {
     public static final String URL_REOPEN_ALLOCATED_COACH = "transfer_case/reopen/%1$s/allocated_coach";//已分配导师重启
     public static final String URL_MESSAGE_STATISTIC_LIST = "message/statistic/list";//消息统计列表
     public static final String URL_MESSAGE_LIST = "message/list"; //问答列表
+    public static final String WORKBENCH_USER_LIST = "workbench/user/list";
+    public static final String WORKBENCH_UNCOMPLETE_REPORT_LIST = "workbench/uncomplete/report/list";//待完成报告列表
+    public static final String WORKBENCH_REPORT_LIST = "workbench/report/list";//报告中心列表
+    public static final String WORKBENCH_UNCOMPLETE_LIST = "workbench/uncomplete/communication/list";//未完成沟通记录
+    public static final String WORKBENCH_COMPLETE_LIST = "workbench/communication/list";//我发布的沟通记录
+
     /**************************** web ***************************/
     public static final String URL_USER_CONTRACT = "/user-agreement.html";  //用户协议
 

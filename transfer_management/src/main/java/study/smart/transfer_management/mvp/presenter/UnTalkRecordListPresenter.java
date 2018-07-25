@@ -7,60 +7,58 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 import study.smart.baselib.entity.DataListInfo;
-import study.smart.baselib.entity.TransferManagerEntity;
 import study.smart.baselib.listener.ObserverListener;
 import study.smart.baselib.mvp.base.BasePresenterImpl;
 import study.smart.baselib.utils.DisplayImageUtils;
 import study.smart.baselib.utils.Utils;
 import study.smart.transfer_management.R;
 import study.smart.transfer_management.entity.MyStudentInfo;
-import study.smart.transfer_management.mvp.contract.TransferManagerListContract;
-import study.smart.transfer_management.mvp.contract.TransferMyStudentContract;
-import study.smart.transfer_management.mvp.model.TransferManagerListModel;
-import study.smart.transfer_management.mvp.model.TransferMyStudentModel;
+import study.smart.transfer_management.mvp.contract.MyReportContract;
+import study.smart.transfer_management.mvp.contract.UnTalkRecordContract;
+import study.smart.transfer_management.mvp.model.MyReportModel;
+import study.smart.transfer_management.mvp.model.UnTalkRecordModel;
 
 /**
  * @author yqy
- * @date on 2018/7/17
+ * @date on 2018/7/24
  * @describe TODO
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */
-public class TransferMyStudentPresenter extends BasePresenterImpl<TransferMyStudentContract.View> implements TransferMyStudentContract.Presenter {
+public class UnTalkRecordListPresenter extends BasePresenterImpl<UnTalkRecordContract.View> implements UnTalkRecordContract.Presenter {
 
-    private TransferMyStudentModel transferManagerListModel;
+    private UnTalkRecordModel unTalkRecordModel;
 
-    public TransferMyStudentPresenter(TransferMyStudentContract.View view) {
+    public UnTalkRecordListPresenter(UnTalkRecordContract.View view) {
         super(view);
-        transferManagerListModel = new TransferMyStudentModel();
+        unTalkRecordModel = new UnTalkRecordModel();
     }
 
 
     @Override
     public void detach() {
         super.detach();
-        transferManagerListModel = null;
+        unTalkRecordModel = null;
     }
 
 
     @Override
-    public void getMyStudent(String page, final int request_state) {
-        transferManagerListModel.getMyStudent(new ObserverListener<DataListInfo>() {
+    public void getUnTalkList(String page, final int request_state) {
+        unTalkRecordModel.getUnTalkRecordList(page, new ObserverListener<DataListInfo>() {
             @Override
             public void onSubscribe(Disposable disposable) {
                 addDisposable(disposable);
             }
 
             @Override
-            public void onNext(DataListInfo dataListInfo) {
-                List<MyStudentInfo> myStudentInfos = JSONObject.parseArray(dataListInfo.getData(), MyStudentInfo.class);
+            public void onNext(DataListInfo result) {
+                List<MyStudentInfo> myStudentInfos = JSONObject.parseArray(result.getData(), MyStudentInfo.class);
                 if (myStudentInfos != null) {
-                    view.getTransferStudentSuccess(myStudentInfos, request_state);
+                    view.getUnTalkListSuccess(myStudentInfos, request_state);
                 }
             }
 
@@ -70,30 +68,6 @@ public class TransferMyStudentPresenter extends BasePresenterImpl<TransferMyStud
             }
         });
     }
-
-    @Override
-    public void getCompeleteStudent(String page, final int request_state) {
-        transferManagerListModel.getCompeleteStudent(new ObserverListener<DataListInfo>() {
-            @Override
-            public void onSubscribe(Disposable disposable) {
-                addDisposable(disposable);
-            }
-
-            @Override
-            public void onNext(DataListInfo dataListInfo) {
-                List<MyStudentInfo> myStudentInfos = JSONObject.parseArray(dataListInfo.getData(), MyStudentInfo.class);
-                if (myStudentInfos != null) {
-                    view.getTransferStudentSuccess(myStudentInfos, request_state);
-                }
-            }
-
-            @Override
-            public void onError(String msg) {
-                view.showTip(msg);
-            }
-        });
-    }
-
 
     @Override
     public void showLoading(Context context, View emptyView) {

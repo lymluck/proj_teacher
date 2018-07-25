@@ -2,30 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="64dp"
-    android:gravity="center"
-    android:background="@color/white"
     android:orientation="horizontal"
     android:paddingLeft="16dp"
+    android:gravity="center_vertical"
     android:paddingRight="16dp">
 
     <TextView
         android:id="@+id/tv_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/app_text_color2"
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/tv_target_year_season"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:paddingLeft="16dp"
-        android:textColor="@color/app_text_color"
-        android:textSize="13sp" />
-
+        android:text="方用了哈哈"
+        android:textColor="@color/app_text_color2"
+        android:textSize="16sp" />
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_go_to" />
+        android:src="@drawable/ic_go_to"/>
 </LinearLayout>

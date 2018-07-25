@@ -143,6 +143,8 @@ public class WorkingDetailActivity extends BaseActivity<WorkingDetailContract.Pr
     public void initEvent() {
         super.initEvent();
         llTagThree.setOnClickListener(this);
+        llTagOne.setOnClickListener(this);
+        llTagTwo.setOnClickListener(this);
     }
 
 
@@ -150,7 +152,27 @@ public class WorkingDetailActivity extends BaseActivity<WorkingDetailContract.Pr
     public void onClick(View v) {
         super.onClick(v);
         if (v.getId() == R.id.ll_tag_three) {
-            startActivity(new Intent(this, MyStudentActivity.class));
+            startActivity(new Intent(this, MyStudentActivity.class).putExtra("from", "my_student"));
+        } else if (v.getId() == R.id.ll_tag_one) {
+            if ("STUDENT_TRANSFER_MANAGER".equals(from)) {
+                startActivity(new Intent(this, MyStudentActivity.class).putExtra("from", "compelete_student"));
+            } else if ("TASK_TRANSFER_MANAGER".equals(from)) {
+
+            } else if ("REPORT_TRANSFER_MANAGER".equals(from)) {
+                startActivity(new Intent(this, UnCompeleteReportActivity.class));
+            } else {
+                startActivity(new Intent(this, UnTalkRecordActivity.class));
+            }
+        } else {
+            if ("STUDENT_TRANSFER_MANAGER".equals(from)) {
+            } else if ("TASK_TRANSFER_MANAGER".equals(from)) {
+
+            } else if ("REPORT_TRANSFER_MANAGER".equals(from)) {
+                startActivity(new Intent(this, MyReportActivity.class));
+            } else {
+                startActivity(new Intent(this, MyTalkRecordActivity.class));
+            }
         }
     }
+
 }

@@ -53,6 +53,7 @@ public class MyStudentActivity extends BaseActivity<TransferMyStudentContract.Pr
     private boolean isFirstLoad;
     private int mPage = 1;
     private boolean canPullUp;
+    private String from;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +69,7 @@ public class MyStudentActivity extends BaseActivity<TransferMyStudentContract.Pr
     @Override
     public void initView() {
         setTitle("我的学员");
+        from = getIntent().getStringExtra("from");
         isFirstLoad = true;
         searchView = findViewById(R.id.searchView);
         lmrvStudent = findViewById(R.id.rclv_student);
@@ -81,7 +83,7 @@ public class MyStudentActivity extends BaseActivity<TransferMyStudentContract.Pr
         initAdapter();
         emptyView = mInflater.inflate(R.layout.layout_empty, lmrvStudent, false);
         presenter.showLoading(this, emptyView);
-        presenter.getMyStudent("", mPage + "", ParameterUtils.PULL_DOWN);
+        getStudentList();
     }
 
     private void initAdapter() {
@@ -89,6 +91,8 @@ public class MyStudentActivity extends BaseActivity<TransferMyStudentContract.Pr
         mAdapter = new CommonAdapter<MyStudentInfo>(this, R.layout.item_my_student, myStudentInfos) {
             @Override
             protected void convert(ViewHolder holder, MyStudentInfo myStudentInfo, int position) {
+                holder.setText(R.id.tv_name, myStudentInfo.getName());
+                holder.setText(R.id.tv_target_year_season, myStudentInfo.getTargetApplicationYearSeason() + "/" + myStudentInfo.getTargetDegreeName());
 
             }
         };
@@ -99,7 +103,9 @@ public class MyStudentActivity extends BaseActivity<TransferMyStudentContract.Pr
         mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                startActivity(new Intent(MyStudentActivity.this, StudentDetailActivity.class));
+                startActivity(new Intent(MyStudentActivity.this, StudentDetailActivity.class)
+                    .putExtra("studentInfo", myStudentInfos.get(position))
+                    .putExtra("from", "student"));
             }
 
             @Override
@@ -157,7 +163,11 @@ public class MyStudentActivity extends BaseActivity<TransferMyStudentContract.Pr
             public void OnLoad() {
                 if (canPullUp) {
                     mPage = mPage + 1;
-                    presenter.getMyStudent("", mPage + "", ParameterUtils.PULL_UP);
+                    if ("my_student".equals(from)) {
+                        presenter.getMyStudent(mPage + "", ParameterUtils.PULL_UP);
+                    } else if ("compelete_student".equals(from)) {
+                        presenter.getCompeleteStudent(mPage + "", ParameterUtils.PULL_UP);
+                    }
                     canPullUp = false;
                 }
             }
@@ -218,5 +228,13 @@ public class MyStudentActivity extends BaseActivity<TransferMyStudentContract.Pr
     protected void onDestroy() {
         super.onDestroy();
         isFirstLoad = false;
+    }
+
+    private void getStudentList() {
+        if ("my_student".equals(from)) {
+            presenter.getMyStudent(mPage + "", ParameterUtils.PULL_DOWN);
+        } else if ("compelete_student".equals(from)) {
+            presenter.getCompeleteStudent(mPage + "", ParameterUtils.PULL_DOWN);
+        }
     }
 }

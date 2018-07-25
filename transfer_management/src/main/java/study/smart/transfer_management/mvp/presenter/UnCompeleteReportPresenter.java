@@ -1,58 +1,57 @@
 package study.smart.transfer_management.mvp.presenter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 import study.smart.baselib.entity.DataListInfo;
-import study.smart.baselib.entity.TransferManagerEntity;
 import study.smart.baselib.listener.ObserverListener;
 import study.smart.baselib.mvp.base.BasePresenterImpl;
 import study.smart.baselib.utils.DisplayImageUtils;
 import study.smart.baselib.utils.Utils;
 import study.smart.transfer_management.R;
 import study.smart.transfer_management.entity.MyStudentInfo;
-import study.smart.transfer_management.mvp.contract.TransferManagerListContract;
-import study.smart.transfer_management.mvp.contract.TransferMyStudentContract;
-import study.smart.transfer_management.mvp.model.TransferManagerListModel;
-import study.smart.transfer_management.mvp.model.TransferMyStudentModel;
+import study.smart.transfer_management.mvp.contract.UncompeleteReportContract;
+import study.smart.transfer_management.mvp.model.UnCompeleteReportModel;
 
 /**
  * @author yqy
- * @date on 2018/7/17
+ * @date on 2018/7/23
  * @describe TODO
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */
-public class TransferMyStudentPresenter extends BasePresenterImpl<TransferMyStudentContract.View> implements TransferMyStudentContract.Presenter {
+public class UnCompeleteReportPresenter extends BasePresenterImpl<UncompeleteReportContract.View> implements UncompeleteReportContract.Presenter {
 
-    private TransferMyStudentModel transferManagerListModel;
+    private UnCompeleteReportModel unCompeleteReportModel;
 
-    public TransferMyStudentPresenter(TransferMyStudentContract.View view) {
+    public UnCompeleteReportPresenter(UncompeleteReportContract.View view) {
         super(view);
-        transferManagerListModel = new TransferMyStudentModel();
+        unCompeleteReportModel = new UnCompeleteReportModel();
     }
 
 
     @Override
     public void detach() {
         super.detach();
-        transferManagerListModel = null;
+        unCompeleteReportModel = null;
     }
 
 
     @Override
-    public void getMyStudent(String page, final int request_state) {
-        transferManagerListModel.getMyStudent(new ObserverListener<DataListInfo>() {
+    public void getUncompeleteReport(String type, String page, final int request_state) {
+        unCompeleteReportModel.getUnCompeleteReport(type, page, new ObserverListener<DataListInfo>() {
             @Override
             public void onSubscribe(Disposable disposable) {
+
                 addDisposable(disposable);
             }
 
@@ -60,7 +59,7 @@ public class TransferMyStudentPresenter extends BasePresenterImpl<TransferMyStud
             public void onNext(DataListInfo dataListInfo) {
                 List<MyStudentInfo> myStudentInfos = JSONObject.parseArray(dataListInfo.getData(), MyStudentInfo.class);
                 if (myStudentInfos != null) {
-                    view.getTransferStudentSuccess(myStudentInfos, request_state);
+                    view.getUncompeleteReportSuccess(myStudentInfos, request_state);
                 }
             }
 
@@ -70,30 +69,6 @@ public class TransferMyStudentPresenter extends BasePresenterImpl<TransferMyStud
             }
         });
     }
-
-    @Override
-    public void getCompeleteStudent(String page, final int request_state) {
-        transferManagerListModel.getCompeleteStudent(new ObserverListener<DataListInfo>() {
-            @Override
-            public void onSubscribe(Disposable disposable) {
-                addDisposable(disposable);
-            }
-
-            @Override
-            public void onNext(DataListInfo dataListInfo) {
-                List<MyStudentInfo> myStudentInfos = JSONObject.parseArray(dataListInfo.getData(), MyStudentInfo.class);
-                if (myStudentInfos != null) {
-                    view.getTransferStudentSuccess(myStudentInfos, request_state);
-                }
-            }
-
-            @Override
-            public void onError(String msg) {
-                view.showTip(msg);
-            }
-        });
-    }
-
 
     @Override
     public void showLoading(Context context, View emptyView) {
