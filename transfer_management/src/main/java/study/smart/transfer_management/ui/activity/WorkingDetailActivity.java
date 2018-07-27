@@ -1,9 +1,12 @@
 package study.smart.transfer_management.ui.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,13 +16,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import study.smart.baselib.ui.adapter.CommonAdapter;
+import study.smart.baselib.ui.adapter.MultiItemTypeAdapter;
 import study.smart.baselib.ui.adapter.base.ViewHolder;
 import study.smart.baselib.ui.adapter.wrapper.HeaderAndFooterWrapper;
 import study.smart.baselib.ui.base.BaseActivity;
 import study.smart.baselib.ui.widget.HorizontalDividerItemDecoration;
 import study.smart.baselib.ui.widget.NoScrollLinearLayoutManager;
 import study.smart.baselib.utils.DensityUtils;
+import study.smart.baselib.utils.ParameterUtils;
 import study.smart.transfer_management.R;
+import study.smart.transfer_management.entity.CenterInfo;
 import study.smart.transfer_management.entity.WorkingDetailInfo;
 import study.smart.transfer_management.mvp.contract.WorkingDetailContract;
 import study.smart.transfer_management.mvp.presenter.WorkingDetailPresenter;
@@ -35,8 +41,8 @@ public class WorkingDetailActivity extends BaseActivity<WorkingDetailContract.Pr
     private RecyclerView rvWorking;
     private NoScrollLinearLayoutManager mLayoutManager;
     private View headView;
-    private CommonAdapter<WorkingDetailInfo> mAdapter;
-    private List<WorkingDetailInfo> workingDetailInfoList;
+    private CommonAdapter<CenterInfo> mAdapter;
+    private List<CenterInfo> centerInfos;
     private HeaderAndFooterWrapper mHeader;
     private String from;
     private ImageView ivTagOne;
@@ -48,6 +54,7 @@ public class WorkingDetailActivity extends BaseActivity<WorkingDetailContract.Pr
     private LinearLayout llTagTwo;
     private LinearLayout llTagOne;
     private LinearLayout llTagThree;
+    private View llSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +88,7 @@ public class WorkingDetailActivity extends BaseActivity<WorkingDetailContract.Pr
         tvTagThree = headView.findViewById(R.id.tv_tag_three);
         llTagOne = headView.findViewById(R.id.ll_tag_one);
         llTagThree = headView.findViewById(R.id.ll_tag_three);
+        llSearch = headView.findViewById(R.id.ll_search);
         if ("STUDENT_TRANSFER_MANAGER".equals(from)) {
             setTitle("学员管理");
             ivTagOne.setImageResource(R.drawable.transfer_compelete_student);
@@ -113,28 +121,43 @@ public class WorkingDetailActivity extends BaseActivity<WorkingDetailContract.Pr
             tvTagThree.setText("我的学员");
         }
         initAdapter();
-        presenter.getWorkingDetail();
+        presenter.getCenter();
     }
 
 
     private void initAdapter() {
-        workingDetailInfoList = new ArrayList<>();
-        mAdapter = new CommonAdapter<WorkingDetailInfo>(this, R.layout.item_working_detail, workingDetailInfoList) {
+        centerInfos = new ArrayList<>();
+        mAdapter = new CommonAdapter<CenterInfo>(this, R.layout.item_working_detail, centerInfos) {
             @Override
-            protected void convert(ViewHolder holder, WorkingDetailInfo workingDetailInfo, int position) {
-
+            protected void convert(ViewHolder holder, CenterInfo centerInfo, int position) {
+                holder.setText(R.id.tv_name, centerInfo.getValue());
             }
         };
         mHeader = new HeaderAndFooterWrapper(mAdapter);
         mHeader.addHeaderView(headView);
         rvWorking.setAdapter(mHeader);
+
+        mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                startActivity(new Intent(WorkingDetailActivity.this, MyStudentActivity.class)
+                    .putExtra("centerId", centerInfos.get(position - 1).getId())
+                    .putExtra("from", from));
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
     }
 
+
     @Override
-    public void getWorkingDetail(List<WorkingDetailInfo> workingDetailInfos) {
-        if (this.workingDetailInfoList != null) {
-            workingDetailInfoList.clear();
-            workingDetailInfoList.addAll(workingDetailInfos);
+    public void getCenterSuccess(List<CenterInfo> centerInfo) {
+        if (centerInfo != null) {
+            centerInfos.clear();
+            centerInfos.addAll(centerInfo);
             mHeader.notifyDataSetChanged();
         }
     }
@@ -145,6 +168,19 @@ public class WorkingDetailActivity extends BaseActivity<WorkingDetailContract.Pr
         llTagThree.setOnClickListener(this);
         llTagOne.setOnClickListener(this);
         llTagTwo.setOnClickListener(this);
+        llSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent toSearch = new Intent(WorkingDetailActivity.this, CommonSearchActivity.class);
+                toSearch.putExtra(ParameterUtils.TRANSITION_FLAG, ParameterUtils.MY_ALL_STUDENT);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    startActivity(toSearch, ActivityOptionsCompat.makeSceneTransitionAnimation(WorkingDetailActivity.this,
+                        llSearch, "btn_tr").toBundle());
+                } else {
+                    startActivity(toSearch);
+                }
+            }
+        });
     }
 
 
@@ -152,12 +188,12 @@ public class WorkingDetailActivity extends BaseActivity<WorkingDetailContract.Pr
     public void onClick(View v) {
         super.onClick(v);
         if (v.getId() == R.id.ll_tag_three) {
-            startActivity(new Intent(this, MyStudentActivity.class).putExtra("from", "my_student"));
+            startActivity(new Intent(this, MyStudentActivity.class).putExtra("from", from));
         } else if (v.getId() == R.id.ll_tag_one) {
             if ("STUDENT_TRANSFER_MANAGER".equals(from)) {
                 startActivity(new Intent(this, MyStudentActivity.class).putExtra("from", "compelete_student"));
             } else if ("TASK_TRANSFER_MANAGER".equals(from)) {
-
+                startActivity(new Intent(this, MyTaskListActivity.class).putExtra("from", "working"));
             } else if ("REPORT_TRANSFER_MANAGER".equals(from)) {
                 startActivity(new Intent(this, UnCompeleteReportActivity.class));
             } else {

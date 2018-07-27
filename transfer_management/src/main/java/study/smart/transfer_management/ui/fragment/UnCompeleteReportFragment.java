@@ -6,7 +6,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ import study.smart.baselib.utils.DensityUtils;
 import study.smart.baselib.utils.ParameterUtils;
 import study.smart.baselib.utils.ToastUtils;
 import study.smart.transfer_management.R;
-import study.smart.transfer_management.entity.MyStudentInfo;
+import study.smart.baselib.entity.MyStudentInfo;
 import study.smart.transfer_management.entity.StateInfo;
 import study.smart.transfer_management.mvp.contract.UncompeleteReportContract;
 import study.smart.transfer_management.mvp.presenter.UnCompeleteReportPresenter;
@@ -92,7 +91,7 @@ public class UnCompeleteReportFragment extends UIFragment<UncompeleteReportContr
         lmrvReport.setLayoutManager(mLayoutManager);
         lmrvReport.setItemAnimator(new DefaultItemAnimator());
         lmrvReport.addItemDecoration(new HorizontalDividerItemDecoration.Builder(mActivity)
-            .size(DensityUtils.dip2px(0.5f)).margin(DensityUtils.dip2px(40f), 0)
+            .size(DensityUtils.dip2px(0.5f)).margin(DensityUtils.dip2px(16f), 0)
             .colorResId(R.color.main_bg)
             .build());
         initAdapter();
@@ -125,6 +124,14 @@ public class UnCompeleteReportFragment extends UIFragment<UncompeleteReportContr
         if (presenter != null) {
             presenter.setEmptyView(emptyView);
             mLayoutManager.setScrollEnabled(true);
+            if (myStudentInfos == null) {
+                ToastUtils.shortToast("无权限查看");
+                swipeRefreshLayout.setRefreshing(false);
+                if (lmrvReport != null) {
+                    lmrvReport.loadComplete(true);
+                }
+                return;
+            }
             int len = myStudentInfos.size();
             if (request_state == ParameterUtils.PULL_DOWN) {
                 //下拉刷新
@@ -195,7 +202,7 @@ public class UnCompeleteReportFragment extends UIFragment<UncompeleteReportContr
         mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                startActivity(new Intent(mActivity, StudentDetailActivity.class).putExtra("studentInfo", myStudentInfos.get(position)).putExtra("from","report"));
+                startActivity(new Intent(mActivity, StudentDetailActivity.class).putExtra("studentInfo", myStudentInfos.get(position)).putExtra("from", "report"));
             }
 
             @Override

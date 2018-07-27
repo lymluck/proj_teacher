@@ -106,6 +106,7 @@ public class ParameterUtils {
     public static final String NEWS_FLAG = "news_list";  //flag
     public static final String TRANSFER_MANAGER = "transfer_manager";  //flag
     public static final String MSG_DETAIL = "msg_detail";  //flag
+    public static final String MY_ALL_STUDENT = "my_all_student";//学员管理查询
     public static final String COURSE_FLAG = "course_list";  //flag
     public static final String RANKS_FLAG = "rank_list";  //flag
     public static final String MYSCHOOL_FLAG = "mySchool";  //flag

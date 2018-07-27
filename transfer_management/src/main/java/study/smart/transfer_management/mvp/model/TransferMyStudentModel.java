@@ -1,5 +1,7 @@
 package study.smart.transfer_management.mvp.model;
 
+import android.text.TextUtils;
+
 import java.util.HashMap;
 
 import study.smart.baselib.listener.ObserverListener;
@@ -14,16 +16,21 @@ import study.smart.baselib.server.api.ApiManager;
  * @email yeqingyu@innobuddy.com
  */
 public class TransferMyStudentModel extends BaseModel {
-    public void getMyStudent(ObserverListener listener) {
+    public void getMyStudent(String page, String id, ObserverListener listener) {
         HashMap<String, String> params = new HashMap<>();
-        params.put("isOwnStudent", "true");
+        if (TextUtils.isEmpty(id)) {
+            params.put("isOwnStudent", "true");
+        } else {
+            params.put("centerId", id);
+        }
+        params.put("page", page);
         apiSubscribe(ApiManager.getApiService().getMyStudent(getHeadersMap(), params), listener);
     }
 
-    public void getCompeleteStudent(ObserverListener listener) {
+    public void getCompeleteStudent(String page, ObserverListener listener) {
         HashMap<String, String> params = new HashMap<>();
-        params.put("isOwnStudent", "true");
         params.put("isIncomplete", "true");
+        params.put("page", page);
         apiSubscribe(ApiManager.getApiService().getMyStudent(getHeadersMap(), params), listener);
     }
 }

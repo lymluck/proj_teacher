@@ -59,6 +59,9 @@ public class HttpUrlUtils {
     public static final String WORKBENCH_REPORT_LIST = "workbench/report/list";//报告中心列表
     public static final String WORKBENCH_UNCOMPLETE_LIST = "workbench/uncomplete/communication/list";//未完成沟通记录
     public static final String WORKBENCH_COMPLETE_LIST = "workbench/communication/list";//我发布的沟通记录
+    public static final String WORKBENCH_TASK_LIST = "workbench/task/list";//我发布的任务列表
+    public static final String WORKBENCH_CENTER_LIST = "workbench/center/list";//中心
+    public static final String MESSAGE_DETAIL = "message/%1$s";//中心
 
     /**************************** web ***************************/
     public static final String URL_USER_CONTRACT = "/user-agreement.html";  //用户协议
@@ -72,8 +75,8 @@ public class HttpUrlUtils {
         String api = (String) SPCacheUtils.get(ConstantUtils.API_SERVER, "");
         switch (api) {
             case "master":
-                SERVER = "https://slx.smartstudy.com/api/";
-//                SERVER = "http://slx.sta ging.smartstudy.com/api/";
+//                SERVER = "https://slx.smartstudy.com/api/";
+                SERVER = "http://slx.sta ging.smartstudy.com/api/";
                 break;
             case "test":
 //               SERVER = "https://slx.smartstudy.com/api/";

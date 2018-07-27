@@ -16,6 +16,7 @@ import io.reactivex.disposables.Disposable;
 import study.smart.baselib.R;
 import study.smart.baselib.entity.DataListInfo;
 import study.smart.baselib.entity.MessageDetailItemInfo;
+import study.smart.baselib.entity.MyStudentInfo;
 import study.smart.baselib.entity.TransferManagerEntity;
 import study.smart.baselib.listener.ObserverListener;
 import study.smart.baselib.mvp.base.BasePresenterImpl;
@@ -72,6 +73,29 @@ public class CommonSearchPresenter extends BasePresenterImpl<CommonSearchContrac
                 List<MessageDetailItemInfo> messageDetailItemInfos = JSONObject.parseArray(dataListInfo.getData(), MessageDetailItemInfo.class);
                 if (messageDetailItemInfos != null) {
                     view.showMsgList(messageDetailItemInfos, request_state);
+                }
+            }
+
+            @Override
+            public void onError(String msg) {
+                view.showTip(msg);
+            }
+        });
+    }
+
+    @Override
+    public void getAllStudentList(String keyword, int page, final int request_state) {
+        commonSearchModel.getAllStudentList(keyword, page, new ObserverListener<DataListInfo>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                addDisposable(disposable);
+            }
+
+            @Override
+            public void onNext(DataListInfo dataListInfo) {
+                List<MyStudentInfo> myStudentInfos = JSONObject.parseArray(dataListInfo.getData(), MyStudentInfo.class);
+                if (myStudentInfos != null) {
+                    view.getAllStudentListSuccess(myStudentInfos, request_state);
                 }
             }
 

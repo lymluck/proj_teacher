@@ -5,6 +5,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONObject;
+
+import java.util.List;
+
 import io.reactivex.disposables.Disposable;
 import study.smart.baselib.entity.DataListInfo;
 import study.smart.baselib.listener.ObserverListener;
@@ -12,6 +16,7 @@ import study.smart.baselib.mvp.base.BasePresenterImpl;
 import study.smart.baselib.utils.DisplayImageUtils;
 import study.smart.baselib.utils.Utils;
 import study.smart.transfer_management.R;
+import study.smart.baselib.entity.MyStudentInfo;
 import study.smart.transfer_management.mvp.contract.StudentDetailReportContract;
 import study.smart.transfer_management.mvp.model.StudentDetailReportModel;
 
@@ -38,6 +43,29 @@ public class StudentDetailReportPresenter extends BasePresenterImpl<StudentDetai
         studentDetailReportModel = null;
     }
 
+
+    @Override
+    public void getStudentDetailReport(String userId, String type, String page, final int request_state) {
+        studentDetailReportModel.getStudentDetailReport(userId, type, page, new ObserverListener<DataListInfo>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                addDisposable(disposable);
+            }
+
+            @Override
+            public void onNext(DataListInfo dataListInfo) {
+                List<MyStudentInfo> myStudentInfos = JSONObject.parseArray(dataListInfo.getData(), MyStudentInfo.class);
+                if (myStudentInfos != null) {
+                    view.getStudentDetailReportSuccess(myStudentInfos, request_state);
+                }
+            }
+
+            @Override
+            public void onError(String msg) {
+                view.showTip(msg);
+            }
+        });
+    }
 
     @Override
     public void showLoading(Context context, View emptyView) {
@@ -67,23 +95,4 @@ public class StudentDetailReportPresenter extends BasePresenterImpl<StudentDetai
         emptyView = null;
     }
 
-    @Override
-    public void getStudentDetail(String userId, String type, String page, int request_state) {
-        studentDetailReportModel.getStudentDetailReport(userId, type, page, new ObserverListener() {
-            @Override
-            public void onSubscribe(Disposable disposable) {
-
-            }
-
-            @Override
-            public void onNext(Object result) {
-
-            }
-
-            @Override
-            public void onError(String msg) {
-
-            }
-        });
-    }
 }

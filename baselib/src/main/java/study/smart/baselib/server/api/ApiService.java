@@ -3,10 +3,11 @@ package study.smart.baselib.server.api;
 import com.alibaba.fastjson.JSONObject;
 
 import study.smart.baselib.entity.DataListInfo;
-import study.smart.baselib.entity.MyTalkRecordInfo;
+import study.smart.baselib.entity.MyStudentInfo;
 import study.smart.baselib.entity.QaDetailInfo;
 import study.smart.baselib.entity.ResponseInfo;
 import study.smart.baselib.entity.StudentPageInfo;
+import study.smart.baselib.entity.TaskDetailInfo;
 import study.smart.baselib.entity.TeacherInfo;
 import study.smart.baselib.entity.TokenBean;
 import study.smart.baselib.entity.VersionInfo;
@@ -146,6 +147,17 @@ public interface ApiService {
     @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
     Observable<ResponseInfo<String>> getMessageList(@HeaderMap Map<String, String> header);
 
+
+    /**
+     * 获取留学中心
+     *
+     * @param header
+     * @return
+     */
+    @GET(HttpUrlUtils.WORKBENCH_CENTER_LIST)
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
+    Observable<ResponseInfo<String>> getCenterList(@HeaderMap Map<String, String> header);
+
     /**
      * 为完成沟通记录
      *
@@ -185,6 +197,16 @@ public interface ApiService {
     @GET(HttpUrlUtils.WORKBENCH_COMPLETE_LIST)
     @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
     Observable<ResponseInfo<String>> getMyTalkRecordList(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+
+    /**
+     * 获取我发布任务列表
+     *
+     * @param header
+     * @return
+     */
+    @GET(HttpUrlUtils.WORKBENCH_TASK_LIST)
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
+    Observable<ResponseInfo<String>> getMyTaskList(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
 
     /**
@@ -269,6 +291,21 @@ public interface ApiService {
     @GET()
     @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
     Observable<ResponseInfo<String>> getMyStudentTag(@HeaderMap Map<String, String> header, @Url() String url);
+
+
+    /**
+     * 获取消息详情
+     */
+    @GET()
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
+    Observable<ResponseInfo<TaskDetailInfo>> getMessageDetail(@HeaderMap Map<String, String> header, @Url() String url);
+
+    /**
+     * 获取消息详情
+     */
+    @GET()
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
+    Observable<ResponseInfo<MyStudentInfo>> getStudentDetail(@HeaderMap Map<String, String> header, @Url() String url);
 
 
     /**

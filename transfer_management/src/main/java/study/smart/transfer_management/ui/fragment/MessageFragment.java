@@ -1,11 +1,13 @@
 package study.smart.transfer_management.ui.fragment;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -82,7 +84,14 @@ public class MessageFragment extends UIFragment<TransferManagerMessageContract.P
                 holder.setText(R.id.tv_content, messageInfo.getContent());
                 holder.setText(R.id.tv_time, messageInfo.getCreatedAtText());
                 TextView tvCount = holder.getView(R.id.tv_count);
-                holder.setCircleImageUrl(R.id.iv_logo, messageInfo.getImageUrl(), true);
+                ImageView ivLogo = holder.getView(R.id.iv_logo);
+                if ("TASK_TRAINING".equals(messageInfo.getType())) {
+                    DisplayImageUtils.displayCircleImage(mActivity, R.drawable.transfer_task_manager, ivLogo);
+                } else if ("TRANSFER_CASE".equals(messageInfo.getType())) {
+                    DisplayImageUtils.displayCircleImage(mActivity, R.drawable.transfer_icon_manager, ivLogo);
+                } else {
+                    DisplayImageUtils.displayCircleImage(mActivity, R.drawable.transfer_student_manager, ivLogo);
+                }
                 if (messageInfo.getUnReadCount() > 99) {
                     tvCount.setText("99+");
                     tvCount.setBackgroundResource(R.drawable.bg_message_count_border9);
@@ -97,7 +106,7 @@ public class MessageFragment extends UIFragment<TransferManagerMessageContract.P
         mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                startActivity(new Intent(mActivity, TransferManagerMessageDetailActivity.class).putExtra("type",messageInfos.get(position).getType()));
+                startActivity(new Intent(mActivity, TransferManagerMessageDetailActivity.class).putExtra("type", messageInfos.get(position).getType()));
             }
 
             @Override

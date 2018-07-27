@@ -68,6 +68,7 @@ public class MyTalkRecordActivity extends BaseActivity<MyTalkRecordContract.Pres
 
     @Override
     public void initView() {
+        setTitle("我发布的沟通记录");
         recyclerView = findViewById(R.id.rv_talk);
         recyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);

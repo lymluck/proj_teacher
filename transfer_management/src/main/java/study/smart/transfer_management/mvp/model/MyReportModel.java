@@ -24,7 +24,7 @@ public class MyReportModel extends BaseModel {
         HashMap<String, String> params = new HashMap<>();
         params.put("type", type);
         params.put("page", page);
-        params.put("isOwnReport","true");
+        params.put("isOwnReport", "true");
         apiSubscribe(ApiManager.getApiService().getMyReportList(getHeadersMap(), params), listener);
     }
 }

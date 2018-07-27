@@ -1,4 +1,4 @@
-package study.smart.transfer_management.entity;
+package study.smart.baselib.entity;
 
 import java.io.Serializable;
 

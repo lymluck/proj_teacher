@@ -12,19 +12,20 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
-import study.smart.baselib.entity.MessageDetailItemInfo;
 import study.smart.baselib.ui.adapter.CommonAdapter;
 import study.smart.baselib.ui.adapter.MultiItemTypeAdapter;
 import study.smart.baselib.ui.adapter.base.ViewHolder;
 import study.smart.baselib.ui.adapter.wrapper.EmptyWrapper;
 import study.smart.baselib.ui.adapter.wrapper.LoadMoreWrapper;
 import study.smart.baselib.ui.base.BaseActivity;
+import study.smart.baselib.ui.widget.HorizontalDividerItemDecoration;
 import study.smart.baselib.ui.widget.LoadMoreRecyclerView;
 import study.smart.baselib.ui.widget.NoScrollLinearLayoutManager;
+import study.smart.baselib.utils.DensityUtils;
 import study.smart.baselib.utils.ParameterUtils;
 import study.smart.baselib.utils.ToastUtils;
 import study.smart.transfer_management.R;
-import study.smart.transfer_management.entity.MyStudentInfo;
+import study.smart.baselib.entity.MyStudentInfo;
 import study.smart.transfer_management.mvp.contract.UnTalkRecordContract;
 import study.smart.transfer_management.mvp.presenter.UnTalkRecordListPresenter;
 
@@ -77,6 +78,8 @@ public class UnTalkRecordActivity extends BaseActivity<UnTalkRecordContract.Pres
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rclvTalkDetail.setLayoutManager(mLayoutManager);
         rclvTalkDetail.setItemAnimator(new DefaultItemAnimator());
+        rclvTalkDetail.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
+            .size(DensityUtils.dip2px(0.5f)).margin(DensityUtils.dip2px(16f), 0).colorResId(R.color.horizontal_line_color).build());
         initAdapter();
         emptyView = getLayoutInflater().inflate(R.layout.layout_empty, rclvTalkDetail,
             false);
@@ -142,12 +145,25 @@ public class UnTalkRecordActivity extends BaseActivity<UnTalkRecordContract.Pres
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 startActivity(new Intent(UnTalkRecordActivity.this, StudentDetailActivity.class)
                     .putExtra("studentInfo", myStudentInfos.get(position))
-                    .putExtra("from", "student"));
+                    .putExtra("from", "talk"));
             }
 
             @Override
             public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
                 return false;
+            }
+        });
+
+        //加载更多
+        rclvTalkDetail.SetOnLoadMoreLister(new LoadMoreRecyclerView.OnLoadMoreListener() {
+            @Override
+            public void OnLoad() {
+                if (srltTalkDetail.isRefreshing()) {
+                    rclvTalkDetail.loadComplete(true);
+                    return;
+                }
+                mPage = mPage + 1;
+                presenter.getUnTalkList(mPage + "", ParameterUtils.PULL_UP);
             }
         });
     }

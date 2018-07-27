@@ -1,5 +1,6 @@
 package study.smart.baselib.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */
-public class MessageDetailItemInfo {
+public class MessageDetailItemInfo implements Serializable {
     private String id;
     private String userId;
     private String userType;
@@ -156,7 +157,7 @@ public class MessageDetailItemInfo {
     }
 
 
-    public class DetailData {
+    public class DetailData implements Serializable {
         private String name;
         private String startTime;
         private String endTime;

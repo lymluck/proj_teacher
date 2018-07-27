@@ -1,12 +1,10 @@
 package study.smart.transfer_management.mvp.presenter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import java.util.List;
@@ -18,7 +16,7 @@ import study.smart.baselib.mvp.base.BasePresenterImpl;
 import study.smart.baselib.utils.DisplayImageUtils;
 import study.smart.baselib.utils.Utils;
 import study.smart.transfer_management.R;
-import study.smart.transfer_management.entity.MyStudentInfo;
+import study.smart.baselib.entity.MyStudentInfo;
 import study.smart.transfer_management.mvp.contract.UncompeleteReportContract;
 import study.smart.transfer_management.mvp.model.UnCompeleteReportModel;
 
@@ -51,16 +49,13 @@ public class UnCompeleteReportPresenter extends BasePresenterImpl<UncompeleteRep
         unCompeleteReportModel.getUnCompeleteReport(type, page, new ObserverListener<DataListInfo>() {
             @Override
             public void onSubscribe(Disposable disposable) {
-
                 addDisposable(disposable);
             }
 
             @Override
             public void onNext(DataListInfo dataListInfo) {
                 List<MyStudentInfo> myStudentInfos = JSONObject.parseArray(dataListInfo.getData(), MyStudentInfo.class);
-                if (myStudentInfos != null) {
-                    view.getUncompeleteReportSuccess(myStudentInfos, request_state);
-                }
+                view.getUncompeleteReportSuccess(myStudentInfos, request_state);
             }
 
             @Override

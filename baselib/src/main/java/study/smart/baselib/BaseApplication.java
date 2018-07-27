@@ -11,6 +11,7 @@ import study.smart.baselib.base.manager.CrashHandler;
 import study.smart.baselib.manager.AppManager;
 import study.smart.baselib.ui.provider.MyConversationListProvider;
 import study.smart.baselib.ui.provider.MyTextMessageItemProvider;
+
 import com.smartstudy.router.Router;
 
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
 import cn.jpush.android.api.JPushInterface;
 import io.rong.imkit.RongIM;
 import io.rong.push.RongPushClient;
+import study.smart.baselib.utils.Utils;
 
 
 /**
@@ -48,8 +50,15 @@ public class BaseApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         if (getProcessName(this).equals(getPackageName())) {
-
-            CrashHandler.getInstance().init(this);
+            if (Utils.isApkInDebug()) {
+                // jpush debug
+                JPushInterface.setDebugMode(true);
+                // 禁止极光捕获crash
+                JPushInterface.stopCrashHandler(this);
+            } else {
+                // 捕获闪退日志
+                CrashHandler.getInstance().init(this);
+            }
             appContext = this;
             //注册容云组件
             initRong();

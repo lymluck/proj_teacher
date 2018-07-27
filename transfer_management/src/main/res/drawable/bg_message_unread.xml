@@ -7,7 +7,7 @@
     <solid android:color="#FF4D4F" />
     <padding
         android:bottom="1dp"
-        android:left="5dp"
-        android:right="5dp"
+        android:left="6dp"
+        android:right="6dp"
         android:top="1dp" />
 </shape>

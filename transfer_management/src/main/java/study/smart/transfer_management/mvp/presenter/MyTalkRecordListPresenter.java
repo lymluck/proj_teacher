@@ -1,28 +1,22 @@
 package study.smart.transfer_management.mvp.presenter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
-import study.smart.baselib.entity.DataListInfo;
 import study.smart.baselib.entity.MyTalkRecordInfo;
 import study.smart.baselib.listener.ObserverListener;
 import study.smart.baselib.mvp.base.BasePresenterImpl;
 import study.smart.baselib.utils.DisplayImageUtils;
 import study.smart.baselib.utils.Utils;
 import study.smart.transfer_management.R;
-import study.smart.transfer_management.entity.MyStudentInfo;
-import study.smart.transfer_management.mvp.contract.MyReportContract;
 import study.smart.transfer_management.mvp.contract.MyTalkRecordContract;
-import study.smart.transfer_management.mvp.model.MyReportModel;
 import study.smart.transfer_management.mvp.model.MyTalkRecordListModel;
 
 /**

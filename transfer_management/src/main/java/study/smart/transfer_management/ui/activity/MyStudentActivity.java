@@ -1,9 +1,11 @@
 package study.smart.transfer_management.ui.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -29,7 +31,7 @@ import study.smart.baselib.utils.DensityUtils;
 import study.smart.baselib.utils.ParameterUtils;
 import study.smart.baselib.utils.ScreenUtils;
 import study.smart.transfer_management.R;
-import study.smart.transfer_management.entity.MyStudentInfo;
+import study.smart.baselib.entity.MyStudentInfo;
 import study.smart.transfer_management.mvp.contract.TransferMyStudentContract;
 import study.smart.transfer_management.mvp.presenter.TransferMyStudentPresenter;
 
@@ -54,6 +56,7 @@ public class MyStudentActivity extends BaseActivity<TransferMyStudentContract.Pr
     private int mPage = 1;
     private boolean canPullUp;
     private String from;
+    private String centerId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +71,13 @@ public class MyStudentActivity extends BaseActivity<TransferMyStudentContract.Pr
 
     @Override
     public void initView() {
-        setTitle("我的学员");
         from = getIntent().getStringExtra("from");
+        if ("compelete_student".equals(from)) {
+            setTitle("待完善信息学员");
+        } else {
+            setTitle("我的学员");
+        }
+        centerId = getIntent().getStringExtra("centerId");
         isFirstLoad = true;
         searchView = findViewById(R.id.searchView);
         lmrvStudent = findViewById(R.id.rclv_student);
@@ -83,7 +91,7 @@ public class MyStudentActivity extends BaseActivity<TransferMyStudentContract.Pr
         initAdapter();
         emptyView = mInflater.inflate(R.layout.layout_empty, lmrvStudent, false);
         presenter.showLoading(this, emptyView);
-        getStudentList();
+        getStudentList(centerId);
     }
 
     private void initAdapter() {
@@ -103,13 +111,29 @@ public class MyStudentActivity extends BaseActivity<TransferMyStudentContract.Pr
         mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                startActivity(new Intent(MyStudentActivity.this, StudentDetailActivity.class)
-                    .putExtra("studentInfo", myStudentInfos.get(position))
-                    .putExtra("from", "student"));
+                if ("TASK_TRANSFER_MANAGER".equals(from)) {
+                    startActivity(new Intent(MyStudentActivity.this, MyTaskListActivity.class)
+                        .putExtra("from", "student")
+                        .putExtra("id", myStudentInfos.get(position).getUserId())
+                        .putExtra("name", myStudentInfos.get(position).getName()));
+                } else if ("REPORT_TRANSFER_MANAGER".equals(from)) {
+                    startActivity(new Intent(MyStudentActivity.this, StudentDetailReportActivity.class)
+                        .putExtra("id", myStudentInfos.get(position).getUserId())
+                        .putExtra("name", myStudentInfos.get(position).getName()));
+                } else if ("STUDENT_TRANSFER_MANAGER".equals(from) || "compelete_student".equals(from)) {
+                    startActivity(new Intent(MyStudentActivity.this, StudentDetailActivity.class)
+                        .putExtra("studentInfo", myStudentInfos.get(position))
+                        .putExtra("from", from));
+                } else {
+                    startActivity(new Intent(MyStudentActivity.this, StudentDetailTalkActivity.class)
+                        .putExtra("id", myStudentInfos.get(position).getUserId())
+                        .putExtra("name", myStudentInfos.get(position).getName()));
+                }
             }
 
             @Override
-            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder,
+                                           int position) {
                 return false;
             }
         });
@@ -163,19 +187,34 @@ public class MyStudentActivity extends BaseActivity<TransferMyStudentContract.Pr
             public void OnLoad() {
                 if (canPullUp) {
                     mPage = mPage + 1;
-                    if ("my_student".equals(from)) {
-                        presenter.getMyStudent(mPage + "", ParameterUtils.PULL_UP);
-                    } else if ("compelete_student".equals(from)) {
+                    if ("compelete_student".equals(from)) {
                         presenter.getCompeleteStudent(mPage + "", ParameterUtils.PULL_UP);
+                    } else {
+                        presenter.getMyStudent(mPage + "", centerId, ParameterUtils.PULL_UP);
                     }
                     canPullUp = false;
+                }
+            }
+        });
+
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent toSearch = new Intent(MyStudentActivity.this, CommonSearchActivity.class);
+                toSearch.putExtra(ParameterUtils.TRANSITION_FLAG, from);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    startActivity(toSearch, ActivityOptionsCompat.makeSceneTransitionAnimation(MyStudentActivity.this,
+                        searchView, "btn_tr").toBundle());
+                } else {
+                    startActivity(toSearch);
                 }
             }
         });
     }
 
     @Override
-    public void getTransferStudentSuccess(List<MyStudentInfo> myStudentInfos, int request_state) {
+    public void getTransferStudentSuccess(List<MyStudentInfo> myStudentInfos,
+                                          int request_state) {
         if (presenter != null) {
             // 右上角按钮逻辑
             presenter.setEmptyView(emptyView);
@@ -230,11 +269,11 @@ public class MyStudentActivity extends BaseActivity<TransferMyStudentContract.Pr
         isFirstLoad = false;
     }
 
-    private void getStudentList() {
-        if ("my_student".equals(from)) {
-            presenter.getMyStudent(mPage + "", ParameterUtils.PULL_DOWN);
-        } else if ("compelete_student".equals(from)) {
+    private void getStudentList(String centerId) {
+        if ("compelete_student".equals(from)) {
             presenter.getCompeleteStudent(mPage + "", ParameterUtils.PULL_DOWN);
+        } else {
+            presenter.getMyStudent(mPage + "", centerId, ParameterUtils.PULL_DOWN);
         }
     }
 }

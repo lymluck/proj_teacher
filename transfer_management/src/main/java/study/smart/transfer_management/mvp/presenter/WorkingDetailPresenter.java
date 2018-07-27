@@ -18,6 +18,7 @@ import study.smart.baselib.mvp.base.BasePresenterImpl;
 import study.smart.baselib.utils.DisplayImageUtils;
 import study.smart.baselib.utils.Utils;
 import study.smart.transfer_management.R;
+import study.smart.transfer_management.entity.CenterInfo;
 import study.smart.transfer_management.entity.WorkingDetailInfo;
 import study.smart.transfer_management.mvp.contract.TransferManagerListContract;
 import study.smart.transfer_management.mvp.contract.WorkingDetailContract;
@@ -48,27 +49,24 @@ public class WorkingDetailPresenter extends BasePresenterImpl<WorkingDetailContr
     }
 
     @Override
-    public void getWorkingDetail() {
-        workingDetailModel.getWorkingDetail(new ObserverListener() {
+    public void getCenter() {
+        workingDetailModel.getCenter(new ObserverListener<String>() {
             @Override
             public void onSubscribe(Disposable disposable) {
                 addDisposable(disposable);
             }
 
             @Override
-            public void onNext(Object result) {
-                WorkingDetailInfo info = new WorkingDetailInfo();
-                List<WorkingDetailInfo> workingDetailInfos = new ArrayList<>();
-                workingDetailInfos.add(info);
-                workingDetailInfos.add(info);
-                workingDetailInfos.add(info);
-                workingDetailInfos.add(info);
-                view.getWorkingDetail(workingDetailInfos);
+            public void onNext(String result) {
+                List<CenterInfo> centerInfos = JSONObject.parseArray(result, CenterInfo.class);
+                if (centerInfos != null) {
+                    view.getCenterSuccess(centerInfos);
+                }
             }
 
             @Override
             public void onError(String msg) {
-
+                view.showTip(msg);
             }
         });
     }

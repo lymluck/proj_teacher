@@ -22,7 +22,7 @@
             app:pstsDividerColor="@color/transparent"
             app:pstsIndicatorColor="@color/app_main_color"
             app:pstsIndicatorHeight="2dp"
-            app:pstsIndicatorMargin="50dp"
+            app:pstsIndicatorMargin="25dp"
             app:pstsScaleZoomMax="0.1"
             app:pstsShouldExpand="true"
             app:pstsSmoothScrollWhenClickTab="false"

@@ -6,7 +6,7 @@ import java.util.List;
 
 import study.smart.baselib.mvp.base.BasePresenter;
 import study.smart.baselib.mvp.base.BaseView;
-import study.smart.transfer_management.entity.MyStudentInfo;
+import study.smart.baselib.entity.MyStudentInfo;
 
 /**
  * @author yqy
@@ -17,13 +17,13 @@ import study.smart.transfer_management.entity.MyStudentInfo;
  */
 public interface StudentDetailReportContract {
     interface View extends BaseView {
-        void getStudentDetailSuccess(List<MyStudentInfo> myStudentInfos, int request_state);
+        void getStudentDetailReportSuccess(List<MyStudentInfo> myStudentInfos, int request_state);
 
         void showEmptyView(android.view.View view);
     }
 
     interface Presenter extends BasePresenter {
-        void getStudentDetail(String userId, String type, String page, int request_state);
+        void getStudentDetailReport(String userId, String type, String page, int request_state);
 
         void showLoading(Context context, android.view.View emptyView);
 

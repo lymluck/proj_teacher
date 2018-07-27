@@ -6,7 +6,7 @@ import java.util.List;
 
 import study.smart.baselib.mvp.base.BasePresenter;
 import study.smart.baselib.mvp.base.BaseView;
-import study.smart.transfer_management.entity.MyStudentInfo;
+import study.smart.baselib.entity.MyStudentInfo;
 
 /**
  * @author yqy

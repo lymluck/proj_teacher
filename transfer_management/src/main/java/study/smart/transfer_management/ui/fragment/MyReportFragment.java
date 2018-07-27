@@ -1,6 +1,5 @@
 package study.smart.transfer_management.ui.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -22,13 +21,13 @@ import study.smart.baselib.ui.widget.LoadMoreRecyclerView;
 import study.smart.baselib.ui.widget.NoScrollLinearLayoutManager;
 import study.smart.baselib.utils.DensityUtils;
 import study.smart.baselib.utils.ParameterUtils;
+import study.smart.baselib.utils.TimeUtil;
 import study.smart.baselib.utils.ToastUtils;
 import study.smart.transfer_management.R;
-import study.smart.transfer_management.entity.MyStudentInfo;
+import study.smart.baselib.entity.MyStudentInfo;
 import study.smart.transfer_management.entity.StateInfo;
 import study.smart.transfer_management.mvp.contract.MyReportContract;
 import study.smart.transfer_management.mvp.presenter.MyReportPresenter;
-import study.smart.transfer_management.ui.activity.StudentDetailActivity;
 
 /**
  * @author yqy
@@ -48,6 +47,8 @@ public class MyReportFragment extends UIFragment<MyReportContract.Presenter> imp
     private List<MyStudentInfo> myStudentInfos;
     private CommonAdapter<MyStudentInfo> mAdapter;
     private LoadMoreWrapper<MyStudentInfo> loadMoreWrapper;
+    private String from;
+    private String userId;
 
     public static MyReportFragment getInstance(Bundle bundle) {
         MyReportFragment fragment = new MyReportFragment();
@@ -89,10 +90,12 @@ public class MyReportFragment extends UIFragment<MyReportContract.Presenter> imp
         lmrvReport.setLayoutManager(mLayoutManager);
         lmrvReport.setItemAnimator(new DefaultItemAnimator());
         lmrvReport.addItemDecoration(new HorizontalDividerItemDecoration.Builder(mActivity)
-            .size(DensityUtils.dip2px(0.5f)).margin(DensityUtils.dip2px(40f), 0)
+            .size(DensityUtils.dip2px(0.5f))
             .colorResId(R.color.main_bg)
             .build());
         initAdapter();
+        from = getArguments().getString("from");
+        userId = getArguments().getString("id");
         stateInfo = getArguments().getParcelable("stateInfos");
     }
 
@@ -176,7 +179,7 @@ public class MyReportFragment extends UIFragment<MyReportContract.Presenter> imp
                     holder.setText(R.id.tv_name, String.format(getString(R.string.name_report), myStudentInfo.getUserName(), myStudentInfo.getTypeTEXT()));
                 }
                 holder.setText(R.id.tv_center_name, myStudentInfo.getCenterName());
-                holder.setText(R.id.tv_publish_time, myStudentInfo.getPublishTime());
+                holder.setText(R.id.tv_publish_time, TimeUtil.getStrTime(myStudentInfo.getPublishTime()));
             }
         };
         emptyWrapper = new EmptyWrapper<>(mAdapter);
@@ -198,7 +201,7 @@ public class MyReportFragment extends UIFragment<MyReportContract.Presenter> imp
         mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                startActivity(new Intent(mActivity, StudentDetailActivity.class).putExtra("studentInfo", myStudentInfos.get(position)).putExtra("from", "report"));
+//                startActivity(new Intent(mActivity, StudentDetailActivity.class).putExtra("studentInfo", myStudentInfos.get(position)).putExtra("from", "report"));
             }
 
             @Override

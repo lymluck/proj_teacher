@@ -16,11 +16,9 @@ import study.smart.baselib.mvp.base.BasePresenterImpl;
 import study.smart.baselib.utils.DisplayImageUtils;
 import study.smart.baselib.utils.Utils;
 import study.smart.transfer_management.R;
-import study.smart.transfer_management.entity.MyStudentInfo;
+import study.smart.baselib.entity.MyStudentInfo;
 import study.smart.transfer_management.mvp.contract.MyReportContract;
-import study.smart.transfer_management.mvp.contract.UncompeleteReportContract;
 import study.smart.transfer_management.mvp.model.MyReportModel;
-import study.smart.transfer_management.mvp.model.UnCompeleteReportModel;
 
 /**
  * @author yqy

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
+
+    <TextView
+        android:id="@+id/tv_message"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:gravity="center_vertical"
+        android:text="沟通信息"
+        android:textColor="@color/app_text_color2"
+        android:textSize="17sp" />
+
+    <View
+        android:id="@+id/v_message"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@+id/tv_message"
+        android:background="#E4E5E6" />
+
+    <LinearLayout
+        android:id="@+id/ll_rccord_name"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@+id/v_message"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="84dp"
+            android:layout_height="wrap_content"
+            android:text="记录名称"
+            android:textColor="@color/app_text_color2"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_rccord_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/app_text_color"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/v_rccord_name"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@+id/ll_rccord_name"
+        android:background="#E4E5E6" />
+
+    <LinearLayout
+        android:id="@+id/ll_user_type"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@+id/v_rccord_name"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="84dp"
+            android:layout_height="wrap_content"
+            android:text="沟通对象"
+            android:textColor="@color/app_text_color2"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_user_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/app_text_color"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/v_user_type"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@+id/ll_user_type"
+        android:background="#E4E5E6" />
+
+    <LinearLayout
+        android:id="@+id/ll_method"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@+id/v_user_type"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="84dp"
+            android:layout_height="wrap_content"
+            android:text="沟通方式"
+            android:textColor="@color/app_text_color2"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_method"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/app_text_color"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/v_method"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@+id/ll_method"
+        android:background="#E4E5E6" />
+
+    <LinearLayout
+        android:id="@+id/ll_contact_type"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@+id/v_method"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="84dp"
+            android:layout_height="wrap_content"
+            android:text="沟通类型"
+            android:textColor="@color/app_text_color2"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_contact_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/app_text_color"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/v_contact_type"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@+id/ll_contact_type"
+        android:background="#E4E5E6" />
+
+    <LinearLayout
+        android:id="@+id/ll_reason"
+        android:layout_below="@+id/v_contact_type"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="84dp"
+            android:layout_height="wrap_content"
+            android:text="来访原因"
+            android:textColor="@color/app_text_color2"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_reason"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/app_text_color"
+            android:textSize="15sp" />
+    </LinearLayout>
+</RelativeLayout>

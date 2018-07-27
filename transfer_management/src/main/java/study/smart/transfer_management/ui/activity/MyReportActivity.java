@@ -12,6 +12,7 @@ import study.smart.baselib.ui.base.UIFragment;
 import study.smart.baselib.ui.widget.PagerSlidingTabStrip;
 import study.smart.transfer_management.R;
 import study.smart.transfer_management.entity.StateInfo;
+import study.smart.transfer_management.ui.adapter.MyReportAdapter;
 import study.smart.transfer_management.ui.adapter.UnCompeleteReportAdapter;
 import study.smart.transfer_management.ui.fragment.MyReportFragment;
 import study.smart.transfer_management.ui.fragment.UnCompeleteReportFragment;
@@ -60,7 +61,7 @@ public class MyReportActivity extends BaseActivity {
             bundle.putParcelable("stateInfos", stateInfos.get(i));
             fragments.add(MyReportFragment.getInstance(bundle));
         }
-        pagerReport.setAdapter(new UnCompeleteReportAdapter(getSupportFragmentManager(), stateInfos, fragments));
+        pagerReport.setAdapter(new MyReportAdapter(getSupportFragmentManager(), stateInfos, fragments));
         pagerReport.setOffscreenPageLimit(stateInfos.size());
         PagerSlidingTabStrip rankTabs = findViewById(R.id.tabs_report);
         rankTabs.setViewPager(pagerReport);

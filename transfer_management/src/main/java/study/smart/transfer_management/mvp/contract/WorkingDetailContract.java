@@ -7,6 +7,7 @@ import java.util.List;
 import study.smart.baselib.entity.MessageDetailItemInfo;
 import study.smart.baselib.mvp.base.BasePresenter;
 import study.smart.baselib.mvp.base.BaseView;
+import study.smart.transfer_management.entity.CenterInfo;
 import study.smart.transfer_management.entity.WorkingDetailInfo;
 
 /**
@@ -18,13 +19,10 @@ import study.smart.transfer_management.entity.WorkingDetailInfo;
  */
 public interface WorkingDetailContract {
     interface View extends BaseView {
-
-        void getWorkingDetail(List<WorkingDetailInfo> messageDetailItemInfos);
-
-
+        void getCenterSuccess(List<CenterInfo> centerInfo);
     }
 
     interface Presenter extends BasePresenter {
-        void getWorkingDetail();
+        void getCenter();
     }
 }

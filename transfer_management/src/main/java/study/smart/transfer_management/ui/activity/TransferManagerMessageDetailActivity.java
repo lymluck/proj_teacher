@@ -6,8 +6,11 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +22,9 @@ import study.smart.baselib.ui.adapter.wrapper.LoadMoreWrapper;
 import study.smart.baselib.ui.base.BaseActivity;
 import study.smart.baselib.ui.widget.LoadMoreRecyclerView;
 import study.smart.baselib.ui.widget.NoScrollLinearLayoutManager;
+import study.smart.baselib.utils.DisplayImageUtils;
 import study.smart.baselib.utils.ParameterUtils;
+import study.smart.baselib.utils.TimeUtil;
 import study.smart.baselib.utils.ToastUtils;
 import study.smart.transfer_management.R;
 import study.smart.baselib.entity.MessageDetailItemInfo;
@@ -135,6 +140,7 @@ public class TransferManagerMessageDetailActivity extends BaseActivity<TransferM
             @Override
             protected void convert(ViewHolder holder, MessageDetailItemInfo messageDetailItemInfo, int position) {
                 //转案和学员模块
+                ImageView ivLogo = holder.getView(R.id.iv_logo);
                 if (messageDetailItemInfo.getType().equals("TRANSFER_CASE") || messageDetailItemInfo.getType().equals("ARCHIVE")) {
                     holder.getView(R.id.ll_trnsfer).setVisibility(View.VISIBLE);
                     holder.getView(R.id.ll_train).setVisibility(View.GONE);
@@ -146,18 +152,24 @@ public class TransferManagerMessageDetailActivity extends BaseActivity<TransferM
                     holder.setText(R.id.tv_product, messageDetailItemInfo.getData().getServiceProductNames());
                     holder.setText(R.id.tv_year_season, messageDetailItemInfo.getData().getTargetApplicationYearSeason());
                     holder.setText(R.id.tv_contractor, messageDetailItemInfo.getData().getContractor());
-                    holder.setText(R.id.tv_signed_time, messageDetailItemInfo.getData().getSignedTime());
+                    holder.setText(R.id.tv_signed_time, TimeUtil.getStrTime(messageDetailItemInfo.getData().getSignedTime()));
+                    if ("TRANSFER_CASE".equals(messageDetailItemInfo.getType())) {
+                        DisplayImageUtils.displayCircleImage(TransferManagerMessageDetailActivity.this, study.smart.baselib.R.drawable.transfer_icon_manager, ivLogo);
+                    } else {
+                        DisplayImageUtils.displayCircleImage(TransferManagerMessageDetailActivity.this, study.smart.baselib.R.drawable.transfer_student_manager, ivLogo);
+                    }
                 } else {
+                    DisplayImageUtils.displayCircleImage(TransferManagerMessageDetailActivity.this, study.smart.baselib.R.drawable.transfer_task_manager, ivLogo);
                     holder.getView(R.id.ll_trnsfer).setVisibility(View.GONE);
                     holder.getView(R.id.ll_train).setVisibility(View.VISIBLE);
                     holder.setText(R.id.tv_content, messageDetailItemInfo.getContent());
                     holder.setText(R.id.tv_type, messageDetailItemInfo.getData().getTypeText());
-                    holder.setText(R.id.tv_start_time, messageDetailItemInfo.getData().getStartTime());
-                    holder.setText(R.id.tv_end_time, messageDetailItemInfo.getData().getEndTime());
+                    holder.setText(R.id.tv_start_time, TimeUtil.getStrTime(messageDetailItemInfo.getData().getStartTime()));
+                    holder.setText(R.id.tv_end_time, TimeUtil.getStrTime(messageDetailItemInfo.getData().getEndTime()));
                 }
-                if(messageDetailItemInfo.isRead()){
+                if (messageDetailItemInfo.isRead()) {
                     holder.getView(R.id.v_state).setVisibility(View.GONE);
-                }else{
+                } else {
                     holder.getView(R.id.v_state).setVisibility(View.VISIBLE);
                 }
             }
@@ -202,6 +214,13 @@ public class TransferManagerMessageDetailActivity extends BaseActivity<TransferM
                     intent.putExtra("order_state", order_state);
                     intent.setClass(TransferManagerMessageDetailActivity.this, TransferManagerDetailActivity.class);
                     startActivity(intent);
+                } else if ("TASK_TRAINING".equals(type)) {
+                    //任务训练
+                    startActivity(new Intent(TransferManagerMessageDetailActivity.this, TaskDetailActivity.class).putExtra("id", messageDetailItemInfos.get(position).getId()));
+                } else {
+                    startActivity(new Intent(TransferManagerMessageDetailActivity.this, StudentDetailActivity.class)
+                        .putExtra("id", messageDetailItemInfos.get(position).getId())
+                        .putExtra("from", "message"));
                 }
             }
 

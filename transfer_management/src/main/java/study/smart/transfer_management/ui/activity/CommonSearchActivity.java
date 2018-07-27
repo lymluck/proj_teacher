@@ -29,6 +29,7 @@ import java.util.List;
 import study.smart.baselib.R;
 import study.smart.baselib.entity.ChatUserInfo;
 import study.smart.baselib.entity.MessageDetailItemInfo;
+import study.smart.baselib.entity.MyStudentInfo;
 import study.smart.baselib.entity.TransferManagerEntity;
 import study.smart.baselib.mvp.contract.CommonSearchContract;
 import study.smart.baselib.mvp.presenter.CommonSearchPresenter;
@@ -46,6 +47,7 @@ import study.smart.baselib.utils.DensityUtils;
 import study.smart.baselib.utils.DisplayImageUtils;
 import study.smart.baselib.utils.KeyBoardUtils;
 import study.smart.baselib.utils.ParameterUtils;
+import study.smart.baselib.utils.TimeUtil;
 import study.smart.baselib.utils.Utils;
 
 public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Presenter> implements CommonSearchContract.View {
@@ -59,8 +61,10 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
     private NoScrollLinearLayoutManager mLayoutManager;
     private CommonAdapter<TransferManagerEntity> mTransferAdapter;
     private CommonAdapter<MessageDetailItemInfo> msgDetailAdapter;
+    private CommonAdapter<MyStudentInfo> allStudentAdapter;
     private List<TransferManagerEntity> transferManagerEntities;
     private List<MessageDetailItemInfo> messageDetailItemInfos;
+    private List<MyStudentInfo> myStudentInfos;
     private WeakHandler mHandler;
     private int mPage = 1;
     private List<ChatUserInfo> chatUserInfoList;
@@ -107,6 +111,9 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
         if (ParameterUtils.TRANSFER_MANAGER.equals(flag_value)) {
             rclvSearch.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
                 .size(DensityUtils.dip2px(12f)).colorResId(R.color.main_bg).build());
+        } else if (ParameterUtils.MY_ALL_STUDENT.equals(flag_value)) {
+            rclvSearch.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
+                .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.horizontal_line_color).build());
         } else {
             rclvSearch.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
                 .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.horizontal_line_color).build());
@@ -193,6 +200,8 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
             presenter.getTransferManagerList(keyword, mPage, pullTo);
         } else if (ParameterUtils.MSG_DETAIL.equals(flag_value)) {
             presenter.getMsgList(keyword, mPage, pullTo);
+        } else if (ParameterUtils.MY_ALL_STUDENT.equals(flag_value)) {
+            presenter.getAllStudentList(keyword, mPage, pullTo);
         }
     }
 
@@ -300,9 +309,44 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
             initTransferAdapter();
         } else if (ParameterUtils.MSG_DETAIL.equals(flag_value)) {
             initMsgDetailAdapter();
+        } else if (ParameterUtils.MY_ALL_STUDENT.equals(flag_value)) {
+            initAllStudentAdapter();
+        } else {
+            initSchoolAdapter();
         }
         rclvSearch.setAdapter(loadMoreWrapper);
     }
+
+    private void initAllStudentAdapter() {
+        myStudentInfos = new ArrayList<>();
+        allStudentAdapter = new CommonAdapter<MyStudentInfo>(this, R.layout.item_my_student, myStudentInfos) {
+            @Override
+            protected void convert(ViewHolder holder, MyStudentInfo myStudentInfo, int position) {
+                holder.setText(study.smart.transfer_management.R.id.tv_name, myStudentInfo.getName());
+                holder.setText(study.smart.transfer_management.R.id.tv_target_year_season, myStudentInfo.getTargetApplicationYearSeason() + "/" + myStudentInfo.getTargetDegreeName());
+
+            }
+        };
+        emptyWrapper = new EmptyWrapper<>(allStudentAdapter);
+        loadMoreWrapper = new LoadMoreWrapper<>(emptyWrapper);
+        rclvSearch.setAdapter(loadMoreWrapper);
+
+        allStudentAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                startActivity(new Intent(CommonSearchActivity.this, StudentDetailActivity.class)
+                    .putExtra("studentInfo", myStudentInfos.get(position))
+                    .putExtra("from", "STUDENT_TRANSFER_MANAGER"));
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder,
+                                           int position) {
+                return false;
+            }
+        });
+    }
+
 
     private void initMsgDetailAdapter() {
         messageDetailItemInfos = new ArrayList<>();
@@ -310,7 +354,16 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
             @Override
             protected void convert(ViewHolder holder, MessageDetailItemInfo messageDetailItemInfo, int position) {
                 //转案和学员模块
-                if (messageDetailItemInfo.getType().equals("TRANSFER_CASE") || messageDetailItemInfo.getType().equals("ARCHIVE")) {
+                ImageView ivLogo = holder.getView(R.id.iv_logo);
+                if ("TRAINING".equals(messageDetailItemInfo.getType())) {
+                    DisplayImageUtils.displayCircleImage(CommonSearchActivity.this, R.drawable.transfer_task_manager, ivLogo);
+                    holder.getView(study.smart.transfer_management.R.id.ll_trnsfer).setVisibility(View.GONE);
+                    holder.getView(study.smart.transfer_management.R.id.ll_train).setVisibility(View.VISIBLE);
+                    holder.setText(study.smart.transfer_management.R.id.tv_content, messageDetailItemInfo.getContent());
+                    holder.setText(study.smart.transfer_management.R.id.tv_type, messageDetailItemInfo.getData().getTypeText());
+                    holder.setText(study.smart.transfer_management.R.id.tv_start_time, TimeUtil.getStrTime(messageDetailItemInfo.getData().getStartTime()));
+                    holder.setText(study.smart.transfer_management.R.id.tv_end_time, TimeUtil.getStrTime(messageDetailItemInfo.getData().getEndTime()));
+                } else {
                     holder.getView(study.smart.transfer_management.R.id.ll_trnsfer).setVisibility(View.VISIBLE);
                     holder.getView(study.smart.transfer_management.R.id.ll_train).setVisibility(View.GONE);
                     holder.setText(study.smart.transfer_management.R.id.tv_content, messageDetailItemInfo.getContent());
@@ -321,19 +374,17 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
                     holder.setText(study.smart.transfer_management.R.id.tv_product, messageDetailItemInfo.getData().getServiceProductNames());
                     holder.setText(study.smart.transfer_management.R.id.tv_year_season, messageDetailItemInfo.getData().getTargetApplicationYearSeason());
                     holder.setText(study.smart.transfer_management.R.id.tv_contractor, messageDetailItemInfo.getData().getContractor());
-                    holder.setText(study.smart.transfer_management.R.id.tv_signed_time, messageDetailItemInfo.getData().getSignedTime());
-                } else {
-                    holder.getView(study.smart.transfer_management.R.id.ll_trnsfer).setVisibility(View.GONE);
-                    holder.getView(study.smart.transfer_management.R.id.ll_train).setVisibility(View.VISIBLE);
-                    holder.setText(study.smart.transfer_management.R.id.tv_content, messageDetailItemInfo.getContent());
-                    holder.setText(study.smart.transfer_management.R.id.tv_type, messageDetailItemInfo.getData().getTypeText());
-                    holder.setText(study.smart.transfer_management.R.id.tv_start_time, messageDetailItemInfo.getData().getStartTime());
-                    holder.setText(study.smart.transfer_management.R.id.tv_end_time, messageDetailItemInfo.getData().getEndTime());
+                    holder.setText(study.smart.transfer_management.R.id.tv_signed_time, TimeUtil.getStrTime(messageDetailItemInfo.getData().getSignedTime()));
+                    if ("TRANSFER_CASE".equals(messageDetailItemInfo.getType())) {
+                        DisplayImageUtils.displayCircleImage(CommonSearchActivity.this, R.drawable.transfer_icon_manager, ivLogo);
+                    } else {
+                        DisplayImageUtils.displayCircleImage(CommonSearchActivity.this, R.drawable.transfer_student_manager, ivLogo);
+                    }
                 }
                 if (messageDetailItemInfo.isRead()) {
-                    holder.getView(study.smart.transfer_management.R.id.v_state).setVisibility(View.GONE);
+                    holder.getView(R.id.v_state).setVisibility(View.GONE);
                 } else {
-                    holder.getView(study.smart.transfer_management.R.id.v_state).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.v_state).setVisibility(View.VISIBLE);
                 }
             }
         };
@@ -581,12 +632,55 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
         }
     }
 
+    @Override
+    public void getAllStudentListSuccess(List<MyStudentInfo> myStudentInfos, int request_state) {
+        if (presenter != null) {
+            llytTopSearch.setBackgroundResource(R.color.main_bg);
+            presenter.setEmptyView(mInflater, this, rclvSearch);
+            mLayoutManager.setScrollEnabled(true);
+            List datas = getNowList();
+            int len = myStudentInfos.size();
+            if (datas != null) {
+                if (request_state == ParameterUtils.PULL_DOWN) {
+                    //下拉刷新
+                    if (len <= 0) {
+                        rclvSearch.loadComplete(true);
+                        mLayoutManager.setScrollEnabled(false);
+                    }
+                    datas.clear();
+                    datas.addAll(myStudentInfos);
+                    swipeRefreshLayout.setRefreshing(false);
+                    loadMoreWrapper.notifyDataSetChanged();
+                } else if (request_state == ParameterUtils.PULL_UP) {
+                    //上拉加载
+                    if (len <= 0) {
+                        //没有更多内容
+                        if (mPage > 1) {
+                            mPage = mPage - 1;
+                        }
+                        if (datas.size() > 0) {
+                            rclvSearch.loadComplete(false);
+                        } else {
+                            rclvSearch.loadComplete(true);
+                        }
+                    } else {
+                        rclvSearch.loadComplete(true);
+                        datas.addAll(myStudentInfos);
+                        loadMoreWrapper.notifyDataSetChanged();
+                    }
+                }
+            }
+        }
+    }
+
     private List getNowList() {
         //默认搜索学校
         if (ParameterUtils.TRANSFER_MANAGER.equals(flag_value)) {
             return transferManagerEntities;
         } else if (ParameterUtils.MSG_DETAIL.equals(flag_value)) {
             return messageDetailItemInfos;
+        } else if (ParameterUtils.MY_ALL_STUDENT.equals(flag_value)) {
+            return myStudentInfos;
         }
         return chatUserInfoList;
     }

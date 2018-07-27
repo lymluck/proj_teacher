@@ -7,21 +7,17 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 import study.smart.baselib.entity.DataListInfo;
-import study.smart.baselib.entity.TransferManagerEntity;
 import study.smart.baselib.listener.ObserverListener;
 import study.smart.baselib.mvp.base.BasePresenterImpl;
 import study.smart.baselib.utils.DisplayImageUtils;
 import study.smart.baselib.utils.Utils;
 import study.smart.transfer_management.R;
-import study.smart.transfer_management.entity.MyStudentInfo;
-import study.smart.transfer_management.mvp.contract.TransferManagerListContract;
+import study.smart.baselib.entity.MyStudentInfo;
 import study.smart.transfer_management.mvp.contract.TransferMyStudentContract;
-import study.smart.transfer_management.mvp.model.TransferManagerListModel;
 import study.smart.transfer_management.mvp.model.TransferMyStudentModel;
 
 /**
@@ -49,8 +45,8 @@ public class TransferMyStudentPresenter extends BasePresenterImpl<TransferMyStud
 
 
     @Override
-    public void getMyStudent(String page, final int request_state) {
-        transferManagerListModel.getMyStudent(new ObserverListener<DataListInfo>() {
+    public void getMyStudent(String page,String id, final int request_state) {
+        transferManagerListModel.getMyStudent(page,id,new ObserverListener<DataListInfo>() {
             @Override
             public void onSubscribe(Disposable disposable) {
                 addDisposable(disposable);
@@ -73,7 +69,7 @@ public class TransferMyStudentPresenter extends BasePresenterImpl<TransferMyStud
 
     @Override
     public void getCompeleteStudent(String page, final int request_state) {
-        transferManagerListModel.getCompeleteStudent(new ObserverListener<DataListInfo>() {
+        transferManagerListModel.getCompeleteStudent(page,new ObserverListener<DataListInfo>() {
             @Override
             public void onSubscribe(Disposable disposable) {
                 addDisposable(disposable);

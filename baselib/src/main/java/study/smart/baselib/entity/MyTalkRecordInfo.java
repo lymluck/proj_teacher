@@ -1,5 +1,6 @@
 package study.smart.baselib.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 
@@ -10,7 +11,7 @@ import java.util.List;
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */
-public class MyTalkRecordInfo {
+public class MyTalkRecordInfo implements Serializable{
     private String year;
     private List<ShowMonth> months;
 
@@ -30,7 +31,7 @@ public class MyTalkRecordInfo {
         this.months = months;
     }
 
-    public class ShowMonth {
+    public class ShowMonth implements Serializable{
         private String key;
         private String year;
         private List<DataListInfo> list;
@@ -59,7 +60,7 @@ public class MyTalkRecordInfo {
             this.list = list;
         }
 
-        public class DataListInfo {
+        public class DataListInfo implements Serializable{
             private String id;
             private String userId;
             private String creatorId;
@@ -296,7 +297,7 @@ public class MyTalkRecordInfo {
                 this.communicationList = communicationList;
             }
 
-            public class CommunicationList {
+            public class CommunicationList implements Serializable{
                 private String type;
                 private String feedback;
                 private String question;

@@ -34,4 +34,25 @@ public class TimeUtil {
             return "";
         }
     }
+
+    /**
+     * 时间戳转为时间(年月日，时分秒)
+     *
+     * @param cc_time 时间戳
+     * @return
+     */
+    public static String getStrTime(String cc_time, String format) {
+        Date date = null;
+        try {
+            if (TextUtils.isEmpty(cc_time)) {
+                return "";
+            }
+            date = new SimpleDateFormat("yyyy-MM-dd").parse(cc_time);
+            String str = (new SimpleDateFormat(format)).format(date);
+            return str;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
 }

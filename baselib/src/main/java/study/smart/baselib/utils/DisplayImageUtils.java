@@ -13,6 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
+
 import study.smart.baselib.base.config.CustomShapeTransformation;
 
 import java.io.File;
@@ -88,6 +89,16 @@ public class DisplayImageUtils {
             .into(view);
     }
 
+    public static void displayCircleImage(Context context, int id, ImageView view) {
+        if (context != null) {
+            Glide.with(context).load(id)
+                .apply(RequestOptions.circleCropTransform()
+                    .placeholder(R.drawable.ic_circleimg_default)
+                    .error(R.drawable.ic_circleimg_default)
+                    .dontAnimate()).into(view);
+        }
+    }
+
     public static void displayCircleImage(Context context, String url, ImageView view) {
         if (context != null) {
             Glide.with(context).load(url)
@@ -97,7 +108,6 @@ public class DisplayImageUtils {
                     .dontAnimate()).into(view);
         }
     }
-
 
     public static void displayRoundImage(Context context, String url, ImageView view, int radius_dp) {
         Glide.with(context).load(url)

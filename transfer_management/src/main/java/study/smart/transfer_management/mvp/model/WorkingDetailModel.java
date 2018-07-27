@@ -15,11 +15,11 @@ import study.smart.baselib.server.api.ApiManager;
  */
 public class WorkingDetailModel extends BaseModel {
     /**
-     * 获取消息信息
+     * 获取中心
      *
      * @param listener
      */
-    public void getWorkingDetail(ObserverListener listener) {
-        apiSubscribe(ApiManager.getApiService().getMessageList(getHeadersMap()), listener);
+    public void getCenter(ObserverListener listener) {
+        apiSubscribe(ApiManager.getApiService().getCenterList(getHeadersMap()), listener);
     }
 }
