@@ -1,5 +1,7 @@
 package study.smart.transfer_management.mvp.model;
 
+import android.text.TextUtils;
+
 import java.util.HashMap;
 
 import study.smart.baselib.listener.ObserverListener;

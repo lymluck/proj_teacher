@@ -4,6 +4,7 @@
     <string name="logout_notify">下线通知</string>
     <string name="loginout_msg">你的账号已在其他设备上登录，是否重新登录？</string>
     <string name="relogin">重新登录</string>
+    <string name="name_report">%1$s（%2$s）</string>
     <string name="enter_phone">请输入正确的手机号码</string>
     <string name="refused_msg">你的信息审核未通过！</string>
     <string name="get_code_again">重新发送(%1$s)</string>

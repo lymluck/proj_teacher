@@ -171,8 +171,14 @@ public class WorkingDetailActivity extends BaseActivity<WorkingDetailContract.Pr
         llSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent toSearch = new Intent(WorkingDetailActivity.this, CommonSearchActivity.class);
-                toSearch.putExtra(ParameterUtils.TRANSITION_FLAG, ParameterUtils.MY_ALL_STUDENT);
+                Intent toSearch;
+                if ("STUDENT_TRANSFER_MANAGER".equals(from)) {
+                    toSearch = new Intent(WorkingDetailActivity.this, CommonSearchActivity.class);
+                    toSearch.putExtra(ParameterUtils.TRANSITION_FLAG, ParameterUtils.MY_ALL_STUDENT);
+                } else {
+                    toSearch = new Intent(WorkingDetailActivity.this, WorkingSearchActivity.class);
+                    toSearch.putExtra(ParameterUtils.TRANSITION_FLAG, from);
+                }
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     startActivity(toSearch, ActivityOptionsCompat.makeSceneTransitionAnimation(WorkingDetailActivity.this,
                         llSearch, "btn_tr").toBundle());

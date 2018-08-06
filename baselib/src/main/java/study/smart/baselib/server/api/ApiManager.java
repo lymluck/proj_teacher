@@ -1,5 +1,7 @@
 package study.smart.baselib.server.api;
 
+import android.util.Log;
+
 import study.smart.baselib.converter.FastJsonConverterFactory;
 import study.smart.baselib.server.okhttpcache.interceptor.CacheAndCookieInterceptor;
 import study.smart.baselib.utils.HttpUrlUtils;

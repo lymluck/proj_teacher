@@ -67,7 +67,13 @@ public class TransferManagerFragment extends UIFragment {
         topRightMenu.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_blue, 0, 0, 0);
         topRightMenu.setVisibility(View.VISIBLE);
         ImageView topLeftBtn = rootView.findViewById(R.id.topdefault_leftbutton);
-        topLeftBtn.setVisibility(View.GONE);
+        topLeftBtn.setVisibility(View.VISIBLE);
+        topLeftBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mActivity.finish();
+            }
+        });
         ViewPager pagerNews = rootView.findViewById(R.id.pager_news);
         ArrayList<UIFragment> fragments = new ArrayList<>();
         List<String> titles = new ArrayList<>();

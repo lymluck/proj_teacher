@@ -174,11 +174,11 @@ public class MyReportFragment extends UIFragment<MyReportContract.Presenter> imp
             @Override
             protected void convert(ViewHolder holder, MyStudentInfo myStudentInfo, int position) {
                 if ("QUARTERLY".equals(stateInfo.getType())) {
-                    holder.setText(R.id.tv_name, String.format(getString(R.string.name_report), myStudentInfo.getUserName(), myStudentInfo.getTime() + "报告"));
+                    holder.setText(R.id.tv_report_name, String.format(getString(R.string.name_report), (myStudentInfo.getUserName() == null ? "" : myStudentInfo.getUserName()), (myStudentInfo.getTime() == null ? "" : myStudentInfo.getTime()) + "报告"));
                 } else {
-                    holder.setText(R.id.tv_name, String.format(getString(R.string.name_report), myStudentInfo.getUserName(), myStudentInfo.getTypeTEXT()));
+                    holder.setText(R.id.tv_report_name, String.format(getString(R.string.name_report), myStudentInfo.getUserName() == null ? "" : myStudentInfo.getUserName(), myStudentInfo.getTypeTEXT() == null ? "" : myStudentInfo.getTypeTEXT()));
                 }
-                holder.setText(R.id.tv_center_name, myStudentInfo.getCenterName());
+                holder.setText(R.id.tv_report_center_name, myStudentInfo.getCenterName());
                 holder.setText(R.id.tv_publish_time, TimeUtil.getStrTime(myStudentInfo.getPublishTime()));
             }
         };

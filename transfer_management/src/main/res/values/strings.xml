@@ -2,5 +2,6 @@
     <string name="app_name">transfer_management</string>
     <string name="data_format">（共%1$s条）</string>
     <string name="name_phone">%1$s（%2$s）</string>
-    <string name="name_report">%1$s（%2$s）</string>
+
+    <string name="home_search_foot">更多%1$s结果(%2$s)</string>
 </resources>

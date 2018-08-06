@@ -107,6 +107,7 @@ public class StudentDetailActivity extends BaseActivity<StudentDetailContract.Pr
 
     private void initData(MyStudentInfo myStudentInfo) {
         if (myStudentInfo != null) {
+            this.myStudentInfo = myStudentInfo;
             setTitle(myStudentInfo.getName());
             setTopLineVisibility(View.VISIBLE);
             tvName.setText(myStudentInfo.getName());

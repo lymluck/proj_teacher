@@ -44,4 +44,54 @@ public class CommonSearchModel extends BaseModel {
         apiSubscribe(ApiManager.getApiService().getMyStudent(getHeadersMap(), params), listener);
     }
 
+    public void getMyStudentList(String keyWord, int page, final ObserverListener listener) {
+        Map<String, String> params = new HashMap<>();
+        params.put("page", page + "");
+        if (!TextUtils.isEmpty(keyWord)) {
+            params.put("keyword", keyWord);
+        }
+        params.put("isOwnStudent", "true");
+        apiSubscribe(ApiManager.getApiService().getMyStudent(getHeadersMap(), params), listener);
+    }
+
+
+    public void getUnCompeleteStudentList(String keyWord, int page, final ObserverListener listener) {
+        Map<String, String> params = new HashMap<>();
+        params.put("page", page + "");
+        if (!TextUtils.isEmpty(keyWord)) {
+            params.put("keyword", keyWord);
+        }
+        params.put("isIncomplete", "true");
+        apiSubscribe(ApiManager.getApiService().getMyStudent(getHeadersMap(), params), listener);
+    }
+
+    public void getTaskList(String keyWord, int page, final ObserverListener listener) {
+        Map<String, String> params = new HashMap<>();
+        params.put("page", page + "");
+        if (!TextUtils.isEmpty(keyWord)) {
+            params.put("keyword", keyWord);
+        }
+        params.put("blockType", "DATA");
+        apiSubscribe(ApiManager.getApiService().getTaskList(getHeadersMap(), params), listener);
+    }
+
+    public void getReportList(String keyWord, int page, final ObserverListener listener) {
+        Map<String, String> params = new HashMap<>();
+        params.put("page", page + "");
+        if (!TextUtils.isEmpty(keyWord)) {
+            params.put("keyword", keyWord);
+        }
+        params.put("blockType", "DATA");
+        apiSubscribe(ApiManager.getApiService().getReportList(getHeadersMap(), params), listener);
+    }
+
+    public void getTalkList(String keyWord, int page, final ObserverListener listener) {
+        Map<String, String> params = new HashMap<>();
+        params.put("page", page + "");
+        if (!TextUtils.isEmpty(keyWord)) {
+            params.put("keyword", keyWord);
+        }
+        params.put("blockType", "DATA");
+        apiSubscribe(ApiManager.getApiService().getTalkList(getHeadersMap(), params), listener);
+    }
 }

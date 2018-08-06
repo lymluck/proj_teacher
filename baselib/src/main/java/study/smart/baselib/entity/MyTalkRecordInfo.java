@@ -11,7 +11,7 @@ import java.util.List;
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */
-public class MyTalkRecordInfo implements Serializable{
+public class MyTalkRecordInfo implements Serializable {
     private String year;
     private List<ShowMonth> months;
 
@@ -31,7 +31,7 @@ public class MyTalkRecordInfo implements Serializable{
         this.months = months;
     }
 
-    public class ShowMonth implements Serializable{
+    public class ShowMonth implements Serializable {
         private String key;
         private String year;
         private List<DataListInfo> list;
@@ -60,7 +60,7 @@ public class MyTalkRecordInfo implements Serializable{
             this.list = list;
         }
 
-        public class DataListInfo implements Serializable{
+        public class DataListInfo implements Serializable {
             private String id;
             private String userId;
             private String creatorId;
@@ -68,6 +68,7 @@ public class MyTalkRecordInfo implements Serializable{
             private String status;
             private String createdAt;
             private String updatedAt;
+            private String centerName;
             private String name;
             private String type;
             private String userType;
@@ -87,6 +88,14 @@ public class MyTalkRecordInfo implements Serializable{
             private String statusText;
             private boolean isPublish;
             private List<CommunicationList> communicationList;
+
+            public String getCenterName() {
+                return centerName;
+            }
+
+            public void setCenterName(String centerName) {
+                this.centerName = centerName;
+            }
 
             public String getId() {
                 return id;
@@ -295,54 +304,6 @@ public class MyTalkRecordInfo implements Serializable{
 
             public void setCommunicationList(List<CommunicationList> communicationList) {
                 this.communicationList = communicationList;
-            }
-
-            public class CommunicationList implements Serializable{
-                private String type;
-                private String feedback;
-                private String question;
-                private String evaluation;
-                private String createTime;
-
-                public String getType() {
-                    return type;
-                }
-
-                public void setType(String type) {
-                    this.type = type;
-                }
-
-                public String getFeedback() {
-                    return feedback;
-                }
-
-                public void setFeedback(String feedback) {
-                    this.feedback = feedback;
-                }
-
-                public String getQuestion() {
-                    return question;
-                }
-
-                public void setQuestion(String question) {
-                    this.question = question;
-                }
-
-                public String getEvaluation() {
-                    return evaluation;
-                }
-
-                public void setEvaluation(String evaluation) {
-                    this.evaluation = evaluation;
-                }
-
-                public String getCreateTime() {
-                    return createTime;
-                }
-
-                public void setCreateTime(String createTime) {
-                    this.createTime = createTime;
-                }
             }
         }
     }

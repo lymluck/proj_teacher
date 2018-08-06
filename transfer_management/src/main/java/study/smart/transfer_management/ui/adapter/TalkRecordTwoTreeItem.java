@@ -28,10 +28,10 @@ public class TalkRecordTwoTreeItem extends TreeItem<MyTalkRecordInfo.ShowMonth.D
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder) {
-        viewHolder.setText(R.id.tv_name, data.getUserName());
-        viewHolder.setText(R.id.tv_content, data.getName());
-        viewHolder.setText(R.id.tv_time, TimeUtil.getStrTime(data.getTime()));
-        Log.w("kim","---->"+ TimeUtil.getStrTime(data.getTime()));
+        viewHolder.setText(R.id.tv_talk_name, data.getUserName());
+        viewHolder.setText(R.id.tv_talk_content, data.getName());
+        viewHolder.setText(R.id.tv_talk_time, TimeUtil.getStrTime(data.getTime()));
+        viewHolder.setText(R.id.tv_talk_center_name, data.getCenterName());
         viewHolder.getView(R.id.ll_content).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

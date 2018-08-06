@@ -15,6 +15,7 @@ import study.smart.baselib.ui.adapter.base.ViewHolder;
 import study.smart.baselib.ui.base.UIFragment;
 import study.smart.transfer_management.R;
 import study.smart.transfer_management.entity.WorkingInfo;
+import study.smart.transfer_management.ui.activity.TransferManagerActivity;
 import study.smart.transfer_management.ui.activity.WorkingDetailActivity;
 
 /**
@@ -70,7 +71,11 @@ public class WorkingFragment extends UIFragment {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 //学员管理
-                startActivity(new Intent(mActivity, WorkingDetailActivity.class).putExtra("from", workingInfos.get(position).getId()));
+                if ("TRANSFER_MANAGER".equals(workingInfos.get(position).getId())) {
+                    startActivity(new Intent(mActivity, TransferManagerActivity.class));
+                } else {
+                    startActivity(new Intent(mActivity, WorkingDetailActivity.class).putExtra("from", workingInfos.get(position).getId()));
+                }
             }
 
             @Override

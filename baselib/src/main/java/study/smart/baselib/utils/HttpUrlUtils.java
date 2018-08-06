@@ -1,5 +1,7 @@
 package study.smart.baselib.utils;
 
+import android.util.Log;
+
 public class HttpUrlUtils {
 
     /**************************** api ***************************/
@@ -76,7 +78,7 @@ public class HttpUrlUtils {
         switch (api) {
             case "master":
 //                SERVER = "https://slx.smartstudy.com/api/";
-                SERVER = "http://slx.sta ging.smartstudy.com/api/";
+                SERVER = "http://slx.staging.smartstudy.com/api/";
                 break;
             case "test":
 //               SERVER = "https://slx.smartstudy.com/api/";

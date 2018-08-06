@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -44,6 +45,7 @@ public class MessageFragment extends UIFragment<TransferManagerMessageContract.P
     private NoScrollLinearLayoutManager mLayoutManager;
     private List<MessageInfo> messageInfos;
     private CommonAdapter<MessageInfo> mAdapter;
+    private SwipeRefreshLayout srfMessage;
 
     @Override
     public void onFirstUserVisible() {
@@ -61,6 +63,8 @@ public class MessageFragment extends UIFragment<TransferManagerMessageContract.P
         llSearch = rootView.findViewById(R.id.ll_search);
         rvMessage = rootView.findViewById(R.id.rv_message);
         rvMessage.setHasFixedSize(true);
+        srfMessage = rootView.findViewById(R.id.srf_message);
+        srfMessage.setColorSchemeColors(getResources().getColor(R.color.app_main_color));
         mLayoutManager = new NoScrollLinearLayoutManager(mActivity);
         mLayoutManager.setScrollEnabled(true);
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -73,6 +77,12 @@ public class MessageFragment extends UIFragment<TransferManagerMessageContract.P
     @Override
     protected void initEvent() {
         llSearch.setOnClickListener(this);
+        srfMessage.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.getMessageInfos();
+            }
+        });
     }
 
     private void initAdapter() {
@@ -124,6 +134,7 @@ public class MessageFragment extends UIFragment<TransferManagerMessageContract.P
     @Override
     public void showTip(String message) {
         ToastUtils.shortToast(message);
+        srfMessage.setRefreshing(false);
     }
 
     @Override
@@ -131,6 +142,7 @@ public class MessageFragment extends UIFragment<TransferManagerMessageContract.P
         if (messageInfos != null) {
             this.messageInfos.clear();
             this.messageInfos.addAll(messageInfos);
+            srfMessage.setRefreshing(false);
             mAdapter.notifyDataSetChanged();
         }
     }

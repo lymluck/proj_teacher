@@ -56,7 +56,7 @@ public class MyTaskTwoTreeItem extends TreeItem<TaskDetailInfo> {
 
         } else {
             //已完成
-            viewHolder.getView(R.id.v_status).setBackgroundColor(Color.parseColor("#FFFBE6"));
+            viewHolder.getView(R.id.v_status).setBackgroundColor(Color.parseColor("#52C41A"));
         }
 
         viewHolder.getView(R.id.ll_content).setOnClickListener(new View.OnClickListener() {

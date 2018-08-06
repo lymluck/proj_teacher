@@ -2,13 +2,10 @@ package study.smart.transfer_management.mvp.presenter;
 
 import io.reactivex.disposables.Disposable;
 import study.smart.baselib.entity.MyStudentInfo;
-import study.smart.baselib.entity.TaskDetailInfo;
 import study.smart.baselib.listener.ObserverListener;
 import study.smart.baselib.mvp.base.BasePresenterImpl;
 import study.smart.transfer_management.mvp.contract.StudentDetailContract;
-import study.smart.transfer_management.mvp.contract.TaskDetailContract;
 import study.smart.transfer_management.mvp.model.StudentDetailModel;
-import study.smart.transfer_management.mvp.model.TaskDetailModel;
 
 /**
  * @author yqy

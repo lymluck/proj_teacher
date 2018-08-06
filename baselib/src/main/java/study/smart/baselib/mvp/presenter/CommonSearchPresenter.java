@@ -18,6 +18,7 @@ import study.smart.baselib.entity.DataListInfo;
 import study.smart.baselib.entity.MessageDetailItemInfo;
 import study.smart.baselib.entity.MyStudentInfo;
 import study.smart.baselib.entity.TransferManagerEntity;
+import study.smart.baselib.entity.WorkingSearchInfo;
 import study.smart.baselib.listener.ObserverListener;
 import study.smart.baselib.mvp.base.BasePresenterImpl;
 import study.smart.baselib.mvp.contract.CommonSearchContract;
@@ -86,6 +87,121 @@ public class CommonSearchPresenter extends BasePresenterImpl<CommonSearchContrac
     @Override
     public void getAllStudentList(String keyword, int page, final int request_state) {
         commonSearchModel.getAllStudentList(keyword, page, new ObserverListener<DataListInfo>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                addDisposable(disposable);
+            }
+
+            @Override
+            public void onNext(DataListInfo dataListInfo) {
+                List<MyStudentInfo> myStudentInfos = JSONObject.parseArray(dataListInfo.getData(), MyStudentInfo.class);
+                if (myStudentInfos != null) {
+                    view.getAllStudentListSuccess(myStudentInfos, request_state);
+                }
+            }
+
+            @Override
+            public void onError(String msg) {
+                view.showTip(msg);
+            }
+        });
+    }
+
+    @Override
+    public void getMyStudentList(String keyword, int page, final int request_state) {
+        commonSearchModel.getMyStudentList(keyword, page, new ObserverListener<DataListInfo>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                addDisposable(disposable);
+            }
+
+            @Override
+            public void onNext(DataListInfo dataListInfo) {
+                List<MyStudentInfo> myStudentInfos = JSONObject.parseArray(dataListInfo.getData(), MyStudentInfo.class);
+                if (myStudentInfos != null) {
+                    view.getAllStudentListSuccess(myStudentInfos, request_state);
+                }
+            }
+
+            @Override
+            public void onError(String msg) {
+                view.showTip(msg);
+            }
+        });
+    }
+
+    @Override
+    public void getTaskList(String keyword, int page, final int request_state) {
+        commonSearchModel.getTaskList(keyword, page, new ObserverListener<DataListInfo>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                addDisposable(disposable);
+            }
+
+            @Override
+            public void onNext(DataListInfo dataListInfo) {
+                List<WorkingSearchInfo> workingSearchInfos = JSONObject.parseArray(dataListInfo.getData(), WorkingSearchInfo.class);
+                if (workingSearchInfos != null) {
+                    view.getTaskListSuccess(workingSearchInfos, request_state);
+                }
+            }
+
+            @Override
+            public void onError(String msg) {
+                view.showTip(msg);
+            }
+        });
+    }
+
+    @Override
+    public void getReportLit(String keyword, int page, final int request_state) {
+        commonSearchModel.getReportList(keyword, page, new ObserverListener<DataListInfo>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                addDisposable(disposable);
+            }
+
+            @Override
+            public void onNext(DataListInfo dataListInfo) {
+                List<WorkingSearchInfo> workingSearchInfos = JSONObject.parseArray(dataListInfo.getData(), WorkingSearchInfo.class);
+                if (workingSearchInfos != null) {
+                    view.getReportListSuccess(workingSearchInfos, request_state);
+                }
+            }
+
+            @Override
+            public void onError(String msg) {
+                view.showTip(msg);
+            }
+        });
+    }
+
+    @Override
+    public void getTalkList(String keyword, int page, final int request_state) {
+        commonSearchModel.getTalkList(keyword, page, new ObserverListener<DataListInfo>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                addDisposable(disposable);
+            }
+
+            @Override
+            public void onNext(DataListInfo dataListInfo) {
+                List<WorkingSearchInfo> workingSearchInfos = JSONObject.parseArray(dataListInfo.getData(), WorkingSearchInfo.class);
+                if (workingSearchInfos != null) {
+                    view.getTalkListSuccess(workingSearchInfos, request_state);
+                }
+            }
+
+            @Override
+            public void onError(String msg) {
+                view.showTip(msg);
+            }
+        });
+    }
+
+    @Override
+    public void getUnCompeleteStudent(String keyword, int page, final int request_state) {
+        commonSearchModel.getUnCompeleteStudentList(keyword, page, new ObserverListener<DataListInfo>() {
             @Override
             public void onSubscribe(Disposable disposable) {
                 addDisposable(disposable);

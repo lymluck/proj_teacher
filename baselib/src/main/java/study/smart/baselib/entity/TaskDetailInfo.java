@@ -22,7 +22,7 @@ public class TaskDetailInfo implements Serializable {
     private String centerName;
     private String userName;
     private String creatorName;
-    private String statusText;
+    private String statusName;
 
     private UserCreator creator;
     private Student student;
@@ -123,12 +123,13 @@ public class TaskDetailInfo implements Serializable {
         this.creatorName = creatorName;
     }
 
-    public String getStatusText() {
-        return statusText;
+
+    public String getStatusName() {
+        return statusName;
     }
 
-    public void setStatusText(String statusText) {
-        this.statusText = statusText;
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
     }
 
     public UserCreator getCreator() {

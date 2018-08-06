@@ -80,7 +80,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailContract.Presente
             tvUserName.setText(dataList.getUserName());
             tvCenterName.setText(dataList.getCenterName());
             tvTime.setText(TimeUtil.getStrTime(dataList.getStartTime()) + "-" + TimeUtil.getStrTime(dataList.getEndTime()));
-            tvStatus.setText(dataList.getStatusText());
+            tvStatus.setText(dataList.getStatusName());
 
             if ("ALERT".equals(dataList.getStatus())) {
                 //临期
@@ -94,7 +94,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailContract.Presente
 
             } else {
                 //已完成
-                vTitle.setBackgroundColor(Color.parseColor("#FFFBE6"));
+                vTitle.setBackgroundColor(Color.parseColor("#52C41A"));
             }
         }
     }

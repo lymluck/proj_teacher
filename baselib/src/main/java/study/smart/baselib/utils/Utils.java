@@ -23,6 +23,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.CookieManager;
@@ -217,7 +218,7 @@ public class Utils {
     public static void installApk(Context context, String path) {
         File apkfile = new File(path);
         if (!apkfile.exists()) {
-            ToastUtils.shortToast( "安装包不存在，请退出应用重新下载！");
+            ToastUtils.shortToast("安装包不存在，请退出应用重新下载！");
             return;
         }
 

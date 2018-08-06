@@ -208,6 +208,37 @@ public interface ApiService {
     @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
     Observable<ResponseInfo<String>> getMyTaskList(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
+    /**
+     * 获取任务列表
+     *
+     * @param header
+     * @return
+     */
+    @GET(HttpUrlUtils.WORKBENCH_TASK_LIST)
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
+    Observable<ResponseInfo<String>> getSearchTaskList(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+
+    /**
+     * 获取任务列表
+     *
+     * @param header
+     * @return
+     */
+    @GET(HttpUrlUtils.WORKBENCH_REPORT_LIST)
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
+    Observable<ResponseInfo<String>> getSearchReportList(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+
+
+    /**
+     * 获取沟通列表
+     *
+     * @param header
+     * @return
+     */
+    @GET(HttpUrlUtils.WORKBENCH_COMPLETE_LIST)
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
+    Observable<ResponseInfo<String>> getSearchTalkList(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+
 
     /**
      * 获取消息统计列表
@@ -230,6 +261,17 @@ public interface ApiService {
     @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
     Observable<ResponseInfo<DataListInfo>> getMyStudent(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
+    @GET(HttpUrlUtils.WORKBENCH_TASK_LIST)
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
+    Observable<ResponseInfo<DataListInfo>> getTaskList(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+
+    @GET(HttpUrlUtils.WORKBENCH_REPORT_LIST)
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
+    Observable<ResponseInfo<DataListInfo>> getReportList(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+
+    @GET(HttpUrlUtils.WORKBENCH_COMPLETE_LIST)
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
+    Observable<ResponseInfo<DataListInfo>> getTalkList(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
     /**
      * 版本检测

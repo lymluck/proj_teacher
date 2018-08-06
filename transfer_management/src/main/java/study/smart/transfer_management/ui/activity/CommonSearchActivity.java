@@ -14,6 +14,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -31,6 +32,7 @@ import study.smart.baselib.entity.ChatUserInfo;
 import study.smart.baselib.entity.MessageDetailItemInfo;
 import study.smart.baselib.entity.MyStudentInfo;
 import study.smart.baselib.entity.TransferManagerEntity;
+import study.smart.baselib.entity.WorkingSearchInfo;
 import study.smart.baselib.mvp.contract.CommonSearchContract;
 import study.smart.baselib.mvp.presenter.CommonSearchPresenter;
 import study.smart.baselib.ui.adapter.CommonAdapter;
@@ -49,6 +51,7 @@ import study.smart.baselib.utils.KeyBoardUtils;
 import study.smart.baselib.utils.ParameterUtils;
 import study.smart.baselib.utils.TimeUtil;
 import study.smart.baselib.utils.Utils;
+import study.smart.transfer_management.entity.WorkingSearchListInfo;
 
 public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Presenter> implements CommonSearchContract.View {
     private EditTextWithClear searchView;
@@ -62,14 +65,17 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
     private CommonAdapter<TransferManagerEntity> mTransferAdapter;
     private CommonAdapter<MessageDetailItemInfo> msgDetailAdapter;
     private CommonAdapter<MyStudentInfo> allStudentAdapter;
+    private CommonAdapter<WorkingSearchInfo> workingSearchInfoAdapter;
     private List<TransferManagerEntity> transferManagerEntities;
     private List<MessageDetailItemInfo> messageDetailItemInfos;
+    private List<WorkingSearchInfo> workingSearchListInfos;
     private List<MyStudentInfo> myStudentInfos;
     private WeakHandler mHandler;
     private int mPage = 1;
     private List<ChatUserInfo> chatUserInfoList;
     private String keyword;
     private String flag_value;
+    private int typeName;
     private static int spaceTime = 300;//时间间隔
     private static long lastSearchTime = 0;//上次搜索的时间
 
@@ -114,6 +120,9 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
         } else if (ParameterUtils.MY_ALL_STUDENT.equals(flag_value)) {
             rclvSearch.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
                 .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.horizontal_line_color).build());
+        } else if ("STUDENT_TRANSFER_MANAGER".equals(flag_value) || "compelete_student".equals(flag_value)) {
+            rclvSearch.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
+                .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.horizontal_line_color).build());
         } else {
             rclvSearch.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
                 .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.horizontal_line_color).build());
@@ -140,7 +149,9 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
         llytTopSearch = (LinearLayout) findViewById(R.id.llyt_top_search);
         Intent data = getIntent();
         flag_value = data.getStringExtra(ParameterUtils.TRANSITION_FLAG);
+        Log.w("kim", "--->" + flag_value);
         keyword = data.getStringExtra("keyword");
+        typeName = data.getIntExtra("typeName", 0);
         rclvSearch = (LoadMoreRecyclerView) findViewById(R.id.rclv_search);
         rclvSearch.setHasFixedSize(true);
         //这里做layoutmanager匹配
@@ -180,6 +191,7 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
             searchView.getMyEditText().requestFocus();
             KeyBoardUtils.openKeybord(searchView.getMyEditText(), this);
         }
+        Log.w("kim", "from-----" + flag_value);
     }
 
     private void initRefresh() {
@@ -202,6 +214,21 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
             presenter.getMsgList(keyword, mPage, pullTo);
         } else if (ParameterUtils.MY_ALL_STUDENT.equals(flag_value)) {
             presenter.getAllStudentList(keyword, mPage, pullTo);
+        } else if ("STUDENT_TRANSFER_MANAGER".equals(flag_value)
+            || "TASK_TRANSFER_MANAGER".equals(flag_value)
+            || "REPORT_TRANSFER_MANAGER".equals(flag_value)
+            || "TALK_TRANSFER_MANAGER".equals(flag_value)) {
+            if (typeName == WorkingSearchListInfo.TASK_TYPE) {
+                presenter.getTaskList(keyword, mPage, pullTo);
+            } else if (typeName == WorkingSearchListInfo.REPORT_TYPE) {
+                presenter.getReportLit(keyword, mPage, pullTo);
+            } else if (typeName == WorkingSearchListInfo.TALK_TYPE) {
+                presenter.getTalkList(keyword, mPage, pullTo);
+            } else {
+                presenter.getMyStudentList(keyword, mPage, pullTo);
+            }
+        } else if ("compelete_student".equals(flag_value)) {
+            presenter.getUnCompeleteStudent(keyword, mPage, pullTo);
         }
     }
 
@@ -309,8 +336,21 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
             initTransferAdapter();
         } else if (ParameterUtils.MSG_DETAIL.equals(flag_value)) {
             initMsgDetailAdapter();
-        } else if (ParameterUtils.MY_ALL_STUDENT.equals(flag_value)) {
-            initAllStudentAdapter();
+        } else if (ParameterUtils.MY_ALL_STUDENT.equals(flag_value)
+            || "STUDENT_TRANSFER_MANAGER".equals(flag_value)
+            || "compelete_student".equals(flag_value) ||
+            "TASK_TRANSFER_MANAGER".equals(flag_value) ||
+            "REPORT_TRANSFER_MANAGER".equals(flag_value) ||
+            "TALK_TRANSFER_MANAGER".equals(flag_value)) {
+            if (typeName == WorkingSearchListInfo.TASK_TYPE) {
+                initTaskListAdapter();
+            } else if (typeName == WorkingSearchListInfo.REPORT_TYPE) {
+                initReportListAdapter();
+            } else if (typeName == WorkingSearchListInfo.TALK_TYPE) {
+                initTalkListAdapter();
+            } else {
+                initAllStudentAdapter();
+            }
         } else {
             initSchoolAdapter();
         }
@@ -330,13 +370,24 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
         emptyWrapper = new EmptyWrapper<>(allStudentAdapter);
         loadMoreWrapper = new LoadMoreWrapper<>(emptyWrapper);
         rclvSearch.setAdapter(loadMoreWrapper);
-
         allStudentAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                startActivity(new Intent(CommonSearchActivity.this, StudentDetailActivity.class)
-                    .putExtra("studentInfo", myStudentInfos.get(position))
-                    .putExtra("from", "STUDENT_TRANSFER_MANAGER"));
+                if ("TASK_TRANSFER_MANAGER".equals(flag_value)) {
+                    startActivity(new Intent(CommonSearchActivity.this, MyTaskListActivity.class).putExtra("id", myStudentInfos.get(position).getId())
+                        .putExtra("name", myStudentInfos.get(position).getName()));
+                } else if ("REPORT_TRANSFER_MANAGER".equals(flag_value)) {
+                    startActivity(new Intent(CommonSearchActivity.this, StudentDetailReportActivity.class).putExtra("id", myStudentInfos.get(position).getUserId())
+                        .putExtra("name", myStudentInfos.get(position).getName()));
+                } else if ("TALK_TRANSFER_MANAGER".equals(flag_value)) {
+                    startActivity(new Intent(CommonSearchActivity.this, StudentDetailTalkActivity.class)
+                        .putExtra("id", myStudentInfos.get(position).getUserId())
+                        .putExtra("name", myStudentInfos.get(position).getName()));
+                } else {
+                    startActivity(new Intent(CommonSearchActivity.this, StudentDetailActivity.class)
+                        .putExtra("studentInfo", myStudentInfos.get(position))
+                        .putExtra("from", "STUDENT_TRANSFER_MANAGER"));
+                }
             }
 
             @Override
@@ -534,6 +585,108 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
         loadMoreWrapper = new LoadMoreWrapper<>(emptyWrapper);
     }
 
+    private void initReportListAdapter() {
+        workingSearchListInfos = new ArrayList<>();
+        workingSearchInfoAdapter = new CommonAdapter<WorkingSearchInfo>(CommonSearchActivity.this, R.layout.item_my_report, workingSearchListInfos, mInflater) {
+            @Override
+            protected void convert(ViewHolder holder, WorkingSearchInfo workingSearchInfo, int position) {
+                holder.setText(R.id.tv_report_name, String.format(mContext.getString(R.string.name_report), workingSearchInfo.getUserName(), workingSearchInfo.getTypeTEXT()));
+                holder.setText(R.id.tv_report_center_name, workingSearchInfo.getCenterName());
+                holder.setText(R.id.tv_publish_time, TimeUtil.getStrTime(workingSearchInfo.getPublishTime()));
+            }
+        };
+
+        workingSearchInfoAdapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                startActivity(new Intent(CommonSearchActivity.this, StudentDetailReportActivity.class).putExtra("id", workingSearchListInfos.get(position).getUserId())
+                    .putExtra("name", workingSearchListInfos.get(position).getUserName()));
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
+        emptyWrapper = new EmptyWrapper<>(workingSearchInfoAdapter);
+        loadMoreWrapper = new LoadMoreWrapper<>(emptyWrapper);
+    }
+
+
+    private void initTalkListAdapter() {
+        workingSearchListInfos = new ArrayList<>();
+        workingSearchInfoAdapter = new CommonAdapter<WorkingSearchInfo>(CommonSearchActivity.this, R.layout.item_talk_record_two, workingSearchListInfos, mInflater) {
+            @Override
+            protected void convert(ViewHolder holder, WorkingSearchInfo workingSearchInfo, int position) {
+                holder.setText(R.id.tv_talk_name, workingSearchInfo.getUserName());
+                holder.setText(R.id.tv_talk_content, workingSearchInfo.getName());
+                holder.setText(R.id.tv_talk_center_name, workingSearchInfo.getCenterName());
+                holder.setText(R.id.tv_talk_time, TimeUtil.getStrTime(workingSearchInfo.getTime()));
+            }
+        };
+
+        workingSearchInfoAdapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                startActivity(new Intent(CommonSearchActivity.this, PersonTalkRecordDetailActivity.class).putExtra("working_search", workingSearchListInfos.get(position)));
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
+        emptyWrapper = new EmptyWrapper<>(workingSearchInfoAdapter);
+        loadMoreWrapper = new LoadMoreWrapper<>(emptyWrapper);
+    }
+
+
+    private void initTaskListAdapter() {
+        workingSearchListInfos = new ArrayList<>();
+        workingSearchInfoAdapter = new CommonAdapter<WorkingSearchInfo>(CommonSearchActivity.this, R.layout.item_task_two, workingSearchListInfos, mInflater) {
+            @Override
+            protected void convert(ViewHolder holder, WorkingSearchInfo workingSearchInfo, int position) {
+                if (TextUtils.isEmpty(workingSearchListInfos.get(position).getName())) {
+                    holder.setText(R.id.tv_content, workingSearchListInfos.get(position).getTypeText());
+                } else {
+                    holder.setText(R.id.tv_content, workingSearchListInfos.get(position).getTypeText() + ":" + workingSearchListInfos.get(position).getName());
+                }
+                holder.setText(R.id.tv_center_name, workingSearchListInfos.get(position).getCenterName() + "-" + workingSearchListInfos.get(position).getUserName());
+                holder.setText(R.id.tv_time, TimeUtil.getStrTime(workingSearchListInfos.get(position).getEndTime(), "MM-dd") + "截止");
+
+                if ("ALERT".equals(workingSearchListInfos.get(position).getStatus())) {
+                    //临期
+                    holder.getView(R.id.v_status).setBackgroundColor(Color.parseColor("#FAAD14"));
+                } else if ("EXPIRED".equals(workingSearchListInfos.get(position).getStatus())) {
+                    //过期
+                    holder.getView(R.id.v_status).setBackgroundColor(Color.parseColor("#7f000000"));
+                } else if ("PENDING".equals(workingSearchListInfos.get(position).getStatus())) {
+                    //进行中
+                    holder.getView(R.id.v_status).setBackgroundColor(Color.parseColor("#1890FF"));
+
+                } else {
+                    //已完成
+                    holder.getView(R.id.v_status).setBackgroundColor(Color.parseColor("#FFFBE6"));
+                }
+            }
+        };
+
+        workingSearchInfoAdapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                startActivity(new Intent(CommonSearchActivity.this, MyTaskListActivity.class).putExtra("id", workingSearchListInfos.get(position).getId())
+                    .putExtra("name", workingSearchListInfos.get(position).getUserName()));
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
+        emptyWrapper = new EmptyWrapper<>(workingSearchInfoAdapter);
+        loadMoreWrapper = new LoadMoreWrapper<>(emptyWrapper);
+    }
+
     @Override
     public void finish() {
         KeyBoardUtils.closeKeybord(searchView.getMyEditText(), this);
@@ -673,13 +826,144 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
         }
     }
 
+    @Override
+    public void getTaskListSuccess(List<WorkingSearchInfo> workingSearchInfos, int request_state) {
+        if (presenter != null) {
+            llytTopSearch.setBackgroundResource(R.color.main_bg);
+            presenter.setEmptyView(mInflater, this, rclvSearch);
+            mLayoutManager.setScrollEnabled(true);
+            List datas = getNowList();
+            int len = workingSearchInfos.size();
+            if (datas != null) {
+                if (request_state == ParameterUtils.PULL_DOWN) {
+                    //下拉刷新
+                    if (len <= 0) {
+                        rclvSearch.loadComplete(true);
+                        mLayoutManager.setScrollEnabled(false);
+                    }
+                    datas.clear();
+                    datas.addAll(workingSearchInfos);
+                    swipeRefreshLayout.setRefreshing(false);
+                    loadMoreWrapper.notifyDataSetChanged();
+                } else if (request_state == ParameterUtils.PULL_UP) {
+                    //上拉加载
+                    if (len <= 0) {
+                        //没有更多内容
+                        if (mPage > 1) {
+                            mPage = mPage - 1;
+                        }
+                        if (datas.size() > 0) {
+                            rclvSearch.loadComplete(false);
+                        } else {
+                            rclvSearch.loadComplete(true);
+                        }
+                    } else {
+                        rclvSearch.loadComplete(true);
+                        datas.addAll(workingSearchInfos);
+                        loadMoreWrapper.notifyDataSetChanged();
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void getReportListSuccess(List<WorkingSearchInfo> workingSearchInfos, int request_state) {
+        if (presenter != null) {
+            llytTopSearch.setBackgroundResource(R.color.main_bg);
+            presenter.setEmptyView(mInflater, this, rclvSearch);
+            mLayoutManager.setScrollEnabled(true);
+            List datas = getNowList();
+            int len = workingSearchInfos.size();
+            if (datas != null) {
+                if (request_state == ParameterUtils.PULL_DOWN) {
+                    //下拉刷新
+                    if (len <= 0) {
+                        rclvSearch.loadComplete(true);
+                        mLayoutManager.setScrollEnabled(false);
+                    }
+                    datas.clear();
+                    datas.addAll(workingSearchInfos);
+                    swipeRefreshLayout.setRefreshing(false);
+                    loadMoreWrapper.notifyDataSetChanged();
+                } else if (request_state == ParameterUtils.PULL_UP) {
+                    //上拉加载
+                    if (len <= 0) {
+                        //没有更多内容
+                        if (mPage > 1) {
+                            mPage = mPage - 1;
+                        }
+                        if (datas.size() > 0) {
+                            rclvSearch.loadComplete(false);
+                        } else {
+                            rclvSearch.loadComplete(true);
+                        }
+                    } else {
+                        rclvSearch.loadComplete(true);
+                        datas.addAll(workingSearchInfos);
+                        loadMoreWrapper.notifyDataSetChanged();
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void getTalkListSuccess(List<WorkingSearchInfo> workingSearchInfos, int request_state) {
+        if (presenter != null) {
+            llytTopSearch.setBackgroundResource(R.color.main_bg);
+            presenter.setEmptyView(mInflater, this, rclvSearch);
+            mLayoutManager.setScrollEnabled(true);
+            List datas = getNowList();
+            int len = workingSearchInfos.size();
+            if (datas != null) {
+                if (request_state == ParameterUtils.PULL_DOWN) {
+                    //下拉刷新
+                    if (len <= 0) {
+                        rclvSearch.loadComplete(true);
+                        mLayoutManager.setScrollEnabled(false);
+                    }
+                    datas.clear();
+                    datas.addAll(workingSearchInfos);
+                    swipeRefreshLayout.setRefreshing(false);
+                    loadMoreWrapper.notifyDataSetChanged();
+                } else if (request_state == ParameterUtils.PULL_UP) {
+                    //上拉加载
+                    if (len <= 0) {
+                        //没有更多内容
+                        if (mPage > 1) {
+                            mPage = mPage - 1;
+                        }
+                        if (datas.size() > 0) {
+                            rclvSearch.loadComplete(false);
+                        } else {
+                            rclvSearch.loadComplete(true);
+                        }
+                    } else {
+                        rclvSearch.loadComplete(true);
+                        datas.addAll(workingSearchInfos);
+                        loadMoreWrapper.notifyDataSetChanged();
+                    }
+                }
+            }
+        }
+    }
+
     private List getNowList() {
         //默认搜索学校
         if (ParameterUtils.TRANSFER_MANAGER.equals(flag_value)) {
             return transferManagerEntities;
         } else if (ParameterUtils.MSG_DETAIL.equals(flag_value)) {
             return messageDetailItemInfos;
-        } else if (ParameterUtils.MY_ALL_STUDENT.equals(flag_value)) {
+        } else if (ParameterUtils.MY_ALL_STUDENT.equals(flag_value)
+            || "STUDENT_TRANSFER_MANAGER".equals(flag_value) ||
+            "compelete_student".equals(flag_value) ||
+            "REPORT_TRANSFER_MANAGER".equals(flag_value)
+            || "TASK_TRANSFER_MANAGER".equals(flag_value) ||
+            "TALK_TRANSFER_MANAGER".equals(flag_value)) {
+            if (typeName == WorkingSearchListInfo.TASK_TYPE || typeName == WorkingSearchListInfo.REPORT_TYPE || typeName == WorkingSearchListInfo.TALK_TYPE) {
+                return workingSearchListInfos;
+            }
             return myStudentInfos;
         }
         return chatUserInfoList;

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
+import android.util.Log;
 
 import study.smart.baselib.base.manager.CrashHandler;
 import study.smart.baselib.manager.AppManager;
@@ -49,17 +50,18 @@ public class BaseApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        appContext = this;
         if (getProcessName(this).equals(getPackageName())) {
             if (Utils.isApkInDebug()) {
                 // jpush debug
                 JPushInterface.setDebugMode(true);
                 // 禁止极光捕获crash
                 JPushInterface.stopCrashHandler(this);
+                CrashHandler.getInstance().init(this);
             } else {
                 // 捕获闪退日志
                 CrashHandler.getInstance().init(this);
             }
-            appContext = this;
             //注册容云组件
             initRong();
             //路由初始化
@@ -68,7 +70,6 @@ public class BaseApplication extends MultiDexApplication {
             JPushInterface.init(this);
         }
     }
-
 
     public boolean isBackground() {
         return isBackground;
