@@ -2,6 +2,7 @@ package com.smartstudy.counselor_t.mvp.contract;
 
 import android.content.Context;
 
+import study.smart.baselib.entity.TeacherRankInfo;
 import study.smart.baselib.mvp.base.BasePresenter;
 import study.smart.baselib.mvp.base.BaseView;
 import com.smartstudy.counselor_t.entity.QuestionInfo;
@@ -18,12 +19,16 @@ public interface QaListContract {
 
         void getQuestionsSuccess(int subCount,List<QuestionInfo> data, int request_state);
 
+        void getTeacherRankSuccess(List<TeacherRankInfo> teacherRankInfos);
+
         void showEmptyView(android.view.View view);
     }
 
     interface Presenter extends BasePresenter {
 
         void getQuestions(int page, int request_state);
+
+        void getTeacherRankImage(String type, String page);
 
         void showLoading(Context context, android.view.View emptyView);
 

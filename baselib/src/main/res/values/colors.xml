@@ -13,6 +13,7 @@
     <color name="app_text_color5">#F6611D</color> <!-- 正文7文本颜色 -->
     <color name="app_top_title_color">#ff333333</color> <!--app头部中间标题字体颜色 -->
     <color name="black">#ff000000</color><!-- 黑色文本 -->
+    <color name="search_bg">#fff7f7f7</color> <!-- 搜索框背景色 -->
     <color name="black80">#cc000000</color><!-- 80%的黑色 -->
     <color name="black70">#b2000000</color><!-- 70%的黑色 -->
     <color name="black50">#7f000000</color><!--50%的黑色 -->

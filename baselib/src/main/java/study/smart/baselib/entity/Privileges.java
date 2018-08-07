@@ -10,6 +10,14 @@ package study.smart.baselib.entity;
 public class Privileges {
     // 转案
     private boolean transferCase;
+
+    private boolean archive;
+
+    private boolean task;
+
+    private boolean report;
+
+    private boolean communication;
     // 未分配中心
     private boolean unallocated;
     // 未分配中心下的分配中心权限
@@ -257,5 +265,37 @@ public class Privileges {
 
     public void setAllocatedRejected(boolean allocatedRejected) {
         this.allocatedRejected = allocatedRejected;
+    }
+
+    public boolean isArchive() {
+        return archive;
+    }
+
+    public void setArchive(boolean archive) {
+        this.archive = archive;
+    }
+
+    public boolean isTask() {
+        return task;
+    }
+
+    public void setTask(boolean task) {
+        this.task = task;
+    }
+
+    public boolean isReport() {
+        return report;
+    }
+
+    public void setReport(boolean report) {
+        this.report = report;
+    }
+
+    public boolean isCommunication() {
+        return communication;
+    }
+
+    public void setCommunication(boolean communication) {
+        this.communication = communication;
     }
 }

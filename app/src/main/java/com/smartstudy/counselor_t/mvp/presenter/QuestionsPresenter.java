@@ -7,10 +7,13 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import study.smart.baselib.entity.DataListInfo;
+import study.smart.baselib.entity.TeacherRankInfo;
 import study.smart.baselib.listener.ObserverListener;
 import study.smart.baselib.mvp.base.BasePresenterImpl;
 import study.smart.baselib.utils.DisplayImageUtils;
 import study.smart.baselib.utils.Utils;
+
+import com.alibaba.fastjson.JSONObject;
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.QuestionInfo;
 import com.smartstudy.counselor_t.mvp.contract.QaListContract;
@@ -60,6 +63,29 @@ public class QuestionsPresenter extends BasePresenterImpl<QaListContract.View> i
                 if (data != null) {
                     view.getQuestionsSuccess(subCount, data, request_state);
                     data = null;
+                }
+            }
+
+            @Override
+            public void onError(String msg) {
+                view.showTip(msg);
+            }
+        });
+    }
+
+    @Override
+    public void getTeacherRankImage(String type, String page) {
+        questionsModel.getTeacherRank(type, page, new ObserverListener<DataListInfo>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                addDisposable(disposable);
+            }
+
+            @Override
+            public void onNext(DataListInfo dataListInfo) {
+                List<TeacherRankInfo> teacherRankInfos = JSONObject.parseArray(dataListInfo.getData(), TeacherRankInfo.class);
+                if (teacherRankInfos != null) {
+                    view.getTeacherRankSuccess(teacherRankInfos);
                 }
             }
 

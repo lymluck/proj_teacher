@@ -9,18 +9,26 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import study.smart.baselib.entity.TeacherRankInfo;
+import study.smart.baselib.ui.adapter.wrapper.HeaderAndFooterWrapper;
 import study.smart.baselib.ui.base.UIFragment;
 import study.smart.baselib.utils.DensityUtils;
+import study.smart.baselib.utils.DisplayImageUtils;
 import study.smart.baselib.utils.ParameterUtils;
 import study.smart.baselib.utils.ToastUtils;
+
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.QuestionInfo;
 import com.smartstudy.counselor_t.entity.SchoolInfo;
 import com.smartstudy.counselor_t.mvp.contract.QaListContract;
 import com.smartstudy.counselor_t.mvp.presenter.QuestionsPresenter;
 import com.smartstudy.counselor_t.ui.activity.QaDetailActivity;
+import com.smartstudy.counselor_t.ui.activity.TeacherRankActivity;
+
 import study.smart.baselib.ui.adapter.CommonAdapter;
 import study.smart.baselib.ui.adapter.base.ViewHolder;
 import study.smart.baselib.ui.adapter.wrapper.EmptyWrapper;
@@ -42,14 +50,20 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
     private EmptyWrapper<SchoolInfo> emptyWrapper;
     private NoScrollLinearLayoutManager mLayoutManager;
     private View emptyView;
+    private HeaderAndFooterWrapper mHeader;
     private List<QuestionInfo> questionInfoList;
     private int mPage = 1;
     private MyAllQaFragment myAllQaFragment;
+    private ImageView ivOne;
+    private ImageView ivTwo;
+    private ImageView ivThree;
+    private View headView;
+    private FrameLayout flHeadView;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        myAllQaFragment= (MyAllQaFragment) getParentFragment();
+        myAllQaFragment = (MyAllQaFragment) getParentFragment();
     }
 
     @Override
@@ -61,7 +75,7 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
     @Override
     protected View getLayoutView() {
         return mActivity.getLayoutInflater().inflate(
-                R.layout.fragment_qa, null);
+            R.layout.fragment_qa, null);
     }
 
     @Override
@@ -101,6 +115,7 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
         emptyView = mActivity.getLayoutInflater().inflate(R.layout.layout_empty, rclv_qa, false);
         presenter.showLoading(mActivity, emptyView);
         getQa(ParameterUtils.PULL_DOWN);
+        presenter.getTeacherRankImage("weekly", "1");
     }
 
     @Override
@@ -122,6 +137,12 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
     @Override
     protected void initView(View rootView) {
         rclv_qa = (LoadMoreRecyclerView) rootView.findViewById(R.id.rclv_qa);
+        headView = mActivity.getLayoutInflater().inflate(R.layout.layout_teacher_rank, null);
+        flHeadView = headView.findViewById(R.id.fl_teacher_rank);
+        ivOne = headView.findViewById(R.id.iv_one);
+        ivTwo = headView.findViewById(R.id.iv_two);
+        ivThree = headView.findViewById(R.id.iv_three);
+
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.srlt_qa);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.app_main_color));
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -129,6 +150,7 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
             public void onRefresh() {
                 mPage = 1;
                 getQa(ParameterUtils.PULL_DOWN);
+                presenter.getTeacherRankImage("weekly", mPage + "");
             }
         });
         rclv_qa.setHasFixedSize(true);
@@ -136,7 +158,7 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
         mLayoutManager.setScrollEnabled(true);
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rclv_qa.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity())
-                .size(DensityUtils.dip2px(10f)).colorResId(R.color.bg_recent_user).build());
+            .size(DensityUtils.dip2px(10f)).colorResId(R.color.bg_recent_user).build());
         rclv_qa.setLayoutManager(mLayoutManager);
         initAdapter();
         initEvent();
@@ -145,7 +167,7 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
 
     @Override
     protected void initEvent() {
-
+        flHeadView.setOnClickListener(this);
     }
 
     private void initAdapter() {
@@ -194,7 +216,9 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
             }
 
         };
-        emptyWrapper = new EmptyWrapper<>(mAdapter);
+        mHeader = new HeaderAndFooterWrapper(mAdapter);
+        mHeader.addHeaderView(headView);
+        emptyWrapper = new EmptyWrapper<>(mHeader);
         loadMoreWrapper = new LoadMoreWrapper<>(emptyWrapper);
         rclv_qa.setAdapter(loadMoreWrapper);
         rclv_qa.SetOnLoadMoreLister(new LoadMoreRecyclerView.OnLoadMoreListener() {
@@ -234,6 +258,9 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
         switch (v.getId()) {
             case R.id.topdefault_leftbutton:
                 mActivity.finish();
+                break;
+            case R.id.fl_teacher_rank:
+                startActivity(new Intent(mActivity, TeacherRankActivity.class));
                 break;
             default:
                 break;
@@ -293,6 +320,18 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
     }
 
     @Override
+    public void getTeacherRankSuccess(List<TeacherRankInfo> teacherRankInfos) {
+        if (teacherRankInfos.size() > 3) {
+            ivOne.setVisibility(View.VISIBLE);
+            ivTwo.setVisibility(View.VISIBLE);
+            ivThree.setVisibility(View.VISIBLE);
+            DisplayImageUtils.displayCircleImage(mActivity, teacherRankInfos.get(2).getAvatar(), ivOne);
+            DisplayImageUtils.displayCircleImage(mActivity, teacherRankInfos.get(1).getAvatar(), ivTwo);
+            DisplayImageUtils.displayCircleImage(mActivity, teacherRankInfos.get(0).getAvatar(), ivThree);
+        }
+    }
+
+    @Override
     public void showEmptyView(View view) {
         emptyWrapper.setEmptyView(view);
         loadMoreWrapper.notifyDataSetChanged();
@@ -305,7 +344,7 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
         if (presenter != null) {
             swipeRefreshLayout.setRefreshing(false);
             rclv_qa.loadComplete(true);
-            ToastUtils.shortToast( message);
+            ToastUtils.shortToast(message);
         }
     }
 }

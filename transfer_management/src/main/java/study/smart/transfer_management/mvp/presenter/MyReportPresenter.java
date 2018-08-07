@@ -54,9 +54,7 @@ public class MyReportPresenter extends BasePresenterImpl<MyReportContract.View> 
             @Override
             public void onNext(DataListInfo dataListInfo) {
                 List<MyStudentInfo> myStudentInfos = JSONObject.parseArray(dataListInfo.getData(), MyStudentInfo.class);
-                if (myStudentInfos != null) {
-                    view.getMyReportSuccess(myStudentInfos, request_state);
-                }
+                view.getMyReportSuccess(myStudentInfos, request_state);
             }
 
             @Override

@@ -695,5 +695,17 @@ public interface ApiService {
     @PUT()
     Observable<ResponseInfo<String>> assignTransferCaseTeacherAgain(@HeaderMap Map<String, String> header, @Url() String url, @QueryMap Map<String, String> params);
 
+
+    /**
+     * 老师回答排行
+     *
+     * @param header
+     * @param url
+     * @return
+     */
+    @GET()
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
+    Observable<ResponseInfo<DataListInfo>> getTeacherRank(@HeaderMap Map<String, String> header, @Url() String url, @QueryMap Map<String, String> params);
+
 }
 

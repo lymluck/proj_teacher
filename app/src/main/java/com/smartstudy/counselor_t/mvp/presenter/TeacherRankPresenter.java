@@ -1,4 +1,4 @@
-package study.smart.transfer_management.mvp.presenter;
+package com.smartstudy.counselor_t.mvp.presenter;
 
 import android.content.Context;
 import android.view.View;
@@ -6,47 +6,45 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
+import com.smartstudy.counselor_t.R;
+import com.smartstudy.counselor_t.mvp.contract.TeacherRankContract;
+import com.smartstudy.counselor_t.mvp.model.TeacherRankModel;
 
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 import study.smart.baselib.entity.DataListInfo;
+import study.smart.baselib.entity.TeacherRankInfo;
 import study.smart.baselib.listener.ObserverListener;
 import study.smart.baselib.mvp.base.BasePresenterImpl;
 import study.smart.baselib.utils.DisplayImageUtils;
 import study.smart.baselib.utils.Utils;
-import study.smart.transfer_management.R;
-import study.smart.baselib.entity.MyStudentInfo;
-import study.smart.transfer_management.mvp.contract.StudentDetailReportContract;
-import study.smart.transfer_management.mvp.model.StudentDetailReportModel;
 
 /**
  * @author yqy
- * @date on 2018/7/24
+ * @date on 2018/7/18
  * @describe TODO
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */
-public class StudentDetailReportPresenter extends BasePresenterImpl<StudentDetailReportContract.View> implements StudentDetailReportContract.Presenter {
+public class TeacherRankPresenter extends BasePresenterImpl<TeacherRankContract.View> implements TeacherRankContract.Presenter {
 
-    private StudentDetailReportModel studentDetailReportModel;
+    private TeacherRankModel teacherRankModel;
 
-    public StudentDetailReportPresenter(StudentDetailReportContract.View view) {
+    public TeacherRankPresenter(TeacherRankContract.View view) {
         super(view);
-        studentDetailReportModel = new StudentDetailReportModel();
+        teacherRankModel = new TeacherRankModel();
     }
-
 
     @Override
     public void detach() {
         super.detach();
-        studentDetailReportModel = null;
+        teacherRankModel = null;
     }
 
-
     @Override
-    public void getStudentDetailReport(String userId, String type, String page, final int request_state) {
-        studentDetailReportModel.getStudentDetailReport(userId, type, page, new ObserverListener<DataListInfo>() {
+    public void getTeacherRank(String type, String page, final int request_state) {
+        teacherRankModel.getTeacherRank(type, page, new ObserverListener<DataListInfo>() {
             @Override
             public void onSubscribe(Disposable disposable) {
                 addDisposable(disposable);
@@ -54,8 +52,15 @@ public class StudentDetailReportPresenter extends BasePresenterImpl<StudentDetai
 
             @Override
             public void onNext(DataListInfo dataListInfo) {
-                List<MyStudentInfo> myStudentInfos = JSONObject.parseArray(dataListInfo.getData(), MyStudentInfo.class);
-                view.getStudentDetailReportSuccess(myStudentInfos, request_state);
+                List<TeacherRankInfo> teacherRankInfos = JSONObject.parseArray(dataListInfo.getData(), TeacherRankInfo.class);
+                if (teacherRankInfos != null) {
+                    view.getTransferListSuccess(teacherRankInfos, request_state);
+                }
+                JSONObject jsonObject = JSONObject.parseObject(dataListInfo.getMeta());
+                if (jsonObject != null && jsonObject.containsKey("myself")) {
+                    TeacherRankInfo teacherRankInfo = JSONObject.parseObject(jsonObject.getString("myself"), TeacherRankInfo.class);
+                    view.showMySelf(teacherRankInfo);
+                }
             }
 
             @Override
@@ -78,7 +83,6 @@ public class StudentDetailReportPresenter extends BasePresenterImpl<StudentDetai
             emptyView.findViewById(R.id.llyt_err).setVisibility(View.GONE);
             ImageView iv_loading = (ImageView) emptyView.findViewById(R.id.iv_loading);
             iv_loading.setVisibility(View.VISIBLE);
-            tv_err_tip.setText("没有相关数据或者没有查看权限");
             DisplayImageUtils.displayGif(context, R.drawable.gif_data_loading, iv_loading);
         }
         view.showEmptyView(emptyView);
@@ -93,5 +97,4 @@ public class StudentDetailReportPresenter extends BasePresenterImpl<StudentDetai
         view.showEmptyView(emptyView);
         emptyView = null;
     }
-
 }

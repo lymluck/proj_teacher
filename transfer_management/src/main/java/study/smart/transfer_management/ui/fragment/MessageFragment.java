@@ -50,7 +50,6 @@ public class MessageFragment extends UIFragment<TransferManagerMessageContract.P
     @Override
     public void onFirstUserVisible() {
         super.onFirstUserVisible();
-        presenter.getMessageInfos();
     }
 
     @Override
@@ -105,6 +104,12 @@ public class MessageFragment extends UIFragment<TransferManagerMessageContract.P
                 if (messageInfo.getUnReadCount() > 99) {
                     tvCount.setText("99+");
                     tvCount.setBackgroundResource(R.drawable.bg_message_count_border9);
+                } else if (messageInfo.getUnReadCount() == 0) {
+                    tvCount.setVisibility(View.INVISIBLE);
+                    tvCount.setBackgroundColor(0);
+                } else if (messageInfo.getUnReadCount() < 10) {
+                    tvCount.setText(messageInfo.getUnReadCount() + "");
+                    tvCount.setBackgroundResource(R.drawable.bg_message_unread_two);
                 } else {
                     tvCount.setText(messageInfo.getUnReadCount() + "");
                     tvCount.setBackgroundResource(R.drawable.bg_message_unread);
@@ -160,5 +165,11 @@ public class MessageFragment extends UIFragment<TransferManagerMessageContract.P
                 startActivity(toSearch);
             }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.getMessageInfos();
     }
 }

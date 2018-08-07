@@ -67,6 +67,26 @@ public class TransferManagerMessageDetailPresenter extends BasePresenterImpl<Tra
         });
     }
 
+    @Override
+    public void getMessageDetail(final MessageDetailItemInfo messageDetailItemInfos) {
+        transferManagerMessageDetailModel.getMessagesDetail(messageDetailItemInfos.getData().getId(), new ObserverListener<DataListInfo>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                addDisposable(disposable);
+            }
+
+            @Override
+            public void onNext(DataListInfo dataListInfo) {
+                view.getMessageDetailSuccess(messageDetailItemInfos);
+            }
+
+            @Override
+            public void onError(String msg) {
+                view.showTip(msg);
+            }
+        });
+    }
+
 
     @Override
     public void showLoading(Context context, View emptyView) {

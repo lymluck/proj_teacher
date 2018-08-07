@@ -200,6 +200,7 @@ public class MyStudentActivity extends BaseActivity<TransferMyStudentContract.Pr
         searchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mHandler.sendEmptyMessageAtTime(ParameterUtils.MSG_WHAT_REFRESH, 600);
                 Intent toSearch = new Intent(MyStudentActivity.this, CommonSearchActivity.class);
                 toSearch.putExtra(ParameterUtils.TRANSITION_FLAG, from);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {

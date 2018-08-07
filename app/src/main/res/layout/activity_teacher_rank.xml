@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_horizontal"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp">
+
+        <study.smart.baselib.ui.widget.PagerSlidingTabStrip
+            android:id="@+id/tabs_ranks"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_top_tab_h"
+            android:textColor="@color/app_text_color"
+            android:textSize="15sp"
+            app:pstsDividerColor="@color/transparent"
+            app:pstsIndicatorColor="@color/app_main_color"
+            app:pstsIndicatorHeight="2dp"
+            app:pstsIndicatorMargin="50dp"
+            app:pstsScaleZoomMax="0.1"
+            app:pstsShouldExpand="true"
+            app:pstsSmoothScrollWhenClickTab="false"
+            app:pstsTextSelectedColor="@color/app_main_color"
+            app:pstsUnderlineColor="@color/white" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#CCCCCC" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager_rank"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/white" />
+</LinearLayout>

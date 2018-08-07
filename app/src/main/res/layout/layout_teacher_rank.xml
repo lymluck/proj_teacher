@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <FrameLayout
+        android:id="@+id/fl_teacher_rank"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_rank">
+
+        <ImageView
+            android:id="@+id/iv_one"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginRight="36dp"
+            android:padding="1dp"
+            android:visibility="gone"
+            android:background="@drawable/bg_rank_teacher_avatar" />
+
+        <ImageView
+            android:id="@+id/iv_two"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginRight="57dp"
+            android:padding="1dp"
+            android:visibility="gone"
+            android:background="@drawable/bg_rank_teacher_avatar" />
+
+        <ImageView
+            android:id="@+id/iv_three"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginRight="78dp"
+            android:padding="1dp"
+            android:visibility="gone"
+            android:background="@drawable/bg_rank_teacher_avatar" />
+    </FrameLayout>
+</RelativeLayout>

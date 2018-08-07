@@ -123,6 +123,10 @@ public class StudentDetailReportFragment extends UIFragment<StudentDetailReportC
         if (presenter != null) {
             presenter.setEmptyView(emptyView);
             mLayoutManager.setScrollEnabled(true);
+            if(myStudentInfos==null){
+                swipeRefreshLayout.setRefreshing(false);
+                return;
+            }
             int len = myStudentInfos.size();
             if (request_state == ParameterUtils.PULL_DOWN) {
                 //下拉刷新

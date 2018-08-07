@@ -63,7 +63,8 @@ public class HttpUrlUtils {
     public static final String WORKBENCH_COMPLETE_LIST = "workbench/communication/list";//我发布的沟通记录
     public static final String WORKBENCH_TASK_LIST = "workbench/task/list";//我发布的任务列表
     public static final String WORKBENCH_CENTER_LIST = "workbench/center/list";//中心
-    public static final String MESSAGE_DETAIL = "message/%1$s";//中心
+    public static final String MESSAGE_DETAIL = "message/%1$s";//  消息中心
+    public static final String URL_COUNSELLOR_RANKING = "questions/counsellor/ranking/%1$s";//老师周排行
 
     /**************************** web ***************************/
     public static final String URL_USER_CONTRACT = "/user-agreement.html";  //用户协议
@@ -71,19 +72,17 @@ public class HttpUrlUtils {
 
     /*********获取api接口url***********/
     public static String getBaseUrl() {
-        String SERVER = "https://slx.smartstudy.com/api/";
-//        String SERVER = "http://172.17.7.102:3234/";
-//        String SERVER = "http://slx.staging.smartstudy.com/api/"; //test
+//        String SERVER = "https://slx.smartstudy.com/api/";
+        String SERVER = "http://slx.staging.smartstudy.com/api/"; //test
         String api = (String) SPCacheUtils.get(ConstantUtils.API_SERVER, "");
         switch (api) {
             case "master":
-//                SERVER = "https://slx.smartstudy.com/api/";
-                SERVER = "http://slx.staging.smartstudy.com/api/";
+                SERVER = "https://slx.smartstudy.com/api/";
+//                SERVER = "http://slx.staging.smartstudy.com/api/";
                 break;
             case "test":
 //               SERVER = "https://slx.smartstudy.com/api/";
                 SERVER = "http://slx.staging.smartstudy.com/api/"; //test
-//                SERVER = "http://172.17.7.102:3234/";
                 break;
             case "dev":
                 SERVER = "http://blog.smartstudy.com:3234/";

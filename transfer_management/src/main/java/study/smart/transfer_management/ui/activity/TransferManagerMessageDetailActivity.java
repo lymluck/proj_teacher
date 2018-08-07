@@ -92,8 +92,13 @@ public class TransferManagerMessageDetailActivity extends BaseActivity<TransferM
         emptyView = getLayoutInflater().inflate(R.layout.layout_empty, rclvMessageDetail,
             false);
         presenter.showLoading(this, emptyView);
-        presenter.getMessageDetailList(mPage + "", type, ParameterUtils.PULL_DOWN);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.getMessageDetailList(mPage + "", type, ParameterUtils.PULL_DOWN);
     }
 
     @Override
@@ -131,6 +136,30 @@ public class TransferManagerMessageDetailActivity extends BaseActivity<TransferM
                 }
             }
         }
+    }
+
+    @Override
+    public void getMessageDetailSuccess(MessageDetailItemInfo messageDetailItemInfos) {
+        String model = "";
+        String order_state = "";
+        if (messageDetailItemInfos.getDetailedType().equals("ALLOCATE_CENTER")) {
+            model = "未分配导师";
+            order_state = "选导师";
+        } else if (messageDetailItemInfos.getDetailedType().equals("CRM_TRANSFER_CASE")) {
+            model = "未分配中心";
+            order_state = "未分配中心";
+        } else {
+            model = "被驳回转案";
+            order_state = "被驳回转案";
+        }
+        Intent intent = new Intent();
+        //把模块名传送过去
+        intent.putExtra("model", model);
+        intent.putExtra("id", messageDetailItemInfos.getData().getId());
+        //把订单状态传送过去
+        intent.putExtra("order_state", order_state);
+        intent.setClass(TransferManagerMessageDetailActivity.this, TransferManagerDetailActivity.class);
+        startActivity(intent);
     }
 
 
@@ -194,26 +223,7 @@ public class TransferManagerMessageDetailActivity extends BaseActivity<TransferM
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 if (type.equals("TRANSFER_CASE")) {
-                    String model = "";
-                    String order_state = "";
-                    if (messageDetailItemInfos.get(position).getDetailedType().equals("ALLOCATE_CENTER")) {
-                        model = "未分配导师";
-                        order_state = "选导师";
-                    } else if (messageDetailItemInfos.get(position).getDetailedType().equals("CRM_TRANSFER_CASE")) {
-                        model = "未分配中心";
-                        order_state = "未分配中心";
-                    } else {
-                        model = "被驳回转案";
-                        order_state = "被驳回转案";
-                    }
-                    Intent intent = new Intent();
-                    //把模块名传送过去
-                    intent.putExtra("model", model);
-                    intent.putExtra("id", messageDetailItemInfos.get(position).getData().getId());
-                    //把订单状态传送过去
-                    intent.putExtra("order_state", order_state);
-                    intent.setClass(TransferManagerMessageDetailActivity.this, TransferManagerDetailActivity.class);
-                    startActivity(intent);
+                    presenter.getMessageDetail(messageDetailItemInfos.get(position));
                 } else if ("TASK_TRAINING".equals(type)) {
                     //任务训练
                     startActivity(new Intent(TransferManagerMessageDetailActivity.this, TaskDetailActivity.class).putExtra("id", messageDetailItemInfos.get(position).getId()));

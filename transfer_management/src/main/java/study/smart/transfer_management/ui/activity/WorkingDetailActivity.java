@@ -131,6 +131,7 @@ public class WorkingDetailActivity extends BaseActivity<WorkingDetailContract.Pr
             @Override
             protected void convert(ViewHolder holder, CenterInfo centerInfo, int position) {
                 holder.setText(R.id.tv_name, centerInfo.getValue());
+                holder.setCircleImageUrl(R.id.iv_logo, centerInfo.getLogo(), true);
             }
         };
         mHeader = new HeaderAndFooterWrapper(mAdapter);

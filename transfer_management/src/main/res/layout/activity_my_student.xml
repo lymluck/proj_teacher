@@ -13,6 +13,6 @@
 
     <include
         android:id="@+id/searchView"
-        layout="@layout/layout_search"
+        layout="@layout/layout_common_search"
         android:visibility="visible" />
 </FrameLayout>

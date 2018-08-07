@@ -47,8 +47,6 @@ public class MyReportFragment extends UIFragment<MyReportContract.Presenter> imp
     private List<MyStudentInfo> myStudentInfos;
     private CommonAdapter<MyStudentInfo> mAdapter;
     private LoadMoreWrapper<MyStudentInfo> loadMoreWrapper;
-    private String from;
-    private String userId;
 
     public static MyReportFragment getInstance(Bundle bundle) {
         MyReportFragment fragment = new MyReportFragment();
@@ -94,8 +92,6 @@ public class MyReportFragment extends UIFragment<MyReportContract.Presenter> imp
             .colorResId(R.color.main_bg)
             .build());
         initAdapter();
-        from = getArguments().getString("from");
-        userId = getArguments().getString("id");
         stateInfo = getArguments().getParcelable("stateInfos");
     }
 
@@ -125,6 +121,10 @@ public class MyReportFragment extends UIFragment<MyReportContract.Presenter> imp
         if (presenter != null) {
             presenter.setEmptyView(emptyView);
             mLayoutManager.setScrollEnabled(true);
+            if (myStudentInfos == null) {
+                swipeRefreshLayout.setRefreshing(false);
+                return;
+            }
             int len = myStudentInfos.size();
             if (request_state == ParameterUtils.PULL_DOWN) {
                 //下拉刷新
