@@ -206,7 +206,7 @@ public class WorkingDetailActivity extends BaseActivity<WorkingDetailContract.Pr
             } else {
                 startActivity(new Intent(this, UnTalkRecordActivity.class));
             }
-        } else {
+        } else if (v.getId() == R.id.ll_tag_two) {
             if ("STUDENT_TRANSFER_MANAGER".equals(from)) {
             } else if ("TASK_TRANSFER_MANAGER".equals(from)) {
 
@@ -215,6 +215,8 @@ public class WorkingDetailActivity extends BaseActivity<WorkingDetailContract.Pr
             } else {
                 startActivity(new Intent(this, MyTalkRecordActivity.class));
             }
+        } else {
+            finish();
         }
     }
 

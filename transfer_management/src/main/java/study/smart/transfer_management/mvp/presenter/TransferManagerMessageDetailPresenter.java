@@ -69,7 +69,7 @@ public class TransferManagerMessageDetailPresenter extends BasePresenterImpl<Tra
 
     @Override
     public void getMessageDetail(final MessageDetailItemInfo messageDetailItemInfos) {
-        transferManagerMessageDetailModel.getMessagesDetail(messageDetailItemInfos.getData().getId(), new ObserverListener<DataListInfo>() {
+        transferManagerMessageDetailModel.getMessagesDetail(messageDetailItemInfos.getData().getMessageId(), new ObserverListener<DataListInfo>() {
             @Override
             public void onSubscribe(Disposable disposable) {
                 addDisposable(disposable);

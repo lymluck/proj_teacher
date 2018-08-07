@@ -149,7 +149,6 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
         llytTopSearch = (LinearLayout) findViewById(R.id.llyt_top_search);
         Intent data = getIntent();
         flag_value = data.getStringExtra(ParameterUtils.TRANSITION_FLAG);
-        Log.w("kim", "--->" + flag_value);
         keyword = data.getStringExtra("keyword");
         typeName = data.getIntExtra("typeName", 0);
         rclvSearch = (LoadMoreRecyclerView) findViewById(R.id.rclv_search);
@@ -191,7 +190,6 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
             searchView.getMyEditText().requestFocus();
             KeyBoardUtils.openKeybord(searchView.getMyEditText(), this);
         }
-        Log.w("kim", "from-----" + flag_value);
     }
 
     private void initRefresh() {
@@ -666,7 +664,7 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
 
                 } else {
                     //已完成
-                    holder.getView(R.id.v_status).setBackgroundColor(Color.parseColor("#FFFBE6"));
+                    holder.getView(R.id.v_status).setBackgroundColor(Color.parseColor("#52C41A"));
                 }
             }
         };
@@ -674,8 +672,7 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
         workingSearchInfoAdapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                startActivity(new Intent(CommonSearchActivity.this, MyTaskListActivity.class).putExtra("id", workingSearchListInfos.get(position).getId())
-                    .putExtra("name", workingSearchListInfos.get(position).getUserName()));
+                startActivity(new Intent(CommonSearchActivity.this, TaskDetailActivity.class).putExtra("working_search_info", workingSearchListInfos.get(position)));
             }
 
             @Override

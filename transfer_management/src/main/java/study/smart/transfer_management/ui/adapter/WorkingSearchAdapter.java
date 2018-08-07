@@ -22,6 +22,7 @@ import study.smart.transfer_management.ui.activity.PersonTalkRecordDetailActivit
 import study.smart.transfer_management.ui.activity.StudentDetailActivity;
 import study.smart.transfer_management.ui.activity.StudentDetailReportActivity;
 import study.smart.transfer_management.ui.activity.StudentDetailTalkActivity;
+import study.smart.transfer_management.ui.activity.TaskDetailActivity;
 import study.smart.transfer_management.ui.adapter.workingsearch.WorkingSearchContentHolder;
 import study.smart.transfer_management.ui.adapter.workingsearch.WorkingSearchFooterHolder;
 import study.smart.transfer_management.ui.adapter.workingsearch.WorkingSearchHeaderHolder;
@@ -156,10 +157,9 @@ public class WorkingSearchAdapter extends SectionedRecyclerViewAdapter<WorkingSe
                 } else if ("PENDING".equals(info.getWorkingSearchInfos().get(position).getStatus())) {
                     //进行中
                     holder.vBackgroup.setBackgroundColor(Color.parseColor("#1890FF"));
-
                 } else {
                     //已完成
-                    holder.vBackgroup.setBackgroundColor(Color.parseColor("#FFFBE6"));
+                    holder.vBackgroup.setBackgroundColor(Color.parseColor("#52C41A"));
                 }
                 clickTask(holder, info.getWorkingSearchInfos().get(position));
                 break;
@@ -217,8 +217,7 @@ public class WorkingSearchAdapter extends SectionedRecyclerViewAdapter<WorkingSe
         holder.itemView.findViewById(R.id.item_task).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mContext.startActivity(new Intent(mContext, MyTaskListActivity.class).putExtra("id", info.getId())
-                    .putExtra("name", info.getUserName()));
+                mContext.startActivity(new Intent(mContext, TaskDetailActivity.class).putExtra("working_search_info", info));
             }
         });
     }

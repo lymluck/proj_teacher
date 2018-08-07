@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -38,6 +39,7 @@ public class StudentDetailActivity extends BaseActivity<StudentDetailContract.Pr
     private TextView tvStatus;
     private TextView tvRemind;
     private TextView tvContact;
+    private String type;
 
     @Override
     public StudentDetailContract.Presenter initPresenter() {
@@ -48,6 +50,7 @@ public class StudentDetailActivity extends BaseActivity<StudentDetailContract.Pr
     public void initView() {
         from = getIntent().getStringExtra("from");
         id = getIntent().getStringExtra("id");
+        type = getIntent().getStringExtra("type");
         myStudentInfo = (MyStudentInfo) getIntent().getSerializableExtra("studentInfo");
         tvName = findViewById(R.id.tv_name);
         tvPhone = findViewById(R.id.tv_telephone);
@@ -68,12 +71,17 @@ public class StudentDetailActivity extends BaseActivity<StudentDetailContract.Pr
         } else {
             initData(myStudentInfo);
         }
-
-        if ("STUDENT_TRANSFER_MANAGER".equals(from)) {
+        if ("compelete_student".equals(from) || "STUDENT_TRANSFER_MANAGER".equals(from)) {
             tvRemind.setText("学员信息待完善，请前往电脑上完善");
             tvContact.setVisibility(View.VISIBLE);
         } else if ("report".equals(from)) {
-            tvRemind.setText("请前往电脑上完成该学员的季度报告");
+            if ("QUARTERLY".equals(type)) {
+                tvRemind.setText("请前往电脑上完成该学员的季度报告");
+            } else if ("SUMMARY".equals(type)) {
+                tvRemind.setText("请前往电脑上完成该学员的总结报告");
+            } else {
+                tvRemind.setText("请前往电脑上完成该学员的结案报告");
+            }
             tvContact.setVisibility(View.GONE);
         } else if ("message".equals(from)) {
             tvRemind.setText("更多操作请前往电脑上操作");

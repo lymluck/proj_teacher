@@ -202,7 +202,10 @@ public class UnCompeleteReportFragment extends UIFragment<UncompeleteReportContr
         mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                startActivity(new Intent(mActivity, StudentDetailActivity.class).putExtra("studentInfo", myStudentInfos.get(position)).putExtra("from", "report"));
+                startActivity(new Intent(mActivity, StudentDetailActivity.class)
+                    .putExtra("studentInfo", myStudentInfos.get(position))
+                    .putExtra("from", "report")
+                    .putExtra("type", stateInfo.getType()));
             }
 
             @Override

@@ -235,7 +235,7 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
         mAdapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                QuestionInfo info = questionInfoList.get(position);
+                QuestionInfo info = questionInfoList.get(position-1);
                 Intent toMoreDetails = new Intent(mActivity, QaDetailActivity.class);
                 toMoreDetails.putExtra("id", info.getId() + "");
                 startActivity(toMoreDetails);

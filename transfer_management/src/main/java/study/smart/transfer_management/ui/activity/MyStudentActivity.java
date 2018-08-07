@@ -1,6 +1,7 @@
 package study.smart.transfer_management.ui.activity;
 
 import android.content.Intent;
+import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -52,11 +53,11 @@ public class MyStudentActivity extends BaseActivity<TransferMyStudentContract.Pr
     private View emptyView;
     private List<MyStudentInfo> myStudentInfos;
     private WeakHandler mHandler;
-    private boolean isFirstLoad;
     private int mPage = 1;
     private boolean canPullUp;
     private String from;
     private String centerId;
+    private boolean isFirstLoad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,7 @@ public class MyStudentActivity extends BaseActivity<TransferMyStudentContract.Pr
         } else {
             setTitle("我的学员");
         }
+        setTopLineVisibility(View.VISIBLE);
         centerId = getIntent().getStringExtra("centerId");
         isFirstLoad = true;
         searchView = findViewById(R.id.searchView);

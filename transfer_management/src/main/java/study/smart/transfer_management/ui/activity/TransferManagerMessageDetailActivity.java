@@ -226,10 +226,10 @@ public class TransferManagerMessageDetailActivity extends BaseActivity<TransferM
                     presenter.getMessageDetail(messageDetailItemInfos.get(position));
                 } else if ("TASK_TRAINING".equals(type)) {
                     //任务训练
-                    startActivity(new Intent(TransferManagerMessageDetailActivity.this, TaskDetailActivity.class).putExtra("id", messageDetailItemInfos.get(position).getId()));
+                    startActivity(new Intent(TransferManagerMessageDetailActivity.this, TaskDetailActivity.class).putExtra("id", messageDetailItemInfos.get(position).getData().getMessageId()));
                 } else {
                     startActivity(new Intent(TransferManagerMessageDetailActivity.this, StudentDetailActivity.class)
-                        .putExtra("id", messageDetailItemInfos.get(position).getId())
+                        .putExtra("id", messageDetailItemInfos.get(position).getData().getMessageId())
                         .putExtra("from", "message"));
                 }
             }

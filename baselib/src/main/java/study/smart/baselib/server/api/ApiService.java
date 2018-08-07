@@ -340,7 +340,7 @@ public interface ApiService {
      */
     @GET()
     @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
-    Observable<ResponseInfo<TaskDetailInfo>> getMessageDetail(@HeaderMap Map<String, String> header, @Url() String url);
+    Observable<ResponseInfo<DataListInfo>> getMessageDetail(@HeaderMap Map<String, String> header, @Url() String url);
 
     /**
      * 获取消息详情

@@ -77,7 +77,6 @@ public class WorkingSearchActivity extends BaseActivity<WorkingSearchContract.Pr
     public void initView() {
         setHeadVisible(View.GONE);
         from = getIntent().getStringExtra(ParameterUtils.TRANSITION_FLAG);
-        Log.w("kim", "--->" + from);
         llSearch = (LinearLayout) findViewById(R.id.llyt_search);
         searchView = (EditTextWithClear) findViewById(R.id.searchView);
         searchView.getMyEditText().setHint(R.string.search);

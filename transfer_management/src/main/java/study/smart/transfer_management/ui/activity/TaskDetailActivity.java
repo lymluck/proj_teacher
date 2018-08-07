@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import study.smart.baselib.entity.TaskDetailInfo;
+import study.smart.baselib.entity.WorkingSearchInfo;
 import study.smart.baselib.ui.base.BaseActivity;
 import study.smart.baselib.utils.TimeUtil;
 import study.smart.transfer_management.R;
@@ -32,6 +33,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailContract.Presente
     private TextView tvTime;
     private TextView tvCenterName;
     private TextView tvStatus;
+    private WorkingSearchInfo workingSearchInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailContract.Presente
         setTitle("任务详情");
         setTopLineVisibility(View.VISIBLE);
         id = getIntent().getStringExtra("id");
+        workingSearchInfo = (WorkingSearchInfo) getIntent().getSerializableExtra("working_search_info");
         dataList = (TaskDetailInfo) getIntent().getSerializableExtra("taskDetail");
         tvContent = findViewById(R.id.tv_content);
         tvTaskCreater = findViewById(R.id.tv_task_creater);
@@ -59,6 +62,8 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailContract.Presente
         vTitle = findViewById(R.id.v_title);
         if (!TextUtils.isEmpty(id)) {
             presenter.getTaskDetail(id);
+        } else if (workingSearchInfo != null) {
+            initWorkingData(workingSearchInfo);
         } else {
             initData(dataList);
         }
@@ -98,4 +103,35 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailContract.Presente
             }
         }
     }
+
+    private void initWorkingData(WorkingSearchInfo workingSearchInfo) {
+        if (workingSearchInfo != null) {
+            if (TextUtils.isEmpty(workingSearchInfo.getName())) {
+                tvContent.setText(workingSearchInfo.getTypeText());
+            } else {
+                tvContent.setText(workingSearchInfo.getTypeText() + "：" + workingSearchInfo.getName());
+            }
+            tvTaskCreater.setText(workingSearchInfo.getCreatorName());
+            tvUserName.setText(workingSearchInfo.getUserName());
+            tvCenterName.setText(workingSearchInfo.getCenterName());
+            tvTime.setText(TimeUtil.getStrTime(workingSearchInfo.getStartTime()) + "-" + TimeUtil.getStrTime(workingSearchInfo.getEndTime()));
+            tvStatus.setText(workingSearchInfo.getStatusName());
+
+            if ("ALERT".equals(workingSearchInfo.getStatus())) {
+                //临期
+                vTitle.setBackgroundColor(Color.parseColor("#FAAD14"));
+            } else if ("EXPIRED".equals(workingSearchInfo.getStatus())) {
+                //过期
+                vTitle.setBackgroundColor(Color.parseColor("#7f000000"));
+            } else if ("PENDING".equals(workingSearchInfo.getStatus())) {
+                //进行中
+                vTitle.setBackgroundColor(Color.parseColor("#1890FF"));
+
+            } else {
+                //已完成
+                vTitle.setBackgroundColor(Color.parseColor("#52C41A"));
+            }
+        }
+    }
+
 }

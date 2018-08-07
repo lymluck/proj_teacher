@@ -17,6 +17,9 @@ public class WorkingSearchInfo implements Serializable {
     private String targetApplicationYearSeason;
     private String targetDegreeName;
     private String typeText;
+    private String startTime;
+    private String type;
+    private String creatorName;
     private String centerName;
     private String userName;
     private String endTime;
@@ -27,6 +30,40 @@ public class WorkingSearchInfo implements Serializable {
     private String userTypeText;
     private String methodText;
     private String reason;
+    private String statusName;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
+    }
+
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
     private List<CommunicationList> communicationList;
 
     public List<CommunicationList> getCommunicationList() {

@@ -7,12 +7,12 @@
     <study.smart.baselib.ui.widget.LoadMoreRecyclerView
         android:id="@+id/rclv_student"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:paddingTop="40dp" />
+        android:paddingTop="46dp" />
 
     <include
         android:id="@+id/searchView"
         layout="@layout/layout_common_search"
-        android:visibility="visible" />
+        android:visibility="invisible" />
 </FrameLayout>
