@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import study.smart.baselib.ui.base.BaseActivity;
+import study.smart.baselib.utils.ParameterUtils;
 import study.smart.baselib.utils.TimeUtil;
 import study.smart.transfer_management.R;
 import study.smart.baselib.entity.MyStudentInfo;
@@ -71,13 +72,13 @@ public class StudentDetailActivity extends BaseActivity<StudentDetailContract.Pr
         } else {
             initData(myStudentInfo);
         }
-        if ("compelete_student".equals(from) || "STUDENT_TRANSFER_MANAGER".equals(from)) {
+        if (ParameterUtils.COMPELETE_STUDENT.equals(from) || ParameterUtils.STUDENT_TRANSFER_MANAGER.equals(from)) {
             tvRemind.setText("学员信息待完善，请前往电脑上完善");
             tvContact.setVisibility(View.VISIBLE);
         } else if ("report".equals(from)) {
-            if ("QUARTERLY".equals(type)) {
+            if (ParameterUtils.QUARTERLY.equals(type)) {
                 tvRemind.setText("请前往电脑上完成该学员的季度报告");
-            } else if ("SUMMARY".equals(type)) {
+            } else if (ParameterUtils.SUMMARY.equals(type)) {
                 tvRemind.setText("请前往电脑上完成该学员的总结报告");
             } else {
                 tvRemind.setText("请前往电脑上完成该学员的结案报告");

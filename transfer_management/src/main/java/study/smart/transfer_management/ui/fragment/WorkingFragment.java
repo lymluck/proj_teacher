@@ -17,6 +17,7 @@ import study.smart.baselib.ui.adapter.CommonAdapter;
 import study.smart.baselib.ui.adapter.MultiItemTypeAdapter;
 import study.smart.baselib.ui.adapter.base.ViewHolder;
 import study.smart.baselib.ui.base.UIFragment;
+import study.smart.baselib.utils.ParameterUtils;
 import study.smart.baselib.utils.SPCacheUtils;
 import study.smart.transfer_management.R;
 import study.smart.transfer_management.entity.WorkingInfo;
@@ -76,7 +77,7 @@ public class WorkingFragment extends UIFragment {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 //学员管理
-                if ("TRANSFER_MANAGER".equals(workingInfos.get(position).getId())) {
+                if (ParameterUtils.TRANSFER_MANAGER.equals(workingInfos.get(position).getId())) {
                     startActivity(new Intent(mActivity, TransferManagerActivity.class));
                 } else {
                     startActivity(new Intent(mActivity, WorkingDetailActivity.class).putExtra("from", workingInfos.get(position).getId()));
@@ -97,24 +98,24 @@ public class WorkingFragment extends UIFragment {
             if (privileges.isTransferCase()) {
                 WorkingInfo workingInfo = new WorkingInfo();
                 //转案管理
-                workingInfo.setId("TRANSFER_MANAGER");
-                workingInfo.setName("转案管理");
+                workingInfo.setId(ParameterUtils.TRANSFER_MANAGER);
+                workingInfo.setName(getString(R.string.transfer_manager));
                 workingInfo.setIcon(R.drawable.transfer_icon_manager);
                 workingInfos.add(workingInfo);
             }
             if (privileges.isArchive()) {
                 //学员管理
                 WorkingInfo studentWorkingInfo = new WorkingInfo();
-                studentWorkingInfo.setId("STUDENT_TRANSFER_MANAGER");
-                studentWorkingInfo.setName("学员管理");
+                studentWorkingInfo.setId(ParameterUtils.STUDENT_TRANSFER_MANAGER);
+                studentWorkingInfo.setName(mActivity.getString(R.string.student_manager));
                 studentWorkingInfo.setIcon(R.drawable.transfer_student_manager);
                 workingInfos.add(studentWorkingInfo);
             }
             if (privileges.isTask()) {
                 //任务训练
                 WorkingInfo taskWorkingInfo = new WorkingInfo();
-                taskWorkingInfo.setId("TASK_TRANSFER_MANAGER");
-                taskWorkingInfo.setName("任务/训练");
+                taskWorkingInfo.setId(ParameterUtils.TASK_TRANSFER_MANAGER);
+                taskWorkingInfo.setName(getString(R.string.task_train));
                 taskWorkingInfo.setIcon(R.drawable.transfer_task_manager);
                 workingInfos.add(taskWorkingInfo);
             }
@@ -122,8 +123,8 @@ public class WorkingFragment extends UIFragment {
             if (privileges.isTask()) {
                 //报告中心
                 WorkingInfo reportWorkingInfo = new WorkingInfo();
-                reportWorkingInfo.setId("REPORT_TRANSFER_MANAGER");
-                reportWorkingInfo.setName("报告中心");
+                reportWorkingInfo.setId(ParameterUtils.REPORT_TRANSFER_MANAGER);
+                reportWorkingInfo.setName(getString(R.string.report_center));
                 reportWorkingInfo.setIcon(R.drawable.transfer_working_report);
                 workingInfos.add(reportWorkingInfo);
             }
@@ -131,8 +132,8 @@ public class WorkingFragment extends UIFragment {
             if (privileges.isCommunication()) {
                 WorkingInfo talkWorkingInfo = new WorkingInfo();
                 //沟通记录
-                talkWorkingInfo.setId("TALK_TRANSFER_MANAGER");
-                talkWorkingInfo.setName("沟通记录");
+                talkWorkingInfo.setId(ParameterUtils.TALK_TRANSFER_MANAGER);
+                talkWorkingInfo.setName(getString(R.string.talk_record));
                 talkWorkingInfo.setIcon(R.drawable.transfer_talk_icon);
                 workingInfos.add(talkWorkingInfo);
             }

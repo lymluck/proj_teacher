@@ -62,7 +62,7 @@ public class TransferManagerFragment extends UIFragment {
             newsTop.setLayoutParams(params);
             newsTop.setPadding(0, ScreenUtils.getStatusHeight(mActivity), 0, 0);
         }
-        ((TextView) rootView.findViewById(R.id.topdefault_centertitle)).setText("转案管理");
+        ((TextView) rootView.findViewById(R.id.topdefault_centertitle)).setText(R.string.transfer_manager);
         topRightMenu = rootView.findViewById(R.id.topdefault_rightmenu);
         topRightMenu.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_blue, 0, 0, 0);
         topRightMenu.setVisibility(View.VISIBLE);

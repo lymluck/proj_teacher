@@ -347,6 +347,13 @@ public interface ApiService {
      */
     @GET()
     @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
+    Observable<ResponseInfo<TaskDetailInfo>> getMessageDetailTask(@HeaderMap Map<String, String> header, @Url() String url);
+
+    /**
+     * 获取消息详情
+     */
+    @GET()
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
     Observable<ResponseInfo<MyStudentInfo>> getStudentDetail(@HeaderMap Map<String, String> header, @Url() String url);
 
 

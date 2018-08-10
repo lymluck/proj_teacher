@@ -89,36 +89,36 @@ public class WorkingDetailActivity extends BaseActivity<WorkingDetailContract.Pr
         llTagOne = headView.findViewById(R.id.ll_tag_one);
         llTagThree = headView.findViewById(R.id.ll_tag_three);
         llSearch = headView.findViewById(R.id.ll_search);
-        if ("STUDENT_TRANSFER_MANAGER".equals(from)) {
-            setTitle("学员管理");
+        if (ParameterUtils.STUDENT_TRANSFER_MANAGER.equals(from)) {
+            setTitle(R.string.student_manager);
             ivTagOne.setImageResource(R.drawable.transfer_compelete_student);
-            tvTagOne.setText("待完善信息学员");
+            tvTagOne.setText(R.string.uncompelete_info_student);
             ivTagThree.setImageResource(R.drawable.transfer_my_student);
-            tvTagThree.setText("我的学员");
+            tvTagThree.setText(R.string.my_student);
             llTagTwo.setVisibility(View.GONE);
-        } else if ("TASK_TRANSFER_MANAGER".equals(from)) {
-            setTitle("任务/训练中心");
+        } else if (ParameterUtils.TASK_TRANSFER_MANAGER.equals(from)) {
+            setTitle(getString(R.string.task_train_center));
             ivTagOne.setImageResource(R.drawable.transfer_my_task);
-            tvTagOne.setText("我布置的任务");
+            tvTagOne.setText(R.string.my_arrange_task);
             ivTagThree.setImageResource(R.drawable.transfer_task_my_student);
-            tvTagThree.setText("我的学员");
+            tvTagThree.setText(R.string.my_student);
             llTagTwo.setVisibility(View.GONE);
-        } else if ("REPORT_TRANSFER_MANAGER".equals(from)) {
-            setTitle("报告中心");
+        } else if (ParameterUtils.REPORT_TRANSFER_MANAGER.equals(from)) {
+            setTitle(R.string.report_center);
             ivTagOne.setImageResource(R.drawable.transfer_report_compelete);
-            tvTagOne.setText("待完成报告");
+            tvTagOne.setText(R.string.un_compelete_report);
             ivTagTwo.setImageResource(R.drawable.transfer_my_report);
-            tvTagTwo.setText("我发布的报告");
+            tvTagTwo.setText(R.string.my_release_report);
             ivTagThree.setImageResource(R.drawable.transfer_report_my_student);
-            tvTagThree.setText("我的学员");
+            tvTagThree.setText(R.string.my_student);
         } else {
-            setTitle("沟通记录");
+            setTitle(R.string.talk_record);
             ivTagOne.setImageResource(R.drawable.transfer_talk_complete);
-            tvTagOne.setText("待完成记录");
+            tvTagOne.setText(R.string.uncompelete_record);
             ivTagTwo.setImageResource(R.drawable.transfer_my_talk);
-            tvTagTwo.setText("我发布的记录");
+            tvTagTwo.setText(R.string.my_release_record);
             ivTagThree.setImageResource(R.drawable.transfer_task_my_student);
-            tvTagThree.setText("我的学员");
+            tvTagThree.setText(R.string.my_student);
         }
         initAdapter();
         presenter.getCenter();
@@ -173,7 +173,7 @@ public class WorkingDetailActivity extends BaseActivity<WorkingDetailContract.Pr
             @Override
             public void onClick(View view) {
                 Intent toSearch;
-                if ("STUDENT_TRANSFER_MANAGER".equals(from)) {
+                if (ParameterUtils.STUDENT_TRANSFER_MANAGER.equals(from)) {
                     toSearch = new Intent(WorkingDetailActivity.this, CommonSearchActivity.class);
                     toSearch.putExtra(ParameterUtils.TRANSITION_FLAG, ParameterUtils.MY_ALL_STUDENT);
                 } else {
@@ -197,20 +197,20 @@ public class WorkingDetailActivity extends BaseActivity<WorkingDetailContract.Pr
         if (v.getId() == R.id.ll_tag_three) {
             startActivity(new Intent(this, MyStudentActivity.class).putExtra("from", from));
         } else if (v.getId() == R.id.ll_tag_one) {
-            if ("STUDENT_TRANSFER_MANAGER".equals(from)) {
-                startActivity(new Intent(this, MyStudentActivity.class).putExtra("from", "compelete_student"));
-            } else if ("TASK_TRANSFER_MANAGER".equals(from)) {
+            if (ParameterUtils.STUDENT_TRANSFER_MANAGER.equals(from)) {
+                startActivity(new Intent(this, MyStudentActivity.class).putExtra("from", ParameterUtils.COMPELETE_STUDENT));
+            } else if (ParameterUtils.TASK_TRANSFER_MANAGER.equals(from)) {
                 startActivity(new Intent(this, MyTaskListActivity.class).putExtra("from", "working"));
-            } else if ("REPORT_TRANSFER_MANAGER".equals(from)) {
+            } else if (ParameterUtils.REPORT_TRANSFER_MANAGER.equals(from)) {
                 startActivity(new Intent(this, UnCompeleteReportActivity.class));
             } else {
                 startActivity(new Intent(this, UnTalkRecordActivity.class));
             }
         } else if (v.getId() == R.id.ll_tag_two) {
-            if ("STUDENT_TRANSFER_MANAGER".equals(from)) {
-            } else if ("TASK_TRANSFER_MANAGER".equals(from)) {
+            if (ParameterUtils.STUDENT_TRANSFER_MANAGER.equals(from)) {
+            } else if (ParameterUtils.TASK_TRANSFER_MANAGER.equals(from)) {
 
-            } else if ("REPORT_TRANSFER_MANAGER".equals(from)) {
+            } else if (ParameterUtils.REPORT_TRANSFER_MANAGER.equals(from)) {
                 startActivity(new Intent(this, MyReportActivity.class));
             } else {
                 startActivity(new Intent(this, MyTalkRecordActivity.class));

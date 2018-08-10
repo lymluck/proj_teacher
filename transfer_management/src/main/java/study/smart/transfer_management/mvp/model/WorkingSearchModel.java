@@ -5,6 +5,7 @@ import java.util.HashMap;
 import study.smart.baselib.listener.ObserverListener;
 import study.smart.baselib.mvp.base.BaseModel;
 import study.smart.baselib.server.api.ApiManager;
+import study.smart.baselib.utils.ParameterUtils;
 
 /**
  * @author yqy
@@ -22,9 +23,9 @@ public class WorkingSearchModel extends BaseModel {
     public void getWorkingSearchTask(String from, String keyWord, ObserverListener listener) {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("keyword", keyWord);
-        if ("TASK_TRANSFER_MANAGER".equals(from)) {
+        if (ParameterUtils.TASK_TRANSFER_MANAGER.equals(from)) {
             apiSubscribe(ApiManager.getApiService().getSearchTaskList(getHeadersMap(), hashMap), listener);
-        } else if ("REPORT_TRANSFER_MANAGER".equals(from)) {
+        } else if (ParameterUtils.REPORT_TRANSFER_MANAGER.equals(from)) {
             apiSubscribe(ApiManager.getApiService().getSearchReportList(getHeadersMap(), hashMap), listener);
         } else {
             apiSubscribe(ApiManager.getApiService().getSearchTalkList(getHeadersMap(), hashMap), listener);

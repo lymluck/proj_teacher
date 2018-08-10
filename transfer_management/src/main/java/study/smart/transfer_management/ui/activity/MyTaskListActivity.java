@@ -76,7 +76,7 @@ public class MyTaskListActivity extends BaseActivity<MyTaskListContract.Presente
         id = getIntent().getStringExtra("id");
         name = getIntent().getStringExtra("name");
         if ("working".equals(from)) {
-            setTitle("我布置的任务");
+            setTitle(R.string.my_arrange_task);
         } else {
             setTitle(name + "的任务");
         }

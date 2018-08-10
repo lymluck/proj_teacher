@@ -4,4 +4,22 @@
     <string name="name_phone">%1$s（%2$s）</string>
 
     <string name="home_search_foot">更多%1$s结果(%2$s)</string>
+    <string name="student_manager">学员管理</string>
+    <string name="transfer_manager">转案管理</string>
+    <string name="task_train">任务/训练</string>
+    <string name="report_center">报告中心</string>
+    <string name="talk_record">沟通记录</string>
+    <string name="uncompelete_info_student">待完善信息学员</string>
+    <string name="my_student">我的学员</string>
+    <string name="task_train_center">任务/训练中心</string>
+    <string name="my_arrange_task">我布置的任务</string>
+    <string name="un_compelete_report">待完成报告</string>
+    <string name="my_release_report">我发布的报告</string>
+    <string name="uncompelete_record">待完成记录</string>
+    <string name="my_release_record">我发布的记录</string>
+    <string name="season_report">季度报告</string>
+    <string name="summary_report">总结报告</string>
+    <string name="close_report">结案报告</string>
+    <string name="my_release_talk_record">我发布的沟通记录</string>
+    <string name="task_detail">任务详情</string>
 </resources>

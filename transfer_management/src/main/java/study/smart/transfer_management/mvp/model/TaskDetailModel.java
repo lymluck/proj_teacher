@@ -21,6 +21,6 @@ public class TaskDetailModel extends BaseModel {
      * @param listener
      */
     public void getTaskDetail(String id, ObserverListener listener) {
-        apiSubscribe(ApiManager.getApiService().getMessageDetail(getHeadersMap(), String.format(HttpUrlUtils.MESSAGE_DETAIL, id)), listener);
+        apiSubscribe(ApiManager.getApiService().getMessageDetailTask(getHeadersMap(), String.format(HttpUrlUtils.MESSAGE_DETAIL, id)), listener);
     }
 }

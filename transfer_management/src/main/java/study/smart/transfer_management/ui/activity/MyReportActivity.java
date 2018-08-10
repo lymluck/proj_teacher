@@ -10,6 +10,7 @@ import study.smart.baselib.mvp.base.BasePresenter;
 import study.smart.baselib.ui.base.BaseActivity;
 import study.smart.baselib.ui.base.UIFragment;
 import study.smart.baselib.ui.widget.PagerSlidingTabStrip;
+import study.smart.baselib.utils.ParameterUtils;
 import study.smart.transfer_management.R;
 import study.smart.transfer_management.entity.StateInfo;
 import study.smart.transfer_management.ui.adapter.MyReportAdapter;
@@ -40,21 +41,21 @@ public class MyReportActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        setTitle("我发布的报告");
+        setTitle(R.string.my_release_report);
         pagerReport = findViewById(R.id.pager_report);
         ArrayList<UIFragment> fragments = new ArrayList<>();
         List<StateInfo> stateInfos = new ArrayList<>();
         StateInfo stateInfoSeason = new StateInfo();
-        stateInfoSeason.setTitle("季度报告");
-        stateInfoSeason.setType("QUARTERLY");
+        stateInfoSeason.setTitle(getString(R.string.season_report));
+        stateInfoSeason.setType(ParameterUtils.QUARTERLY);
         stateInfos.add(stateInfoSeason);
         StateInfo stateAll = new StateInfo();
-        stateAll.setTitle("总结报告");
-        stateAll.setType("SUMMARY");
+        stateAll.setTitle(getString(R.string.summary_report));
+        stateAll.setType(ParameterUtils.SUMMARY);
         stateInfos.add(stateAll);
         StateInfo stateOver = new StateInfo();
-        stateOver.setTitle("结案报告");
-        stateOver.setType("CLOSE_CASE");
+        stateOver.setTitle(getString(R.string.close_report));
+        stateOver.setType(ParameterUtils.CLOSE_CASE);
         stateInfos.add(stateOver);
         for (int i = 0; i < stateInfos.size(); i++) {
             Bundle bundle = new Bundle();

@@ -173,7 +173,7 @@ public class MyReportFragment extends UIFragment<MyReportContract.Presenter> imp
         mAdapter = new CommonAdapter<MyStudentInfo>(mActivity, R.layout.item_my_report, myStudentInfos) {
             @Override
             protected void convert(ViewHolder holder, MyStudentInfo myStudentInfo, int position) {
-                if ("QUARTERLY".equals(stateInfo.getType())) {
+                if (ParameterUtils.QUARTERLY.equals(stateInfo.getType())) {
                     holder.setText(R.id.tv_report_name, String.format(getString(R.string.name_report), (myStudentInfo.getUserName() == null ? "" : myStudentInfo.getUserName()), (myStudentInfo.getTime() == null ? "" : myStudentInfo.getTime()) + "报告"));
                 } else {
                     holder.setText(R.id.tv_report_name, String.format(getString(R.string.name_report), myStudentInfo.getUserName() == null ? "" : myStudentInfo.getUserName(), myStudentInfo.getTypeTEXT() == null ? "" : myStudentInfo.getTypeTEXT()));

@@ -73,10 +73,10 @@ public class MyStudentActivity extends BaseActivity<TransferMyStudentContract.Pr
     @Override
     public void initView() {
         from = getIntent().getStringExtra("from");
-        if ("compelete_student".equals(from)) {
-            setTitle("待完善信息学员");
+        if (ParameterUtils.COMPELETE_STUDENT.equals(from)) {
+            setTitle(R.string.uncompelete_info_student);
         } else {
-            setTitle("我的学员");
+            setTitle(R.string.my_student);
         }
         setTopLineVisibility(View.VISIBLE);
         centerId = getIntent().getStringExtra("centerId");
@@ -113,16 +113,16 @@ public class MyStudentActivity extends BaseActivity<TransferMyStudentContract.Pr
         mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                if ("TASK_TRANSFER_MANAGER".equals(from)) {
+                if (ParameterUtils.TASK_TRANSFER_MANAGER.equals(from)) {
                     startActivity(new Intent(MyStudentActivity.this, MyTaskListActivity.class)
                         .putExtra("from", "student")
                         .putExtra("id", myStudentInfos.get(position).getUserId())
                         .putExtra("name", myStudentInfos.get(position).getName()));
-                } else if ("REPORT_TRANSFER_MANAGER".equals(from)) {
+                } else if (ParameterUtils.REPORT_TRANSFER_MANAGER.equals(from)) {
                     startActivity(new Intent(MyStudentActivity.this, StudentDetailReportActivity.class)
                         .putExtra("id", myStudentInfos.get(position).getUserId())
                         .putExtra("name", myStudentInfos.get(position).getName()));
-                } else if ("STUDENT_TRANSFER_MANAGER".equals(from) || "compelete_student".equals(from)) {
+                } else if (ParameterUtils.STUDENT_TRANSFER_MANAGER.equals(from) || ParameterUtils.COMPELETE_STUDENT.equals(from)) {
                     startActivity(new Intent(MyStudentActivity.this, StudentDetailActivity.class)
                         .putExtra("studentInfo", myStudentInfos.get(position))
                         .putExtra("from", from));
@@ -189,7 +189,7 @@ public class MyStudentActivity extends BaseActivity<TransferMyStudentContract.Pr
             public void OnLoad() {
                 if (canPullUp) {
                     mPage = mPage + 1;
-                    if ("compelete_student".equals(from)) {
+                    if (ParameterUtils.COMPELETE_STUDENT.equals(from)) {
                         presenter.getCompeleteStudent(mPage + "", ParameterUtils.PULL_UP);
                     } else {
                         presenter.getMyStudent(mPage + "", centerId, ParameterUtils.PULL_UP);
@@ -273,7 +273,7 @@ public class MyStudentActivity extends BaseActivity<TransferMyStudentContract.Pr
     }
 
     private void getStudentList(String centerId) {
-        if ("compelete_student".equals(from)) {
+        if (ParameterUtils.COMPELETE_STUDENT.equals(from)) {
             presenter.getCompeleteStudent(mPage + "", ParameterUtils.PULL_DOWN);
         } else {
             presenter.getMyStudent(mPage + "", centerId, ParameterUtils.PULL_DOWN);

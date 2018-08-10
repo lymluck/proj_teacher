@@ -48,7 +48,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailContract.Presente
 
     @Override
     public void initView() {
-        setTitle("任务详情");
+        setTitle(getString(R.string.task_detail));
         setTopLineVisibility(View.VISIBLE);
         id = getIntent().getStringExtra("id");
         workingSearchInfo = (WorkingSearchInfo) getIntent().getSerializableExtra("working_search_info");
@@ -126,7 +126,6 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailContract.Presente
             } else if ("PENDING".equals(workingSearchInfo.getStatus())) {
                 //进行中
                 vTitle.setBackgroundColor(Color.parseColor("#1890FF"));
-
             } else {
                 //已完成
                 vTitle.setBackgroundColor(Color.parseColor("#52C41A"));

@@ -33,7 +33,11 @@ public class TalkRecordTreeItemParent extends TreeItemGroup<MyTalkRecordInfo.Sho
 
     @Override
     public void onBindViewHolder(ViewHolder holder) {
-        holder.setText(R.id.tv_month, data.getKey());
+        if ("其他".equals(data.getYear())) {
+            holder.setText(R.id.tv_month, data.getYear());
+        } else {
+            holder.setText(R.id.tv_month, data.getYear() + "年" + data.getKey());
+        }
     }
 
     @Override

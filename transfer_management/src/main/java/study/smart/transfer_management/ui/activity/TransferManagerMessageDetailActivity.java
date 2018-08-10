@@ -65,7 +65,7 @@ public class TransferManagerMessageDetailActivity extends BaseActivity<TransferM
     public void initView() {
         type = getIntent().getStringExtra("type");
         if (type.equals("TASK_TRAINING")) {
-            setTitle("任务/训练");
+            setTitle(R.string.task_train);
         } else if (type.equals("TRANSFER_CASE")) {
             setTitle("转案");
         } else {

@@ -168,7 +168,7 @@ public class WorkingSearchAdapter extends SectionedRecyclerViewAdapter<WorkingSe
                 holder.itemTask.setVisibility(View.GONE);
                 holder.itemReport.setVisibility(View.VISIBLE);
                 holder.itemTalk.setVisibility(View.GONE);
-                holder.reportName.setText(String.format(mContext.getString(R.string.name_report), info.getWorkingSearchInfos().get(position).getUserName(), info.getWorkingSearchInfos().get(position).getTypeTEXT()));
+                holder.reportName.setText(String.format(mContext.getString(R.string.name_report), info.getWorkingSearchInfos().get(position).getUserName(), info.getWorkingSearchInfos().get(position).getTime()));
                 holder.reportCenterName.setText(info.getWorkingSearchInfos().get(position).getCenterName());
                 holder.tvPublishTime.setText(TimeUtil.getStrTime(info.getWorkingSearchInfos().get(position).getPublishTime()));
                 clickReport(holder, info.getWorkingSearchInfos().get(position));
@@ -195,13 +195,13 @@ public class WorkingSearchAdapter extends SectionedRecyclerViewAdapter<WorkingSe
         holder.itemView.findViewById(R.id.item_student).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if ("TASK_TRANSFER_MANAGER".equals(from)) {
+                if (ParameterUtils.TASK_TRANSFER_MANAGER.equals(from)) {
                     mContext.startActivity(new Intent(mContext, MyTaskListActivity.class).putExtra("id", info.getId())
                         .putExtra("name", info.getName()));
-                } else if ("REPORT_TRANSFER_MANAGER".equals(from)) {
+                } else if (ParameterUtils.REPORT_TRANSFER_MANAGER.equals(from)) {
                     mContext.startActivity(new Intent(mContext, StudentDetailReportActivity.class).putExtra("id", info.getUserId())
                         .putExtra("name", info.getName()));
-                } else if ("TALK_TRANSFER_MANAGER".equals(from)) {
+                } else if (ParameterUtils.TALK_TRANSFER_MANAGER.equals(from)) {
                     mContext.startActivity(new Intent(mContext, StudentDetailTalkActivity.class)
                         .putExtra("id", info.getUserId())
                         .putExtra("name", info.getName()));

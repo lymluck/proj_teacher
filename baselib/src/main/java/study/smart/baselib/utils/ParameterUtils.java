@@ -48,7 +48,6 @@ public class ParameterUtils {
     public static final int REQUEST_CODE_LOGIN = 15; //登录请求码
     public static final int REQUEST_CODE_SMART_CHOOSE = 16; //智能选校请求码
 
-
     public static final int ONLY_NETWORK = 17; //只查询网络数据
     public static final int ONLY_CACHED = 18; //只查询本地缓存
     public static final int CACHED_ELSE_NETWORK = 19; //先查询本地缓存，如果本地没有，再查询网络数据
@@ -73,77 +72,30 @@ public class ParameterUtils {
     public static final int GET_ORDER_TIME = 35;
     public static final int REQUEST_CODE_CARD_QA = 36;
     public static final int REQUEST_VIDEO = 37;
-
-    public static final String MATCH_TOP = "MS_MATCH_TYPE_TOP";
-    public static final String MATCH_MID = "MS_MATCH_TYPE_MIDDLE";
-    public static final String MATCH_BOT = "MS_MATCH_TYPE_BOTTOM";
-    public static final String MATCH_SOURCE_AUTO = "auto-match";
-    public static final String MATCH_SOURCE_SELECT = "manual-select";
-
-    public static final String TYPE_OPTIONS_PERSON = "type_person";
-    public static final String TYPE_OPTIONS_SCHOOL = "type_school";
-    public static final String TYPE_OPTIONS_RATE = "type_rate";
-
-    public static final String WEB_ACTION_SHARE = "app_share";
-    public static final String WEB_ACTION_LOGIN = "app_login";
-    public static final String WEB_ACTION_MEIQIA = "app_meiqia";
-    public static final String WEB_ACTION_TOAST = "app_toast";
-    public static final String WEB_ACTION_PROGRAM = "app_program";
-    public static final String WEB_ACTION_LINK = "app_link";
-    public static final String WEB_ACTION_ADD_QA = "app_ask_question";
-    public static final String WEB_CALLBACK_ADD_SCHOOL = "app_add_my_school_callback";
-    public static final String WEB_CALLBACK_DEL_SCHOOL = "app_del_my_school_callback";
-    public static final String WEB_ACTION_RATE = "app_admission_rate";
-
-    public static final String RESPONSE_CODE_SUCCESS = "0";  //响应成功码
-    public static final String RESPONSE_CODE_NOLOGIN = "SCHOOL_8";  //响应成功码
+    public static final String QUARTERLY = "QUARTERLY";//季度报告
+    public static final String SUMMARY = "SUMMARY";//总结报告
+    public static final String CLOSE_CASE = "CLOSE_CASE";//结案报告
 
     public static final String TRANSITION_FLAG = "trans_flag";  //搜索flag名
-    public static final String SCHOOLS_FLAG = "school_list";  //flag
-    public static final String HOME_RATE_FLAG = "home_rate";  //flag
-    public static final String QA_FLAG = "qa_list";  //flag
-    public static final String HOME_QA_FLAG = "home_qa_list";  //flag
-    public static final String NEWS_FLAG = "news_list";  //flag
     public static final String TRANSFER_MANAGER = "transfer_manager";  //flag
-    public static final String MSG_DETAIL = "msg_detail";  //flag
+    public static final String MSG_DETAIL = "msg_detail";  //flag·
     public static final String MY_ALL_STUDENT = "my_all_student";//学员管理查询
-    public static final String COURSE_FLAG = "course_list";  //flag
-    public static final String RANKS_FLAG = "rank_list";  //flag
     public static final String MYSCHOOL_FLAG = "mySchool";  //flag
     public static final String RECENTUSER_FLAG = "recent_user";  //flag
-    public static final String SPEDATA_FLAG = "speData";  //flag
-    public static final String RANKTYPE_FLAG = "ranktype";  //flag
-    public static final String PROGRAMSPE_FLAG = "programSpe";  //flag
     public static final String EDIT_NAME = "edit_name";  //flag
-    public static final String EDIT_MAJOR = "edit_major";  //flag
-    public static final String EDIT_APPLY_MAJOR = "edit_apy_major";  //flag
-    public static final String EDIT_ABOARD_YEAR = "edit_aboard_year";  //flag
-    public static final String EDIT_GRADE = "edit_grade";  //flag
-    public static final String EDIT_APPLY_PROJ = "edit_apy_proj";  //flag
-    public static final String CHOOSE_APPLY_PROJ = "choose_apy_proj";  //flag
-    public static final String EDIT_INTENT = "edit_intent";  //flag
-    public static final String EDIT_TOP_SCHOOL = "edit_top_school";  //flag
-    public static final String EDIT_CZ = "edit_cz";  //flag
-    public static final String EDIT_CZ_SCORE = "edit_cz_score";  //flag
-    public static final String EDIT_GZ = "edit_gz";  //flag
-    public static final String EDIT_GZ_SCORE = "edit_gz_score";  //flag
-    public static final String EDIT_BK = "edit_bk";  //flag
-    public static final String EDIT_BK_SCORE = "edit_bk_score";  //flag
-    public static final String EDIT_SX_EVENT = "edit_sx_event";  //flag
-    public static final String EDIT_KY_EVENT = "edit_ky_event";  //flag
-    public static final String EDIT_KW_EVENT = "edit_kw_event";  //flag
     public static final String EDIT_SHEHUI_EVENT = "edit_shehui_event";  //flag
-    public static final String EDIT_GJ_EVENT = "edit_gj_event";  //flag
-    public static final String EDIT_EG_SCORE = "edit_eg_score";  //flag
-    public static final String EDIT_GRE_SCORE = "edit_gre_score";  //flag
     public static final String WORK_CITY = "work_city";  //flag
     public static final String WORK_BUSSIENSS = "work_bussienss";  //flag
-    public static final String EDIT_SAT_SCORE = "edit_sat_score";  //flag
     public static final String EDIT_WORK_NAME = "edit_work_name";//工作职称
     public static final String EDIT_WORK_EXPERIENCE = "edit_work_experience";//工作经验
     public static final String EDIT_GRADUATED_SCHOOL = "edit_graduated_school";//毕业学校
     public static final String EDIT_REAL_NAME = "edit_real_name";//修改真实姓名
     public static final String EDIT_REMARK = "edit_remark";//修改真实姓名
     public static final String EDIT_EMAIL = "edit_email";//修改邮箱
+    public static final String STUDENT_TRANSFER_MANAGER = "student_transfer_manager";//学员管理
+    public static final String COMPELETE_STUDENT = "compelete_student";//学员信息完善
+    public static final String TASK_TRANSFER_MANAGER = "task_transfer_manager";//学员信息完善
+    public static final String REPORT_TRANSFER_MANAGER = "report_transfer_manager";//报告管理
+    public static final String TALK_TRANSFER_MANAGER = "talk_transfer_manager";//沟通管理
 
 }

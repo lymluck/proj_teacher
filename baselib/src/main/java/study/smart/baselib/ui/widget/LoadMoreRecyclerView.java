@@ -82,7 +82,6 @@ public class LoadMoreRecyclerView extends RecyclerView {
                 listener.onScrolled(recyclerView, dx, dy);
             }
         }
-
     }
 
 
