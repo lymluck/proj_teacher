@@ -10,6 +10,7 @@ import study.smart.baselib.entity.StudentPageInfo;
 import study.smart.baselib.entity.TaskDetailInfo;
 import study.smart.baselib.entity.TeacherInfo;
 import study.smart.baselib.entity.TokenBean;
+import study.smart.baselib.entity.TransferManagerEntity;
 import study.smart.baselib.entity.VersionInfo;
 import study.smart.baselib.utils.ConstantUtils;
 import study.smart.baselib.utils.HttpUrlUtils;
@@ -340,7 +341,7 @@ public interface ApiService {
      */
     @GET()
     @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
-    Observable<ResponseInfo<DataListInfo>> getMessageDetail(@HeaderMap Map<String, String> header, @Url() String url);
+    Observable<ResponseInfo<TransferManagerEntity>> getMessageDetail(@HeaderMap Map<String, String> header, @Url() String url);
 
     /**
      * 获取消息详情
@@ -421,6 +422,16 @@ public interface ApiService {
      */
     @DELETE()
     Observable<ResponseInfo<String>> questionDeleteMark(@HeaderMap Map<String, String> header, @Url() String url);
+
+    /**
+     * 重点关注
+     *
+     * @param header
+     * @param url
+     * @return
+     */
+    @POST()
+    Observable<ResponseInfo<String>> requestInfo(@HeaderMap Map<String, String> header, @Url() String url);
 
 
     @POST()

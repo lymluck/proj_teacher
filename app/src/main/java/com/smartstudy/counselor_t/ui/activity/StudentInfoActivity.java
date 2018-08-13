@@ -15,13 +15,16 @@ import study.smart.baselib.entity.StudentPageInfo;
 import study.smart.baselib.ui.base.BaseActivity;
 import study.smart.baselib.utils.DensityUtils;
 import study.smart.baselib.utils.DisplayImageUtils;
+
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.mvp.contract.StudentActivityContract;
 import com.smartstudy.counselor_t.mvp.presenter.StudentInfoActivityPresenter;
+
 import study.smart.baselib.ui.adapter.CommonAdapter;
 import study.smart.baselib.ui.adapter.base.ViewHolder;
 import study.smart.baselib.ui.widget.HorizontalDividerItemDecoration;
 import study.smart.baselib.ui.widget.NoScrollLinearLayoutManager;
+
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
@@ -75,7 +78,6 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
     private LinearLayout llStudent;
     private View vBackline;
     private TextView tvCountSchool;
-    private ScrollView slStudentInfo;
     private StudentPageInfo studentInfo;
     private TextView tvAddTags;
     private CommonAdapter<StudentPageInfo.WatchSchools.SchoolData> mAdapter;
@@ -85,6 +87,9 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
     private TagAdapter<String> tagAdapter;//标签适配器
     private LinearLayout llOtherTag;
     private TextView tvCapitalBudget;
+    private String from;
+    private LinearLayout llTitleInfo;
+    private View vSchool;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +125,7 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
 
     @Override
     public void initView() {
+        from = getIntent().getStringExtra("from");
         targeId = getIntent().getStringExtra("ids");
         ivAvatar = findViewById(R.id.iv_avatar);
         tvName = findViewById(R.id.tv_name);
@@ -127,6 +133,7 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
         tvGrade = findViewById(R.id.tv_grade);
         tvLocation = findViewById(R.id.tv_location);
         vLine = findViewById(R.id.v_line);
+        llTitleInfo = findViewById(R.id.ll_title_info);
         llOtherTag = findViewById(R.id.ll_other_tag);
         tvTargeSchool = findViewById(R.id.tv_targe_school);
         llInfoDetail = findViewById(R.id.ll_info_detail);
@@ -150,6 +157,7 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
         tvScore = findViewById(R.id.tv_score);
         tvScoreLanguage = findViewById(R.id.tv_score_language);
         tvGreGmat = findViewById(R.id.tv_gre_gmat);
+        vSchool = findViewById(R.id.v_school);
         tvActivityInternshi = findViewById(R.id.tv_activity_internshi);
         tvActivityResearch = findViewById(R.id.tv_activity_research);
         tvActivityCommunity = findViewById(R.id.tv_activity_community);
@@ -157,7 +165,6 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
         llytActivityResearch = findViewById(R.id.llyt_activity_research);
         llytActivityCommunity = findViewById(R.id.llyt_activity_community);
         rvSchool = findViewById(R.id.rv_school);
-        slStudentInfo = findViewById(R.id.sl_student_info);
         tvCapitalBudget = findViewById(R.id.tv_capital_budget);
         vBackline = findViewById(R.id.v_backline);
         tvCountSchool = findViewById(R.id.tv_count_school);
@@ -170,6 +177,12 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
         rvSchool.setLayoutManager(mLayoutManager);
         initAdapter();
         initAllLeblLayout();
+
+        if ("more_info".equals(from)) {
+            llTitleInfo.setVisibility(View.GONE);
+        } else {
+            llTitleInfo.setVisibility(View.VISIBLE);
+        }
         rvSchool.setAdapter(mAdapter);
         rvSchool.setNestedScrollingEnabled(false);
         rvSchool.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
@@ -222,6 +235,10 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
             tagFlowLayout.setVisibility(View.GONE);
         }
         DisplayImageUtils.formatPersonImgUrl(this, studentInfo.getAvatar() == null ? "" : studentInfo.getAvatar(), ivAvatar);
+        if ("more_info".equals(from)) {
+            setTitle(studentInfo.getName() + "的基本信息");
+            setTopLineVisibility(View.VISIBLE);
+        }
         tvName.setText(studentInfo.getName());
         if (TextUtils.isEmpty(studentInfo.getGenderId())) {
             ivSex.setVisibility(View.GONE);
@@ -365,13 +382,17 @@ public class StudentInfoActivity extends BaseActivity<StudentActivityContract.Pr
                 schoolDataList.clear();
             }
             if (studentInfo.getWatchSchools().getData() != null && studentInfo.getWatchSchools().getData().size() > 0) {
-                llStudent.setVisibility(View.VISIBLE);
-                vBackline.setVisibility(View.GONE);
-                schoolDataList.addAll(studentInfo.getWatchSchools().getData());
-                mAdapter.notifyDataSetChanged();
-                tvCountSchool.setText("(" + schoolDataList.size() + "所)");
+                if (!"more_info".equals(from)) {
+                    vSchool.setVisibility(View.VISIBLE);
+                    vBackline.setVisibility(View.GONE);
+                    schoolDataList.addAll(studentInfo.getWatchSchools().getData());
+                    mAdapter.notifyDataSetChanged();
+                    tvCountSchool.setText("(" + schoolDataList.size() + "所)");
+                } else {
+                    vSchool.setVisibility(View.GONE);
+                }
             } else {
-                llStudent.setVisibility(View.GONE);
+                vSchool.setVisibility(View.GONE);
                 vBackline.setVisibility(View.VISIBLE);
             }
         }

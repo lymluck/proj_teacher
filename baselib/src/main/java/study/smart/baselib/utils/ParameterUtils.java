@@ -75,6 +75,10 @@ public class ParameterUtils {
     public static final String QUARTERLY = "QUARTERLY";//季度报告
     public static final String SUMMARY = "SUMMARY";//总结报告
     public static final String CLOSE_CASE = "CLOSE_CASE";//结案报告
+    public static final String ALERT = "ALERT";//临期
+    public static final String EXPIRED = "EXPIRED";//过期
+    public static final String PENDING = "PENDING";//进行中
+    public static final String ARCHIVE = "ARCHIVE";
 
     public static final String TRANSITION_FLAG = "trans_flag";  //搜索flag名
     public static final String TRANSFER_MANAGER = "transfer_manager";  //flag
@@ -97,5 +101,10 @@ public class ParameterUtils {
     public static final String TASK_TRANSFER_MANAGER = "task_transfer_manager";//学员信息完善
     public static final String REPORT_TRANSFER_MANAGER = "report_transfer_manager";//报告管理
     public static final String TALK_TRANSFER_MANAGER = "talk_transfer_manager";//沟通管理
+    public static final String TASK_TRAINING = "TASK_TRAINING";//任务训练
+    public static final String TRANSFER_CASE = "TRANSFER_CASE";//转案例子
+    public static final String ALLOCATE_CENTER = "ALLOCATE_CENTER";//未分配导师
+    public static final String CRM_TRANSFER_CASE = "CRM_TRANSFER_CASE";//未分配转案
+
 
 }

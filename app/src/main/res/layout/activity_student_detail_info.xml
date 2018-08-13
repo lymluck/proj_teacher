@@ -17,6 +17,7 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/ll_title_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
@@ -159,9 +160,21 @@
 
             <include layout="@layout/layout_intention_information" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="12dp"
+                android:background="@color/main_bg" />
+
             <include layout="@layout/layout_base_info" />
 
-            <include layout="@layout/layout_student_school_info" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="12dp"
+                android:background="@color/main_bg" />
+
+            <include
+                android:id="@+id/v_school"
+                layout="@layout/layout_student_school_info" />
         </LinearLayout>
 
     </ScrollView>

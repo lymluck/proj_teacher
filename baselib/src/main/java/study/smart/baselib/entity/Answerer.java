@@ -48,6 +48,26 @@ public class Answerer implements Serializable {
 
     private String ratingComment;
 
+    private String actionType;
+
+    private String askId;
+
+    public String getAskId() {
+        return askId;
+    }
+
+    public void setAskId(String askId) {
+        this.askId = askId;
+    }
+
+    public String getActionType() {
+        return actionType;
+    }
+
+    public void setActionType(String actionType) {
+        this.actionType = actionType;
+    }
+
     public String getRatingScore() {
         return ratingScore;
     }
@@ -225,6 +245,24 @@ public class Answerer implements Serializable {
         private String ratingComment;
         private String answerName;
         private String ansewerId;
+        private String actionType;
+        private String askId;
+
+        public String getAskId() {
+            return askId;
+        }
+
+        public void setAskId(String askId) {
+            this.askId = askId;
+        }
+
+        public String getActionType() {
+            return actionType;
+        }
+
+        public void setActionType(String actionType) {
+            this.actionType = actionType;
+        }
 
         public String getRatingScore() {
             return ratingScore;

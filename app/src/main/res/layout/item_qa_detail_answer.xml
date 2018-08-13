@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/ll_more_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="64dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="15dp"
         android:orientation="vertical">
 
         <TextView
@@ -17,8 +20,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:lineSpacingExtra="4dp"
-            android:paddingRight="16dp"
-            android:paddingTop="15dp"
             android:textColor="@color/app_text_color2"
             android:textSize="15sp" />
 
@@ -56,6 +57,15 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/tv_more_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="9dp"
+            android:text="点击查看基本信息"
+            android:textColor="@color/app_main_color"
+            android:textSize="14sp"
+            android:visibility="gone" />
     </LinearLayout>
 
     <TextView
@@ -63,8 +73,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="15dp"
-        android:paddingTop="12dp"
         android:paddingLeft="64dp"
+        android:paddingTop="12dp"
         android:textColor="@color/app_text_color"
         android:textSize="12sp" />
 
@@ -103,6 +113,11 @@
 
             <study.smart.baselib.ui.widget.RatingBar
                 android:id="@+id/rb_course_rate"
+                android:layout_width="wrap_content"
+                android:layout_height="14dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:paddingLeft="18dp"
                 app:clickable="false"
                 app:starCount="5"
                 app:starEmpty="@drawable/ic_star_gray"
@@ -110,12 +125,7 @@
                 app:starHalf="@drawable/ic_star_half"
                 app:starImageSize="14dp"
                 app:starStep="0"
-                app:stepSize="Half"
-                android:layout_width="wrap_content"
-                android:layout_height="14dp"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:paddingLeft="18dp" />
+                app:stepSize="Half" />
         </LinearLayout>
 
         <TextView

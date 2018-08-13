@@ -10,9 +10,9 @@
         android:id="@+id/srlt_qa"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="1"
         android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:layout_weight="1">
+        android:focusableInTouchMode="true">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_qa"
@@ -50,8 +50,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:paddingBottom="5dp"
-                android:src="@drawable/rc_audio_toggle" />
+                android:paddingBottom="4dp"
+                android:src="@drawable/more_foot" />
 
             <EditText
                 android:id="@+id/et_answer"
@@ -84,6 +84,59 @@
                 android:textSize="15sp" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/ll_foot"
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:background="#F5F6F7"
+            android:orientation="horizontal"
+            android:paddingLeft="24dp"
+            android:paddingTop="20dp"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/ll_get_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/person_foot" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingTop="6dp"
+                    android:text="要基本信息"
+                    android:textColor="@color/app_text_color1"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_send_voice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="24dp">
+
+                <ImageView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/speak_foot" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingTop="6dp"
+                    android:text="发送语音"
+                    android:textColor="@color/app_text_color1"
+                    android:textSize="11sp" />
+            </LinearLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_speak"
@@ -132,6 +185,4 @@
                 android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
-
-
 </LinearLayout>

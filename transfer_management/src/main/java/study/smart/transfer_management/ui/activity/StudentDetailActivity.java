@@ -73,22 +73,22 @@ public class StudentDetailActivity extends BaseActivity<StudentDetailContract.Pr
             initData(myStudentInfo);
         }
         if (ParameterUtils.COMPELETE_STUDENT.equals(from) || ParameterUtils.STUDENT_TRANSFER_MANAGER.equals(from)) {
-            tvRemind.setText("学员信息待完善，请前往电脑上完善");
+            tvRemind.setText(R.string.student_compelete_info);
             tvContact.setVisibility(View.VISIBLE);
         } else if ("report".equals(from)) {
             if (ParameterUtils.QUARTERLY.equals(type)) {
-                tvRemind.setText("请前往电脑上完成该学员的季度报告");
+                tvRemind.setText(R.string.compelete_student_season_report);
             } else if (ParameterUtils.SUMMARY.equals(type)) {
-                tvRemind.setText("请前往电脑上完成该学员的总结报告");
+                tvRemind.setText(R.string.compelete_student_summary_report);
             } else {
-                tvRemind.setText("请前往电脑上完成该学员的结案报告");
+                tvRemind.setText(R.string.compelete_student_sum_report);
             }
             tvContact.setVisibility(View.GONE);
         } else if ("message".equals(from)) {
-            tvRemind.setText("更多操作请前往电脑上操作");
+            tvRemind.setText(R.string.more_opt);
             tvContact.setVisibility(View.VISIBLE);
         } else {
-            tvRemind.setText("请前往电脑上完成该学员的沟通记录");
+            tvRemind.setText(R.string.compelete_student_talk_record);
             tvContact.setVisibility(View.GONE);
         }
     }

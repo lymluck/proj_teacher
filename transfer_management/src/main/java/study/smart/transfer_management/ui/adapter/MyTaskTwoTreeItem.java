@@ -9,6 +9,7 @@ import study.smart.baselib.BaseApplication;
 import study.smart.baselib.entity.TaskDetailInfo;
 import study.smart.baselib.ui.adapter.base.ViewHolder;
 import study.smart.baselib.ui.widget.treeview.TreeItem;
+import study.smart.baselib.utils.ParameterUtils;
 import study.smart.baselib.utils.TimeUtil;
 import study.smart.transfer_management.R;
 import study.smart.baselib.entity.MyTaskInfo;
@@ -44,13 +45,13 @@ public class MyTaskTwoTreeItem extends TreeItem<TaskDetailInfo> {
             viewHolder.getView(R.id.v_line).setVisibility(View.VISIBLE);
         }
 
-        if ("ALERT".equals(data.getStatus())) {
+        if (ParameterUtils.ALERT.equals(data.getStatus())) {
             //临期
             viewHolder.getView(R.id.v_status).setBackgroundColor(Color.parseColor("#FAAD14"));
-        } else if ("EXPIRED".equals(data.getStatus())) {
+        } else if (ParameterUtils.EXPIRED.equals(data.getStatus())) {
             //过期
             viewHolder.getView(R.id.v_status).setBackgroundColor(Color.parseColor("#7f000000"));
-        } else if ("PENDING".equals(data.getStatus())) {
+        } else if (ParameterUtils.PENDING.equals(data.getStatus())) {
             //进行中
             viewHolder.getView(R.id.v_status).setBackgroundColor(Color.parseColor("#1890FF"));
 

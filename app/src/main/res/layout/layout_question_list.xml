@@ -206,5 +206,67 @@
             android:textSize="14sp" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/ll_remind"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingTop="16dp">
+
+            <ImageView
+                android:id="@+id/iv_remind"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="8dp"
+                android:text="系统提醒"
+                android:textColor="@color/app_text_color2"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="21dp"
+            android:layout_marginLeft="64dp"
+            android:layout_marginRight="32dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_remind_blue"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="这是该同学的基本信息，供老师您参考"
+                android:textColor="@color/app_text_color2"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_more_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:text="点击查看基本信息"
+                android:textColor="@color/app_main_color"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/v_remind"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#E4E5E6" />
+    </LinearLayout>
 </LinearLayout>
 

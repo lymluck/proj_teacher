@@ -72,7 +72,7 @@ public class ContractInformationFragment extends UIFragment {
                 tvContractNumber.setText(transferDetailentity.getContractBase().getContractId());
                 tv_receiptId.setText(transferDetailentity.getContractBase().getReceiptId());
             }
-            if ("已结案".equals(orderState)) {
+            if (getString(R.string.closed).equals(orderState)) {
                 iv_over.setVisibility(View.VISIBLE);
             } else {
                 iv_over.setVisibility(View.GONE);

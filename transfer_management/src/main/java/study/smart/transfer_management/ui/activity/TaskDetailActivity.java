@@ -10,6 +10,7 @@ import android.widget.TextView;
 import study.smart.baselib.entity.TaskDetailInfo;
 import study.smart.baselib.entity.WorkingSearchInfo;
 import study.smart.baselib.ui.base.BaseActivity;
+import study.smart.baselib.utils.ParameterUtils;
 import study.smart.baselib.utils.TimeUtil;
 import study.smart.transfer_management.R;
 import study.smart.baselib.entity.MyTaskInfo;
@@ -87,13 +88,13 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailContract.Presente
             tvTime.setText(TimeUtil.getStrTime(dataList.getStartTime()) + "-" + TimeUtil.getStrTime(dataList.getEndTime()));
             tvStatus.setText(dataList.getStatusName());
 
-            if ("ALERT".equals(dataList.getStatus())) {
+            if (ParameterUtils.ALERT.equals(dataList.getStatus())) {
                 //临期
                 vTitle.setBackgroundColor(Color.parseColor("#FAAD14"));
-            } else if ("EXPIRED".equals(dataList.getStatus())) {
+            } else if (ParameterUtils.EXPIRED.equals(dataList.getStatus())) {
                 //过期
                 vTitle.setBackgroundColor(Color.parseColor("#7f000000"));
-            } else if ("PENDING".equals(dataList.getStatus())) {
+            } else if (ParameterUtils.PENDING.equals(dataList.getStatus())) {
                 //进行中
                 vTitle.setBackgroundColor(Color.parseColor("#1890FF"));
 
@@ -117,13 +118,13 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailContract.Presente
             tvTime.setText(TimeUtil.getStrTime(workingSearchInfo.getStartTime()) + "-" + TimeUtil.getStrTime(workingSearchInfo.getEndTime()));
             tvStatus.setText(workingSearchInfo.getStatusName());
 
-            if ("ALERT".equals(workingSearchInfo.getStatus())) {
+            if (ParameterUtils.ALERT.equals(workingSearchInfo.getStatus())) {
                 //临期
                 vTitle.setBackgroundColor(Color.parseColor("#FAAD14"));
-            } else if ("EXPIRED".equals(workingSearchInfo.getStatus())) {
+            } else if (ParameterUtils.EXPIRED.equals(workingSearchInfo.getStatus())) {
                 //过期
                 vTitle.setBackgroundColor(Color.parseColor("#7f000000"));
-            } else if ("PENDING".equals(workingSearchInfo.getStatus())) {
+            } else if (ParameterUtils.PENDING.equals(workingSearchInfo.getStatus())) {
                 //进行中
                 vTitle.setBackgroundColor(Color.parseColor("#1890FF"));
             } else {

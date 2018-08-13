@@ -24,6 +24,8 @@ public interface QaDetailContract {
         void questionAddMarkSuccess();
 
         void questionDeleteMarkSuccess();
+
+        void requestInfoSuccess();
     }
 
     interface Presenter extends BasePresenter {
@@ -36,5 +38,6 @@ public interface QaDetailContract {
 
         void questionDeleteMark(String questionId);
 
+        void requestInfo(String questionId);
     }
 }

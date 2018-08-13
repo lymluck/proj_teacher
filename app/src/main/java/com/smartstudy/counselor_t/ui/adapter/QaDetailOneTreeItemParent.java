@@ -1,11 +1,14 @@
 package com.smartstudy.counselor_t.ui.adapter;
 
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.smartstudy.counselor_t.R;
+import com.smartstudy.counselor_t.ui.activity.StudentInfoActivity;
+
 import study.smart.baselib.ui.adapter.base.BaseItem;
 import study.smart.baselib.ui.adapter.base.ItemFactory;
 import study.smart.baselib.ui.adapter.base.ViewHolder;
@@ -17,7 +20,9 @@ import java.util.List;
 
 import study.smart.baselib.BaseApplication;
 import study.smart.baselib.entity.Answerer;
+import study.smart.baselib.utils.DensityUtils;
 import study.smart.baselib.utils.DisplayImageUtils;
+import study.smart.baselib.utils.SPCacheUtils;
 
 /**
  * @author yqy
@@ -41,10 +46,22 @@ public class QaDetailOneTreeItemParent extends TreeItemGroup<Answerer> {
 
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder) {
+        final String askId = SPCacheUtils.get("askId", "").toString();
         viewHolder.setText(R.id.tv_answer_time, data.getCreateTimeText());
         DisplayImageUtils.formatPersonImgUrl(BaseApplication.appContext, data.getCommenter().getAvatar(), (ImageView) viewHolder.getView(R.id.iv_assignee));
         viewHolder.setText(R.id.tv_assignee, data.getCommenter().getName());
         viewHolder.setText(R.id.tv_answer, data.getContent());
+
+        if ("request_info".equals(data.getActionType())) {
+            viewHolder.getView(R.id.tv_compelete_info).setVisibility(View.VISIBLE);
+            viewHolder.getView(R.id.ll_answer).setBackgroundResource(R.drawable.bg_answer_request_info);
+            viewHolder.getView(R.id.ll_answer).setPadding(DensityUtils.dip2px(12f), DensityUtils.dip2px(12f), DensityUtils.dip2px(12f), DensityUtils.dip2px(12f));
+        } else {
+            viewHolder.getView(R.id.tv_compelete_info).setVisibility(View.GONE);
+            viewHolder.getView(R.id.ll_answer).setBackgroundResource(0);
+            viewHolder.getView(R.id.ll_answer).setPadding(0, 0, 0, 0);
+        }
+
 
         if (data.getVoiceUrl() != null) {
             viewHolder.getView(R.id.ll_voice).setVisibility(View.VISIBLE);
@@ -77,6 +94,17 @@ public class QaDetailOneTreeItemParent extends TreeItemGroup<Answerer> {
         } else {
             viewHolder.getView(R.id.view_last).setVisibility(View.VISIBLE);
         }
+
+        viewHolder.getView(R.id.tv_compelete_info).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentStudent = new Intent();
+                intentStudent.putExtra("ids", askId);
+                intentStudent.putExtra("from", "more_info");
+                intentStudent.setClass(BaseApplication.appContext, StudentInfoActivity.class);
+                BaseApplication.appContext.startActivity(intentStudent);
+            }
+        });
     }
 
     @Override

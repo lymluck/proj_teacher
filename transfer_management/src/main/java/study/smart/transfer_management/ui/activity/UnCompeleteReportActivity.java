@@ -39,7 +39,7 @@ public class UnCompeleteReportActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        setTitle("待完成报告");
+        setTitle(getString(R.string.uncompelete_report));
         pagerReport = findViewById(R.id.pager_report);
         ArrayList<UIFragment> fragments = new ArrayList<>();
         List<StateInfo> stateInfos = new ArrayList<>();

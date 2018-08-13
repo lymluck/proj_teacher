@@ -182,7 +182,12 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
         }
         searchView.setInputType(InputType.TYPE_CLASS_TEXT);
         searchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-        new CommonSearchPresenter(this);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         if (!TextUtils.isEmpty(keyword)) {
             searchView.getMyEditText().setText(keyword);
             pullRefresh(ParameterUtils.CACHED_ELSE_NETWORK, ParameterUtils.PULL_DOWN);
@@ -404,27 +409,28 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
             protected void convert(ViewHolder holder, MessageDetailItemInfo messageDetailItemInfo, int position) {
                 //转案和学员模块
                 ImageView ivLogo = holder.getView(R.id.iv_logo);
-                if ("TRAINING".equals(messageDetailItemInfo.getType())) {
+                if (ParameterUtils.TASK_TRAINING.equals(messageDetailItemInfo.getType())) {
                     DisplayImageUtils.displayCircleImage(CommonSearchActivity.this, R.drawable.transfer_task_manager, ivLogo);
-                    holder.getView(study.smart.transfer_management.R.id.ll_trnsfer).setVisibility(View.GONE);
-                    holder.getView(study.smart.transfer_management.R.id.ll_train).setVisibility(View.VISIBLE);
-                    holder.setText(study.smart.transfer_management.R.id.tv_content, messageDetailItemInfo.getContent());
-                    holder.setText(study.smart.transfer_management.R.id.tv_type, messageDetailItemInfo.getData().getTypeText());
-                    holder.setText(study.smart.transfer_management.R.id.tv_start_time, TimeUtil.getStrTime(messageDetailItemInfo.getData().getStartTime()));
-                    holder.setText(study.smart.transfer_management.R.id.tv_end_time, TimeUtil.getStrTime(messageDetailItemInfo.getData().getEndTime()));
+                    holder.getView(R.id.ll_trnsfer).setVisibility(View.GONE);
+                    holder.getView(R.id.ll_train).setVisibility(View.VISIBLE);
+                    holder.setText(R.id.tv_time, messageDetailItemInfo.getCreatedAtText());
+                    holder.setText(R.id.tv_content, messageDetailItemInfo.getContent());
+                    holder.setText(R.id.tv_type, messageDetailItemInfo.getData().getTypeText());
+                    holder.setText(R.id.tv_start_time, TimeUtil.getStrTime(messageDetailItemInfo.getData().getStartTime()));
+                    holder.setText(R.id.tv_end_time, TimeUtil.getStrTime(messageDetailItemInfo.getData().getEndTime()));
                 } else {
-                    holder.getView(study.smart.transfer_management.R.id.ll_trnsfer).setVisibility(View.VISIBLE);
-                    holder.getView(study.smart.transfer_management.R.id.ll_train).setVisibility(View.GONE);
-                    holder.setText(study.smart.transfer_management.R.id.tv_content, messageDetailItemInfo.getContent());
-                    holder.setText(study.smart.transfer_management.R.id.tv_time, messageDetailItemInfo.getCreatedAtText());
-                    holder.setText(study.smart.transfer_management.R.id.tv_type, messageDetailItemInfo.getData().getTypeText());
-                    holder.setText(study.smart.transfer_management.R.id.tv_name, String.format(getString(study.smart.transfer_management.R.string.name_phone), messageDetailItemInfo.getData().getName(), messageDetailItemInfo.getData().getPhone()));
-                    holder.setText(study.smart.transfer_management.R.id.tv_number, messageDetailItemInfo.getData().getOrderId());
-                    holder.setText(study.smart.transfer_management.R.id.tv_product, messageDetailItemInfo.getData().getServiceProductNames());
-                    holder.setText(study.smart.transfer_management.R.id.tv_year_season, messageDetailItemInfo.getData().getTargetApplicationYearSeason());
-                    holder.setText(study.smart.transfer_management.R.id.tv_contractor, messageDetailItemInfo.getData().getContractor());
-                    holder.setText(study.smart.transfer_management.R.id.tv_signed_time, TimeUtil.getStrTime(messageDetailItemInfo.getData().getSignedTime()));
-                    if ("TRANSFER_CASE".equals(messageDetailItemInfo.getType())) {
+                    holder.getView(R.id.ll_trnsfer).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.ll_train).setVisibility(View.GONE);
+                    holder.setText(R.id.tv_content, messageDetailItemInfo.getContent());
+                    holder.setText(R.id.tv_time, messageDetailItemInfo.getCreatedAtText());
+                    holder.setText(R.id.tv_type, messageDetailItemInfo.getData().getTypeText());
+                    holder.setText(R.id.tv_name, String.format(getString(study.smart.transfer_management.R.string.name_phone), messageDetailItemInfo.getData().getName(), messageDetailItemInfo.getData().getPhone()));
+                    holder.setText(R.id.tv_number, messageDetailItemInfo.getData().getOrderId());
+                    holder.setText(R.id.tv_product, messageDetailItemInfo.getData().getServiceProductNames());
+                    holder.setText(R.id.tv_year_season, messageDetailItemInfo.getData().getTargetApplicationYearSeason());
+                    holder.setText(R.id.tv_contractor, messageDetailItemInfo.getData().getContractor());
+                    holder.setText(R.id.tv_signed_time, TimeUtil.getStrTime(messageDetailItemInfo.getData().getSignedTime()));
+                    if (ParameterUtils.TRANSFER_CASE.equals(messageDetailItemInfo.getType())) {
                         DisplayImageUtils.displayCircleImage(CommonSearchActivity.this, R.drawable.transfer_icon_manager, ivLogo);
                     } else {
                         DisplayImageUtils.displayCircleImage(CommonSearchActivity.this, R.drawable.transfer_student_manager, ivLogo);
@@ -443,27 +449,14 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
         msgDetailAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                if (messageDetailItemInfos.get(position).getType().equals("TRANSFER_CASE")) {
-                    String model = "";
-                    String order_state = "";
-                    if (messageDetailItemInfos.get(position).getDetailedType().equals("ALLOCATE_CENTER")) {
-                        model = "未分配导师";
-                        order_state = "选导师";
-                    } else if (messageDetailItemInfos.get(position).getDetailedType().equals("CRM_TRANSFER_CASE")) {
-                        model = "未分配中心";
-                        order_state = "未分配中心";
-                    } else {
-                        model = "被驳回转案";
-                        order_state = "被驳回转案";
-                    }
-                    Intent intent = new Intent();
-                    //把模块名传送过去
-                    intent.putExtra("model", model);
-                    intent.putExtra("id", messageDetailItemInfos.get(position).getData().getId());
-                    //把订单状态传送过去
-                    intent.putExtra("order_state", order_state);
-                    intent.setClass(CommonSearchActivity.this, TransferManagerDetailActivity.class);
-                    startActivity(intent);
+                if (ParameterUtils.TRANSFER_CASE.equals(messageDetailItemInfos.get(position).getType())) {
+                    presenter.getMessageDetail(messageDetailItemInfos.get(position));
+                } else if (ParameterUtils.TASK_TRAINING.equals(messageDetailItemInfos.get(position).getType())) {
+                    startActivity(new Intent(CommonSearchActivity.this, TaskDetailActivity.class).putExtra("id", messageDetailItemInfos.get(position).getData().getMessageId()));
+                } else {
+                    startActivity(new Intent(CommonSearchActivity.this, StudentDetailActivity.class)
+                        .putExtra("id", messageDetailItemInfos.get(position).getData().getMessageId())
+                        .putExtra("from", "message"));
                 }
             }
 
@@ -489,9 +482,9 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
 
                     TextView distribution_state = holder.getView(R.id.distribution_state);
                     if (!TextUtils.isEmpty(transferManagerEntity.getStatusName())) {
-                        if ("已结案".equals(transferManagerEntity.getStatusName())) {
+                        if (getString(R.string.closed).equals(transferManagerEntity.getStatusName())) {
                             distribution_state.setTextColor(Color.parseColor("#949BA1"));
-                        } else if ("服务中".equals(transferManagerEntity.getStatusName())) {
+                        } else if (getString(R.string.in_service).equals(transferManagerEntity.getStatusName())) {
                             distribution_state.setTextColor(Color.parseColor("#078CF1"));
                         } else {
                             distribution_state.setTextColor(Color.parseColor("#F23D18"));
@@ -511,28 +504,27 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
         };
         emptyWrapper = new EmptyWrapper<>(mTransferAdapter);
         loadMoreWrapper = new LoadMoreWrapper<>(emptyWrapper);
-
         mTransferAdapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 String model = "";
                 //把模块名传送过去
-                if ("未分配中心".equals(transferManagerEntities.get(position).getStatusName())) {
-                    model = "未分配中心";
-                } else if ("选导师".equals(transferManagerEntities.get(position).getStatusName())) {
-                    model = "已分配中心";
-                } else if ("服务中".equals(transferManagerEntities.get(position).getStatusName())) {
-                    model = "已分配中心";
+                if (getString(R.string.un_allocate_center).equals(transferManagerEntities.get(position).getStatusName())) {
+                    model = getString(R.string.un_allocate_center);
+                } else if (getString(R.string.choose_teacher).equals(transferManagerEntities.get(position).getStatusName())) {
+                    model = getString(R.string.allocate_center);
+                } else if (getString(R.string.in_service).equals(transferManagerEntities.get(position).getStatusName())) {
+                    model = getString(R.string.allocate_center);
                 } else if ("已驳回".equals(transferManagerEntities.get(position).getStatusName())) {
-                    model = "被驳回转案";
+                    model = getString(R.string.turn_down_case);
                 } else {
                     //已结案状态，需要根据另外的字段进行判断
                     if ("REJECTED_CENTER".equals(transferManagerEntities.get(position).getPreClosedStatus())) {
-                        model = "被驳回转案";
+                        model = getString(R.string.turn_down_case);
                     } else if ("UNALLOCATED_CENTER".equals(transferManagerEntities.get(position).getPreClosedStatus())) {
-                        model = "未分配中心";
+                        model = getString(R.string.un_allocate_center);
                     } else {
-                        model = "已分配中心";
+                        model = getString(R.string.allocate_center);
                     }
                 }
                 Intent intent = new Intent();
@@ -543,7 +535,6 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
                 intent.putExtra("order_state", transferManagerEntities.get(position).getStatusName());
                 intent.setClass(CommonSearchActivity.this, TransferManagerDetailActivity.class);
                 startActivity(intent);
-
             }
 
             @Override
@@ -652,13 +643,13 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
                 holder.setText(R.id.tv_center_name, workingSearchListInfos.get(position).getCenterName() + "-" + workingSearchListInfos.get(position).getUserName());
                 holder.setText(R.id.tv_time, TimeUtil.getStrTime(workingSearchListInfos.get(position).getEndTime(), "MM-dd") + "截止");
 
-                if ("ALERT".equals(workingSearchListInfos.get(position).getStatus())) {
+                if (ParameterUtils.ALERT.equals(workingSearchListInfos.get(position).getStatus())) {
                     //临期
                     holder.getView(R.id.v_status).setBackgroundColor(Color.parseColor("#FAAD14"));
-                } else if ("EXPIRED".equals(workingSearchListInfos.get(position).getStatus())) {
+                } else if (ParameterUtils.EXPIRED.equals(workingSearchListInfos.get(position).getStatus())) {
                     //过期
                     holder.getView(R.id.v_status).setBackgroundColor(Color.parseColor("#7f000000"));
-                } else if ("PENDING".equals(workingSearchListInfos.get(position).getStatus())) {
+                } else if (ParameterUtils.PENDING.equals(workingSearchListInfos.get(position).getStatus())) {
                     //进行中
                     holder.getView(R.id.v_status).setBackgroundColor(Color.parseColor("#1890FF"));
 
@@ -944,6 +935,39 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
                 }
             }
         }
+    }
+
+    @Override
+    public void getMessageDetailSuccess(TransferManagerEntity transferManagerEntity) {
+        String model = "";
+        //把模块名传送过去
+        if (getString(R.string.un_allocate_center).equals(transferManagerEntity.getStatusName())) {
+            model = getString(R.string.un_allocate_center);
+        } else if (getString(R.string.choose_teacher).equals(transferManagerEntity.getStatusName())) {
+            model = getString(R.string.allocate_center);
+        } else if (getString(R.string.in_service).equals(transferManagerEntity.getStatusName())) {
+            model = getString(R.string.allocate_center);
+        } else if ("已驳回".equals(transferManagerEntity.getStatusName())) {
+            model = getString(R.string.turn_down_case);
+        } else {
+            //已结案状态，需要根据另外的字段进行判断
+            if ("REJECTED_CENTER".equals(transferManagerEntity.getPreClosedStatus())) {
+                model = getString(R.string.turn_down_case);
+            } else if ("UNALLOCATED_CENTER".equals(transferManagerEntity.getPreClosedStatus())) {
+                model = getString(R.string.un_allocate_center);
+            } else {
+                model = getString(R.string.allocate_center);
+            }
+        }
+        Intent intent = new Intent();
+        //把模块名传送过去
+        intent.putExtra("model", model);
+        intent.putExtra("id", transferManagerEntity.getId());
+        //把订单状态传送过去
+        intent.putExtra("order_state", transferManagerEntity.getStatusName());
+        intent.setClass(CommonSearchActivity.this, TransferManagerDetailActivity.class);
+        startActivity(intent);
+
     }
 
     private List getNowList() {

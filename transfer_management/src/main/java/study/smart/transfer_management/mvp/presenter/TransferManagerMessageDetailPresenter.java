@@ -11,6 +11,7 @@ import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 import study.smart.baselib.entity.DataListInfo;
+import study.smart.baselib.entity.TransferManagerEntity;
 import study.smart.baselib.listener.ObserverListener;
 import study.smart.baselib.mvp.base.BasePresenterImpl;
 import study.smart.baselib.utils.DisplayImageUtils;
@@ -69,15 +70,15 @@ public class TransferManagerMessageDetailPresenter extends BasePresenterImpl<Tra
 
     @Override
     public void getMessageDetail(final MessageDetailItemInfo messageDetailItemInfos) {
-        transferManagerMessageDetailModel.getMessagesDetail(messageDetailItemInfos.getData().getMessageId(), new ObserverListener<DataListInfo>() {
+        transferManagerMessageDetailModel.getMessagesDetail(messageDetailItemInfos.getData().getMessageId(), new ObserverListener<TransferManagerEntity>() {
             @Override
             public void onSubscribe(Disposable disposable) {
                 addDisposable(disposable);
             }
 
             @Override
-            public void onNext(DataListInfo dataListInfo) {
-                view.getMessageDetailSuccess(messageDetailItemInfos);
+            public void onNext(TransferManagerEntity transferManagerEntity) {
+                view.getMessageDetailSuccess(messageDetailItemInfos, transferManagerEntity);
             }
 
             @Override

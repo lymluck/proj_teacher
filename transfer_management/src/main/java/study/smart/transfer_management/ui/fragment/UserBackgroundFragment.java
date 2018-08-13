@@ -57,7 +57,7 @@ public class UserBackgroundFragment extends UIFragment {
         orderState = getArguments().getString("orderState");
         ImageView ivOver = rootView.findViewById(R.id.iv_over);
         if (transferDetailentity != null) {
-            if ("已结案".equals(orderState)) {
+            if (getString(R.string.closed).equals(orderState)) {
                 ivOver.setVisibility(View.VISIBLE);
             } else {
                 ivOver.setVisibility(View.GONE);

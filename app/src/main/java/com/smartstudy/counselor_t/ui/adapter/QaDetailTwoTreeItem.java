@@ -1,20 +1,26 @@
 package com.smartstudy.counselor_t.ui.adapter;
 
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.smartstudy.counselor_t.R;
+
 import study.smart.baselib.ui.adapter.base.ViewHolder;
 import study.smart.baselib.ui.widget.RatingBar;
 import study.smart.baselib.ui.widget.audio.AudioRecorder;
 import study.smart.baselib.ui.widget.treeview.TreeItem;
+
+import com.smartstudy.counselor_t.ui.activity.StudentInfoActivity;
 import com.smartstudy.counselor_t.util.TextBrHandle;
 
 import study.smart.baselib.BaseApplication;
 import study.smart.baselib.entity.Answerer;
+import study.smart.baselib.utils.DensityUtils;
 import study.smart.baselib.utils.SPCacheUtils;
 
 /**
@@ -39,9 +45,20 @@ public class QaDetailTwoTreeItem extends TreeItem<Answerer.Comments> {
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder) {
         String askName = SPCacheUtils.get("askName", "").toString();
+        final String askId = SPCacheUtils.get("askId", "").toString();
         if (data.getCommentType().equals("subQuestion")) {
-            String question = "<font color='#FF9C08'>" + "追问 @" + data.getAnswerName() + "</font>" + ": " + (data.getContent() == null ? "" : data.getContent());
-            viewHolder.setText(R.id.tv_detail_answer, Html.fromHtml(TextBrHandle.parseContent(question)));
+            String question = "";
+            if (!"complete_request_info".equals(data.getActionType())) {
+                question = "<font color='#FF9C08'>" + "追问 @" + data.getAnswerName() + "</font>" + ": " + (data.getContent() == null ? "" : data.getContent());
+                ((TextView) viewHolder.getView(R.id.tv_detail_answer)).setText(Html.fromHtml(TextBrHandle.parseContent(question)));
+                viewHolder.getView(R.id.ll_more_info).setBackgroundResource(0);
+                viewHolder.getView(R.id.tv_more_info).setVisibility(View.GONE);
+            } else {
+                question = data.getContent();
+                ((TextView) viewHolder.getView(R.id.tv_detail_answer)).setText(question);
+                viewHolder.getView(R.id.tv_more_info).setVisibility(View.VISIBLE);
+                viewHolder.getView(R.id.ll_more_info).setBackgroundResource(R.drawable.bg_remind_blue);
+            }
             viewHolder.getView(R.id.ll_voice).setVisibility(View.GONE);
         } else {
             if (data.getVoiceUrl() != null) {
@@ -54,8 +71,40 @@ public class QaDetailTwoTreeItem extends TreeItem<Answerer.Comments> {
                 viewHolder.setText(R.id.tv_detail_answer, Html.fromHtml(TextBrHandle.parseContent(answer)));
                 viewHolder.getView(R.id.ll_voice).setVisibility(View.GONE);
             }
+
+            if ("request_info".equals(data.getActionType())) {
+                ((TextView) viewHolder.getView(R.id.tv_detail_answer)).setText(data.getContent());
+                viewHolder.getView(R.id.tv_more_info).setVisibility(View.VISIBLE);
+                viewHolder.getView(R.id.ll_more_info).setBackgroundResource(R.drawable.bg_answer_request_info);
+                ((TextView) viewHolder.getView(R.id.tv_more_info)).setText("点击查看基本信息");
+                viewHolder.getView(R.id.ll_more_info).setPadding(DensityUtils.dip2px(12f), DensityUtils.dip2px(12f), DensityUtils.dip2px(12f), DensityUtils.dip2px(12f));
+            } else {
+                viewHolder.getView(R.id.tv_more_info).setVisibility(View.GONE);
+                viewHolder.getView(R.id.tv_more_info).setBackgroundResource(0);
+                if (data.getVoiceUrl() != null) {
+                    String answer = "回复<font color='#078CF1'>" + " @" + askName + "</font>" + ": ";
+                    ((TextView) viewHolder.getView(R.id.tv_detail_answer)).setText(Html.fromHtml(TextBrHandle.parseContent(answer)));
+                    viewHolder.getView(R.id.ll_voice).setVisibility(View.VISIBLE);
+                    ((TextView) viewHolder.getView(R.id.tv_voice_time)).setText(data.getVoiceDuration());
+                } else {
+                    String answer = "回复<font color='#078CF1'>" + " @" + askName + "</font>" + ": " + (data.getContent() == null ? "" : data.getContent());
+                    ((TextView) viewHolder.getView(R.id.tv_detail_answer)).setText(Html.fromHtml(TextBrHandle.parseContent(answer)));
+                    viewHolder.getView(R.id.ll_voice).setVisibility(View.GONE);
+                }
+            }
         }
         viewHolder.setText(R.id.tv_time, data.getCreateTimeText());
+
+        viewHolder.getView(R.id.tv_more_info).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentStudent = new Intent();
+                intentStudent.putExtra("ids", askId);
+                intentStudent.putExtra("from", "more_info");
+                intentStudent.setClass(BaseApplication.appContext, StudentInfoActivity.class);
+                BaseApplication.appContext.startActivity(intentStudent);
+            }
+        });
 
         if (getItemManager() != null && getItemManager().getItemPosition(this)
             == getItemManager().getItemPosition(getParentItem()) + getParentItem().getChildCount()) {

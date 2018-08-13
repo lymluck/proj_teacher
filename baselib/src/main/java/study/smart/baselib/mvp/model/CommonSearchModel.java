@@ -8,6 +8,7 @@ import java.util.Map;
 import study.smart.baselib.listener.ObserverListener;
 import study.smart.baselib.mvp.base.BaseModel;
 import study.smart.baselib.server.api.ApiManager;
+import study.smart.baselib.utils.HttpUrlUtils;
 
 /**
  * @author yqy
@@ -93,5 +94,14 @@ public class CommonSearchModel extends BaseModel {
         }
         params.put("blockType", "DATA");
         apiSubscribe(ApiManager.getApiService().getTalkList(getHeadersMap(), params), listener);
+    }
+
+    /**
+     * 获取消息信息
+     *
+     * @param listener
+     */
+    public void getMessagesDetail(String id, ObserverListener listener) {
+        apiSubscribe(ApiManager.getApiService().getMessageDetail(getHeadersMap(), String.format(HttpUrlUtils.MESSAGE_DETAIL, id)), listener);
     }
 }

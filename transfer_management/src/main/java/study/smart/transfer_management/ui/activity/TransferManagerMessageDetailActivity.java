@@ -14,6 +14,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
+import study.smart.baselib.entity.TransferManagerEntity;
 import study.smart.baselib.ui.adapter.CommonAdapter;
 import study.smart.baselib.ui.adapter.MultiItemTypeAdapter;
 import study.smart.baselib.ui.adapter.base.ViewHolder;
@@ -64,12 +65,12 @@ public class TransferManagerMessageDetailActivity extends BaseActivity<TransferM
     @Override
     public void initView() {
         type = getIntent().getStringExtra("type");
-        if (type.equals("TASK_TRAINING")) {
+        if (ParameterUtils.TASK_TRAINING.equals(type)) {
             setTitle(R.string.task_train);
-        } else if (type.equals("TRANSFER_CASE")) {
-            setTitle("转案");
+        } else if (ParameterUtils.TRANSFER_CASE.equals(type)) {
+            setTitle(getString(R.string.transfer));
         } else {
-            setTitle("学员");
+            setTitle(getString(R.string.student));
         }
         setTopLineVisibility(View.VISIBLE);
         srltMessageDetail = rootView.findViewById(R.id.srlt_message_detail);
@@ -98,6 +99,7 @@ public class TransferManagerMessageDetailActivity extends BaseActivity<TransferM
     @Override
     protected void onResume() {
         super.onResume();
+        mPage = 1;
         presenter.getMessageDetailList(mPage + "", type, ParameterUtils.PULL_DOWN);
     }
 
@@ -139,27 +141,37 @@ public class TransferManagerMessageDetailActivity extends BaseActivity<TransferM
     }
 
     @Override
-    public void getMessageDetailSuccess(MessageDetailItemInfo messageDetailItemInfos) {
+    public void getMessageDetailSuccess(MessageDetailItemInfo messageDetailItemInfo, TransferManagerEntity transferManagerEntity) {
+
         String model = "";
-        String order_state = "";
-        if (messageDetailItemInfos.getDetailedType().equals("ALLOCATE_CENTER")) {
-            model = "未分配导师";
-            order_state = "选导师";
-        } else if (messageDetailItemInfos.getDetailedType().equals("CRM_TRANSFER_CASE")) {
-            model = "未分配中心";
-            order_state = "未分配中心";
+        //把模块名传送过去
+        if (getString(study.smart.baselib.R.string.un_allocate_center).equals(transferManagerEntity.getStatusName())) {
+            model = getString(R.string.un_allocate_center);
+        } else if (getString(R.string.choose_teacher).equals(transferManagerEntity.getStatusName())) {
+            model = getString(R.string.allocate_center);
+        } else if (getString(R.string.in_service).equals(transferManagerEntity.getStatusName())) {
+            model = getString(R.string.allocate_center);
+        } else if ("已驳回".equals(transferManagerEntity.getStatusName())) {
+            model = getString(R.string.turn_down_case);
         } else {
-            model = "被驳回转案";
-            order_state = "被驳回转案";
+            //已结案状态，需要根据另外的字段进行判断
+            if ("REJECTED_CENTER".equals(transferManagerEntity.getPreClosedStatus())) {
+                model = getString(study.smart.baselib.R.string.turn_down_case);
+            } else if ("UNALLOCATED_CENTER".equals(transferManagerEntity.getPreClosedStatus())) {
+                model = getString(study.smart.baselib.R.string.un_allocate_center);
+            } else {
+                model = getString(study.smart.baselib.R.string.allocate_center);
+            }
         }
         Intent intent = new Intent();
         //把模块名传送过去
         intent.putExtra("model", model);
-        intent.putExtra("id", messageDetailItemInfos.getData().getId());
+        intent.putExtra("id", transferManagerEntity.getId());
         //把订单状态传送过去
-        intent.putExtra("order_state", order_state);
-        intent.setClass(TransferManagerMessageDetailActivity.this, TransferManagerDetailActivity.class);
+        intent.putExtra("order_state", transferManagerEntity.getStatusName());
+        intent.setClass(this, TransferManagerDetailActivity.class);
         startActivity(intent);
+
     }
 
 
@@ -170,7 +182,7 @@ public class TransferManagerMessageDetailActivity extends BaseActivity<TransferM
             protected void convert(ViewHolder holder, MessageDetailItemInfo messageDetailItemInfo, int position) {
                 //转案和学员模块
                 ImageView ivLogo = holder.getView(R.id.iv_logo);
-                if (messageDetailItemInfo.getType().equals("TRANSFER_CASE") || messageDetailItemInfo.getType().equals("ARCHIVE")) {
+                if (ParameterUtils.TRANSFER_CASE.equals(messageDetailItemInfo.getType()) || ParameterUtils.ARCHIVE.equals(messageDetailItemInfo.getType())) {
                     holder.getView(R.id.ll_trnsfer).setVisibility(View.VISIBLE);
                     holder.getView(R.id.ll_train).setVisibility(View.GONE);
                     holder.setText(R.id.tv_content, messageDetailItemInfo.getContent());
@@ -182,7 +194,7 @@ public class TransferManagerMessageDetailActivity extends BaseActivity<TransferM
                     holder.setText(R.id.tv_year_season, messageDetailItemInfo.getData().getTargetApplicationYearSeason());
                     holder.setText(R.id.tv_contractor, messageDetailItemInfo.getData().getContractor());
                     holder.setText(R.id.tv_signed_time, TimeUtil.getStrTime(messageDetailItemInfo.getData().getSignedTime()));
-                    if ("TRANSFER_CASE".equals(messageDetailItemInfo.getType())) {
+                    if (ParameterUtils.TRANSFER_CASE.equals(messageDetailItemInfo.getType())) {
                         DisplayImageUtils.displayCircleImage(TransferManagerMessageDetailActivity.this, study.smart.baselib.R.drawable.transfer_icon_manager, ivLogo);
                     } else {
                         DisplayImageUtils.displayCircleImage(TransferManagerMessageDetailActivity.this, study.smart.baselib.R.drawable.transfer_student_manager, ivLogo);
@@ -222,9 +234,9 @@ public class TransferManagerMessageDetailActivity extends BaseActivity<TransferM
         mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                if (type.equals("TRANSFER_CASE")) {
+                if (ParameterUtils.TRANSFER_CASE.equals(type)) {
                     presenter.getMessageDetail(messageDetailItemInfos.get(position));
-                } else if ("TASK_TRAINING".equals(type)) {
+                } else if (ParameterUtils.TASK_TRAINING.equals(type)) {
                     //任务训练
                     startActivity(new Intent(TransferManagerMessageDetailActivity.this, TaskDetailActivity.class).putExtra("id", messageDetailItemInfos.get(position).getData().getMessageId()));
                 } else {

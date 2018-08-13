@@ -3,6 +3,7 @@ package com.smartstudy.counselor_t.mvp.presenter;
 import study.smart.baselib.entity.QaDetailInfo;
 import study.smart.baselib.listener.ObserverListener;
 import study.smart.baselib.mvp.base.BasePresenterImpl;
+
 import com.smartstudy.counselor_t.mvp.contract.QaDetailContract;
 import com.smartstudy.counselor_t.mvp.model.QaDetailModel;
 
@@ -106,6 +107,26 @@ public class QaDetailPresenter extends BasePresenterImpl<QaDetailContract.View> 
             @Override
             public void onError(String msg) {
                 view.postAnswerFail(msg);
+            }
+        });
+    }
+
+    @Override
+    public void requestInfo(String questionId) {
+        qaDetailModel.requestIfon(questionId, new ObserverListener() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                addDisposable(disposable);
+            }
+
+            @Override
+            public void onNext(Object result) {
+                view.requestInfoSuccess();
+            }
+
+            @Override
+            public void onError(String msg) {
+                view.showTip(msg);
             }
         });
     }

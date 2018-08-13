@@ -22,4 +22,18 @@
     <string name="close_report">结案报告</string>
     <string name="my_release_talk_record">我发布的沟通记录</string>
     <string name="task_detail">任务详情</string>
+    <string name="student_compelete_info">学员信息待完善，请前往电脑上完善</string>
+    <string name="compelete_student_season_report">请前往电脑上完成该学员的季度报告</string>
+    <string name="compelete_student_summary_report">请前往电脑上完成该学员的总结报告</string>
+    <string name="compelete_student_sum_report">请前往电脑上完成该学员的结案报告</string>
+    <string name="more_opt">更多操作请前往电脑上操作</string>
+    <string name="compelete_student_talk_record">请前往电脑上完成该学员的沟通记录</string>
+    <string name="upcompelete_record">待沟通记录</string>
+    <string name="uncompelete_report">待完成报告</string>
+    <string name="transfer">转案</string>
+    <string name="student">学员</string>
+    <string name="allocate_teacher">已分配导师</string>
+    <string name="redistribution_teacher">重新分配导师</string>
+    <string name="distribution_teacher">分配导师</string>
+    <string name="have_no_centetr">暂时没有可选的分配中心</string>
 </resources>

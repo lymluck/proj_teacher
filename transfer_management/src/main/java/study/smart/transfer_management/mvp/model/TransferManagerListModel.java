@@ -18,15 +18,15 @@ public class TransferManagerListModel extends BaseModel {
     public void getTransferManagerList(String type, String page, ObserverListener listener) {
         Map<String, String> params = new HashMap<>();
         params.put("page", page);
-        if (type.equals("已分配中心")) {
+        if ("已分配中心".equals(type)) {
             apiSubscribe(ApiManager.getApiService().getAllocatedCenter(getHeadersMap(), params), listener);
-        } else if (type.equals("未分配中心")) {
+        } else if ("未分配中心".equals(type)) {
             apiSubscribe(ApiManager.getApiService().getUnallocatedCenter(getHeadersMap(), params), listener);
-        } else if (type.equals("被驳回转案")) {
+        } else if ("被驳回转案".equals(type)) {
             apiSubscribe(ApiManager.getApiService().getRejectedCenter(getHeadersMap(), params), listener);
-        } else if (type.equals("未分配导师")) {
+        } else if ("未分配导师".equals(type)) {
             apiSubscribe(ApiManager.getApiService().getUnallocatedCoach(getHeadersMap(), params), listener);
-        } else if (type.equals("已分配导师")) {
+        } else if ("已分配导师".equals(type)) {
             apiSubscribe(ApiManager.getApiService().getAllocatedCoach(getHeadersMap(), params), listener);
         } else {
             apiSubscribe(ApiManager.getApiService().getUnallocatedCenter(getHeadersMap(), params), listener);

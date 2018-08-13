@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ll_intention_information"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical">
 
@@ -22,15 +22,17 @@
 
 
     <LinearLayout
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="100dp"
+            android:layout_width="90dp"
             android:layout_height="match_parent"
-            android:gravity="center"
             android:text="出国时间"
+            android:gravity="center_vertical"
             android:textColor="@color/app_text_color"
             android:textSize="16sp" />
 
@@ -39,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:ellipsize="end"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:maxLines="1"
             android:textColor="@color/app_text_color2"
             android:textSize="16sp" />
@@ -53,14 +55,16 @@
         android:background="#E4E5E6" />
 
     <LinearLayout
+        android:paddingRight="16dp"
         android:layout_width="match_parent"
         android:layout_height="64dp"
+        android:paddingLeft="16dp"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="100dp"
+            android:layout_width="90dp"
             android:layout_height="match_parent"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:text="意向国家"
             android:textColor="@color/app_text_color"
             android:textSize="16sp" />
@@ -70,7 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:ellipsize="end"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:maxLines="1"
             android:textColor="@color/app_text_color2"
             android:textSize="16sp" />
@@ -85,14 +89,16 @@
         android:background="#E4E5E6" />
 
     <LinearLayout
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp"
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="100dp"
+            android:layout_width="90dp"
             android:layout_height="match_parent"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:text="申请项目"
             android:textColor="@color/app_text_color"
             android:textSize="16sp" />
@@ -102,7 +108,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:ellipsize="end"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:maxLines="1"
             android:textColor="@color/app_text_color2"
             android:textSize="16sp" />
@@ -117,14 +123,16 @@
         android:background="#E4E5E6" />
 
     <LinearLayout
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp"
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="100dp"
+            android:layout_width="90dp"
             android:layout_height="match_parent"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:text="资金预算"
             android:textColor="@color/app_text_color"
             android:textSize="16sp" />
@@ -134,7 +142,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:ellipsize="end"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:maxLines="1"
             android:textColor="@color/app_text_color2"
             android:textSize="16sp" />
@@ -154,15 +162,17 @@
             android:background="#E4E5E6" />
 
         <LinearLayout
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:orientation="horizontal">
 
 
             <TextView
-                android:layout_width="100dp"
+                android:layout_width="90dp"
                 android:layout_height="match_parent"
-                android:gravity="center"
+                android:gravity="center_vertical"
                 android:text="目标学校"
                 android:textColor="@color/app_text_color"
                 android:textSize="16sp" />
@@ -172,7 +182,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:ellipsize="end"
-                android:gravity="center"
+                android:gravity="center_vertical"
                 android:maxLines="1"
                 android:textColor="@color/app_text_color2"
                 android:textSize="16sp" />
@@ -180,6 +190,7 @@
     </LinearLayout>
 
     <LinearLayout
+
         android:id="@+id/ll_target_direction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -192,14 +203,16 @@
             android:background="#E4E5E6" />
 
         <LinearLayout
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="100dp"
+                android:layout_width="90dp"
                 android:layout_height="match_parent"
-                android:gravity="center"
+                android:gravity="center_vertical"
                 android:text="专业方向"
                 android:textColor="@color/app_text_color"
                 android:textSize="16sp" />
@@ -209,7 +222,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:ellipsize="end"
-                android:gravity="center"
+                android:gravity="center_vertical"
                 android:maxLines="1"
                 android:textColor="@color/app_text_color2"
                 android:textSize="16sp" />

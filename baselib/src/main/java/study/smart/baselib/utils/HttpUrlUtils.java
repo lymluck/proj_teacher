@@ -65,7 +65,7 @@ public class HttpUrlUtils {
     public static final String WORKBENCH_CENTER_LIST = "workbench/center/list";//中心
     public static final String MESSAGE_DETAIL = "message/%1$s";//  消息中心
     public static final String URL_COUNSELLOR_RANKING = "questions/counsellor/ranking/%1$s";//老师周排行
-
+    public static final String QUESTION_REQUEST_INFO = "questions/%1$s/requestInfo";//请求信息
     /**************************** web ***************************/
     public static final String URL_USER_CONTRACT = "/user-agreement.html";  //用户协议
 

@@ -28,11 +28,13 @@ import study.smart.baselib.utils.DisplayImageUtils;
 import study.smart.baselib.utils.KeyBoardUtils;
 import study.smart.baselib.utils.SPCacheUtils;
 import study.smart.baselib.utils.ToastUtils;
+
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.mvp.contract.QaDetailContract;
 import com.smartstudy.counselor_t.mvp.presenter.QaDetailPresenter;
 import com.smartstudy.counselor_t.ui.adapter.QaDetailOneTreeItemParent;
 import com.smartstudy.counselor_t.ui.adapter.QaDetailTwoTreeItem;
+
 import study.smart.baselib.ui.adapter.TreeRecyclerAdapter;
 import study.smart.baselib.ui.adapter.base.BaseItem;
 import study.smart.baselib.ui.adapter.base.BaseRecyclerAdapter;
@@ -44,6 +46,7 @@ import study.smart.baselib.ui.widget.DrawableTextView;
 import study.smart.baselib.ui.widget.NoScrollLinearLayoutManager;
 import study.smart.baselib.ui.widget.audio.AudioRecorder;
 import study.smart.baselib.ui.widget.treeview.TreeItem;
+
 import com.smartstudy.counselor_t.util.NoDoubleClickUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -83,6 +86,13 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
     private ArrayList<TreeItem> qaTreeItems;
     private TreeHeaderAndFootWapper<TreeItem> mHeaderAdapter;
     private BaseItem lastBaseItem;
+    private LinearLayout llFoot;
+    private LinearLayout llSendVoice;
+    private LinearLayout llGetInfo;
+    private ImageView ivRemind;
+    private TextView tvMoreInfo;
+    private View vRemind;
+    private LinearLayout llRemind;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,6 +106,9 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         dtvFocus.setOnClickListener(this);
         dtvCallout.setOnClickListener(this);
         dtvPhone.setOnClickListener(this);
+        llSendVoice.setOnClickListener(this);
+        llGetInfo.setOnClickListener(this);
+        tvMoreInfo.setOnClickListener(this);
         etAnswer.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -125,23 +138,26 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
                 Integer integer = (Integer) ivSpeak.getTag();
                 integer = integer == null ? 0 : integer;
                 switch (integer) {
-                    case R.drawable.rc_audio_toggle:
+                    case R.drawable.more_foot:
                         ivSpeak.setImageResource(R.drawable.rc_keyboard);
                         ivSpeak.setTag(R.drawable.rc_keyboard);
-                        llSpeak.setVisibility(View.VISIBLE);
+                        llFoot.setVisibility(View.VISIBLE);
+                        llSpeak.setVisibility(View.GONE);
                         KeyBoardUtils.closeKeybord(etAnswer, QaDetailActivity.this);
                         break;
                     case R.drawable.rc_keyboard:
-                        ivSpeak.setImageResource(R.drawable.rc_audio_toggle);
-                        ivSpeak.setTag(R.drawable.rc_audio_toggle);
+                        ivSpeak.setImageResource(R.drawable.more_foot);
+                        ivSpeak.setTag(R.drawable.more_foot);
+                        llFoot.setVisibility(View.GONE);
                         llSpeak.setVisibility(View.GONE);
                         KeyBoardUtils.openKeybord(etAnswer, QaDetailActivity.this);
                         break;
                     default:
                         ivSpeak.setImageResource(R.drawable.rc_keyboard);
                         ivSpeak.setTag(R.drawable.rc_keyboard);
+                        llSpeak.setVisibility(View.GONE);
                         KeyBoardUtils.closeKeybord(etAnswer, QaDetailActivity.this);
-                        llSpeak.setVisibility(View.VISIBLE);
+                        llFoot.setVisibility(View.VISIBLE);
                         break;
                 }
             }
@@ -150,16 +166,25 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 // 此处为得到焦点时的处理内容
-                ivSpeak.setImageResource(R.drawable.rc_audio_toggle);
-                ivSpeak.setTag(R.drawable.rc_audio_toggle);
+                ivSpeak.setImageResource(R.drawable.more_foot);
+                ivSpeak.setTag(R.drawable.more_foot);
                 etAnswer.setFocusable(true);
                 etAnswer.setFocusableInTouchMode(true);
+                llFoot.setVisibility(View.GONE);
                 llSpeak.setVisibility(View.GONE);
                 return false;
             }
 
         });
         topdefaultLeftbutton.setOnClickListener(this);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                llFoot.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override
@@ -182,6 +207,10 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         ivAudio = findViewById(R.id.iv_audio);
         llSpeak = findViewById(R.id.ll_speak);
         ivSpeak = findViewById(R.id.iv_speak);
+        llFoot = findViewById(R.id.ll_foot);
+        ivSpeak = findViewById(R.id.iv_speak);
+        llSendVoice = findViewById(R.id.ll_send_voice);
+        llGetInfo = findViewById(R.id.ll_get_info);
         recyclerView = findViewById(R.id.rv_qa);
         swipeRefreshLayout = findViewById(R.id.srlt_qa);
         if (!(boolean) SPCacheUtils.get("is_guide", false)) {
@@ -244,12 +273,35 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
                     presenter.questionDeleteMark(questionId);
                 }
                 break;
+            case R.id.ll_get_info:
+                if (detailInfo != null) {
+                    if (detailInfo.isCanRequest()) {
+                        presenter.requestInfo(questionId);
+                    } else {
+                        ToastUtils.shortToast("请求已发送或信息已完善");
+                        return;
+                    }
+                }
+                break;
+
             case R.id.dtv_phone:
                 if (!TextUtils.isEmpty(telephone)) {
                     Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + telephone));//跳转到拨号界面，同时传递电话号码
                     startActivity(dialIntent);
                 }
                 break;
+            case R.id.tv_more_info:
+                if (detailInfo != null && detailInfo.getAsker() != null) {
+                    if (!NoDoubleClickUtils.isDoubleClick()) {
+                        Intent intentStudent = new Intent();
+                        intentStudent.putExtra("ids", detailInfo.getAsker().getId());
+                        intentStudent.putExtra("from", "more_info");
+                        intentStudent.setClass(this, StudentInfoActivity.class);
+                        startActivity(intentStudent);
+                    }
+                }
+                break;
+
             case R.id.tv_post:
                 if (TextUtils.isEmpty(etAnswer.getText().toString().trim())) {
                     ToastUtils.shortToast("发送消息不能为空");
@@ -260,6 +312,10 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
                 break;
             case R.id.topdefault_leftbutton:
                 finish();
+                break;
+            case R.id.ll_send_voice:
+                llSpeak.setVisibility(View.VISIBLE);
+                llFoot.setVisibility(View.GONE);
                 break;
             case R.id.dtv_callout:
                 startActivity(new Intent(this, AddLabelActivity.class).putExtra("id", detailInfo.getAsker().getId()));
@@ -304,6 +360,17 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         headView.setVisibility(View.VISIBLE);
         isFocus = data.isMarked();
         this.detailInfo = data;
+        if (data.isShowTopInfoPanel()) {
+            llRemind.setVisibility(View.VISIBLE);
+            if (data.getAnswers() != null && data.getAnswers().size() > 0) {
+                vRemind.setVisibility(View.VISIBLE);
+            } else {
+                vRemind.setVisibility(View.GONE);
+            }
+        } else {
+            llRemind.setVisibility(View.GONE);
+        }
+
         if (data.getAsker() != null) {
             DisplayImageUtils.formatPersonImgUrl(getApplicationContext(), data.getAsker().getAvatar(), ivAsker);
             tvAskerName.setText(data.getAsker().getName());
@@ -333,6 +400,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
             if (qaAdapter != null && data.getAsker() != null) {
                 //存入询问人的名字
                 SPCacheUtils.put("askName", data.getAsker().getName());
+                SPCacheUtils.put("askId", data.getAsker().getId());
                 answer.setText("回复");
                 qaTreeItems.clear();
                 qaTreeItems.addAll(ItemFactory.createTreeItemList(data.getAnswers(), QaDetailOneTreeItemParent.class, null));
@@ -409,6 +477,11 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
     }
 
     @Override
+    public void requestInfoSuccess() {
+
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         presenter.getQaDetails(questionId);
@@ -418,8 +491,12 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         headView = mInflater.inflate(R.layout.layout_question_list, null, false);
         headView.setVisibility(View.GONE);
         llStudent = headView.findViewById(R.id.ll_student);
+        ivRemind = headView.findViewById(R.id.iv_remind);
+        DisplayImageUtils.displayPersonRes(this, R.drawable.rc_default_portrait, ivRemind);
+        tvMoreInfo = headView.findViewById(R.id.tv_more_info);
         ivAsker = headView.findViewById(R.id.iv_asker);
         dtvCallout = headView.findViewById(R.id.dtv_callout);
+        llRemind = headView.findViewById(R.id.ll_remind);
         tvAskerName = headView.findViewById(R.id.tv_asker_name);
         tvLocation = headView.findViewById(R.id.tv_location);
         tvSchoolName = headView.findViewById(R.id.tv_schoolName);
@@ -428,6 +505,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         tvAskerTime = headView.findViewById(R.id.tv_ask_time);
         answer = headView.findViewById(R.id.answer);
         dtvPhone = headView.findViewById(R.id.dtv_phone);
+        vRemind = headView.findViewById(R.id.v_remind);
         qaAdapter = new TreeRecyclerAdapter();
         qaAdapter.setType(TreeRecyclerViewType.SHOW_ALL);
         mHeaderAdapter = new TreeHeaderAndFootWapper<>(qaAdapter);

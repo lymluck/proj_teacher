@@ -124,9 +124,9 @@ public class TransferMangerListFragment extends UIFragment<TransferManagerListCo
 
                     TextView distribution_state = holder.getView(R.id.distribution_state);
                     if (!TextUtils.isEmpty(transferManagerEntity.getStatusName())) {
-                        if ("已结案".equals(transferManagerEntity.getStatusName())) {
+                        if (getString(R.string.closed).equals(transferManagerEntity.getStatusName())) {
                             distribution_state.setTextColor(Color.parseColor("#949BA1"));
-                        } else if ("服务中".equals(transferManagerEntity.getStatusName())) {
+                        } else if (getString(R.string.in_service).equals(transferManagerEntity.getStatusName())) {
                             distribution_state.setTextColor(Color.parseColor("#078CF1"));
                         } else {
                             distribution_state.setTextColor(Color.parseColor("#F23D18"));

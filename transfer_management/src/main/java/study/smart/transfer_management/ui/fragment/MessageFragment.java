@@ -94,23 +94,26 @@ public class MessageFragment extends UIFragment<TransferManagerMessageContract.P
                 holder.setText(R.id.tv_time, messageInfo.getCreatedAtText());
                 TextView tvCount = holder.getView(R.id.tv_count);
                 ImageView ivLogo = holder.getView(R.id.iv_logo);
-                if ("TASK_TRAINING".equals(messageInfo.getType())) {
+                if (ParameterUtils.TASK_TRAINING.equals(messageInfo.getType())) {
                     DisplayImageUtils.displayCircleImage(mActivity, R.drawable.transfer_task_manager, ivLogo);
-                } else if ("TRANSFER_CASE".equals(messageInfo.getType())) {
+                } else if (ParameterUtils.TRANSFER_CASE.equals(messageInfo.getType())) {
                     DisplayImageUtils.displayCircleImage(mActivity, R.drawable.transfer_icon_manager, ivLogo);
                 } else {
                     DisplayImageUtils.displayCircleImage(mActivity, R.drawable.transfer_student_manager, ivLogo);
                 }
                 if (messageInfo.getUnReadCount() > 99) {
+                    tvCount.setVisibility(View.VISIBLE);
                     tvCount.setText("99+");
                     tvCount.setBackgroundResource(R.drawable.bg_message_count_border9);
                 } else if (messageInfo.getUnReadCount() == 0) {
                     tvCount.setVisibility(View.INVISIBLE);
                     tvCount.setBackgroundColor(0);
                 } else if (messageInfo.getUnReadCount() < 10) {
+                    tvCount.setVisibility(View.VISIBLE);
                     tvCount.setText(messageInfo.getUnReadCount() + "");
                     tvCount.setBackgroundResource(R.drawable.bg_message_unread_two);
                 } else {
+                    tvCount.setVisibility(View.VISIBLE);
                     tvCount.setText(messageInfo.getUnReadCount() + "");
                     tvCount.setBackgroundResource(R.drawable.bg_message_unread);
                 }

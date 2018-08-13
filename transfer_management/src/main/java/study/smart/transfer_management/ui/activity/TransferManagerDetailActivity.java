@@ -132,13 +132,13 @@ public class TransferManagerDetailActivity extends BaseActivity<TransferManagerD
     }
 
     public void getTransferDetail() {
-        if ("未分配中心".equals(modelName)) {
+        if (getString(R.string.un_allocate_center).equals(modelName)) {
             presenter.getUnallocated(id);
-        } else if ("已分配中心".equals(modelName)) {
+        } else if (getString(R.string.allocate_center).equals(modelName)) {
             presenter.getAllocated(id);
-        } else if ("被驳回转案".equals(modelName)) {
+        } else if (getString(R.string.turn_down_case).equals(modelName)) {
             presenter.getRejectedCenter(id);
-        } else if ("未分配导师".equals(modelName)) {
+        } else if (getString(R.string.un_allocate_teacher).equals(modelName)) {
             presenter.getUnallocatedCoachl(id);
         } else {
             presenter.getAllocatedCoachl(id);
@@ -152,9 +152,9 @@ public class TransferManagerDetailActivity extends BaseActivity<TransferManagerD
         //如果是分为配中心的模块
         if (privileges != null) {
             llBottom.setVisibility(View.VISIBLE);
-            if ("未分配中心".equals(modelName)) {
+            if (getString(R.string.un_allocate_center).equals(modelName)) {
                 //判断订单状态,未分配中心状态
-                if ("未分配中心".equals(orderState)) {
+                if (getString(R.string.un_allocate_center).equals(orderState)) {
                     llNoDistributio.setVisibility(View.VISIBLE);
                     tvReboot.setVisibility(View.GONE);
                     //判断是否含有结案权限
@@ -195,8 +195,8 @@ public class TransferManagerDetailActivity extends BaseActivity<TransferManagerD
                         tvReboot.setVisibility(View.GONE);
                     }
                 }
-            } else if ("已分配中心".equals(modelName)) {
-                if ("已结案".equals(orderState)) {
+            } else if (getString(R.string.allocate_center).equals(modelName)) {
+                if (getString(R.string.closed).equals(orderState)) {
                     //结案可以看到重启按钮
                     llNoDistributio.setVisibility(View.GONE);
                     if (privileges.isAllocatedReopen()) {
@@ -219,10 +219,10 @@ public class TransferManagerDetailActivity extends BaseActivity<TransferManagerD
                     vLine.setVisibility(View.GONE);
                     //判断是否含有分配权限
                     if (privileges.isAllocatedAssigned()) {
-                        if ("服务中".equals(orderState)) {
-                            tvDistributionCenter.setText("重新分配导师");
+                        if (getString(R.string.in_service).equals(orderState)) {
+                            tvDistributionCenter.setText(R.string.redistribution_teacher);
                         } else {
-                            tvDistributionCenter.setText("分配导师");
+                            tvDistributionCenter.setText(R.string.distribution_teacher);
                         }
                         tvDistributionCenter.setVisibility(View.VISIBLE);
                         tvOver.setTextColor(Color.parseColor("#58646E"));
@@ -234,8 +234,8 @@ public class TransferManagerDetailActivity extends BaseActivity<TransferManagerD
                         tvTurnDown.setTextColor(Color.parseColor("#078CF1"));
                     }
                 }
-            } else if ("被驳回转案".equals(modelName)) {
-                if ("已结案".equals(orderState)) {
+            } else if (getString(R.string.turn_down_case).equals(modelName)) {
+                if (getString(R.string.closed).equals(orderState)) {
                     llNoDistributio.setVisibility(View.GONE);
                     if (privileges.isRejectedReopen()) {
                         tvReboot.setVisibility(View.VISIBLE);
@@ -277,9 +277,9 @@ public class TransferManagerDetailActivity extends BaseActivity<TransferManagerD
                         vLine.setVisibility(View.GONE);
                     }
                 }
-            } else if ("未分配导师".equals(modelName)) {
+            } else if (getString(R.string.un_allocate_teacher).equals(modelName)) {
                 //未分配导师的权限
-                if ("已结案".equals(orderState)) {
+                if (getString(R.string.closed).equals(orderState)) {
                     llNoDistributio.setVisibility(View.GONE);
                     if (privileges.isUnassignedReopen()) {
                         tvReboot.setVisibility(View.VISIBLE);
@@ -305,7 +305,7 @@ public class TransferManagerDetailActivity extends BaseActivity<TransferManagerD
 
                     //判断是否含有分配权限
                     if (privileges.isUnassignedAssigned()) {
-                        tvDistributionCenter.setText("分配导师");
+                        tvDistributionCenter.setText(getString(R.string.distribution_teacher));
                         tvDistributionCenter.setVisibility(View.VISIBLE);
                         tvOver.setTextColor(Color.parseColor("#58646E"));
                         tvTurnDown.setTextColor(Color.parseColor("#58646E"));
@@ -327,7 +327,7 @@ public class TransferManagerDetailActivity extends BaseActivity<TransferManagerD
                 //驳回按钮不显示
                 tvTurnDown.setVisibility(View.GONE);
                 vLine.setVisibility(View.VISIBLE);
-                if ("已结案".equals(orderState)) {
+                if (getString(R.string.closed).equals(orderState)) {
                     llNoDistributio.setVisibility(View.GONE);
                     if (privileges.isAssignedReopen()) {
                         tvReboot.setVisibility(View.VISIBLE);
@@ -346,10 +346,10 @@ public class TransferManagerDetailActivity extends BaseActivity<TransferManagerD
 
                     //判断是否含有分配权限
                     if (privileges.isAssignedAssigned()) {
-                        if ("服务中".equals(orderState)) {
-                            tvDistributionCenter.setText("重新分配导师");
+                        if (getString(R.string.in_service).equals(orderState)) {
+                            tvDistributionCenter.setText(getString(R.string.redistribution_teacher));
                         } else {
-                            tvDistributionCenter.setText("分配导师");
+                            tvDistributionCenter.setText(getString(R.string.distribution_teacher));
                         }
                         tvDistributionCenter.setVisibility(View.VISIBLE);
                     } else {
@@ -380,7 +380,7 @@ public class TransferManagerDetailActivity extends BaseActivity<TransferManagerD
             //结案
             if (overDialog == null) {
                 overDialog = DialogCreator.createAppBasicDialog(this, "", "确定结案吗？",
-                    "确定", "取消", new View.OnClickListener() {
+                    getString(R.string.sure), getString(R.string.cancle), new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             int i1 = v.getId();
@@ -388,13 +388,13 @@ public class TransferManagerDetailActivity extends BaseActivity<TransferManagerD
                                 if (loadingDialog != null && !loadingDialog.isShowing()) {
                                     loadingDialog.show();
                                 }
-                                if ("未分配中心".equals(modelName)) {
+                                if (getString(R.string.un_allocate_center).equals(modelName)) {
                                     presenter.closeTransferCase(id);
-                                } else if ("已分配中心".equals(modelName)) {
+                                } else if (getString(R.string.allocate_center).equals(modelName)) {
                                     presenter.closeTransferAllocatedCenter(id);
-                                } else if ("被驳回转案".equals(modelName)) {
+                                } else if (getString(R.string.turn_down_case).equals(modelName)) {
                                     presenter.closeRejectCenter(id);
-                                } else if ("未分配导师".equals(modelName)) {
+                                } else if (getString(R.string.un_allocate_teacher).equals(modelName)) {
                                     presenter.closeUnallocatedCoac(id);
                                 } else {
                                     presenter.closeAllocatedCoac(id);
@@ -426,9 +426,9 @@ public class TransferManagerDetailActivity extends BaseActivity<TransferManagerD
                         if (loadingDialog != null && !loadingDialog.isShowing()) {
                             loadingDialog.show();
                         }
-                        if ("未分配中心".equals(modelName)) {
+                        if (getString(R.string.un_allocate_center).equals(modelName)) {
                             presenter.rejectTransferCase(id, word);
-                        } else if ("被驳回转案".equals(modelName)) {
+                        } else if (getString(R.string.turn_down_case).equals(modelName)) {
                             presenter.rejectRejectCenter(id, word);
                         } else {
                             presenter.rejectUnallocatedCoach(id, word);
@@ -449,7 +449,7 @@ public class TransferManagerDetailActivity extends BaseActivity<TransferManagerD
         } else if (i == R.id.tv_reboot) {
             if (rebootDialog == null) {
                 rebootDialog = DialogCreator.createAppBasicDialog(this, "", "确定重启吗？",
-                    "确定", "取消", new View.OnClickListener() {
+                    getString(R.string.sure), getString(R.string.cancle), new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             int i1 = v.getId();
@@ -458,13 +458,13 @@ public class TransferManagerDetailActivity extends BaseActivity<TransferManagerD
                                 if (loadingDialog != null && !loadingDialog.isShowing()) {
                                     loadingDialog.show();
                                 }
-                                if ("未分配中心".equals(modelName)) {
+                                if (getString(R.string.un_allocate_center).equals(modelName)) {
                                     presenter.reopenTransferCase(id);
-                                } else if ("已分配中心".equals(modelName)) {
+                                } else if (getString(R.string.allocate_center).equals(modelName)) {
                                     presenter.reopenAllocatedCenter(id);
-                                } else if ("被驳回转案".equals(modelName)) {
+                                } else if (getString(R.string.turn_down_case).equals(modelName)) {
                                     presenter.reopenRejectCenter(id);
-                                } else if ("未分配导师".equals(modelName)) {
+                                } else if (getString(R.string.un_allocate_teacher).equals(modelName)) {
                                     presenter.reopenUnallocatedCoac(id);
                                 } else {
                                     presenter.reopenAllocatedCoac(id);
@@ -484,7 +484,7 @@ public class TransferManagerDetailActivity extends BaseActivity<TransferManagerD
         } else if (i == R.id.topdefault_leftbutton) {
             finish();
         } else {
-            if ("未分配中心".equals(modelName) || "被驳回转案".equals(modelName)) {
+            if (getString(R.string.un_allocate_center).equals(modelName) || getString(R.string.turn_down_case).equals(modelName)) {
                 if (unallocatedOptionPicker != null) {
                     unallocatedOptionPicker.show();
                 }
@@ -497,16 +497,16 @@ public class TransferManagerDetailActivity extends BaseActivity<TransferManagerD
     @Override
     public void showAllocatedTransferDetail(TransferDetailentity transferDetailentity) {
         if (transferDetailentity != null) {
-            if ("已分配导师".equals(modelName) || ("已分配中心".equals(modelName) && "服务中".equals(orderState))) {
+            if (getString(R.string.allocate_teacher).equals(modelName) || (getString(R.string.allocate_center).equals(modelName) && "服务中".equals(orderState))) {
                 llService.setVisibility(View.VISIBLE);
                 ((TextView) findViewById(R.id.tv_center_name)).setText(transferDetailentity.getCenterName());
-                ((TextView) findViewById(R.id.tv_hard_teacher)).setText(transferDetailentity.getHardTeacher());
-                ((TextView) findViewById(R.id.tv_soft_teacher)).setText(transferDetailentity.getSoftTeacher());
+                ((TextView) findViewById(R.id.tv_hard_teacher)).setText(transferDetailentity.getHardTeacherName());
+                ((TextView) findViewById(R.id.tv_soft_teacher)).setText(transferDetailentity.getSoftTeacherName());
             } else {
                 llService.setVisibility(View.GONE);
             }
 
-            if ("被驳回转案".equals(modelName)) {
+            if (getString(R.string.turn_down_case).equals(modelName)) {
                 findViewById(R.id.ll_reject).setVisibility(View.VISIBLE);
                 ((TextView) findViewById(R.id.tv_reject_center)).setText(transferDetailentity.getCenterName());
                 final TextView tvState = findViewById(R.id.tv_state);
@@ -653,7 +653,7 @@ public class TransferManagerDetailActivity extends BaseActivity<TransferManagerD
                 if (loadingDialog != null && !loadingDialog.isShowing()) {
                     loadingDialog.show();
                 }
-                if ("服务中".equals(orderState)) {
+                if (getString(R.string.in_service).equals(orderState)) {
                     presenter.assigunTransferCaseTeacherAgain(id, hardTeachers.get(options1).getId(), softTeachers.get(option2).getId());
                 } else {
                     presenter.assigunTransferCaseTeacher(id, hardTeachers.get(options1).getId(), softTeachers.get(option2).getId());
@@ -666,16 +666,16 @@ public class TransferManagerDetailActivity extends BaseActivity<TransferManagerD
                     TextView tvSure = v.findViewById(R.id.btnSubmit);
                     TextView tvCancel = v.findViewById(R.id.btnCancel);
                     TextView tvTitle = v.findViewById(R.id.tvTitle);
-                    tvCancel.setText("取消");
+                    tvCancel.setText(R.string.cancle);
                     tvCancel.setTextColor(getResources().getColor(R.color.app_text_color));
-                    tvSure.setText("确定");
+                    tvSure.setText(R.string.sure);
                     tvSure.setTextColor(getResources().getColor(R.color.app_main_color));
                     tvTitle.setTextSize(20);
                     tvTitle.setTextColor(getResources().getColor(R.color.app_text_color2));
-                    if ("服务中".equals(orderState)) {
-                        tvTitle.setText("重新分配导师");
+                    if (getString(R.string.in_service).equals(orderState)) {
+                        tvTitle.setText(getString(R.string.redistribution_teacher));
                     } else {
-                        tvTitle.setText("分配导师");
+                        tvTitle.setText(getString(R.string.distribution_teacher));
                     }
                     tvCancel.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -729,9 +729,9 @@ public class TransferManagerDetailActivity extends BaseActivity<TransferManagerD
                         TextView tvSure = v.findViewById(R.id.btnSubmit);
                         TextView tvCancel = v.findViewById(R.id.btnCancel);
                         TextView tvTitle = v.findViewById(R.id.tvTitle);
-                        tvCancel.setText("取消");
+                        tvCancel.setText(R.string.cancle);
                         tvCancel.setTextColor(getResources().getColor(R.color.app_text_color));
-                        tvSure.setText("确定");
+                        tvSure.setText(R.string.sure);
                         tvSure.setTextColor(getResources().getColor(R.color.app_main_color));
                         tvTitle.setTextSize(20);
                         tvTitle.setTextColor(getResources().getColor(R.color.app_text_color2));
@@ -763,7 +763,7 @@ public class TransferManagerDetailActivity extends BaseActivity<TransferManagerD
             unallocatedOptionPicker.findViewById(R.id.rv_topbar).setBackgroundColor(Color.parseColor("#ffffff"));
             unallocatedOptionPicker.setPicker(centerListName);//添加数据
         } else {
-            ToastUtils.shortToast("暂时没有可选的分配中心");
+            ToastUtils.shortToast(getString(R.string.have_no_centetr));
         }
     }
 
@@ -795,7 +795,7 @@ public class TransferManagerDetailActivity extends BaseActivity<TransferManagerD
             hardTeachers = null;
         }
         if (loadingDialog != null) {
-            if(loadingDialog.isShowing()) {
+            if (loadingDialog.isShowing()) {
                 loadingDialog.dismiss();
             }
             loadingDialog = null;

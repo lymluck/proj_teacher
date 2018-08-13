@@ -44,6 +44,25 @@ public class QaDetailInfo implements Serializable {
 
     private boolean marked;
 
+    private boolean canRequest;
+
+    private boolean showTopInfoPanel;
+
+    public boolean isCanRequest() {
+        return canRequest;
+    }
+
+    public void setCanRequest(boolean canRequest) {
+        this.canRequest = canRequest;
+    }
+
+    public boolean isShowTopInfoPanel() {
+        return showTopInfoPanel;
+    }
+
+    public void setShowTopInfoPanel(boolean showTopInfoPanel) {
+        this.showTopInfoPanel = showTopInfoPanel;
+    }
 
     public boolean isMarked() {
         return marked;

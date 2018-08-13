@@ -34,8 +34,8 @@ public class TransferDetailentity implements Serializable {
     private String hardTeacherId;
     private String softTeacherId;
     private String centerName;
-    private String hardTeacher;
-    private String softTeacher;
+    private String hardTeacherName;
+    private String softTeacherName;
     private String rejector;
     private String rejectedTime;
     private String rejectReason;
@@ -51,6 +51,22 @@ public class TransferDetailentity implements Serializable {
     private List<AwarderExp> awarderExp;
     private List<PersonalSkills> personalSkills;
     private Meta meta;
+
+    public String getHardTeacherName() {
+        return hardTeacherName;
+    }
+
+    public void setHardTeacherName(String hardTeacherName) {
+        this.hardTeacherName = hardTeacherName;
+    }
+
+    public String getSoftTeacherName() {
+        return softTeacherName;
+    }
+
+    public void setSoftTeacherName(String softTeacherName) {
+        this.softTeacherName = softTeacherName;
+    }
 
     public String getRejector() {
         return rejector;
@@ -74,22 +90,6 @@ public class TransferDetailentity implements Serializable {
 
     public void setRejectReason(String rejectReason) {
         this.rejectReason = rejectReason;
-    }
-
-    public String getHardTeacher() {
-        return hardTeacher;
-    }
-
-    public void setHardTeacher(String hardTeacher) {
-        this.hardTeacher = hardTeacher;
-    }
-
-    public String getSoftTeacher() {
-        return softTeacher;
-    }
-
-    public void setSoftTeacher(String softTeacher) {
-        this.softTeacher = softTeacher;
     }
 
     public String getUserId() {

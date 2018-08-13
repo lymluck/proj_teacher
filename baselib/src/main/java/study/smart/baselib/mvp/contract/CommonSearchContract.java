@@ -34,6 +34,8 @@ public interface CommonSearchContract {
 
         void getTalkListSuccess(List<WorkingSearchInfo> workingSearchInfos, int request_state);
 
+        void getMessageDetailSuccess(TransferManagerEntity transferManagerEntity);
+
         void showEmptyView(android.view.View view);
     }
 
@@ -52,6 +54,8 @@ public interface CommonSearchContract {
         void getReportLit(String keyword, int page, int request_state);
 
         void getTalkList(String keyword, int page, int request_state);
+
+        void getMessageDetail(MessageDetailItemInfo messageDetailItemInfo);
 
         void getUnCompeleteStudent(String keyword, int page, int request_state);
 

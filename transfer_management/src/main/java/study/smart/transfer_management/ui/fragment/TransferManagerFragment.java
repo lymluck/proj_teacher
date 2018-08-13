@@ -85,23 +85,23 @@ public class TransferManagerFragment extends UIFragment {
             if (privileges.isTransferCase()) {
                 //判断是否有未分配中心的权限
                 if (privileges.isUnallocated()) {
-                    titles.add("未分配中心");
+                    titles.add(getString(R.string.un_allocate_center));
                 }
                 //判断是否含有已分配中心
                 if (privileges.isAllocated()) {
-                    titles.add("已分配中心");
+                    titles.add(getString(R.string.allocate_center));
                 }
                 //判断是否含有被驳回转案
                 if (privileges.isRejected()) {
-                    titles.add("被驳回转案");
+                    titles.add(getString(R.string.turn_down_case));
                 }
                 //判断是否含有未分配导师
                 if (privileges.isUnassigned()) {
-                    titles.add("未分配导师");
+                    titles.add(getString(R.string.un_allocate_teacher));
                 }
                 //判断是否含有分配导师
                 if (privileges.isAssigned()) {
-                    titles.add("已分配导师");
+                    titles.add(getString(R.string.allocate_teacher));
                 }
             }
         }

@@ -3,7 +3,7 @@ package study.smart.baselib.entity;
 /**
  * @author yqy
  * @date on 2018/6/27
- * @describe TODO
+ * @describe TODOT
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */

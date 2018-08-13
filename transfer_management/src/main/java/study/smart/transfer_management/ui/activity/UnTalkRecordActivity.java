@@ -60,7 +60,7 @@ public class UnTalkRecordActivity extends BaseActivity<UnTalkRecordContract.Pres
 
     @Override
     public void initView() {
-        setTitle("待沟通记录");
+        setTitle(getString(R.string.upcompelete_record));
         setTopLineVisibility(View.VISIBLE);
         srltTalkDetail = rootView.findViewById(R.id.srlt_talk_detail);
         srltTalkDetail.setColorSchemeColors(getResources().getColor(R.color.app_main_color));

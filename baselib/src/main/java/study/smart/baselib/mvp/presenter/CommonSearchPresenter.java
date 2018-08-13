@@ -200,6 +200,26 @@ public class CommonSearchPresenter extends BasePresenterImpl<CommonSearchContrac
     }
 
     @Override
+    public void getMessageDetail(MessageDetailItemInfo messageDetailItemInfo) {
+        commonSearchModel.getMessagesDetail(messageDetailItemInfo.getData().getMessageId(), new ObserverListener<TransferManagerEntity>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                addDisposable(disposable);
+            }
+
+            @Override
+            public void onNext(TransferManagerEntity transferManagerEntity) {
+                view.getMessageDetailSuccess(transferManagerEntity);
+            }
+
+            @Override
+            public void onError(String msg) {
+                view.showTip(msg);
+            }
+        });
+    }
+
+    @Override
     public void getUnCompeleteStudent(String keyword, int page, final int request_state) {
         commonSearchModel.getUnCompeleteStudentList(keyword, page, new ObserverListener<DataListInfo>() {
             @Override

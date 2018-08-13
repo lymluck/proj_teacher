@@ -11,7 +11,6 @@
         android:id="@+id/rl_qa_tearcher_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_qa_ask_press"
         android:clickable="true"
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
@@ -58,10 +57,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="16dp"
-        android:paddingLeft="64dp"
-        android:paddingRight="16dp"
-        android:paddingTop="8dp">
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp">
 
         <TextView
             android:id="@+id/tv_answer"
@@ -103,6 +102,15 @@
                 android:textSize="16sp" />
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_compelete_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="9dp"
+            android:text="点击完善信息"
+            android:textColor="@color/app_main_color"
+            android:textSize="14sp" />
     </LinearLayout>
 
     <View
@@ -166,10 +174,11 @@
             android:textColor="#58646E"
             android:textSize="14sp" />
     </LinearLayout>
+
     <View
         android:id="@+id/view_last"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:visibility="gone"
-        android:background="@color/bg_home_search"/>
+        android:background="@color/bg_home_search"
+        android:visibility="gone" />
 </LinearLayout>

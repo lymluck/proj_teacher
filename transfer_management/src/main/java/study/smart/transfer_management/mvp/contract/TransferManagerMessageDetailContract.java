@@ -4,6 +4,8 @@ import android.content.Context;
 
 import java.util.List;
 
+import study.smart.baselib.entity.TransferManagerEntity;
+import study.smart.baselib.manager.StudentInfoManager;
 import study.smart.baselib.mvp.base.BasePresenter;
 import study.smart.baselib.mvp.base.BaseView;
 import study.smart.baselib.entity.MessageDetailItemInfo;
@@ -20,7 +22,7 @@ public interface TransferManagerMessageDetailContract {
 
         void getMessageDetailSuccess(List<MessageDetailItemInfo> messageDetailItemInfos, int request_state);
 
-        void getMessageDetailSuccess(MessageDetailItemInfo messageDetailItemInfos);
+        void getMessageDetailSuccess(MessageDetailItemInfo messageDetailItemInfo,TransferManagerEntity transferManagerEntity);
 
         void showEmptyView(android.view.View view);
 
@@ -29,7 +31,7 @@ public interface TransferManagerMessageDetailContract {
     interface Presenter extends BasePresenter {
         void getMessageDetailList(String page, String type, int request_state);
 
-        void getMessageDetail(MessageDetailItemInfo messageDetailItemInfos);
+        void getMessageDetail(MessageDetailItemInfo messageDetailItemInfo);
 
         void showLoading(Context context, android.view.View emptyView);
 

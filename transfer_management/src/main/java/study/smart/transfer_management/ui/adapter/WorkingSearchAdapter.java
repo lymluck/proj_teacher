@@ -148,10 +148,10 @@ public class WorkingSearchAdapter extends SectionedRecyclerViewAdapter<WorkingSe
                 holder.tvcenterName.setText(info.getWorkingSearchInfos().get(position).getCenterName() + "-" + info.getWorkingSearchInfos().get(position).getUserName());
                 holder.taskTime.setText(TimeUtil.getStrTime(info.getWorkingSearchInfos().get(position).getEndTime(), "MM-dd") + "截止");
 
-                if ("ALERT".equals(info.getWorkingSearchInfos().get(position).getStatus())) {
+                if (ParameterUtils.ALERT.equals(info.getWorkingSearchInfos().get(position).getStatus())) {
                     //临期
                     holder.vBackgroup.setBackgroundColor(Color.parseColor("#FAAD14"));
-                } else if ("EXPIRED".equals(info.getWorkingSearchInfos().get(position).getStatus())) {
+                } else if (ParameterUtils.EXPIRED.equals(info.getWorkingSearchInfos().get(position).getStatus())) {
                     //过期
                     holder.vBackgroup.setBackgroundColor(Color.parseColor("#7f000000"));
                 } else if ("PENDING".equals(info.getWorkingSearchInfos().get(position).getStatus())) {
