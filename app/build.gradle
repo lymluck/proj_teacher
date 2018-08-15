@@ -55,6 +55,7 @@ dependencies {
     compile rootProject.ext.dependencies.eventbus
     compile rootProject.ext.dependencies.ali_oss
     compile rootProject.ext.dependencies.flowlayout
+    compile rootProject.ext.dependencies.cardview
     compile(name: 'HMS-SDK-2.4.0.300', ext: 'aar')
     compile files('libs/MiPush_SDK_Client_3_6_1.jar')
     compile project(':xxdAnnotation')

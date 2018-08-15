@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><!-- 全局通栏按钮背景样式 -->
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 填充颜色 -->
+    <solid android:color="@color/white" />
+    <corners android:radius="6dp" />
+
+    <padding
+        android:left="10dp"
+        android:right="6dp" />
+</shape>

@@ -2,29 +2,32 @@ package com.smartstudy.counselor_t.ui.fragment;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.QuestionInfo;
-import com.smartstudy.counselor_t.mvp.contract.MyQaFragmentContract;
-import com.smartstudy.counselor_t.mvp.presenter.MyQaFragmentPresenter;
+import com.smartstudy.counselor_t.entity.RankInfo;
+import com.smartstudy.counselor_t.mvp.contract.MyFocusContract;
+import com.smartstudy.counselor_t.mvp.presenter.MyFocusQuestionPresenter;
 import com.smartstudy.counselor_t.ui.activity.DistributionActivity;
 import com.smartstudy.counselor_t.ui.activity.QaDetailActivity;
+import com.smartstudy.counselor_t.ui.activity.TransferQaDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import study.smart.baselib.entity.TeacherRankInfo;
 import study.smart.baselib.ui.adapter.CommonAdapter;
 import study.smart.baselib.ui.adapter.base.ViewHolder;
 import study.smart.baselib.ui.adapter.wrapper.EmptyWrapper;
-import study.smart.baselib.ui.adapter.wrapper.HeaderAndFooterWrapper;
 import study.smart.baselib.ui.adapter.wrapper.LoadMoreWrapper;
 import study.smart.baselib.ui.base.UIFragment;
 import study.smart.baselib.ui.widget.HorizontalDividerItemDecoration;
@@ -36,78 +39,39 @@ import study.smart.baselib.utils.ToastUtils;
 
 /**
  * @author yqy
- * @date on 2018/3/20
+ * @date on 2018/8/14
  * @describe TODO
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */
-public class MyQaFragment extends UIFragment<MyQaFragmentContract.Presenter> implements MyQaFragmentContract.View {
+public class DistributionFragment extends UIFragment<MyFocusContract.Presenter> implements MyFocusContract.View {
 
-    private LoadMoreRecyclerView rclv_qa;
-    private SwipeRefreshLayout swipeRefreshLayout;
-    private CommonAdapter<QuestionInfo> mAdapter;
-    private LoadMoreWrapper<QuestionInfo> loadMoreWrapper;
+    private LoadMoreRecyclerView lmrvRank;
     private EmptyWrapper<QuestionInfo> emptyWrapper;
     private NoScrollLinearLayoutManager mLayoutManager;
     private View emptyView;
-
-    private List<QuestionInfo> questionInfoList;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private int mPage = 1;
-    private MyAllQaFragment myAllQaFragment;
-    private View headView;
-    private HeaderAndFooterWrapper mHeader;
-    private FrameLayout flytTransfer;
+    private List<QuestionInfo> teacherRankInfos;
+    private CommonAdapter<QuestionInfo> mAdapter;
+    private LoadMoreWrapper<QuestionInfo> loadMoreWrapper;
+    private List<QuestionInfo> questionInfoList;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        myAllQaFragment = (MyAllQaFragment) getParentFragment();
-        isPrepared = true;
-    }
-
-    @Override
-    protected View getLayoutView() {
-        return mActivity.getLayoutInflater().inflate(
-            R.layout.fragment_qa, null);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public MyQaFragmentContract.Presenter initPresenter() {
-        return new MyQaFragmentPresenter(this);
-    }
-
-
-    @Override
-    public void onDetach() {
-        if (presenter != null) {
-            presenter = null;
-        }
-        if (rclv_qa != null) {
-            rclv_qa.removeAllViews();
-            rclv_qa = null;
-        }
-        if (mAdapter != null) {
-            mAdapter.destroy();
-            mAdapter = null;
-        }
-        if (questionInfoList != null) {
-            questionInfoList.clear();
-            questionInfoList = null;
-        }
-        super.onDetach();
-    }
 
     @Override
     public void onFirstUserVisible() {
         super.onFirstUserVisible();
-        emptyView = mActivity.getLayoutInflater().inflate(R.layout.layout_empty, rclv_qa, false);
+        emptyView = mActivity.getLayoutInflater().inflate(R.layout.layout_empty, lmrvRank,
+            false);
         presenter.showLoading(mActivity, emptyView);
-        getMyQa(ParameterUtils.PULL_DOWN);
+        presenter.getMyFocusQuestions(mPage, ParameterUtils.PULL_DOWN);
+    }
+
+
+    public static DistributionFragment getInstance(Bundle bundle) {
+        DistributionFragment fragment = new DistributionFragment();
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
@@ -126,35 +90,34 @@ public class MyQaFragment extends UIFragment<MyQaFragmentContract.Presenter> imp
         super.onFirstUserInvisible();
     }
 
+
+    @Override
+    protected View getLayoutView() {
+        return mActivity.getLayoutInflater().inflate(
+            R.layout.fragment_qa, null);
+    }
+
     @Override
     protected void initView(View rootView) {
-        rclv_qa = (LoadMoreRecyclerView) rootView.findViewById(R.id.rclv_qa);
+        lmrvRank = (LoadMoreRecyclerView) rootView.findViewById(R.id.rclv_qa);
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.srlt_qa);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.app_main_color));
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 mPage = 1;
-                getMyQa(ParameterUtils.PULL_DOWN);
+                getQa(ParameterUtils.PULL_DOWN);
             }
         });
-        rclv_qa.setHasFixedSize(true);
-        headView = mActivity.getLayoutInflater().inflate(R.layout.layout_transfer_head, null);
-        flytTransfer = headView.findViewById(R.id.flyt_transfer);
+        lmrvRank.setHasFixedSize(true);
         mLayoutManager = new NoScrollLinearLayoutManager(mActivity);
         mLayoutManager.setScrollEnabled(true);
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        rclv_qa.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity())
+        lmrvRank.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity())
             .size(DensityUtils.dip2px(10f)).colorResId(R.color.bg_recent_user).build());
-        rclv_qa.setLayoutManager(mLayoutManager);
+        lmrvRank.setLayoutManager(mLayoutManager);
         initAdapter();
         initEvent();
-
-    }
-
-    @Override
-    protected void initEvent() {
-        flytTransfer.setOnClickListener(this);
     }
 
     private void initAdapter() {
@@ -169,27 +132,22 @@ public class MyQaFragment extends UIFragment<MyQaFragmentContract.Presenter> imp
                 holder.setText(R.id.tv_qa_name, askName);
                 holder.setText(R.id.tv_qa, questionInfo.getContent());
                 TextView answerCounnt = holder.getView(R.id.tv_answer_count);
-                if (questionInfo.getAsker().isCanContact()) {
-                    holder.getView(R.id.iv_phone).setVisibility(View.VISIBLE);
+                if (questionInfo.getAnswerCount() == 0) {
+                    answerCounnt.setText("暂无人回答");
+                    answerCounnt.setTextColor(Color.parseColor("#078CF1"));
+                    holder.getView(R.id.v_cricle).setVisibility(View.GONE);
                 } else {
-                    holder.getView(R.id.iv_phone).setVisibility(View.GONE);
-                }
-
-                if (questionInfo.getSubQuestionCount() != 0) {
-                    answerCounnt.setText("对你有 " + questionInfo.getSubQuestionCount() + " 追问");
-                    answerCounnt.setTextColor(Color.parseColor("#F6611D"));
-                    holder.getView(R.id.v_cricle).setVisibility(View.VISIBLE);
-                } else {
-                    if (!questionInfo.isHasUnreadAnswersOfMe()) {
-                        answerCounnt.setText("已看");
-                        answerCounnt.setTextColor(Color.parseColor("#949BA1"));
-                        holder.getView(R.id.v_cricle).setVisibility(View.GONE);
+                    if (questionInfo.getSubQuestionCount() != 0) {
+                        answerCounnt.setText("对你有 " + questionInfo.getSubQuestionCount() + " 追问");
+                        answerCounnt.setTextColor(Color.parseColor("#F6611D"));
+                        holder.getView(R.id.v_cricle).setVisibility(View.VISIBLE);
                     } else {
-                        answerCounnt.setText(" 未看");
-                        answerCounnt.setTextColor(Color.parseColor("#078CF1"));
+                        answerCounnt.setText(questionInfo.getAnswerCount() + " 回答");
+                        answerCounnt.setTextColor(Color.parseColor("#949BA1"));
                         holder.getView(R.id.v_cricle).setVisibility(View.GONE);
                     }
                 }
+
 
                 if (TextUtils.isEmpty(questionInfo.getUserLocation())) {
                     holder.getView(R.id.tv_location).setVisibility(View.GONE);
@@ -208,31 +166,24 @@ public class MyQaFragment extends UIFragment<MyQaFragmentContract.Presenter> imp
             }
 
         };
-
-        mHeader = new HeaderAndFooterWrapper(mAdapter);
-        mHeader.addHeaderView(headView);
-        emptyWrapper = new EmptyWrapper<>(mHeader);
+        emptyWrapper = new EmptyWrapper<>(mAdapter);
         loadMoreWrapper = new LoadMoreWrapper<>(emptyWrapper);
-        rclv_qa.setAdapter(loadMoreWrapper);
-        rclv_qa.SetOnLoadMoreLister(new LoadMoreRecyclerView.OnLoadMoreListener() {
+        lmrvRank.setAdapter(loadMoreWrapper);
+        lmrvRank.SetOnLoadMoreLister(new LoadMoreRecyclerView.OnLoadMoreListener() {
             @Override
             public void OnLoad() {
                 if (swipeRefreshLayout.isRefreshing()) {
-                    rclv_qa.loadComplete(true);
+                    lmrvRank.loadComplete(true);
                     return;
                 }
                 mPage = mPage + 1;
-                getMyQa(ParameterUtils.PULL_UP);
+                getQa(ParameterUtils.PULL_UP);
             }
         });
         mAdapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                QuestionInfo info = questionInfoList.get(position);
-                Intent toMoreDetails = new Intent(mActivity, QaDetailActivity.class);
-                toMoreDetails.putExtra("id", info.getId() + "");
-                startActivity(toMoreDetails);
-                info = null;
+                mActivity.startActivity(new Intent(mActivity, TransferQaDetailActivity.class));
             }
 
             @Override
@@ -242,45 +193,28 @@ public class MyQaFragment extends UIFragment<MyQaFragmentContract.Presenter> imp
         });
     }
 
-    private void getMyQa(int pullAction) {
-        presenter.getMyQuestions(mPage, pullAction);
+    @Override
+    protected void initEvent() {
+
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.topdefault_leftbutton:
-                mActivity.finish();
-                break;
-            case R.id.flyt_transfer:
-                startActivity(new Intent(mActivity, DistributionActivity.class));
-                break;
-            default:
-                break;
-        }
+    public MyFocusContract.Presenter initPresenter() {
+        return new MyFocusQuestionPresenter(this);
     }
 
     @Override
-    public void getQuestionsSuccess(int subCount, List<QuestionInfo> data, int request_state) {
-        if (myAllQaFragment != null) {
-            TextView tvSubCount = myAllQaFragment.getSubCountTextView();
-            if (subCount == 0) {
-                tvSubCount.setVisibility(View.GONE);
-            } else {
-                tvSubCount.setVisibility(View.VISIBLE);
-                if (subCount < 100) {
-                    if (subCount < 10) {
-                        tvSubCount.setBackgroundResource(R.drawable.bg_circle_answer_count);
-                    } else {
-                        tvSubCount.setBackgroundResource(R.drawable.bg_count_answer);
-                    }
-                    tvSubCount.setText(subCount + "");
-                } else {
-                    tvSubCount.setBackgroundResource(R.drawable.bg_count_answer);
-                    tvSubCount.setText("99+");
-                }
-            }
+    public void showTip(String message) {
+        if (presenter != null) {
+            swipeRefreshLayout.setRefreshing(false);
+            lmrvRank.loadComplete(true);
+            ToastUtils.shortToast(message);
         }
+    }
+
+
+    @Override
+    public void getMyFocusQuestionsSuccess(List<QuestionInfo> data, int request_state) {
         if (presenter != null) {
             presenter.setEmptyView(mActivity, emptyView);
             mLayoutManager.setScrollEnabled(true);
@@ -288,7 +222,7 @@ public class MyQaFragment extends UIFragment<MyQaFragmentContract.Presenter> imp
             if (request_state == ParameterUtils.PULL_DOWN) {
                 //下拉刷新
                 if (len <= 0) {
-                    rclv_qa.loadComplete(true);
+                    lmrvRank.loadComplete(true);
                     mLayoutManager.setScrollEnabled(false);
                 }
                 questionInfoList.clear();
@@ -302,9 +236,9 @@ public class MyQaFragment extends UIFragment<MyQaFragmentContract.Presenter> imp
                     if (mPage > 1) {
                         mPage = mPage - 1;
                     }
-                    rclv_qa.loadComplete(false);
+                    lmrvRank.loadComplete(false);
                 } else {
-                    rclv_qa.loadComplete(true);
+                    lmrvRank.loadComplete(true);
                     questionInfoList.addAll(data);
                     loadMoreWrapper.notifyDataSetChanged();
                 }
@@ -313,20 +247,40 @@ public class MyQaFragment extends UIFragment<MyQaFragmentContract.Presenter> imp
         data = null;
     }
 
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (lmrvRank != null) {
+            lmrvRank.removeAllViews();
+            lmrvRank = null;
+        }
+        if (mLayoutManager != null) {
+            mLayoutManager.removeAllViews();
+            mLayoutManager = null;
+        }
+
+        if (mAdapter != null) {
+            mAdapter.destroy();
+            mAdapter = null;
+        }
+
+        if (teacherRankInfos != null) {
+            teacherRankInfos.clear();
+            teacherRankInfos = null;
+        }
+    }
+
+
     @Override
     public void showEmptyView(View view) {
         emptyWrapper.setEmptyView(view);
         loadMoreWrapper.notifyDataSetChanged();
-        rclv_qa.loadComplete(true);
+        lmrvRank.loadComplete(true);
         mLayoutManager.setScrollEnabled(false);
     }
 
-    @Override
-    public void showTip(String message) {
-        if (presenter != null) {
-            swipeRefreshLayout.setRefreshing(false);
-            rclv_qa.loadComplete(true);
-            ToastUtils.shortToast(message);
-        }
+    private void getQa(int pullAction) {
+        presenter.getMyFocusQuestions(mPage, pullAction);
     }
 }
