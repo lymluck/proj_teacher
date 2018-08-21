@@ -29,10 +29,14 @@ import java.util.List;
 
 import study.smart.baselib.R;
 import study.smart.baselib.entity.ChatUserInfo;
+import study.smart.baselib.entity.CityTeacherInfo;
 import study.smart.baselib.entity.MessageDetailItemInfo;
 import study.smart.baselib.entity.MyStudentInfo;
+import study.smart.baselib.entity.Teacher;
+import study.smart.baselib.entity.TeacherInfo;
 import study.smart.baselib.entity.TransferManagerEntity;
 import study.smart.baselib.entity.WorkingSearchInfo;
+import study.smart.baselib.listener.OnSendMsgDialogClickListener;
 import study.smart.baselib.mvp.contract.CommonSearchContract;
 import study.smart.baselib.mvp.presenter.CommonSearchPresenter;
 import study.smart.baselib.ui.adapter.CommonAdapter;
@@ -45,11 +49,14 @@ import study.smart.baselib.ui.widget.EditTextWithClear;
 import study.smart.baselib.ui.widget.HorizontalDividerItemDecoration;
 import study.smart.baselib.ui.widget.LoadMoreRecyclerView;
 import study.smart.baselib.ui.widget.NoScrollLinearLayoutManager;
+import study.smart.baselib.ui.widget.dialog.AppBasicDialog;
+import study.smart.baselib.ui.widget.dialog.DialogCreator;
 import study.smart.baselib.utils.DensityUtils;
 import study.smart.baselib.utils.DisplayImageUtils;
 import study.smart.baselib.utils.KeyBoardUtils;
 import study.smart.baselib.utils.ParameterUtils;
 import study.smart.baselib.utils.TimeUtil;
+import study.smart.baselib.utils.ToastUtils;
 import study.smart.baselib.utils.Utils;
 import study.smart.transfer_management.entity.WorkingSearchListInfo;
 
@@ -65,19 +72,25 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
     private CommonAdapter<TransferManagerEntity> mTransferAdapter;
     private CommonAdapter<MessageDetailItemInfo> msgDetailAdapter;
     private CommonAdapter<MyStudentInfo> allStudentAdapter;
+    private CommonAdapter<Teacher> teacherAdapter;
     private CommonAdapter<WorkingSearchInfo> workingSearchInfoAdapter;
     private List<TransferManagerEntity> transferManagerEntities;
     private List<MessageDetailItemInfo> messageDetailItemInfos;
     private List<WorkingSearchInfo> workingSearchListInfos;
     private List<MyStudentInfo> myStudentInfos;
+    private List<Teacher> teacherInfos;
     private WeakHandler mHandler;
     private int mPage = 1;
     private List<ChatUserInfo> chatUserInfoList;
     private String keyword;
     private String flag_value;
     private int typeName;
+    private AppBasicDialog teacherDialog;
     private static int spaceTime = 300;//时间间隔
     private static long lastSearchTime = 0;//上次搜索的时间
+    private String askName;
+    private String question;
+    private String questionId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +136,9 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
         } else if (ParameterUtils.STUDENT_TRANSFER_MANAGER.equals(flag_value) || ParameterUtils.COMPELETE_STUDENT.equals(flag_value)) {
             rclvSearch.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
                 .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.horizontal_line_color).build());
+        } else if (ParameterUtils.SEARCH_TEACHER.equals(flag_value)) {
+            rclvSearch.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
+                .size(DensityUtils.dip2px(0.5f)).margin(DensityUtils.dip2px(16f), DensityUtils.dip2px(0f)).colorResId(R.color.horizontal_line_color).build());
         } else {
             rclvSearch.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
                 .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.horizontal_line_color).build());
@@ -149,6 +165,11 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
         llytTopSearch = (LinearLayout) findViewById(R.id.llyt_top_search);
         Intent data = getIntent();
         flag_value = data.getStringExtra(ParameterUtils.TRANSITION_FLAG);
+        if (ParameterUtils.SEARCH_TEACHER.equals(flag_value)) {
+            askName = getIntent().getStringExtra("askName");
+            question = getIntent().getStringExtra("question");
+            questionId = getIntent().getStringExtra("questionId");
+        }
         keyword = data.getStringExtra("keyword");
         typeName = data.getIntExtra("typeName", 0);
         rclvSearch = (LoadMoreRecyclerView) findViewById(R.id.rclv_search);
@@ -177,6 +198,8 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
             }
         });
         searchView.getMyEditText().setHint(R.string.search);
+        searchView.getMyEditText().setHintTextColor(Color.parseColor("#949BA1"));
+        searchView.getMyEditText().setTextSize(15);
         if (data.hasExtra("searchHint")) {
             searchView.getMyEditText().setHint(data.getStringExtra("searchHint"));
         }
@@ -213,6 +236,8 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
         //默认搜索转案管理
         if (ParameterUtils.TRANSFER_MANAGER.equals(flag_value)) {
             presenter.getTransferManagerList(keyword, mPage, pullTo);
+        } else if (ParameterUtils.SEARCH_TEACHER.equals(flag_value)) {
+            presenter.getTeacheList(keyword, mPage, pullTo);
         } else if (ParameterUtils.MSG_DETAIL.equals(flag_value)) {
             presenter.getMsgList(keyword, mPage, pullTo);
         } else if (ParameterUtils.MY_ALL_STUDENT.equals(flag_value)) {
@@ -337,25 +362,29 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
         //默认适配搜索学校
         if (ParameterUtils.TRANSFER_MANAGER.equals(flag_value)) {
             initTransferAdapter();
-        } else if (ParameterUtils.MSG_DETAIL.equals(flag_value)) {
-            initMsgDetailAdapter();
-        } else if (ParameterUtils.MY_ALL_STUDENT.equals(flag_value)
-            || ParameterUtils.STUDENT_TRANSFER_MANAGER.equals(flag_value)
-            || ParameterUtils.COMPELETE_STUDENT.equals(flag_value) ||
-            ParameterUtils.TASK_TRANSFER_MANAGER.equals(flag_value) ||
-            ParameterUtils.REPORT_TRANSFER_MANAGER.equals(flag_value) ||
-            ParameterUtils.TALK_TRANSFER_MANAGER.equals(flag_value)) {
-            if (typeName == WorkingSearchListInfo.TASK_TYPE) {
-                initTaskListAdapter();
-            } else if (typeName == WorkingSearchListInfo.REPORT_TYPE) {
-                initReportListAdapter();
-            } else if (typeName == WorkingSearchListInfo.TALK_TYPE) {
-                initTalkListAdapter();
-            } else {
-                initAllStudentAdapter();
-            }
+        } else if (ParameterUtils.SEARCH_TEACHER.equals(flag_value)) {
+            initTeacherListAdapter();
         } else {
-            initSchoolAdapter();
+            if (ParameterUtils.MSG_DETAIL.equals(flag_value)) {
+                initMsgDetailAdapter();
+            } else if (ParameterUtils.MY_ALL_STUDENT.equals(flag_value)
+                || ParameterUtils.STUDENT_TRANSFER_MANAGER.equals(flag_value)
+                || ParameterUtils.COMPELETE_STUDENT.equals(flag_value) ||
+                ParameterUtils.TASK_TRANSFER_MANAGER.equals(flag_value) ||
+                ParameterUtils.REPORT_TRANSFER_MANAGER.equals(flag_value) ||
+                ParameterUtils.TALK_TRANSFER_MANAGER.equals(flag_value)) {
+                if (typeName == WorkingSearchListInfo.TASK_TYPE) {
+                    initTaskListAdapter();
+                } else if (typeName == WorkingSearchListInfo.REPORT_TYPE) {
+                    initReportListAdapter();
+                } else if (typeName == WorkingSearchListInfo.TALK_TYPE) {
+                    initTalkListAdapter();
+                } else {
+                    initAllStudentAdapter();
+                }
+            } else {
+                initSchoolAdapter();
+            }
         }
         rclvSearch.setAdapter(loadMoreWrapper);
     }
@@ -468,6 +497,50 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
         });
 
     }
+
+
+    private void initTeacherListAdapter() {
+        teacherInfos = new ArrayList<>();
+        teacherAdapter = new CommonAdapter<Teacher>(this, R.layout.item_teacher_search, teacherInfos) {
+            @Override
+            protected void convert(ViewHolder holder, Teacher teacherInfo, int position) {
+                holder.setPersonImageUrl(R.id.iv_avatar, teacherInfo.getAvatar(), true);
+                holder.setText(R.id.tv_name, teacherInfo.getRealName());
+                holder.setText(R.id.tv_center_name, teacherInfo.getGroup());
+            }
+        };
+        emptyWrapper = new EmptyWrapper<>(teacherAdapter);
+        loadMoreWrapper = new LoadMoreWrapper<>(emptyWrapper);
+        rclvSearch.setAdapter(loadMoreWrapper);
+        teacherAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, final int position) {
+                if (teacherDialog == null) {
+                    teacherDialog = DialogCreator.createTranferTeacherDialog(CommonSearchActivity.this, teacherInfos.get(position), askName, question, new OnSendMsgDialogClickListener() {
+                        @Override
+                        public void onPositive(String word) {
+                            presenter.shareQuestion(questionId, teacherInfos.get(position).getId() + "", word);
+                        }
+
+                        @Override
+                        public void onNegative() {
+                            teacherDialog.dismiss();
+                        }
+                    });
+                    teacherDialog.show();
+                } else {
+                    teacherDialog.show();
+                }
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder,
+                                           int position) {
+                return false;
+            }
+        });
+    }
+
 
     private void initTransferAdapter() {
         transferManagerEntities = new ArrayList<>();
@@ -970,12 +1043,55 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
 
     }
 
+    @Override
+    public void getTeacherListSuccess(List<Teacher> teacherInfos, int request_state) {
+        if (presenter != null) {
+            llytTopSearch.setBackgroundResource(R.color.main_bg);
+            presenter.setEmptyView(mInflater, this, rclvSearch);
+            mLayoutManager.setScrollEnabled(true);
+            List datas = getNowList();
+            int len = teacherInfos.size();
+            if (datas != null) {
+                if (request_state == ParameterUtils.PULL_DOWN) {
+                    //下拉刷新
+                    if (len <= 0) {
+                        rclvSearch.loadComplete(true);
+                        mLayoutManager.setScrollEnabled(false);
+                    }
+                    datas.clear();
+                    datas.addAll(teacherInfos);
+                    swipeRefreshLayout.setRefreshing(false);
+                    loadMoreWrapper.notifyDataSetChanged();
+                } else if (request_state == ParameterUtils.PULL_UP) {
+                    //上拉加载
+                    if (len <= 0) {
+                        //没有更多内容
+                        if (mPage > 1) {
+                            mPage = mPage - 1;
+                        }
+                        if (datas.size() > 0) {
+                            rclvSearch.loadComplete(false);
+                        } else {
+                            rclvSearch.loadComplete(true);
+                        }
+                    } else {
+                        rclvSearch.loadComplete(true);
+                        datas.addAll(teacherInfos);
+                        loadMoreWrapper.notifyDataSetChanged();
+                    }
+                }
+            }
+        }
+    }
+
     private List getNowList() {
         //默认搜索学校
         if (ParameterUtils.TRANSFER_MANAGER.equals(flag_value)) {
             return transferManagerEntities;
         } else if (ParameterUtils.MSG_DETAIL.equals(flag_value)) {
             return messageDetailItemInfos;
+        } else if (ParameterUtils.SEARCH_TEACHER.equals(flag_value)) {
+            return teacherInfos;
         } else if (ParameterUtils.MY_ALL_STUDENT.equals(flag_value)
             || ParameterUtils.STUDENT_TRANSFER_MANAGER.equals(flag_value) ||
             ParameterUtils.COMPELETE_STUDENT.equals(flag_value) ||
@@ -996,6 +1112,18 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
         loadMoreWrapper.notifyDataSetChanged();
         rclvSearch.loadComplete(true);
         mLayoutManager.setScrollEnabled(false);
+    }
+
+    @Override
+    public void shareQuestionSuccess() {
+        finish();
+        ToastUtils.shortToast("发送成功");
+    }
+
+    @Override
+    public void shareQuestionFail() {
+        finish();
+        ToastUtils.shortToast("发送失败，请重试！");
     }
 
     @Override

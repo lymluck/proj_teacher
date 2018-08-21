@@ -2,9 +2,8 @@ package com.smartstudy.counselor_t.ui.fragment;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
+import android.os.Parcelable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,18 +12,17 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.smartstudy.counselor_t.R;
+import com.smartstudy.counselor_t.entity.DistributionInfo;
+import com.smartstudy.counselor_t.entity.DistributionTitle;
 import com.smartstudy.counselor_t.entity.QuestionInfo;
-import com.smartstudy.counselor_t.entity.RankInfo;
-import com.smartstudy.counselor_t.mvp.contract.MyFocusContract;
+import com.smartstudy.counselor_t.mvp.contract.DistributionContract;
+import com.smartstudy.counselor_t.mvp.presenter.DistributionPresenter;
 import com.smartstudy.counselor_t.mvp.presenter.MyFocusQuestionPresenter;
-import com.smartstudy.counselor_t.ui.activity.DistributionActivity;
-import com.smartstudy.counselor_t.ui.activity.QaDetailActivity;
 import com.smartstudy.counselor_t.ui.activity.TransferQaDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import study.smart.baselib.entity.TeacherRankInfo;
 import study.smart.baselib.ui.adapter.CommonAdapter;
 import study.smart.baselib.ui.adapter.base.ViewHolder;
 import study.smart.baselib.ui.adapter.wrapper.EmptyWrapper;
@@ -44,18 +42,18 @@ import study.smart.baselib.utils.ToastUtils;
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */
-public class DistributionFragment extends UIFragment<MyFocusContract.Presenter> implements MyFocusContract.View {
+public class DistributionFragment extends UIFragment<DistributionContract.Presenter> implements DistributionContract.View {
 
     private LoadMoreRecyclerView lmrvRank;
-    private EmptyWrapper<QuestionInfo> emptyWrapper;
+    private EmptyWrapper<DistributionInfo> emptyWrapper;
     private NoScrollLinearLayoutManager mLayoutManager;
     private View emptyView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private int mPage = 1;
-    private List<QuestionInfo> teacherRankInfos;
-    private CommonAdapter<QuestionInfo> mAdapter;
-    private LoadMoreWrapper<QuestionInfo> loadMoreWrapper;
-    private List<QuestionInfo> questionInfoList;
+    private CommonAdapter<DistributionInfo> mAdapter;
+    private LoadMoreWrapper<DistributionInfo> loadMoreWrapper;
+    private List<DistributionInfo> questionInfoList;
+    private DistributionTitle distributionTitle;
 
 
     @Override
@@ -64,7 +62,7 @@ public class DistributionFragment extends UIFragment<MyFocusContract.Presenter> 
         emptyView = mActivity.getLayoutInflater().inflate(R.layout.layout_empty, lmrvRank,
             false);
         presenter.showLoading(mActivity, emptyView);
-        presenter.getMyFocusQuestions(mPage, ParameterUtils.PULL_DOWN);
+        presenter.getShareQuestion(distributionTitle.getType(), mPage + "", ParameterUtils.PULL_DOWN);
     }
 
 
@@ -116,52 +114,56 @@ public class DistributionFragment extends UIFragment<MyFocusContract.Presenter> 
         lmrvRank.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity())
             .size(DensityUtils.dip2px(10f)).colorResId(R.color.bg_recent_user).build());
         lmrvRank.setLayoutManager(mLayoutManager);
+        distributionTitle = getArguments().getParcelable("distributionTitleArrayList");
         initAdapter();
         initEvent();
     }
 
     private void initAdapter() {
         questionInfoList = new ArrayList<>();
-        mAdapter = new CommonAdapter<QuestionInfo>(mActivity, R.layout.item_question_list, questionInfoList) {
+        mAdapter = new CommonAdapter<DistributionInfo>(mActivity, R.layout.item_question_list, questionInfoList) {
             @Override
-            protected void convert(ViewHolder holder, QuestionInfo questionInfo, int position) {
-                holder.setText(R.id.tv_create_time, questionInfo.getCreateTimeText());
-                String avatar = questionInfo.getAsker().getAvatar();
-                String askName = questionInfo.getAsker().getName();
+            protected void convert(ViewHolder holder, DistributionInfo distributionInfo, int position) {
+                holder.setText(R.id.tv_create_time, distributionInfo.getQuestion().getCreateTimeText());
+                String avatar = distributionInfo.getQuestion().getAsker().getAvatar();
+                String askName = distributionInfo.getQuestion().getAsker().getName();
                 holder.setPersonImageUrl(R.id.iv_asker, avatar, true);
                 holder.setText(R.id.tv_qa_name, askName);
-                holder.setText(R.id.tv_qa, questionInfo.getContent());
+                holder.setText(R.id.tv_qa, distributionInfo.getQuestion().getContent());
                 TextView answerCounnt = holder.getView(R.id.tv_answer_count);
-                if (questionInfo.getAnswerCount() == 0) {
-                    answerCounnt.setText("暂无人回答");
-                    answerCounnt.setTextColor(Color.parseColor("#078CF1"));
-                    holder.getView(R.id.v_cricle).setVisibility(View.GONE);
-                } else {
-                    if (questionInfo.getSubQuestionCount() != 0) {
-                        answerCounnt.setText("对你有 " + questionInfo.getSubQuestionCount() + " 追问");
-                        answerCounnt.setTextColor(Color.parseColor("#F6611D"));
-                        holder.getView(R.id.v_cricle).setVisibility(View.VISIBLE);
-                    } else {
-                        answerCounnt.setText(questionInfo.getAnswerCount() + " 回答");
+
+                if (distributionInfo.isReceived()) {
+                    if ("我转出的".equals(distributionTitle.getTitle())) {
+                        answerCounnt.setText("对方已接收");
                         answerCounnt.setTextColor(Color.parseColor("#949BA1"));
-                        holder.getView(R.id.v_cricle).setVisibility(View.GONE);
+                    } else {
+                        answerCounnt.setText("已接收");
+                        answerCounnt.setTextColor(Color.parseColor("#949BA1"));
                     }
+
+                } else {
+                    if ("转给我的".equals(distributionTitle.getTitle())) {
+                        answerCounnt.setText("未接收");
+                        answerCounnt.setTextColor(Color.parseColor("#078CF1"));
+                    } else {
+                        answerCounnt.setText("对方未接收");
+                        answerCounnt.setTextColor(Color.parseColor("#58646E"));
+                    }
+
                 }
 
-
-                if (TextUtils.isEmpty(questionInfo.getUserLocation())) {
+                if (TextUtils.isEmpty(distributionInfo.getQuestion().getUserLocation())) {
                     holder.getView(R.id.tv_location).setVisibility(View.GONE);
                 } else {
                     holder.getView(R.id.tv_location).setVisibility(View.VISIBLE);
-                    holder.setText(R.id.tv_location, questionInfo.getUserLocation());
+                    holder.setText(R.id.tv_location, distributionInfo.getQuestion().getUserLocation());
                 }
 
-
-                if (TextUtils.isEmpty(questionInfo.getSchoolName())) {
+                if (TextUtils.isEmpty(distributionInfo.getQuestion().getSchoolName())) {
                     holder.getView(R.id.tv_schoolName).setVisibility(View.GONE);
                 } else {
                     holder.getView(R.id.tv_schoolName).setVisibility(View.VISIBLE);
-                    holder.setText(R.id.tv_schoolName, questionInfo.getSchoolName());
+                    holder.setText(R.id.tv_schoolName, distributionInfo.getQuestion().getSchoolName());
                 }
             }
 
@@ -183,7 +185,9 @@ public class DistributionFragment extends UIFragment<MyFocusContract.Presenter> 
         mAdapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                mActivity.startActivity(new Intent(mActivity, TransferQaDetailActivity.class));
+                mActivity.startActivity(new Intent(mActivity, TransferQaDetailActivity.class)
+                    .putExtra("detail_info", questionInfoList.get(position))
+                    .putExtra("title", distributionTitle.getTitle()));
             }
 
             @Override
@@ -199,8 +203,8 @@ public class DistributionFragment extends UIFragment<MyFocusContract.Presenter> 
     }
 
     @Override
-    public MyFocusContract.Presenter initPresenter() {
-        return new MyFocusQuestionPresenter(this);
+    public DistributionContract.Presenter initPresenter() {
+        return new DistributionPresenter(this);
     }
 
     @Override
@@ -210,41 +214,6 @@ public class DistributionFragment extends UIFragment<MyFocusContract.Presenter> 
             lmrvRank.loadComplete(true);
             ToastUtils.shortToast(message);
         }
-    }
-
-
-    @Override
-    public void getMyFocusQuestionsSuccess(List<QuestionInfo> data, int request_state) {
-        if (presenter != null) {
-            presenter.setEmptyView(mActivity, emptyView);
-            mLayoutManager.setScrollEnabled(true);
-            int len = data.size();
-            if (request_state == ParameterUtils.PULL_DOWN) {
-                //下拉刷新
-                if (len <= 0) {
-                    lmrvRank.loadComplete(true);
-                    mLayoutManager.setScrollEnabled(false);
-                }
-                questionInfoList.clear();
-                questionInfoList.addAll(data);
-                swipeRefreshLayout.setRefreshing(false);
-                loadMoreWrapper.notifyDataSetChanged();
-            } else if (request_state == ParameterUtils.PULL_UP) {
-                //上拉加载
-                if (len <= 0) {
-                    //没有更多内容
-                    if (mPage > 1) {
-                        mPage = mPage - 1;
-                    }
-                    lmrvRank.loadComplete(false);
-                } else {
-                    lmrvRank.loadComplete(true);
-                    questionInfoList.addAll(data);
-                    loadMoreWrapper.notifyDataSetChanged();
-                }
-            }
-        }
-        data = null;
     }
 
 
@@ -265,10 +234,41 @@ public class DistributionFragment extends UIFragment<MyFocusContract.Presenter> 
             mAdapter = null;
         }
 
-        if (teacherRankInfos != null) {
-            teacherRankInfos.clear();
-            teacherRankInfos = null;
+    }
+
+
+    @Override
+    public void getShareQuestionSuccess(List<DistributionInfo> distributionInfos, int request_state) {
+        if (presenter != null) {
+            presenter.setEmptyView(emptyView);
+            mLayoutManager.setScrollEnabled(true);
+            int len = distributionInfos.size();
+            if (request_state == ParameterUtils.PULL_DOWN) {
+                //下拉刷新
+                if (len <= 0) {
+                    lmrvRank.loadComplete(true);
+                    mLayoutManager.setScrollEnabled(false);
+                }
+                questionInfoList.clear();
+                questionInfoList.addAll(distributionInfos);
+                swipeRefreshLayout.setRefreshing(false);
+                loadMoreWrapper.notifyDataSetChanged();
+            } else if (request_state == ParameterUtils.PULL_UP) {
+                //上拉加载
+                if (len <= 0) {
+                    //没有更多内容
+                    if (mPage > 1) {
+                        mPage = mPage - 1;
+                    }
+                    lmrvRank.loadComplete(false);
+                } else {
+                    lmrvRank.loadComplete(true);
+                    questionInfoList.addAll(distributionInfos);
+                    loadMoreWrapper.notifyDataSetChanged();
+                }
+            }
         }
+        distributionInfos = null;
     }
 
 
@@ -281,6 +281,7 @@ public class DistributionFragment extends UIFragment<MyFocusContract.Presenter> 
     }
 
     private void getQa(int pullAction) {
-        presenter.getMyFocusQuestions(mPage, pullAction);
+        presenter.getShareQuestion(distributionTitle.getType(), mPage + "", pullAction);
     }
+
 }

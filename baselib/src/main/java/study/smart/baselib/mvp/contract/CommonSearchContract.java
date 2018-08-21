@@ -5,8 +5,11 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 
+import study.smart.baselib.entity.CityTeacherInfo;
 import study.smart.baselib.entity.MessageDetailItemInfo;
 import study.smart.baselib.entity.MyStudentInfo;
+import study.smart.baselib.entity.Teacher;
+import study.smart.baselib.entity.TeacherInfo;
 import study.smart.baselib.entity.TransferManagerEntity;
 import study.smart.baselib.entity.WorkingSearchInfo;
 import study.smart.baselib.mvp.base.BasePresenter;
@@ -36,10 +39,19 @@ public interface CommonSearchContract {
 
         void getMessageDetailSuccess(TransferManagerEntity transferManagerEntity);
 
+        void getTeacherListSuccess(List<Teacher> teacherInfos, int request_state);
+
         void showEmptyView(android.view.View view);
+
+        void shareQuestionSuccess();
+
+        void shareQuestionFail();
+
     }
 
     interface Presenter extends BasePresenter {
+
+        void shareQuestion(String questionId, String receiverId, String note);
 
         void getTransferManagerList(String keyword, int page, int request_state);
 
@@ -55,10 +67,13 @@ public interface CommonSearchContract {
 
         void getTalkList(String keyword, int page, int request_state);
 
+        void getTeacheList(String keyword, int page, int request_state);
+
         void getMessageDetail(MessageDetailItemInfo messageDetailItemInfo);
 
         void getUnCompeleteStudent(String keyword, int page, int request_state);
 
         void setEmptyView(LayoutInflater mInflater, Context context, ViewGroup parent);
+
     }
 }

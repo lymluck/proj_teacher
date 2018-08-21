@@ -12,8 +12,11 @@ import study.smart.baselib.entity.QaDetailInfo;
 import study.smart.baselib.mvp.base.BasePresenter;
 import study.smart.baselib.ui.base.BaseActivity;
 import study.smart.baselib.utils.DisplayImageUtils;
+
 import com.smartstudy.counselor_t.R;
+
 import study.smart.baselib.ui.widget.DrawableTextView;
+import study.smart.baselib.utils.ScreenUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -35,9 +38,11 @@ public class QaDetailGuideActivity extends BaseActivity {
     private LinearLayout llFocus;
     private int step = 1;
     private DrawableTextView dtvCallout;
+    private DrawableTextView dtvTransfer;
     private ImageView ivStep1;
     private ImageView ivStep2;
     private ImageView ivStep3;
+    private ImageView ivStep4;
     private LinearLayout llImage;
     private DrawableTextView dtvTelephone;
 
@@ -79,12 +84,23 @@ public class QaDetailGuideActivity extends BaseActivity {
                     ivStep2.setVisibility(View.GONE);
                     dtvCallout.setVisibility(View.INVISIBLE);
                     dtvTelephone.setVisibility(View.VISIBLE);
-                    llImage.setGravity(Gravity.RIGHT);
+                    llImage.setGravity(Gravity.CENTER);
+//                    llImage.setPadding(ScreenUtils.getScreenWidth() / 4 + ScreenUtils.getScreenWidth() / 8, 0, 0, 0);
                     ivStep3.setVisibility(View.VISIBLE);
                     dtvTelephone.setBackgroundColor(Color.parseColor("#FFFFFF"));
                     break;
                 }
                 if (step == 3) {
+                    step = 4;
+                    ivStep3.setVisibility(View.GONE);
+                    dtvTelephone.setVisibility(View.INVISIBLE);
+                    dtvTransfer.setVisibility(View.VISIBLE);
+                    llImage.setGravity(Gravity.RIGHT);
+                    ivStep4.setVisibility(View.VISIBLE);
+                    dtvTransfer.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                    break;
+                }
+                if (step == 4) {
                     finish();
                     break;
                 }
@@ -106,6 +122,8 @@ public class QaDetailGuideActivity extends BaseActivity {
         ivStep1 = findViewById(R.id.iv_step1);
         ivStep2 = findViewById(R.id.iv_step2);
         ivStep3 = findViewById(R.id.iv_step3);
+        ivStep4 = findViewById(R.id.iv_step4);
+        dtvTransfer = findViewById(R.id.dtv_transfer);
         llImage = findViewById(R.id.ll_image);
         dtvTelephone = findViewById(R.id.dtv_telephone);
         ivStep1.setVisibility(View.VISIBLE);

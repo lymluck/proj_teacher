@@ -21,6 +21,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import study.smart.baselib.entity.CityTeacherInfo;
+import study.smart.baselib.entity.Teacher;
 import study.smart.baselib.listener.OnSendMsgDialogClickListener;
 import study.smart.baselib.ui.activity.LoginActivity;
 import study.smart.baselib.ui.activity.SelectMyVideoActivity;
@@ -298,6 +300,53 @@ public class DialogCreator {
         dialog.getWindow().setAttributes(p);
         Window dialogWindow = dialog.getWindow();
         dialogWindow.setGravity(Gravity.BOTTOM);
+        dialog.setCanceledOnTouchOutside(false);
+        return dialog;
+    }
+
+    public static AppBasicDialog createTranferTeacherDialog(final Activity context, Teacher teacher, String askName, String content, final OnSendMsgDialogClickListener listener) {
+        final AppBasicDialog dialog = new AppBasicDialog(context, R.style.appBasicDialog);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.dialog_transfer, null);
+        ImageView ivAvatar = view.findViewById(R.id.iv_avatar);
+        final EditText etContent = view.findViewById(R.id.et_content);
+        etContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etContent.setCursorVisible(true);
+            }
+        });
+        TextView tvCancel = view.findViewById(R.id.tv_cancel);
+        TextView tvCenterName = view.findViewById(R.id.tv_center_name);
+        DisplayImageUtils.displayPersonImage(context, teacher.getAvatar(), ivAvatar);
+        TextView tvName = view.findViewById(R.id.tv_name);
+        TextView tvStudentName = view.findViewById(R.id.tv_student_name);
+        tvStudentName.setText(askName);
+        TextView tvContent = view.findViewById(R.id.tv_content);
+        tvContent.setText(content);
+        tvName.setText(teacher.getRealName());
+        tvCenterName.setText(teacher.getGroup());
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (listener != null) {
+                    listener.onNegative();
+                }
+            }
+        });
+        TextView tvSure = view.findViewById(R.id.tv_sure);
+        tvSure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (listener != null) {
+                    listener.onPositive(etContent.getText().toString());
+                }
+            }
+        });
+        dialog.setContentView(view);
+        WindowManager.LayoutParams p = dialog.getWindow().getAttributes();
+        p.width = (int) (ScreenUtils.getScreenWidth() * 0.85);
+        dialog.getWindow().setAttributes(p);
         dialog.setCanceledOnTouchOutside(false);
         return dialog;
     }

@@ -66,6 +66,13 @@ public class HttpUrlUtils {
     public static final String MESSAGE_DETAIL = "message/%1$s";//  消息中心
     public static final String URL_COUNSELLOR_RANKING = "questions/counsellor/ranking/%1$s";//老师周排行
     public static final String QUESTION_REQUEST_INFO = "questions/%1$s/requestInfo";//请求信息
+    public static final String QUESTION_CITY_TEACHER = "counsellor/list/byCities";//老师列表
+    public static final String QUESTION_SHARE_TEACHER = "questions/share/%1$s";//老师分享列表
+    public static final String QUESTION_SHARE_SENT = "questions/share/sent";//我分享的问题列表
+    public static final String QUESTION_SHARE_RECEIVED = "questions/share/received";//我接收的问题列表
+    public static final String QUESTION_SHARE_RECEIVE = "questions/share/%1$s/receive";//我接收的问题列表
+    public static final String COUNSELLOR_SEARCH = " counsellor/search";//老师搜索
+
     /**************************** web ***************************/
     public static final String URL_USER_CONTRACT = "/user-agreement.html";  //用户协议
 

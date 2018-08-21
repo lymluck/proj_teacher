@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:background="@drawable/bg_dialog_introduct"
+    android:orientation="vertical"
     android:paddingTop="20dp">
 
     <TextView
@@ -24,6 +24,7 @@
         android:paddingTop="14dp">
 
         <ImageView
+            android:id="@+id/iv_avatar"
             android:layout_width="40dp"
             android:layout_height="40dp" />
 
@@ -35,16 +36,18 @@
             android:paddingLeft="8dp">
 
             <TextView
+                android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="许压压"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:textColor="@color/app_text_color2"
                 android:textSize="17sp" />
 
             <TextView
+                android:id="@+id/tv_center_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="北京智课"
                 android:textColor="@color/app_text_color"
                 android:textSize="12sp" />
         </LinearLayout>
@@ -60,15 +63,16 @@
         android:background="#E4E5E6" />
 
     <TextView
+        android:id="@+id/tv_student_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:text="小冰想上哈佛"
         android:textColor="@color/app_text_color2"
         android:textSize="14sp" />
 
     <TextView
+        android:id="@+id/tv_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="end"
@@ -77,20 +81,22 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:paddingTop="6dp"
-        android:text="我都会死我哦IE去玩额技巧为企鹅群我饿起哦我都会死我哦IE去玩额技巧为企鹅群我饿起哦我都会死我哦IE去玩额技巧为企鹅群我饿起哦我都会死我哦IE去玩额技巧为企鹅群我饿起哦我都会死我哦IE去玩额技巧为企鹅群我饿起哦"
         android:textColor="@color/app_text_color"
         android:textSize="14sp" />
 
     <EditText
+        android:id="@+id/et_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:background="@drawable/bg_introduce_student"
+        android:cursorVisible="false"
         android:hint="留言给对方，可简要介绍学生情况"
         android:maxHeight="52dp"
         android:minHeight="36dp"
         android:textColor="@color/app_text_color2"
+        android:textColorHint="#C4C9CC"
         android:textSize="14sp" />
 
     <View
@@ -105,6 +111,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/tv_cancel"
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:layout_weight="1"
@@ -120,6 +127,7 @@
 
 
         <TextView
+            android:id="@+id/tv_sure"
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:layout_weight="1"

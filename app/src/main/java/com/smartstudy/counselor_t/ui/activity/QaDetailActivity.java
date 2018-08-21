@@ -80,6 +80,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
     private boolean isFocus = false;
     private DrawableTextView dtvCallout;
     private DrawableTextView dtvPhone;
+    private DrawableTextView dtvTransfer;
     private String telephone;
 
     private TreeRecyclerAdapter qaAdapter;
@@ -109,6 +110,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         llSendVoice.setOnClickListener(this);
         llGetInfo.setOnClickListener(this);
         tvMoreInfo.setOnClickListener(this);
+        dtvTransfer.setOnClickListener(this);
         etAnswer.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -230,8 +232,6 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         mLayoutManager.setScrollEnabled(true);
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(mLayoutManager);
-//        recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
-//            .size(DensityUtils.dip2px(0.5f)).colorResId(R.color.bg_home_search).build());
         recyclerView.setFocusable(false);
         initAdapter();
         if (!TextUtils.isEmpty(questionId)) {
@@ -271,6 +271,14 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
                     presenter.questionAddMark(questionId);
                 } else {
                     presenter.questionDeleteMark(questionId);
+                }
+                break;
+            case R.id.dtv_transfer:
+                if (!TextUtils.isEmpty(telephone)) {
+                    startActivity(new Intent(this, ChooseTeacherActivity.class)
+                        .putExtra("askName", detailInfo.getAsker().getName())
+                        .putExtra("questionId", questionId)
+                        .putExtra("question", detailInfo.getContent()));
                 }
                 break;
             case R.id.ll_get_info:
@@ -388,12 +396,22 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
                 leftDrawable.setBounds(0, 0, leftDrawable.getMinimumWidth(), leftDrawable.getMinimumHeight());
                 dtvPhone.setCompoundDrawables(leftDrawable, null, null, null);
                 dtvPhone.setTextColor(Color.parseColor("#C4C9CC"));
+
+                Drawable leftDrawableTransfer = getResources().getDrawable(R.drawable.ic_recommend_disabled);
+                leftDrawableTransfer.setBounds(0, 0, leftDrawableTransfer.getMinimumWidth(), leftDrawableTransfer.getMinimumHeight());
+                dtvTransfer.setCompoundDrawables(leftDrawableTransfer, null, null, null);
+                dtvTransfer.setTextColor(Color.parseColor("#C4C9CC"));
             } else {
                 telephone = data.getAsker().getPhone();
                 Drawable leftDrawable = getResources().getDrawable(R.drawable.ic_telephone);
                 leftDrawable.setBounds(0, 0, leftDrawable.getMinimumWidth(), leftDrawable.getMinimumHeight());
                 dtvPhone.setCompoundDrawables(leftDrawable, null, null, null);
-                dtvPhone.setTextColor(Color.parseColor("#58646E"));
+                dtvPhone.setTextColor(Color.parseColor("#26343F"));
+
+                Drawable leftDrawableTransfer = getResources().getDrawable(R.drawable.ic_recommen);
+                leftDrawableTransfer.setBounds(0, 0, leftDrawableTransfer.getMinimumWidth(), leftDrawableTransfer.getMinimumHeight());
+                dtvTransfer.setCompoundDrawables(leftDrawableTransfer, null, null, null);
+                dtvTransfer.setTextColor(Color.parseColor("#26343F"));
             }
         }
         if (data.getAnswers() != null && data.getAnswers().size() > 0) {
@@ -478,7 +496,9 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
 
     @Override
     public void requestInfoSuccess() {
-
+        ToastUtils.shortToast("请求发送成功");
+        llFoot.setVisibility(View.GONE);
+        presenter.getQaDetails(questionId);
     }
 
     @Override
@@ -499,6 +519,7 @@ public class QaDetailActivity extends BaseActivity<QaDetailContract.Presenter> i
         llRemind = headView.findViewById(R.id.ll_remind);
         tvAskerName = headView.findViewById(R.id.tv_asker_name);
         tvLocation = headView.findViewById(R.id.tv_location);
+        dtvTransfer = headView.findViewById(R.id.dtv_transfer);
         tvSchoolName = headView.findViewById(R.id.tv_schoolName);
         dtvFocus = headView.findViewById(R.id.dtv_focus);
         tvQuestion = headView.findViewById(R.id.tv_question);

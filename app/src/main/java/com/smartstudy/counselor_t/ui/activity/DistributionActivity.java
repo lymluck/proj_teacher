@@ -57,7 +57,7 @@ public class DistributionActivity extends BaseActivity {
         distributionTitleArrayList.add(meDistributionTitle);
         for (int i = 0; i < distributionTitleArrayList.size(); i++) {
             Bundle bundle = new Bundle();
-            bundle.putParcelable("distributionTitleArrayList", (Parcelable) distributionTitleArrayList.get(i));
+            bundle.putParcelable("distributionTitleArrayList", distributionTitleArrayList.get(i));
             fragments.add(DistributionFragment.getInstance(bundle));
         }
         pagerRanks.setAdapter(new DistributionAdapter(getSupportFragmentManager(), distributionTitleArrayList, fragments));

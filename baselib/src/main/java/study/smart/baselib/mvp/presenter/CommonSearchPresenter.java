@@ -1,6 +1,7 @@
 package study.smart.baselib.mvp.presenter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,15 +9,19 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 import study.smart.baselib.R;
+import study.smart.baselib.entity.CityTeacherInfo;
 import study.smart.baselib.entity.DataListInfo;
 import study.smart.baselib.entity.MessageDetailItemInfo;
 import study.smart.baselib.entity.MyStudentInfo;
+import study.smart.baselib.entity.Teacher;
+import study.smart.baselib.entity.TeacherInfo;
 import study.smart.baselib.entity.TransferManagerEntity;
 import study.smart.baselib.entity.WorkingSearchInfo;
 import study.smart.baselib.listener.ObserverListener;
@@ -37,6 +42,26 @@ public class CommonSearchPresenter extends BasePresenterImpl<CommonSearchContrac
         commonSearchModel = new CommonSearchModel();
     }
 
+
+    @Override
+    public void shareQuestion(String questionId, String receiverId, String note) {
+        commonSearchModel.shareQuestion(questionId, receiverId, note, new ObserverListener() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                addDisposable(disposable);
+            }
+
+            @Override
+            public void onNext(Object result) {
+                view.shareQuestionSuccess();
+            }
+
+            @Override
+            public void onError(String msg) {
+                view.shareQuestionFail();
+            }
+        });
+    }
 
     @Override
     public void getTransferManagerList(String keyword, int page, final int request_state) {
@@ -189,6 +214,34 @@ public class CommonSearchPresenter extends BasePresenterImpl<CommonSearchContrac
                 List<WorkingSearchInfo> workingSearchInfos = JSONObject.parseArray(dataListInfo.getData(), WorkingSearchInfo.class);
                 if (workingSearchInfos != null) {
                     view.getTalkListSuccess(workingSearchInfos, request_state);
+                }
+            }
+
+            @Override
+            public void onError(String msg) {
+                view.showTip(msg);
+            }
+        });
+    }
+
+    @Override
+    public void getTeacheList(String keyword, int page, final int request_state) {
+        commonSearchModel.getTeacherList(keyword, page, new ObserverListener<String>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                addDisposable(disposable);
+            }
+
+            @Override
+            public void onNext(String result) {
+                Log.w("kim", "----->" + result);
+                JSONObject jsonObject = JSONObject.parseObject(result);
+                if (jsonObject != null && jsonObject.containsKey("counsellors")) {
+                    Log.w("kim", "--->" + jsonObject.getString("counsellors"));
+                    List<Teacher> teacherInfos = JSON.parseArray(jsonObject.getString("counsellors"), Teacher.class);
+                    if (teacherInfos != null) {
+                        view.getTeacherListSuccess(teacherInfos, request_state);
+                    }
                 }
             }
 

@@ -13,8 +13,8 @@
         android:paddingBottom="20dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:visibility="invisible"
-        android:paddingTop="20dp">
+        android:paddingTop="20dp"
+        android:visibility="invisible">
 
         <LinearLayout
             android:id="@+id/ll_student"
@@ -24,10 +24,10 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:visibility="invisible"
                 android:id="@+id/iv_asker"
                 android:layout_width="40dp"
-                android:layout_height="40dp" />
+                android:layout_height="40dp"
+                android:visibility="invisible" />
 
             <TextView
                 android:id="@+id/tv_asker_name"
@@ -149,6 +149,7 @@
             android:drawableLeft="@drawable/ic_follow_gray"
             android:gravity="center_vertical"
             android:text="重点关注"
+            android:textSize="13sp"
             android:visibility="invisible" />
 
         <View
@@ -168,6 +169,7 @@
             android:drawableLeft="@drawable/ic_qa_tag"
             android:gravity="center_vertical"
             android:text="标注用户"
+            android:textSize="13sp"
             android:visibility="invisible" />
 
         <View
@@ -187,6 +189,27 @@
             android:drawableLeft="@drawable/ic_telephone"
             android:gravity="center_vertical"
             android:text="联系对方"
+            android:textSize="13sp"
+            android:visibility="invisible" />
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="12dp"
+            android:background="#E4E5E6"
+            android:visibility="invisible" />
+
+        <study.smart.baselib.ui.widget.DrawableTextView
+            android:id="@+id/dtv_transfer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/ic_recommen"
+            android:gravity="center_vertical"
+            android:text="转介绍"
+            android:textSize="13sp"
             android:visibility="invisible" />
     </LinearLayout>
 
@@ -212,12 +235,18 @@
             android:src="@drawable/ic_focus_step2"
             android:visibility="gone" />
 
-
         <ImageView
             android:id="@+id/iv_step3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_focus_step3"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/iv_step4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_focus_step4"
             android:visibility="gone" />
     </LinearLayout>
 </LinearLayout>

@@ -1,10 +1,12 @@
 package com.smartstudy.counselor_t.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by louis on 17/4/10.
  */
 
-public class QuestionInfo {
+public class QuestionInfo implements Serializable {
     private int id;
     private int userId;
     private String content;
@@ -56,11 +58,20 @@ public class QuestionInfo {
         this.schoolName = schoolName;
     }
 
-    public static class Asker {
+    public static class Asker implements Serializable {
         private String id;
         private String name;
         private String avatar;
         private boolean canContact;
+        private String phone;
+
+        public String getPhone() {
+            return phone;
+        }
+
+        public void setPhone(String phone) {
+            this.phone = phone;
+        }
 
         public boolean isCanContact() {
             return canContact;

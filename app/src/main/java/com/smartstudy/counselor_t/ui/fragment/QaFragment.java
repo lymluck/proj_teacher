@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import study.smart.baselib.entity.TeacherRankInfo;
@@ -19,6 +20,7 @@ import study.smart.baselib.ui.base.UIFragment;
 import study.smart.baselib.utils.DensityUtils;
 import study.smart.baselib.utils.DisplayImageUtils;
 import study.smart.baselib.utils.ParameterUtils;
+import study.smart.baselib.utils.ScreenUtils;
 import study.smart.baselib.utils.ToastUtils;
 
 import com.smartstudy.counselor_t.R;
@@ -139,10 +141,18 @@ public class QaFragment extends UIFragment<QaListContract.Presenter> implements 
         rclv_qa = (LoadMoreRecyclerView) rootView.findViewById(R.id.rclv_qa);
         headView = mActivity.getLayoutInflater().inflate(R.layout.layout_teacher_rank, null);
         flHeadView = headView.findViewById(R.id.fl_teacher_rank);
+        int screenWidth = ScreenUtils.getScreenWidth();
+        int ivWidth = screenWidth - 2 * DensityUtils.dip2px(12f);
+        int ivHeight = ivWidth * 1 / 7;
+        flHeadView.setBackgroundResource(R.drawable.bg_rank);
+        RelativeLayout.LayoutParams transfer = (RelativeLayout.LayoutParams) flHeadView.getLayoutParams();
+        transfer.width = RelativeLayout.LayoutParams.MATCH_PARENT;
+        transfer.height = ivHeight;
+        flHeadView.setLayoutParams(transfer);
+
         ivOne = headView.findViewById(R.id.iv_one);
         ivTwo = headView.findViewById(R.id.iv_two);
         ivThree = headView.findViewById(R.id.iv_three);
-
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.srlt_qa);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.app_main_color));
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

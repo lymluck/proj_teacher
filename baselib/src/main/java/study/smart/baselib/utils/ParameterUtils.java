@@ -81,6 +81,7 @@ public class ParameterUtils {
     public static final String ARCHIVE = "ARCHIVE";
 
     public static final String TRANSITION_FLAG = "trans_flag";  //搜索flag名
+    public static final String SEARCH_TEACHER = "search_teacher";//老师搜索
     public static final String TRANSFER_MANAGER = "transfer_manager";  //flag
     public static final String MSG_DETAIL = "msg_detail";  //flag·
     public static final String MY_ALL_STUDENT = "my_all_student";//学员管理查询

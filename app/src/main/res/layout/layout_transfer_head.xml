@@ -13,5 +13,14 @@
         android:layout_marginRight="12dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/bg_entrance">
+
+        <TextView
+            android:id="@+id/tv_transfer_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginRight="37dp"
+            android:textColor="@color/app_text_color2"
+            android:textSize="13sp" />
     </FrameLayout>
 </RelativeLayout>

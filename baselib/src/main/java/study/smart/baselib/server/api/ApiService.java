@@ -2,6 +2,7 @@ package study.smart.baselib.server.api;
 
 import com.alibaba.fastjson.JSONObject;
 
+import study.smart.baselib.entity.CityTeacherInfo;
 import study.smart.baselib.entity.DataListInfo;
 import study.smart.baselib.entity.MyStudentInfo;
 import study.smart.baselib.entity.QaDetailInfo;
@@ -119,6 +120,16 @@ public interface ApiService {
 
 
     /**
+     * 老师列表
+     *
+     * @return
+     */
+
+    @GET(HttpUrlUtils.QUESTION_CITY_TEACHER)
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
+    Observable<ResponseInfo<String>> getTeacherList(@HeaderMap Map<String, String> header);
+
+    /**
      * 个人信息中获取个人选项操作
      *
      * @return
@@ -210,6 +221,37 @@ public interface ApiService {
     Observable<ResponseInfo<String>> getMyTaskList(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
     /**
+     * 获取我发布任务列表
+     *
+     * @param header
+     * @return
+     */
+    @GET(HttpUrlUtils.QUESTION_SHARE_SENT)
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
+    Observable<ResponseInfo<DataListInfo>> getShareQuestionSent(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+
+    /**
+     * 获取我发布任务列表
+     *
+     * @param header
+     * @return
+     */
+    @GET(HttpUrlUtils.QUESTION_SHARE_RECEIVED)
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
+    Observable<ResponseInfo<DataListInfo>> getShareQuestionReceived(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+
+
+    /**
+     * 获取我发布任务列表
+     *
+     * @param header
+     * @return
+     */
+    @POST()
+    Observable<ResponseInfo<String>> postQuestionReceive(@HeaderMap Map<String, String> header, @Url() String url, @QueryMap Map<String, String> params);
+
+
+    /**
      * 获取任务列表
      *
      * @param header
@@ -273,6 +315,11 @@ public interface ApiService {
     @GET(HttpUrlUtils.WORKBENCH_COMPLETE_LIST)
     @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
     Observable<ResponseInfo<DataListInfo>> getTalkList(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
+
+
+    @GET(HttpUrlUtils.COUNSELLOR_SEARCH)
+    @Headers(ConstantUtils.REQUEST_CACHE_TYPE_HEAD + ":" + ParameterUtils.NETWORK_ELSE_CACHED)
+    Observable<ResponseInfo<String>> getTeacherList(@HeaderMap Map<String, String> header, @QueryMap Map<String, String> params);
 
     /**
      * 版本检测
@@ -401,6 +448,17 @@ public interface ApiService {
      */
     @POST()
     Observable<ResponseInfo<String>> postQuestion(@HeaderMap Map<String, String> header, @Url() String url, @QueryMap Map<String, String> params);
+
+
+    /**
+     * 文本消息提交
+     *
+     * @param header
+     * @param params
+     * @return
+     */
+    @POST()
+    Observable<ResponseInfo<String>> shareQuestion(@HeaderMap Map<String, String> header, @Url() String url, @QueryMap Map<String, String> params);
 
     /**
      * 重点关注

@@ -48,6 +48,15 @@ public class TeacherInfo implements Serializable {
     private String introduction;
     private String video;
     private String likesCount;
+    private String group;
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
+    }
 
     public String getLikesCount() {
         return likesCount;

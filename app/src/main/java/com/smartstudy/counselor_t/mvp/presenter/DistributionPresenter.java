@@ -6,73 +6,55 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.smartstudy.counselor_t.R;
+import com.smartstudy.counselor_t.entity.DistributionInfo;
+import com.smartstudy.counselor_t.mvp.contract.DistributionContract;
+import com.smartstudy.counselor_t.mvp.model.DistributionModel;
 
+import java.util.List;
+
+import io.reactivex.disposables.Disposable;
 import study.smart.baselib.entity.DataListInfo;
 import study.smart.baselib.listener.ObserverListener;
 import study.smart.baselib.mvp.base.BasePresenterImpl;
 import study.smart.baselib.utils.DisplayImageUtils;
 import study.smart.baselib.utils.Utils;
 
-import com.alibaba.fastjson.JSONObject;
-import com.smartstudy.counselor_t.R;
-import com.smartstudy.counselor_t.entity.QuestionInfo;
-import com.smartstudy.counselor_t.mvp.contract.MyQaFragmentContract;
-import com.smartstudy.counselor_t.mvp.model.MyQaFragmentModel;
-
-import java.util.List;
-
-import io.reactivex.disposables.Disposable;
-
 /**
  * @author yqy
- * @date on 2018/3/20
+ * @date on 2018/8/16
  * @describe TODO
  * @org xxd.smartstudy.com
  * @email yeqingyu@innobuddy.com
  */
-public class MyQaFragmentPresenter extends BasePresenterImpl<MyQaFragmentContract.View> implements MyQaFragmentContract.Presenter {
+public class DistributionPresenter extends BasePresenterImpl<DistributionContract.View> implements DistributionContract.Presenter {
 
-    private MyQaFragmentModel myQaFragmentModel;
+    private DistributionModel distributionModel;
 
-    public MyQaFragmentPresenter(MyQaFragmentContract.View view) {
+    public DistributionPresenter(DistributionContract.View view) {
         super(view);
-        myQaFragmentModel = new MyQaFragmentModel();
+        distributionModel = new DistributionModel();
     }
-
 
     @Override
     public void detach() {
         super.detach();
-        myQaFragmentModel = null;
+        distributionModel = null;
     }
 
-
     @Override
-    public void getMyQuestions(int page, final int request_state) {
-        myQaFragmentModel.getMyQuestions(page, new ObserverListener<DataListInfo>() {
+    public void getShareQuestion(String type, String page, final int request_state) {
+        distributionModel.getTeacherList(type, page, new ObserverListener<DataListInfo>() {
             @Override
             public void onSubscribe(Disposable disposable) {
                 addDisposable(disposable);
             }
 
             @Override
-            public void onNext(DataListInfo result) {
-                int subCount = 0;
-                int unreceivedSharedQuestionsCount = 0;
-                List<QuestionInfo> data = JSON.parseArray(result.getData(), QuestionInfo.class);
-                JSONObject jsonObject = JSON.parseObject(result.getMeta());
-                if (jsonObject != null) {
-                    if (jsonObject.containsKey("totalSubQuestionCountToMe")) {
-                        subCount = jsonObject.getIntValue("totalSubQuestionCountToMe");
-                    }
-                    if (jsonObject.containsKey("unreceivedSharedQuestionsCount")) {
-                        unreceivedSharedQuestionsCount = jsonObject.getIntValue("unreceivedSharedQuestionsCount");
-                    }
-                }
-                result = null;
-                if (data != null) {
-                    view.getQuestionsSuccess(unreceivedSharedQuestionsCount,subCount, data, request_state);
-                    data = null;
+            public void onNext(DataListInfo dataListInfo) {
+                List<DistributionInfo> distributionInfo = JSON.parseArray(dataListInfo.getData(), DistributionInfo.class);
+                if (distributionInfo != null) {
+                    view.getShareQuestionSuccess(distributionInfo, request_state);
                 }
             }
 
@@ -105,15 +87,14 @@ public class MyQaFragmentPresenter extends BasePresenterImpl<MyQaFragmentContrac
     }
 
     @Override
-    public void setEmptyView(Context context, View emptyView) {
+    public void setEmptyView(View emptyView) {
         emptyView.findViewById(R.id.llyt_err).setVisibility(View.VISIBLE);
         emptyView.findViewById(R.id.iv_loading).setVisibility(View.GONE);
         ImageView iv_err = (ImageView) emptyView.findViewById(R.id.iv_err);
         TextView tv_err_tip = (TextView) emptyView.findViewById(R.id.tv_err_tip);
         iv_err.setImageResource(R.drawable.ic_no_question);
-        tv_err_tip.setText("还没有回答过问题哦");
+        tv_err_tip.setText("还没有相关转介绍哦");
         view.showEmptyView(emptyView);
-        context = null;
         emptyView = null;
     }
 }

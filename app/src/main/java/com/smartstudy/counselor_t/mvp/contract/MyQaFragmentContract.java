@@ -19,7 +19,7 @@ public interface MyQaFragmentContract {
 
     interface View extends BaseView {
 
-        void getQuestionsSuccess(int subCount, List<QuestionInfo> data, int request_state);
+        void getQuestionsSuccess(int unreceivedSharedQuestionsCount,int subCount, List<QuestionInfo> data, int request_state);
 
         void showEmptyView(android.view.View view);
     }

@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.smartstudy.counselor_t.R;
@@ -32,6 +33,7 @@ import study.smart.baselib.ui.widget.LoadMoreRecyclerView;
 import study.smart.baselib.ui.widget.NoScrollLinearLayoutManager;
 import study.smart.baselib.utils.DensityUtils;
 import study.smart.baselib.utils.ParameterUtils;
+import study.smart.baselib.utils.ScreenUtils;
 import study.smart.baselib.utils.ToastUtils;
 
 /**
@@ -57,6 +59,7 @@ public class MyQaFragment extends UIFragment<MyQaFragmentContract.Presenter> imp
     private View headView;
     private HeaderAndFooterWrapper mHeader;
     private FrameLayout flytTransfer;
+    private TextView tvTransferCount;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -141,6 +144,15 @@ public class MyQaFragment extends UIFragment<MyQaFragmentContract.Presenter> imp
         rclv_qa.setHasFixedSize(true);
         headView = mActivity.getLayoutInflater().inflate(R.layout.layout_transfer_head, null);
         flytTransfer = headView.findViewById(R.id.flyt_transfer);
+        int screenWidth = ScreenUtils.getScreenWidth();
+        int ivWidth = screenWidth - 2 * DensityUtils.dip2px(16f);
+        int ivHeight = ivWidth * 1 / 7;
+        flytTransfer.setBackgroundResource(R.drawable.bg_entrance);
+        RelativeLayout.LayoutParams transfer = (RelativeLayout.LayoutParams) flytTransfer.getLayoutParams();
+        transfer.width = RelativeLayout.LayoutParams.MATCH_PARENT;
+        transfer.height = ivHeight;
+        flytTransfer.setLayoutParams(transfer);
+        tvTransferCount = headView.findViewById(R.id.tv_transfer_count);
         mLayoutManager = new NoScrollLinearLayoutManager(mActivity);
         mLayoutManager.setScrollEnabled(true);
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -228,7 +240,7 @@ public class MyQaFragment extends UIFragment<MyQaFragmentContract.Presenter> imp
         mAdapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                QuestionInfo info = questionInfoList.get(position);
+                QuestionInfo info = questionInfoList.get(position - 1);
                 Intent toMoreDetails = new Intent(mActivity, QaDetailActivity.class);
                 toMoreDetails.putExtra("id", info.getId() + "");
                 startActivity(toMoreDetails);
@@ -261,7 +273,7 @@ public class MyQaFragment extends UIFragment<MyQaFragmentContract.Presenter> imp
     }
 
     @Override
-    public void getQuestionsSuccess(int subCount, List<QuestionInfo> data, int request_state) {
+    public void getQuestionsSuccess(int unreceivedSharedQuestionsCount, int subCount, List<QuestionInfo> data, int request_state) {
         if (myAllQaFragment != null) {
             TextView tvSubCount = myAllQaFragment.getSubCountTextView();
             if (subCount == 0) {
@@ -280,6 +292,14 @@ public class MyQaFragment extends UIFragment<MyQaFragmentContract.Presenter> imp
                     tvSubCount.setText("99+");
                 }
             }
+        }
+
+        if (unreceivedSharedQuestionsCount == 0) {
+            tvTransferCount.setVisibility(View.GONE);
+        } else {
+            tvTransferCount.setVisibility(View.VISIBLE);
+            tvTransferCount.setText(unreceivedSharedQuestionsCount + "");
+            tvTransferCount.setBackgroundResource(R.drawable.bg_circle_transfer_count);
         }
         if (presenter != null) {
             presenter.setEmptyView(mActivity, emptyView);

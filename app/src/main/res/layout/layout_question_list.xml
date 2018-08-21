@@ -146,8 +146,10 @@
             android:drawableLeft="@drawable/ic_follow_gray"
             android:drawablePadding="2dp"
             android:gravity="center_vertical"
+            android:textColor="@color/app_text_color2"
             android:paddingRight="3dp"
-            android:text="重点关注" />
+            android:text="重点关注"
+            android:textSize="13sp" />
 
         <View
             android:layout_width="0.5dp"
@@ -165,8 +167,10 @@
             android:drawableLeft="@drawable/ic_qa_tag"
             android:drawablePadding="2dp"
             android:gravity="center_vertical"
+            android:textColor="@color/app_text_color2"
             android:paddingRight="3dp"
-            android:text="标注用户" />
+            android:text="标注用户"
+            android:textSize="13sp" />
 
         <View
             android:layout_width="0.5dp"
@@ -185,7 +189,9 @@
             android:drawablePadding="2dp"
             android:gravity="center_vertical"
             android:paddingRight="3dp"
-            android:text="联系对方" />
+            android:textColor="@color/app_text_color2"
+            android:text="联系对方"
+            android:textSize="13sp" />
 
         <View
             android:layout_width="0.5dp"
@@ -203,8 +209,10 @@
             android:drawableLeft="@drawable/ic_recommen"
             android:drawablePadding="2dp"
             android:gravity="center_vertical"
+            android:textColor="@color/app_text_color2"
             android:paddingRight="3dp"
-            android:text="转介绍" />
+            android:text="转介绍"
+            android:textSize="13sp" />
     </LinearLayout>
 
     <LinearLayout
