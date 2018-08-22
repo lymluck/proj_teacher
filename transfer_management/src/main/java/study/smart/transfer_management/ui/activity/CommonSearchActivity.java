@@ -541,7 +541,6 @@ public class CommonSearchActivity extends BaseActivity<CommonSearchContract.Pres
         });
     }
 
-
     private void initTransferAdapter() {
         transferManagerEntities = new ArrayList<>();
         mTransferAdapter = new CommonAdapter<TransferManagerEntity>(this, R.layout.item_transfer_manager, transferManagerEntities) {

@@ -9,9 +9,19 @@ package com.smartstudy.counselor_t.entity;
  */
 public class TotalSubQuestion {
     private int totalSubQuestionCount;
+    private int unreceivedSharedQuestionsCount;
 
-    public TotalSubQuestion(int totalSubQuestionCount) {
+    public int getUnreceivedSharedQuestionsCount() {
+        return unreceivedSharedQuestionsCount;
+    }
+
+    public void setUnreceivedSharedQuestionsCount(int unreceivedSharedQuestionsCount) {
+        this.unreceivedSharedQuestionsCount = unreceivedSharedQuestionsCount;
+    }
+
+    public TotalSubQuestion(int totalSubQuestionCount,int unreceivedSharedQuestionsCount) {
         this.totalSubQuestionCount = totalSubQuestionCount;
+        this.unreceivedSharedQuestionsCount=unreceivedSharedQuestionsCount;
     }
 
     public int getTotalSubQuestionCount() {

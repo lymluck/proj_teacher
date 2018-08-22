@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -89,7 +90,7 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
         super.onCreate(savedInstanceState);
         setSlideable(false);
         setContentView(R.layout.activity_main);
-        setHeadVisible(View.VISIBLE);
+        setHeadVisible(View.GONE);
     }
 
 
@@ -106,34 +107,36 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
         if (myAllQaFragment == null) {
             myAllQaFragment = new MyAllQaFragment();
         }
-        if (workingFragment == null) {
-            workingFragment = new WorkingFragment();
-        }
-
+//        if (workingFragment == null) {
+//            workingFragment = new WorkingFragment();
+//        }
+//
         if (myInfoDetailFragment == null) {
             myInfoDetailFragment = new MyInfoDetailFragment();
         }
-        String transferPerssion = (String) SPCacheUtils.get("privileges", "");
-        if (TextUtils.isEmpty(transferPerssion) || ParameterUtils.CACHE_NULL.equals(transferPerssion)) {
-            //没有权限，不加载转案模块
-            xxdWork.setVisibility(View.GONE);
-            mFragment.add(myAllQaFragment);
-            mFragment.add(myInfoDetailFragment);
-        } else {
-            //判断是否有权限
-            Privileges privileges = JSONObject.parseObject(transferPerssion, Privileges.class);
-            if (privileges.isTransferCase()) {
-                xxdWork.setVisibility(View.VISIBLE);
-                mFragment.add(new MessageFragment());
-                mFragment.add(workingFragment);
-                mFragment.add(myAllQaFragment);
-                mFragment.add(myInfoDetailFragment);
-            } else {
-                xxdWork.setVisibility(View.GONE);
-                mFragment.add(myAllQaFragment);
-                mFragment.add(myInfoDetailFragment);
-            }
-        }
+//        String transferPerssion = (String) SPCacheUtils.get("privileges", "");
+//        if (TextUtils.isEmpty(transferPerssion) || ParameterUtils.CACHE_NULL.equals(transferPerssion)) {
+//            //没有权限，不加载转案模块
+//            xxdWork.setVisibility(View.GONE);
+//            mFragment.add(myAllQaFragment);
+//            mFragment.add(myInfoDetailFragment);
+//        } else {
+//            //判断是否有权限
+//            Privileges privileges = JSONObject.parseObject(transferPerssion, Privileges.class);
+//            if (privileges.isTransferCase()) {
+//                xxdWork.setVisibility(View.VISIBLE);
+//                mFragment.add(new MessageFragment());
+//                mFragment.add(workingFragment);
+//                mFragment.add(myAllQaFragment);
+//                mFragment.add(myInfoDetailFragment);
+//            } else {
+//                xxdWork.setVisibility(View.GONE);
+//                mFragment.add(myAllQaFragment);
+//                mFragment.add(myInfoDetailFragment);
+//            }
+//        }
+        mFragment.add(myAllQaFragment);
+        mFragment.add(myInfoDetailFragment);
         answerRLayout = findViewById(R.id.xxd_answer_list);
         meRLayout = findViewById(R.id.xxd_me);
         mViewPager = findViewById(R.id.main_viewpager);
@@ -150,7 +153,8 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
         changeTextViewColor();
         changeSelectedTabState(0);
         setLeftImgVisible(View.GONE);
-        setTitle("消息");
+//        setTitle("消息");
+
         String ticket = (String) SPCacheUtils.get("ticket", ConstantUtils.CACHE_NULL);
         if (!TextUtils.isEmpty(ticket) && ConstantUtils.CACHE_NULL.equals(ticket)) {
             startActivity(new Intent(this, LoginActivity.class));
@@ -159,6 +163,9 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
             presenter.getAuditResult();
         }
 
+        //暂不开放
+        xxdWork.setVisibility(View.GONE);
+        xxdChat.setVisibility(View.GONE);
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
@@ -212,39 +219,39 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.xxd_chat:
-                mViewPager.setCurrentItem(0, false);
-                setHeadVisible(View.VISIBLE);
-                setLeftImgVisible(View.GONE);
-                setTitle("消息");
-                setTopLineVisibility(View.GONE);
-                if (myInfoDetailFragment != null) {
-                    myInfoDetailFragment.stopPlay();
-                }
-                break;
-            case R.id.xxd_work:
-                mViewPager.setCurrentItem(1, false);
-                setHeadVisible(View.VISIBLE);
-                setLeftImgVisible(View.GONE);
-                setTitle("工作");
-                setTopLineVisibility(View.VISIBLE);
-                if (myInfoDetailFragment != null) {
-                    myInfoDetailFragment.stopPlay();
-                }
-                break;
+//            case R.id.xxd_chat:
+//                mViewPager.setCurrentItem(0, false);
+//                setHeadVisible(View.VISIBLE);
+//                setLeftImgVisible(View.GONE);
+//                setTitle("消息");
+//                setTopLineVisibility(View.GONE);
+//                if (myInfoDetailFragment != null) {
+//                    myInfoDetailFragment.stopPlay();
+//                }
+//                break;
+//            case R.id.xxd_work:
+//                mViewPager.setCurrentItem(1, false);
+//                setHeadVisible(View.VISIBLE);
+//                setLeftImgVisible(View.GONE);
+//                setTitle("工作");
+//                setTopLineVisibility(View.VISIBLE);
+//                if (myInfoDetailFragment != null) {
+//                    myInfoDetailFragment.stopPlay();
+//                }
+//                break;
             case R.id.xxd_answer_list:
-                mViewPager.setCurrentItem(2, false);
+                mViewPager.setCurrentItem(0, false);
                 setHeadVisible(View.GONE);
                 if (myInfoDetailFragment != null) {
                     myInfoDetailFragment.stopPlay();
                 }
                 break;
             case R.id.xxd_me:
+                setHeadVisible(View.VISIBLE);
                 setLeftImgVisible(View.GONE);
                 setTitle("个人信息");
                 setTopLineVisibility(View.VISIBLE);
-                mViewPager.setCurrentItem(3, false);
-                setHeadVisible(View.VISIBLE);
+                mViewPager.setCurrentItem(1, false);
                 if (myInfoDetailFragment != null) {
                     myInfoDetailFragment.startPlay();
                 }
@@ -434,21 +441,21 @@ public class MainActivity extends BaseActivity<MainActivityContract.Presenter> i
     }
 
     private void changeSelectedTabState(int position) {
-        if (mFragment.size() == 4) {
+        if (mFragment.size() == 2) {
             switch (position) {
+//                case 0:
+//                    tabTextChats.setTextColor(Color.parseColor("#078CF1"));
+//                    tabImgChats.setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_message_blue));
+//                    break;
+//                case 1:
+//                    tabTextWork.setTextColor(Color.parseColor("#078CF1"));
+//                    tabImgWork.setBackgroundDrawable(getResources().getDrawable(R.drawable.group_smart_blue));
+//                    break;
                 case 0:
-                    tabTextChats.setTextColor(Color.parseColor("#078CF1"));
-                    tabImgChats.setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_message_blue));
-                    break;
-                case 1:
-                    tabTextWork.setTextColor(Color.parseColor("#078CF1"));
-                    tabImgWork.setBackgroundDrawable(getResources().getDrawable(R.drawable.group_smart_blue));
-                    break;
-                case 2:
                     tvXxdQa.setTextColor(Color.parseColor("#078CF1"));
                     xxdQaImage.setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_qa_blue));
                     break;
-                case 3:
+                case 1:
                     tvXxdMe.setTextColor(Color.parseColor("#078CF1"));
                     xxdMeImage.setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_me_blue));
                     break;

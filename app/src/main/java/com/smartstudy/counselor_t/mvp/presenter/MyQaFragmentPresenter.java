@@ -62,8 +62,8 @@ public class MyQaFragmentPresenter extends BasePresenterImpl<MyQaFragmentContrac
                 List<QuestionInfo> data = JSON.parseArray(result.getData(), QuestionInfo.class);
                 JSONObject jsonObject = JSON.parseObject(result.getMeta());
                 if (jsonObject != null) {
-                    if (jsonObject.containsKey("totalSubQuestionCountToMe")) {
-                        subCount = jsonObject.getIntValue("totalSubQuestionCountToMe");
+                    if (jsonObject.containsKey("myQuestionBadgeValue")) {
+                        subCount = jsonObject.getIntValue("myQuestionBadgeValue");
                     }
                     if (jsonObject.containsKey("unreceivedSharedQuestionsCount")) {
                         unreceivedSharedQuestionsCount = jsonObject.getIntValue("unreceivedSharedQuestionsCount");

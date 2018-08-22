@@ -108,6 +108,11 @@ public class TransferQaDetailActivity extends BaseActivity<TransferQaDetailContr
         tvCreateTime = findViewById(R.id.tv_create_time);
         tvType = findViewById(R.id.tv_type);
         tvContinueAnswer = findViewById(R.id.tv_continue_answer);
+        if (TextUtils.isEmpty(distributionInfo.getQuestion().getAsker().getPhone())) {
+            llContactUser.setVisibility(View.GONE);
+        } else {
+            llContactUser.setVisibility(View.VISIBLE);
+        }
         if (distributionInfo != null) {
             DisplayImageUtils.displayPersonImage(this, distributionInfo.getQuestion().getAsker().getAvatar(), ivAsk);
             tvAskName.setText(distributionInfo.getQuestion().getAsker().getName());
@@ -145,8 +150,7 @@ public class TransferQaDetailActivity extends BaseActivity<TransferQaDetailContr
                 tvSchoolName.setText(distributionInfo.getQuestion().getSchoolName());
             }
 
-            DisplayImageUtils.displayPersonImage(this, distributionInfo.getReceiver().getAvatar(), ivTransfer);
-            tvTransferName.setText(distributionInfo.getReceiver().getName());
+
             if (TextUtils.isEmpty(distributionInfo.getNote())) {
                 tvContent.setVisibility(View.GONE);
             } else {
@@ -158,8 +162,11 @@ public class TransferQaDetailActivity extends BaseActivity<TransferQaDetailContr
                 }
             }
 
+            tvCenterName.setText(distributionInfo.getSender().getGroup());
             if ("我转出的".equals(title)) {
                 tvType.setText("接收人");
+                DisplayImageUtils.displayPersonImage(this, distributionInfo.getReceiver().getAvatar(), ivTransfer);
+                tvTransferName.setText(distributionInfo.getReceiver().getName());
                 tvCenterName.setText(distributionInfo.getReceiver().getGroup());
                 tvType.setBackgroundResource(R.drawable.bg_sent);
                 if (!distributionInfo.isReceived()) {
@@ -173,6 +180,8 @@ public class TransferQaDetailActivity extends BaseActivity<TransferQaDetailContr
                 tvReceive.setBackgroundResource(R.drawable.bg_receiver_gray);
             } else {
                 tvType.setText("转发人");
+                DisplayImageUtils.displayPersonImage(this, distributionInfo.getSender().getAvatar(), ivTransfer);
+                tvTransferName.setText(distributionInfo.getSender().getName());
                 tvCenterName.setText(distributionInfo.getSender().getGroup());
                 tvType.setBackgroundResource(R.drawable.bg_receiver);
                 tvReceive.setBackgroundResource(R.drawable.bg_receive_blue);

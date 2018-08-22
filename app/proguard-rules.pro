@@ -32,6 +32,54 @@
 -dontwarn okio.**
 -dontwarn java.nio.**
 
+-keepclassmembers class * {
+   public <init> (org.json.JSONObject);
+}
+-keepnames class * implements android.os.Parcelable {
+    public static final ** CREATOR;
+}
+-keepattributes Signature
+
+-keep public class com.smartstudy.counselor_t.R$*{
+public static final int *;
+}
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+-ignorewarnings
+
+-keepnames class * implements android.view.View$OnClickListener
+-keep public class * extends android.content.ContentProvider
+-keepnames class * extends android.view.View
+
+
+-keep class * extends android.app.Fragment {
+ public void setUserVisibleHint(boolean);
+ public void onHiddenChanged(boolean);
+ public void onResume();
+ public void onPause();
+}
+-keep class android.support.v4.app.Fragment {
+ public void setUserVisibleHint(boolean);
+ public void onHiddenChanged(boolean);
+ public void onResume();
+ public void onPause();
+}
+-keep class * extends android.support.v4.app.Fragment {
+ public void setUserVisibleHint(boolean);
+ public void onHiddenChanged(boolean);
+ public void onResume();
+ public void onPause();
+}
+
+-keep class * {
+    public private *;
+}
+-keep class * {
+    public protected *;
+}
+
 -keep class com.smartstudy.counselor_t.entity.**{*;}
 
 #glide

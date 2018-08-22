@@ -14,10 +14,15 @@ import android.widget.TextView;
 
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.QuestionInfo;
+import com.smartstudy.counselor_t.entity.TotalSubQuestion;
 import com.smartstudy.counselor_t.mvp.contract.MyQaFragmentContract;
 import com.smartstudy.counselor_t.mvp.presenter.MyQaFragmentPresenter;
 import com.smartstudy.counselor_t.ui.activity.DistributionActivity;
 import com.smartstudy.counselor_t.ui.activity.QaDetailActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +75,7 @@ public class MyQaFragment extends UIFragment<MyQaFragmentContract.Presenter> imp
 
     @Override
     protected View getLayoutView() {
+        EventBus.getDefault().register(this);
         return mActivity.getLayoutInflater().inflate(
             R.layout.fragment_qa, null);
     }
@@ -272,6 +278,20 @@ public class MyQaFragment extends UIFragment<MyQaFragmentContract.Presenter> imp
         }
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void onDataSynEvent(TotalSubQuestion totalSubQuestion) {
+        if (totalSubQuestion != null) {
+            if (totalSubQuestion.getUnreceivedSharedQuestionsCount() == 0) {
+                tvTransferCount.setVisibility(View.GONE);
+            } else {
+                tvTransferCount.setVisibility(View.VISIBLE);
+                tvTransferCount.setText(totalSubQuestion.getUnreceivedSharedQuestionsCount() + "");
+                tvTransferCount.setBackgroundResource(R.drawable.bg_circle_transfer_count);
+            }
+        }
+    }
+
     @Override
     public void getQuestionsSuccess(int unreceivedSharedQuestionsCount, int subCount, List<QuestionInfo> data, int request_state) {
         if (myAllQaFragment != null) {
@@ -293,7 +313,6 @@ public class MyQaFragment extends UIFragment<MyQaFragmentContract.Presenter> imp
                 }
             }
         }
-
         if (unreceivedSharedQuestionsCount == 0) {
             tvTransferCount.setVisibility(View.GONE);
         } else {
@@ -348,5 +367,11 @@ public class MyQaFragment extends UIFragment<MyQaFragmentContract.Presenter> imp
             rclv_qa.loadComplete(true);
             ToastUtils.shortToast(message);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

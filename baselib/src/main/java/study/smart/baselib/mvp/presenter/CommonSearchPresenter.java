@@ -234,10 +234,8 @@ public class CommonSearchPresenter extends BasePresenterImpl<CommonSearchContrac
 
             @Override
             public void onNext(String result) {
-                Log.w("kim", "----->" + result);
                 JSONObject jsonObject = JSONObject.parseObject(result);
                 if (jsonObject != null && jsonObject.containsKey("counsellors")) {
-                    Log.w("kim", "--->" + jsonObject.getString("counsellors"));
                     List<Teacher> teacherInfos = JSON.parseArray(jsonObject.getString("counsellors"), Teacher.class);
                     if (teacherInfos != null) {
                         view.getTeacherListSuccess(teacherInfos, request_state);

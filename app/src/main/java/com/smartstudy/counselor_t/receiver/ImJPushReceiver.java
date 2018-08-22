@@ -10,7 +10,9 @@ import android.util.Log;
 import study.smart.baselib.ui.activity.LoginActivity;
 import study.smart.baselib.utils.ParameterUtils;
 import study.smart.baselib.utils.SPCacheUtils;
+
 import com.smartstudy.counselor_t.entity.TotalSubQuestion;
+import com.smartstudy.counselor_t.ui.activity.DistributionActivity;
 import com.smartstudy.counselor_t.ui.activity.QaDetailActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -101,7 +103,7 @@ public class ImJPushReceiver extends BroadcastReceiver {
                     while (it.hasNext()) {
                         String myKey = it.next();
                         sb.append("\nkey:" + key + ", value: [" +
-                                myKey + " - " + json.optString(myKey) + "]");
+                            myKey + " - " + json.optString(myKey) + "]");
                     }
                 } catch (JSONException e) {
                     Log.e(TAG, "Get message extra JSON error!");
@@ -117,8 +119,9 @@ public class ImJPushReceiver extends BroadcastReceiver {
     private void handleReceiveMessage(Context context, JSONObject objExtra) {
         //处理推送的追问数量
         if (objExtra != null) {
-            int totalSubQuestionCount = objExtra.optInt("totalSubQuestionCount");
-            EventBus.getDefault().post(new TotalSubQuestion(totalSubQuestionCount));
+            int totalSubQuestionCount = objExtra.optInt("myQuestionBadgeValue");
+            int unreceivedSharedQuestionsCount = objExtra.optInt("unreceivedSharedQuestionsCount");
+            EventBus.getDefault().post(new TotalSubQuestion(totalSubQuestionCount, unreceivedSharedQuestionsCount));
         }
     }
 
@@ -148,13 +151,19 @@ public class ImJPushReceiver extends BroadcastReceiver {
 
     //用户点击了通知
     private void notifyOpened(final Context context, JSONObject objExtra) {
+        Log.w("kim", "--->" + objExtra.toString());
         String ticket = (String) SPCacheUtils.get("ticket", ParameterUtils.CACHE_NULL);
         if (!ParameterUtils.CACHE_NULL.equals(ticket)) {
             //判断消息来源
             if (objExtra != null) {
                 String link = objExtra.optString("link");
                 if (!TextUtils.isEmpty(link)) {
-                    if (link.contains("question")) {
+                    if (link.contains("share")) {
+                        Intent intent = new Intent();
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.setClass(context, DistributionActivity.class);
+                        context.startActivity(intent);
+                    } else if (link.contains("question")) {
                         String questinId = link.substring(link.indexOf("=") + 1, link.length());
                         if (!TextUtils.isEmpty(questinId)) {
                             Intent intent = new Intent();

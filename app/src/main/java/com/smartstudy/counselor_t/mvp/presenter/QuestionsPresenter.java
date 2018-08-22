@@ -55,9 +55,10 @@ public class QuestionsPresenter extends BasePresenterImpl<QaListContract.View> i
             public void onNext(DataListInfo result) {
                 int subCount = 0;
                 List<QuestionInfo> data = JSON.parseArray(result.getData(), QuestionInfo.class);
-                if (JSON.parseObject(result.getMeta()) != null) {
-                    if (JSON.parseObject(result.getMeta()).containsKey("totalSubQuestionCountToMe")) {
-                        subCount = JSON.parseObject(result.getMeta()).getIntValue("totalSubQuestionCountToMe");
+                JSONObject jsonObject = JSON.parseObject(result.getMeta());
+                if (jsonObject != null) {
+                    if (jsonObject.containsKey("myQuestionBadgeValue")) {
+                        subCount = jsonObject.getIntValue("myQuestionBadgeValue");
                     }
                 }
                 if (data != null) {

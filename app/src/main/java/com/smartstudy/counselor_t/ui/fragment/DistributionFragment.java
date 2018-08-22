@@ -59,12 +59,16 @@ public class DistributionFragment extends UIFragment<DistributionContract.Presen
     @Override
     public void onFirstUserVisible() {
         super.onFirstUserVisible();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         emptyView = mActivity.getLayoutInflater().inflate(R.layout.layout_empty, lmrvRank,
             false);
         presenter.showLoading(mActivity, emptyView);
         presenter.getShareQuestion(distributionTitle.getType(), mPage + "", ParameterUtils.PULL_DOWN);
     }
-
 
     public static DistributionFragment getInstance(Bundle bundle) {
         DistributionFragment fragment = new DistributionFragment();
@@ -131,7 +135,11 @@ public class DistributionFragment extends UIFragment<DistributionContract.Presen
                 holder.setText(R.id.tv_qa_name, askName);
                 holder.setText(R.id.tv_qa, distributionInfo.getQuestion().getContent());
                 TextView answerCounnt = holder.getView(R.id.tv_answer_count);
-
+                if (distributionInfo.getQuestion().getAsker().isCanContact()) {
+                    holder.getView(R.id.iv_phone).setVisibility(View.VISIBLE);
+                } else {
+                    holder.getView(R.id.iv_phone).setVisibility(View.GONE);
+                }
                 if (distributionInfo.isReceived()) {
                     if ("我转出的".equals(distributionTitle.getTitle())) {
                         answerCounnt.setText("对方已接收");

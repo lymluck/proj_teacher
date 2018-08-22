@@ -79,20 +79,20 @@ public class HttpUrlUtils {
 
     /*********获取api接口url***********/
     public static String getBaseUrl() {
-//        String SERVER = "https://slx.smartstudy.com/api/";
         String SERVER = "http://slx.staging.smartstudy.com/api/"; //test
         String api = (String) SPCacheUtils.get(ConstantUtils.API_SERVER, "");
         switch (api) {
             case "master":
                 SERVER = "https://slx.smartstudy.com/api/";
-//                SERVER = "http://slx.staging.smartstudy.com/api/";
+//                SERVER = "http://slx.staging.smartstudy.com/api/"; //test
                 break;
             case "test":
-//               SERVER = "https://slx.smartstudy.com/api/";
                 SERVER = "http://slx.staging.smartstudy.com/api/"; //test
+//                SERVER = "https://slx.smartstudy.com/api/";
                 break;
             case "dev":
-                SERVER = "http://blog.smartstudy.com:3234/";
+                SERVER = "http://slx.staging.smartstudy.com/api/"; //test
+//                SERVER = "https://slx.smartstudy.com/api/";
                 break;
             default:
                 break;

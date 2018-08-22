@@ -35,7 +35,7 @@
 -keepclassmembers class * {
    public <init> (org.json.JSONObject);
 }
--keep public class com.smartstudy.xxd.R$*{
+-keep public class com.smartstudy.counselor_t.R$*{
 public static final int *;
 }
 -keepclassmembers enum * {
@@ -52,64 +52,6 @@ public static final int *;
     public protected *;
 }
 
-#jpush
--dontwarn cn.jpush.**
--keep class cn.jpush.** { *; }
-
--dontwarn cn.jiguang.**
--keep class cn.jiguang.** { *; }
-
-#glide
--keep public class * implements com.bumptech.glide.module.GlideModule
--keep public class * extends com.bumptech.glide.module.AppGlideModule
--keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
-  **[] $VALUES;
-  public *;
-}
--dontwarn com.bumptech.glide.load.resource.bitmap.VideoDecoder
-
-# RongCloud SDK
--keep class io.rong.** {*;}
--keep class * implements io.rong.imlib.model.MessageContent {*;}
--dontwarn io.rong.push.**
--dontnote com.xiaomi.**
--keep public class com.google.firebase.* {*;}
--dontnote com.google.android.gms.gcm.**
--dontnote io.rong.**
--keep class com.smartstudy.counselor_t.receiver.RongNotificationReceiver {*;}
-
-
-#huawei
--ignorewarning -keepattributes *Annotation*
--keepattributes Exceptions -keepattributes InnerClasses -keepattributes Signature
-# hmscore-support: remote transport
--keep class * extends com.huawei.hms.core.aidl.IMessageEntity { *; }
-# hmscore-support: remote transport
--keepclasseswithmembers class * implements com.huawei.hms.support.api.transport.DatagramTransport {
-<init>(...); }
-# manifest: provider for updates
--keep public class com.huawei.hms.update.provider.UpdateProvider { public *; protected *; }
-
-
--dontwarn com.xiaomi.mipush.sdk.**
--keep public class com.xiaomi.mipush.sdk.* {*; }
--keep public class com.google.firebase.* {*;}
-
-
--dontoptimize
--dontpreverify
-
--dontwarn cn.jpush.**
--keep class cn.jpush.** { *; }
--keep class * extends cn.jpush.android.helpers.JPushMessageReceiver { *; }
-
--dontwarn cn.jiguang.**
--keep class cn.jiguang.** { *; }
-
--dontwarn com.google.**
--keep class com.google.gson.** {*;}
--keep class com.google.protobuf.** {*;}
-
 -keepattributes *Annotation*
 -keepclassmembers class ** {
     @org.greenrobot.eventbus.Subscribe <methods>;
@@ -121,17 +63,41 @@ public static final int *;
     <init>(java.lang.Throwable);
 }
 
-# oss
--keep class com.alibaba.sdk.android.oss.** { *; }
--dontwarn okio.**
--dontwarn org.apache.commons.codec.binary.**
-
-#ijkplayer
--keep class tv.danmaku.ijk.media.player.** {*; }
--keep class tv.danmaku.ijk.media.player.IjkMediaPlayer{
-*;
-}
--keep class tv.danmaku.ijk.media.player.ffmpeg.FFmpegApi{
-*;
+-keepnames class * implements android.os.Parcelable {
+    public static final ** CREATOR;
 }
 
+-keepattributes Signature
+
+#growingio
+-keep class com.growingio.android.sdk.** {
+    *;
+}
+
+-keepnames class * extends android.view.View
+-keep class * extends android.app.Fragment {
+    public void setUserVisibleHint(boolean);
+    public void onHiddenChanged(boolean);
+    public void onResume();
+    public void onPause();
+}
+-keep class android.support.v4.app.Fragment {
+    public void setUserVisibleHint(boolean);
+    public void onHiddenChanged(boolean);
+    public void onResume();
+    public void onPause();
+}
+-keep class * extends android.support.v4.app.Fragment {
+    public void setUserVisibleHint(boolean);
+    public void onHiddenChanged(boolean);
+    public void onResume();
+    public void onPause();
+}
+
+#glide
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public class * extends com.bumptech.glide.module.AppGlideModule
+-keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}

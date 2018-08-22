@@ -1,26 +1,17 @@
 package com.smartstudy.counselor_t.ui.fragment;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.smartstudy.counselor_t.R;
 import com.smartstudy.counselor_t.entity.TotalSubQuestion;
-import com.smartstudy.counselor_t.mvp.contract.MyQaActivityContract;
-import com.smartstudy.counselor_t.mvp.presenter.MyQaActivityPresenter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -29,16 +20,10 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.rong.imkit.RongIM;
 import study.smart.baselib.mvp.base.BasePresenter;
-import study.smart.baselib.ui.activity.LoginActivity;
 import study.smart.baselib.ui.base.UIFragment;
 import study.smart.baselib.ui.widget.NoScrollViewPager;
-import study.smart.baselib.utils.ParameterUtils;
-import study.smart.baselib.utils.SPCacheUtils;
 import study.smart.baselib.utils.ScreenUtils;
-import study.smart.baselib.utils.ToastUtils;
-import study.smart.baselib.utils.Utils;
 
 /**
  * @author yqy
